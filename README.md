@@ -14,7 +14,7 @@
 
 ### ...
 
-![image](https://office.netease.com/api/admin/file/download?path=cowork%2F2024%2F02%2F27%2Ff456fa3db60648eeb0f2552bf23d0687.png)
+![image](https://img2.baidu.com/it/u=1845469400,959040260&fm=253&fmt=auto&app=120&f=JPEG?w=608&h=246)
 
 ## 使用步骤说明
 
