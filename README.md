@@ -1,28 +1,5 @@
 # CodeWaveAssetCompetition2024
 网易低代码开发者活动-资产大赛2024
-# &#x20;依赖库名称
-
-简短地介绍本依赖库做了什么，包含了哪些逻辑。可以突出描述一下创新点。
-
-## 逻辑详情
-
-### 逻辑一
-
-描述逻辑的功能，逻辑的出入参。
-
-### 逻辑二
-
-### ...
-
-![image](https://img2.baidu.com/it/u=1845469400,959040260&fm=253&fmt=auto&app=120&f=JPEG?w=608&h=246)
-
-## 使用步骤说明
-
-1.  应用引用依赖库
-2.  配置应用配置参数（如果有的话）
-3.  逻辑调用示例截图
-4.  ...
-
-## 应用演示链接
-
-使用了本依赖库的制品应用链接。
+https://lksqgpke08.feishu.cn/docx/KoccdaNUwoHEtFx6gFbcQqWzn2c#BaXjdTHUdofy55xoz0CcNQlInBh
+活动官方介绍：
+参赛指引：https://lksqgpke08.feishu.cn/docx/KoccdaNUwoHEtFx6gFbcQqWzn2c#HIrVdvXQ6o6EbexFHgdc8LPpnTL
