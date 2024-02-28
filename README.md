@@ -38,7 +38,7 @@
   4）一个开发者在活动期间超过三次占用命题参加额度，但未提交资产，则后续不可以参与资产命题需求的申领（自由资产提供不限制）；
 
 2、验收机制
-![image](https://github.com/netease-lcap/CodeWaveAssetCompetition2024/assets/158463965/1fc26436-b97c-4708-8925-91f92e237734)
+![image](https://github.com/netease-lcap/CodeWaveAssetCompetition2024/assets/158463965/1b02393f-3df9-41f5-a187-64e71f7cef9f)
 
 3、赛事激励：
 
