@@ -87,7 +87,7 @@ public class BulkDataMasking {
     }
 
     /**
-     * 地址批量脱敏 例:杭州市滨江区************
+     * 地址批量脱敏 例:山东省泰安市************
      * @param addressList 地址
      * @param sensitiveSize 需要格式化为*的长度，从后往前
      * @return

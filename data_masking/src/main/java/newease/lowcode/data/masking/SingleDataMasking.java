@@ -67,7 +67,7 @@ public class SingleDataMasking {
     }
 
     /**
-     * 地址脱敏 例:杭州市滨江区************
+     * 地址脱敏 例:山东省泰安市************
      * @param address 地址
      * @param sensitiveSize 需要格式化为*的长度，从后往前
      * @return
