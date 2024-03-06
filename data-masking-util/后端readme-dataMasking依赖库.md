@@ -299,11 +299,11 @@ public class BulkDataMasking {
 
    1.
 
-   ![1709736256327](D:\idea_code\CodeWaveAssetCompetition2024\data_masking\assets\1709736256327.png)
+   ![1709736256327](D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util\assets\1709736256327.png)
 
    2.
    
-   ![1709736233791](D:\idea_code\CodeWaveAssetCompetition2024\data_masking\assets\1709736233791.png)
+   ![1709739887654](D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util\assets\1709739887654.png)
 
 ## 应用演示链接
 
