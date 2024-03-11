@@ -24,6 +24,8 @@ getRandomId
 3. 成功效果
 ![3.png](3.png)
 ## 应用演示链接
+jar包为:
+[library-createTest1-1.0.1.zip](library-createTest1-1.0.1.zip)
 
 使用了本依赖库的应用的链接。
 https://yhjtestdemo-suber.app.codewave.163.com/dashboard/test1
