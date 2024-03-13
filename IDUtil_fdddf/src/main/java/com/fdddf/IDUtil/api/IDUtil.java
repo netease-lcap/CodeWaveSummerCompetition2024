@@ -131,7 +131,7 @@ public class IDUtil {
         // 设置ID生成器的配置参数
         originOptions.WorkerIdBitLength = options.workerIdBitLength.byteValue();
         originOptions.SeqBitLength = options.seqBitLength.byteValue();
-        originOptions.MaxSeqNumber = options.maxSeqNumber.byteValue();
+        originOptions.MaxSeqNumber = options.maxSeqNumber.shortValue();
         originOptions.MinSeqNumber = options.minSeqNumber.shortValue();
         originOptions.TopOverCostCount = options.topOverCostCount.shortValue();
 
