@@ -5,45 +5,46 @@ ID生成工具包
 
 ### UUID
 
-生成随机UUID
-无入参
-出参为String
+生成随机UUID  
+无入参  
+出参为String  
 
 ### UUIDSimple
 
-生成随机UUID，"-"被替换为空字符
-无入参
-出参为String
+生成随机UUID，"-"被替换为空字符  
+无入参  
+出参为String  
 
 ### isValidUUID
 
-验证是否为32位UUID字符串
-出参：String: "1"或"0"
+验证是否为32位UUID字符串  
+出参：Boolean: true/false  
 
 ### SnowflakeId
 
-生成雪花ID，无入参
-出参: String
+生成雪花ID  
+入参：SnowflakeOptions结构体  
+出参: Long  
 
 ### HexTimeId
 
-将当前时间戳转换为十六进制，无入参
-出参: String
+将当前时间戳转换为十六进制，无入参  
+出参: String  
 
 ### TimeId
 
-从指定时间算起的时间戳差值加上指定位数的随机值
-入参：IDUtilTime结构体
+从指定时间算起的时间戳差值加上指定位数的随机值  
+入参：IDUtilTime结构体  
 
-startTime String：起始时间，格式 yyyy-MM-dd HH:mm:ss
-randomLength int: 随机数位数
+startTime String：起始时间，格式 yyyy-MM-dd HH:mm:ss  
+randomLength Integer: 随机数位数  
 
-出参：String: 
+出参：Long:   
 
 ### YitId
-根据开源新的雪花算法随机的ID https://gitee.com/yitter/idgenerator
-入参：YitIdGeneratorOptions 
-出参：String:
+根据开源新的雪花算法随机的ID https://gitee.com/yitter/idgenerator  
+入参：YitIdGeneratorOptions  
+出参：Long:  
 
 ## 使用步骤说明
 
