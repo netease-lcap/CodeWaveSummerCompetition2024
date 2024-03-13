@@ -15,6 +15,6 @@ public class IDUtilTime {
     /**
      * 随机数位数
      */
-    public String randomLength;
+    public Integer randomLength;
 
 }

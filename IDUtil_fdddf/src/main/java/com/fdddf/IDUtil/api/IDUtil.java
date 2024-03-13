@@ -54,11 +54,11 @@ public class IDUtil {
      * @return 字符串"1"表示是有效的UUID，字符串"0"表示不是有效的UUID。
      */
     @NaslLogic
-    public static String isValidUUID(String uuid) {
+    public static Boolean isValidUUID(String uuid) {
         // UUID的正则表达式
         String regex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
         // 使用正则表达式匹配UUID
-        return Pattern.matches(regex, uuid) ? "1" : "0";
+        return Pattern.matches(regex, uuid);
     }
 
     /**
@@ -69,15 +69,12 @@ public class IDUtil {
      * @return 返回生成的Snowflake算法ID的字符串表示。
      */
     @NaslLogic
-    public static String SnowflakeId(SnowflakeOptions options) {
+    public static Long SnowflakeId(SnowflakeOptions options) {
         // 创建SnowflakeIdGenerator实例，初始化机器标识和数据中心标识
-        int workerId = Integer.parseInt(options.workerId);
-        int datacenterId = Integer.parseInt(options.datacenterId);
-        SnowflakeIdGenerator generator = new SnowflakeIdGenerator(workerId, datacenterId);
+        SnowflakeIdGenerator generator = new SnowflakeIdGenerator(options.workerId, options.datacenterId);
         // 生成并返回一个ID的字符串形式
-        return String.valueOf(generator.nextId());
+        return generator.nextId();
     }
-
 
     /**
      * 生成基于当前时间的十六进制ID。
@@ -96,11 +93,11 @@ public class IDUtil {
     /**
      * 根据给定的开始时间生成一个包含时间戳和随机数的字符串。
      * @param t 包含开始时间和随机长度的对象。
-     * @return 返回一个字符串，由当前时间与开始时间的差值（毫秒）和随机数组成。
+     * @return 返回一个数字，由当前时间与开始时间的差值（毫秒）和随机数组成。
      * @throws ParseException 如果开始时间的格式不正确，解析时会抛出此异常。
      */
     @NaslLogic
-    public static String TimeId(IDUtilTime t) throws ParseException {
+    public static Long TimeId(IDUtilTime t) throws ParseException {
         // 将开始时间转换为时间戳
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = sdf.parse(t.startTime);
@@ -108,14 +105,14 @@ public class IDUtil {
         startTimeStamp = System.currentTimeMillis() - startTimeStamp;
 
         // 生成随机数
-        int randomLength = Integer.parseInt(t.randomLength);
+        int randomLength = t.randomLength;
         if (randomLength > 0) {
             Random random = new Random();
             int randomNumber = random.nextInt((int) Math.pow(10, randomLength));
-            return startTimeStamp + "" + randomNumber;
+            return Long.parseLong(startTimeStamp + "" + randomNumber);
         }
         // 返回时间戳连接随机数
-        return String.valueOf(startTimeStamp);
+        return startTimeStamp;
     }
 
     /**
@@ -123,26 +120,26 @@ public class IDUtil {
      * 使用优化的雪花算法用指定的配置选项生成一个唯一的ID
      * {@code @reference} <a href="https://github.com/yitter/IdGenerator">IdGenerator</a>
      * @param options 包含ID生成器配置的选项，如工作ID、序列号位长等。
-     * @return 返回一个基于配置选项生成的唯一ID的字符串表示。
+     * @return 返回一个基于配置选项生成的唯一ID。
      */
     @NaslLogic
-    public static String YitId(YitIdGeneratorOptions options) {
+    public static Long YitId(YitIdGeneratorOptions options) {
         // 将传入的配置选项中的工作ID解析为整数，并基于此创建初始配置对象
-        int workerId = Integer.parseInt(options.WorkerId);
-        IdGeneratorOptions originOptions = new IdGeneratorOptions((short) workerId);
+        IdGeneratorOptions originOptions = new IdGeneratorOptions();
+        originOptions.WorkerId = options.workerId.shortValue();
 
         // 设置ID生成器的配置参数
-        originOptions.WorkerIdBitLength = Byte.parseByte(options.WorkerIdBitLength);
-        originOptions.SeqBitLength = Byte.parseByte(options.SeqBitLength);
-        originOptions.MaxSeqNumber = Short.parseShort(options.MaxSeqNumber);
-        originOptions.MinSeqNumber = Short.parseShort(options.MinSeqNumber);
-        originOptions.TopOverCostCount = Short.parseShort(options.TopOverCostCount);
+        originOptions.WorkerIdBitLength = options.workerIdBitLength.byteValue();
+        originOptions.SeqBitLength = options.seqBitLength.byteValue();
+        originOptions.MaxSeqNumber = options.maxSeqNumber.byteValue();
+        originOptions.MinSeqNumber = options.minSeqNumber.shortValue();
+        originOptions.TopOverCostCount = options.topOverCostCount.shortValue();
 
         // 应用配置到ID生成器
         YitIdHelper.setIdGenerator(originOptions);
 
-        // 返回下一个生成的ID的字符串形式
-        return String.valueOf(YitIdHelper.nextId());
+        // 返回下一个生成的ID
+        return YitIdHelper.nextId();
     }
 
 }

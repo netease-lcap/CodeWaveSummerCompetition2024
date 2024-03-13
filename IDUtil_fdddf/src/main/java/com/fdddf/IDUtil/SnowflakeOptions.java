@@ -11,10 +11,10 @@ public class SnowflakeOptions {
     /**
      * 数据中心标识
      */
-    public String datacenterId;
+    public Integer datacenterId;
 
     /**
      * 机器标识
      */
-    public String workerId;
+    public Integer workerId;
 }

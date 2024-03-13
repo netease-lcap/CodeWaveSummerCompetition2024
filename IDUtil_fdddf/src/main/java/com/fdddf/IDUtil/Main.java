@@ -11,15 +11,15 @@ public class Main {
         System.out.println(IDUtil.isValidUUID(IDUtil.UUID()));
 
         SnowflakeOptions options = new SnowflakeOptions();
-        options.datacenterId = "0";
-        options.workerId = "0";
+        options.datacenterId = 0;
+        options.workerId = 0;
         System.out.println(IDUtil.SnowflakeId(options));
         System.out.println(IDUtil.HexTimeId());
         IDUtilTime t = new IDUtilTime();
         t.startTime = "2024-03-01 00:00:00";
-        t.randomLength = "0";
+        t.randomLength = 0;
         System.out.println(IDUtil.TimeId(t));
-        t.randomLength = "5";
+        t.randomLength = 5;
         System.out.println(IDUtil.TimeId(t));
         System.out.println(IDUtil.YitId(new YitIdGeneratorOptions()));
     }
