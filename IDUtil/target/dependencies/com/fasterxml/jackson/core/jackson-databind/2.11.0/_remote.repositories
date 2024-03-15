@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Mar 15 10:47:06 CST 2024
+jackson-databind-2.11.0.jar>central=
+jackson-databind-2.11.0.pom>localRemote=
+jackson-databind-2.11.0.jar>localRemote=

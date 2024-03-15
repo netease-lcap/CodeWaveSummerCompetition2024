@@ -1,0 +1,100 @@
+{
+  "ideVersion": "3.3",
+  "name": "IDUtil",
+  "title": "IDUtil",
+  "description": "",
+  "specVersion": "1.0.0",
+  "type": "module",
+  "subType": "extension",
+  "version": "1.0.0",
+  "externalDependencyMap": {"maven": [{
+    "groupId": "com.netease.lowcode",
+    "artifactId": "IDUtil",
+    "version": "1.0.0"
+  }]},
+  "compilerInfoMap": {"java": [{
+    "modifiers": [
+      "public",
+      "static"
+    ],
+    "type": "logic",
+    "className": "IDUtil",
+    "packageName": "com.netease.lowcode",
+    "javaTypes": {
+      "": "String",
+      "stringLength": "Integer",
+      "includeDigits": "Boolean",
+      "includeLetters": "Boolean"
+    },
+    "naslName": "generateRandomString"
+  }]},
+  "logics": [{
+    "name": "generateRandomString",
+    "description": "",
+    "params": [
+      {
+        "name": "stringLength",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "Long",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive",
+          "concept": "TypeAnnotation"
+        }
+      },
+      {
+        "name": "includeDigits",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "Boolean",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive",
+          "concept": "TypeAnnotation"
+        }
+      },
+      {
+        "name": "includeLetters",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "Boolean",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive",
+          "concept": "TypeAnnotation"
+        }
+      }
+    ],
+    "returns": [{
+      "name": "result",
+      "description": "",
+      "concept": "Return",
+      "typeAnnotation": {
+        "typeName": "Union",
+        "typeArguments": [
+          {
+            "typeName": "String",
+            "typeNamespace": "nasl.core",
+            "typeKind": "primitive",
+            "concept": "TypeAnnotation"
+          },
+          {
+            "typeName": "Error",
+            "typeNamespace": "nasl.ui",
+            "typeKind": "reference",
+            "concept": "TypeAnnotation"
+          }
+        ],
+        "typeNamespace": "nasl.core",
+        "typeKind": "union",
+        "concept": "TypeAnnotation"
+      }
+    }],
+    "concept": "Logic",
+    "overridable": false
+  }]
+}
