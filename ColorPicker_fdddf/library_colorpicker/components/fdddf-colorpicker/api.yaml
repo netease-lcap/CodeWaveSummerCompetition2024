@@ -1,0 +1,42 @@
+- name: fdddf-colorpicker
+  title: 颜色选择器
+  type: both
+  belong: component
+  labels: [Runtime]
+  attrs:
+    - name: value
+      type: string
+      default: "#000000"
+      description: 颜色值,hex或rgba格式
+      sync: true
+      model: true
+    - name: title
+      type: string
+      default: "颜色选择器"
+      description: 标题
+      sync: true
+      model: true
+    - name: isShowClose
+      type: boolean
+      default: true
+      sync: true
+      model: true
+      description: 是否显示关闭按钮
+    - name: isShowTitle
+      type: boolean
+      default: true
+      description: 是否显示标题
+      sync: true
+      model: true
+  events:
+    - name: change
+      title: change
+      description: 颜色值改变时触发
+      params: 
+        - name: event
+          type: string
+          description: 参数
+    - name: close
+      title: close
+      description: 关闭时触发
+    
