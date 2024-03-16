@@ -8,286 +8,33 @@
 
 ##### 1、SingleDataMasking类中主要包含单条数据脱敏。
 
-```java
+所有数据脱敏逻辑如果入参为非法参数或者为空都会返回空白字符串不会返回原字符主要考虑数据安全问题避免泄露
 
-/**
- *所有数据脱敏逻辑如果入参为非法参数或者为空都会返回空白字符串不会返回原字符主要考虑数据安全问题避免泄露
- *当前类主要是用户单条数据进行脱敏
- * @author 19153
- */
-@Component
-public class SingleDataMasking {
-
-    /**
-     * 手机号脱敏 例:183****5376
-     * @param phone 手机号
-     * @return
-     */
-    @NaslLogic
-    public static String mobilePhoneSingleDataMasking(String phone){
-        return CustomDataMaskingUtil.mobilePhone(phone);
-    }
-
-    /**
-     * 中国姓名脱敏 例:王**
-     * @param chineseName  中国姓名
-     * @return
-     */
-    @NaslLogic
-    public String chineseNameSingleDataMasking(String chineseName){
-        return CustomDataMaskingUtil.chineseName(chineseName);
-    }
-
-    /**
-     * 身份证号码脱敏 例:410***********0093
-     * @param idCardNum 身份证号码
-     * @param startSaveLength 需要保留的身份证号码开头的长度
-     * @param endSaveLength 需要保留的身份证号码末尾的长度
-     * @return
-     */
-    @NaslLogic
-    public String idCardNumSingleDataMasking(String idCardNum, Integer startSaveLength, Integer endSaveLength){
-        return CustomDataMaskingUtil.idCardNum(idCardNum,startSaveLength,endSaveLength);
-    }
-
-    /**
-     * 邮箱脱敏 例:w***********@163.com
-     * @param email 邮箱
-     * @return
-     */
-    @NaslLogic
-    public String emailSingleDataMasking(String email){
-
-        return CustomDataMaskingUtil.email(email);
-    }
-
-    /**
-     * 银行卡脱敏 例:6200 **** **** 1785
-     * @param bankCard 银行卡
-     * @return
-     */
-    @NaslLogic
-    public String bankCardSingleDataMasking(String bankCard){
-        return CustomDataMaskingUtil.bankCard(bankCard);
-    }
-
-    /**
-     * 地址脱敏 例:山东省泰安市************
-     * @param address 地址
-     * @param sensitiveSize 需要格式化为*的长度，从后往前
-     * @return
-     */
-    @NaslLogic
-    public String addressSingleDataMasking(String address,Integer sensitiveSize){
-        return CustomDataMaskingUtil.address(address,sensitiveSize);
-    }
-
-    /**
-     * 密码脱敏 例:**************
-     * @param password 密码
-     * @return
-     */
-    @NaslLogic
-    public String passwordSingleDataMasking(String password){
-        return CustomDataMaskingUtil.password(password);
-    }
-
-    /**
-     * ipv4脱敏 例:192.*.*.*
-     * @param ipv4 ipv4
-     * @return
-     */
-    @NaslLogic
-    public String ipv4SingleDataMasking(String ipv4){
-        return CustomDataMaskingUtil.ipv4(ipv4);
-    }
-
-    /**
-     * ipv6脱敏 例:FC00:*:*:*:*:*:*:*
-     * @param ipv6 ipv6
-     * @return
-     */
-    @NaslLogic
-    public String ipv6SingleDataMasking(String ipv6){
-        return CustomDataMaskingUtil.ipv6(ipv6);
-    }
-
-
-    /**
-     * 自定义脱敏 可自定义脱敏内容、开始位置、脱敏长度、脱敏字符
-     * @param text 脱敏文本
-     * @param start  开始位置
-     * @param desensitizationLength  长度
-     * @param maskChar 脱敏字符
-     * @return
-     */
-    @NaslLogic
-    public String generalSingleDataMasking(String text, Integer start, Integer desensitizationLength, String maskChar){
-        return CustomDataMaskingUtil.customDesensitization(text, start-1, desensitizationLength, maskChar);
-    }
-}
-
-```
+- `mobilePhoneSingleDataMasking()`：用于手机号的脱敏，返回屏蔽了部分号码的手机号字符串。
+- `chineseNameSingleDataMasking()`：用于中国姓名的脱敏，返回屏蔽了部分姓名的姓名字符串。
+- `idCardNumSingleDataMasking()`：用于身份证号码的脱敏，根据提供的起始保留长度和末尾保留长度，返回脱敏后的身份证号码字符串。
+- `emailSingleDataMasking()`：用于邮箱的脱敏，返回屏蔽了部分邮箱地址的邮箱字符串。
+- `bankCardSingleDataMasking()`：用于银行卡的脱敏，返回屏蔽了部分银行卡号码的银行卡字符串。
+- `addressSingleDataMasking()`：用于地址的脱敏，根据提供的敏感长度，返回屏蔽了部分地址的地址字符串。
+- `passwordSingleDataMasking()`：用于密码的脱敏，返回用星号填充的密码字符串。
+- `ipv4SingleDataMasking()`：用于 IPv4 地址的脱敏，返回屏蔽了部分 IPv4 地址的 IPv4 字符串。
+- `ipv6SingleDataMasking()`：用于 IPv6 地址的脱敏，返回屏蔽了部分 IPv6 地址的 IPv6 字符串。
+- `generalSingleDataMasking()`：用于自定义脱敏，可以指定脱敏文本、开始位置、脱敏长度和脱敏字符，返回自定义脱敏后的字符串。
 
 ##### 2、BulkDataMasking类中主要包含多条数据脱敏
 
-```java
+所有数据脱敏逻辑如果入参为非法参数或者为空都会返回空白字符串列表（指的是字符串列表参数）
 
-/**
- * 所有数据脱敏逻辑如果入参为非法参数或者为空都会返回空白字符串不会返回原字符主要考虑数据安全问题避免泄露
- * 当前类主要是用于多条数据进行脱敏
- * @author 19153
- */
-@Component
-public class BulkDataMasking {
-
-    /**
-     * 手机号批量脱敏 例:183****5376
-     * @param phoneList 手机号列表
-     * @return
-     */
-    @NaslLogic
-    public List<String> mobilePhoneBulkDataMasking (List<String> phoneList) {
-        return phoneList.stream()
-                // 使用 map 操作将每个手机号进行脱敏
-                .map(phone -> CustomDataMaskingUtil.mobilePhone(phone))
-                // 将脱敏后的手机号收集到新的列表中
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * 中国姓名批量脱敏 例:张*
-     * @param chineseNameList 中国姓名列表
-     * @return
-     */
-    @NaslLogic
-    public List<String> chineseNameBulkDataMasking(List<String> chineseNameList) {
-        return chineseNameList.stream()
-                // 使用 map 操作将每个中文姓名进行脱敏
-                .map(chineseName -> CustomDataMaskingUtil.chineseName(chineseName))
-                // 将脱敏后的中文姓名收集到新的列表中
-                .collect(Collectors.toList());
-    }
-    /**
-     * 身份证号码批量脱敏 例:410***********0093
-     * @param idCardNumList 身份证号码
-     * @param startSaveLength 需要保留的身份证号码开头的长度
-     * @param endSaveLength 需要保留的身份证号码末尾的长度
-     * @return
-     */
-    @NaslLogic
-    public List<String> idCardNumBulkDataMasking(List<String> idCardNumList, Integer startSaveLength, Integer endSaveLength) {
-        return idCardNumList.stream()
-                // 使用 map 操作将每个身份证号码进行脱敏
-                .map(idCardNum -> CustomDataMaskingUtil.idCardNum(idCardNum, startSaveLength, endSaveLength))
-                // 将脱敏后的身份证号码收集到新的列表中
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * 邮箱批量脱敏 例:w***********@163.com
-     * @param emailList 邮箱
-     * @return
-     */
-    @NaslLogic
-    public List<String> emailBulkDataMasking(List<String> emailList) {
-        return emailList.stream()
-                // 使用 map 操作将每个邮箱进行脱敏
-                .map(email -> CustomDataMaskingUtil.email(email))
-                // 将脱敏后的邮箱收集到新的列表中
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * 银行卡批量脱敏 例:6200 **** **** 1785
-     * @param bankCardList 银行卡
-     * @return
-     */
-    @NaslLogic
-    public List<String> bankCardBulkDataMasking(List<String> bankCardList) {
-        return bankCardList.stream()
-                // 使用 map 操作将每个银行卡进行脱敏
-                .map(bankCard -> CustomDataMaskingUtil.bankCard(bankCard))
-                // 将脱敏后的银行卡收集到新的列表中
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * 地址批量脱敏 例:杭州市滨江区************
-     * @param addressList 地址
-     * @param sensitiveSize 需要格式化为*的长度，从后往前
-     * @return
-     */
-    @NaslLogic
-    public List<String> addressBulkDataMasking(List<String> addressList, Integer sensitiveSize) {
-        return addressList.stream()
-                // 使用 map 操作将每个地址进行脱敏
-                .map(address -> CustomDataMaskingUtil.address(address, sensitiveSize))
-                // 将脱敏后的地址收集到新的列表中
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * 密码批量脱敏 例:**************
-     * @param passwordList 密码
-     * @return
-     */
-    @NaslLogic
-    public List<String> passwordBulkDataMasking(List<String> passwordList) {
-        return passwordList.stream()
-                // 使用 map 操作将每个密码进行脱敏
-                .map(password -> CustomDataMaskingUtil.password(password))
-                // 将脱敏后的密码收集到新的列表中
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * ipv4批量脱敏 例:192.*.*.*
-     * @param ipv4List ipv4
-     * @return
-     */
-    @NaslLogic
-    public List<String> ipv4BulkDataMasking(List<String> ipv4List) {
-        return ipv4List.stream()
-                // 使用 map 操作将每个 ipv4 进行脱敏
-                .map(ipv4 -> CustomDataMaskingUtil.ipv4(ipv4))
-                // 将脱敏后的 ipv4 收集到新的列表中
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * ipv6批量脱敏 例:FC00:*:*:*:*:*:*:*
-     * @param ipv6List ipv6
-     * @return
-     */
-    @NaslLogic
-    public List<String> ipv6BulkDataMasking(List<String> ipv6List) {
-        return ipv6List.stream()
-                // 使用 map 操作将每个 ipv6 进行脱敏
-                .map(ipv6 -> CustomDataMaskingUtil.ipv6(ipv6))
-                // 将脱敏后的 ipv6 收集到新的列表中
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * 自定义批量脱敏 可自定义脱敏内容、开始位置、脱敏长度、脱敏字符
-     * @param textList 脱敏文本
-     * @param start  开始位置
-     * @param desensitizationLength  长度
-     * @param maskChar 脱敏字符
-     * @return
-     */
-    @NaslLogic
-    public List<String> generalBulkDataMasking(List<String> textList, Integer start, Integer desensitizationLength, String maskChar) {
-        return textList.stream()
-                // 使用 map 操作将每个文本进行脱敏
-                .map(text -> CustomDataMaskingUtil.customDesensitization(text, start - 1, desensitizationLength, maskChar))
-                // 将脱敏后的文本收集到新的列表中
-                .collect(Collectors.toList());
-    }
-}
-
-```
+1. `mobilePhoneBulkDataMasking`：对手机号进行批量脱敏，将中间几位数字用`*`代替。
+2. `chineseNameBulkDataMasking`：对中国姓名进行批量脱敏，只保留姓。
+3. `idCardNumBulkDataMasking`：对身份证号码进行批量脱敏，根据指定的开头和末尾保留长度进行脱敏。
+4. `emailBulkDataMasking`：对邮箱进行批量脱敏，将中间部分用`*`代替。
+5. `bankCardBulkDataMasking`：对银行卡进行批量脱敏，将中间部分用`*`代替。
+6. `addressBulkDataMasking`：对地址进行批量脱敏，将指定长度的部分用`*`代替。
+7. `passwordBulkDataMasking`：对密码进行批量脱敏，用`*`代替所有字符。
+8. `ipv4BulkDataMasking`：对 IPv4 地址进行批量脱敏，将中间部分用`.*.`代替。
+9. `ipv6BulkDataMasking`：对 IPv6 地址进行批量脱敏，将中间部分用`:`代替。
+10. `generalBulkDataMasking`：这是一个通用的脱敏方法，可以自定义脱敏的内容、开始位置、脱敏长度和脱敏字符。
 
 ## 使用步骤说明
 
@@ -309,10 +56,4 @@ public class BulkDataMasking {
 
 使用了本依赖库的应用的链接。
 
-无法发布生产环境目前只能提供测试环境
-
-PC端：http://dev-datamaskingtest-wanggexin.app.codewave.163.com/
-
-DEVACC-datamaskingtest
-
-5EVslWkS
+无法发布生产环境目前只能提供测试环境，考虑测试环境随时失效此处并未提供
