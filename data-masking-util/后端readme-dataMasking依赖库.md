@@ -44,13 +44,7 @@
 
 3. 逻辑调用示例截图
 
-   1.
-
-   ![1709736256327](D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util\assets\1709736256327.png)
-
-   2.
-   
-   ![1709739887654](D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util\assets\1709739887654.png)
+   ![1709736256327](https://github.com/superName-w/CodeWaveAssetCompetition2024/blob/2f8abdcb6a7eb2411e02fb0e4103e5e92fc51352/data-masking-util/assets/1710604099941.jpg)
 
 ## 应用演示链接
 
