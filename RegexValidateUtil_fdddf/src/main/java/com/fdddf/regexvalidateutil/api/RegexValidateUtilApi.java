@@ -106,9 +106,9 @@ public class RegexValidateUtilApi {
     }
 
     /**
-     * 检查一个字符串是否为有效的中国手机号码。
+     * 检查一个字符串是否为有效的手机号码
      *
-     * @param mobile 待检查的手机号码字符串。
+     * @param mobile 待检查的手机号码字符串
      * @param countryCode 国家代码，目前支持的国家代码有：CN,TW,HK,MS,PH,TH,SG,DZ,SY,
      *                    SA,US,CZ,DE,DK,GR,AU,GB,CA,IN,NZ,ZA,ZM,ES,FI,FR,IL,HU,
      *                    IT,JP,NO,BE,PL,BR,PT,RU,RS,TR,VN

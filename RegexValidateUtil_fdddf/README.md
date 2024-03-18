@@ -13,9 +13,18 @@
 
 ### isMobile
 
-判断传入的字符串是否为有效的手机号码  
+判断传入的字符串是否为有效的国内手机号码  
 入参：String mobile  
 出参：Boolean  
+
+### isMobilePhone
+
+检查传入的字符串是否为有效的国际手机号码  
+入参：mobile 待检查的手机号码字符串   
+入参2：countryCode 国家代码
+出参：Boolean  
+
+检查传入的字符串是否为有效的手机号码
 
 ### isIdCard
 
@@ -28,6 +37,7 @@
 检查提供的字符串是否为电话号码  
 支持两种格式的电话号码：带区号和不带区号   
 入参：String str  
+入参2：Boolean isArea 是否需要校验区号
 出参：Boolean  
 
 ### isUrl
