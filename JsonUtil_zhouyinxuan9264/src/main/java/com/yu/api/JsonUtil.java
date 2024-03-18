@@ -32,7 +32,7 @@ public class JsonUtil {
             ObjectMapper jsonMapper = new ObjectMapper();
             return jsonMapper.writeValueAsString(node);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error("出现JsonProcessingException异常：", e);
             throw new IllegalArgumentException("xml传入格式异常");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -56,7 +56,7 @@ public class JsonUtil {
                 return null;
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            log.error("出现JSONException异常：", e);
             throw e;
         }
     }

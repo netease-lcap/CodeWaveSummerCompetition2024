@@ -4,13 +4,17 @@ import com.netease.lowcode.core.annotation.NaslLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.Inet6Address;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author 余卫青
@@ -34,7 +38,7 @@ public class IPUtil {
             InetAddress localHost = InetAddress.getLocalHost();
             return localHost.getHostAddress();
         } catch (UnknownHostException e) {
-            log.error("UnknownHostException  !!!");
+            log.error("获取主机地址异常 UnknownHostException：", e);
         }
         return null;
     }
@@ -46,8 +50,8 @@ public class IPUtil {
      */
     @NaslLogic(enhance = false)
     public static List<String> getIpv4Addr() {
+        List<String> ipv4Addr = new ArrayList<>();
         try {
-            List<String> ipv4Addr = new ArrayList<>();
             InetAddress localHost = InetAddress.getLocalHost();
             InetAddress[] allAddresses = InetAddress.getAllByName(localHost.getHostName());
             for (InetAddress address : allAddresses) {
@@ -55,130 +59,32 @@ public class IPUtil {
                     ipv4Addr.add(address.getHostAddress());
                 }
             }
-            return ipv4Addr;
         } catch (UnknownHostException e) {
-            log.error("UnknownHostException  !!!");
+            log.error("获取主机地址异常 UnknownHostException：", e);
         }
-        return null;
-    }
-
-    /**
-     * 是否是有效的IPv4
-     *
-     * @param ip
-     * @return
-     */
-    @NaslLogic(enhance = false)
-    public static Boolean isValidIPv4(String ip) {
-        return IPV4_PATTERN.matcher(ip).matches();
-    }
-
-    /**
-     * 是否是有效的IPv6
-     *
-     * @param ip
-     * @return
-     */
-    @NaslLogic(enhance = false)
-    public static Boolean isValidIPv6(String ip) {
-        try {
-            InetAddress address = InetAddress.getByName(ip);
-            return address instanceof Inet6Address;
-        } catch (UnknownHostException e) {
-            return false;
+        String[] urls = new String[]{"https://api.ipify.org","http://checkip.amazonaws.com"};
+        for (String s : urls) {
+            try {
+                URL url = new URL(s);
+                BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+                String body = br.lines().collect(Collectors.joining("\n"));
+                String externalIp = body;
+                ipv4Addr.add(externalIp);
+                break;
+            } catch (IOException e) {
+                log.error("从" + s + "返回外部ip地址异常 ", e);
+            }
         }
-    }
-
-    /**
-     * 获取ip类型
-     *
-     * @param ip
-     * @return
-     */
-    @NaslLogic(enhance = false)
-    public static String getIPType(String ip) {
-        if (isValidIPv4(ip)) {
-            return "IPv4";
-        } else if (isValidIPv6(ip)) {
-            return "IPv6";
-        } else {
-            return "Invalid";
-        }
-    }
-
-    /**
-     * 将ipv4转成ipv6
-     *
-     * @param ipv4
-     * @return
-     */
-    @NaslLogic(enhance = false)
-    public static String convertIPv4ToIPv6(String ipv4) {
-        if (!isValidIPv4(ipv4)) {
-            throw new IllegalArgumentException("Invalid IPv4 address");
-        }
-        return "::ffff:" + ipv4;
-    }
-
-    /**
-     * 将ipv6转成ipv4
-     *
-     * @param ipv6
-     * @return
-     */
-    @NaslLogic(enhance = false)
-    public static String convertIPv6ToIPv4(String ipv6) {
-        if (!isValidIPv6(ipv6)) {
-            throw new IllegalArgumentException("Invalid IPv6 address");
-        }
-        return ipv6.substring(7);
-    }
-
-    /**
-     * 解析ip地址，将ip地址分成四个部分（ipv4)
-     *
-     * @param ipv4
-     * @return
-     */
-    @NaslLogic(enhance = false)
-    public static List<Integer> parseIPv4(String ipv4) {
-        if (!isValidIPv4(ipv4)) {
-            throw new IllegalArgumentException("Invalid IPv4 address");
-        }
-        String[] parts = ipv4.split("\\.");
-        List<Integer> result = new ArrayList<>(10);
-        for (int i = 0; i < 4; i++) {
-            result.add(Integer.parseInt(parts[i]));
-        }
-        return result;
-    }
-
-    /**
-     * 解析ip地址，将ip地址分解成八个部分（ipv6)
-     *
-     * @param ipv6
-     * @return
-     */
-    @NaslLogic(enhance = false)
-    public static List<Integer> parseIPv6(String ipv6) {
-        if (!isValidIPv6(ipv6)) {
-            throw new IllegalArgumentException("Invalid IPv6 address");
-        }
-        String[] parts = ipv6.split(":");
-        List<Integer> result = new ArrayList<>(10);
-        for (int i = 0; i < 8; i++) {
-            result.add(Integer.parseInt(parts[i], 16));
-        }
-        return result;
+        return ipv4Addr;
     }
 
 
-    public static void main(String[] args) {
-        // 获取本地主机地址
-        System.out.println("本地主机地址: " + getHostAddr());
-        // 获取本机的内网 IPv4 地址
-        for (String s : Objects.requireNonNull(getIpv4Addr())) {
-            System.out.println("本机的内网 IPv4 地址: " + s);
+        public static void main (String[]args){
+            // 获取本地主机地址
+            System.out.println("本地主机地址: " + getHostAddr());
+            // 获取本机的内网 IPv4 地址
+            for (String s : Objects.requireNonNull(getIpv4Addr())) {
+                System.out.println("本机的内网 IPv4 地址: " + s);
+            }
         }
     }
-}

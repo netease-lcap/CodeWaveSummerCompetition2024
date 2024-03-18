@@ -6,7 +6,9 @@
     
     <groupId>com.yu</groupId>
     <artifactId>iputil</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.5</version>
+    <name>ip工具类</name>
+    <description>封装了一些ip工具的查询方法</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -31,11 +33,6 @@
             <optional>true</optional>
             <scope>system</scope>
             <systemPath>${project.basedir}/jar/nasl-metadata-collector-0.8.0.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
         </dependency>
 
     </dependencies>
