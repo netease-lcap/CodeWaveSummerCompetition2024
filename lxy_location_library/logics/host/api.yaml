@@ -1,0 +1,5 @@
+- name: host
+  description: 获取当前的主机信息
+  type: both
+  belong: logic
+  labels: [Runtime]

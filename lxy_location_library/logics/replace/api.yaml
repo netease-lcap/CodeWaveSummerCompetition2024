@@ -1,0 +1,5 @@
+- name: replace
+  description: 以给定的URL来替换当前的资源
+  type: both
+  belong: logic
+  labels: [Runtime]

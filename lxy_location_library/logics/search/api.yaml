@@ -1,0 +1,5 @@
+- name: search
+  description: 返回url中?以及之后的字符串
+  type: both
+  belong: logic
+  labels: [Runtime]
