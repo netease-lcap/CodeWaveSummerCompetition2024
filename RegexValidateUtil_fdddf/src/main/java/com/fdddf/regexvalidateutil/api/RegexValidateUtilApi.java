@@ -125,7 +125,7 @@ public class RegexValidateUtilApi {
                 MobileRegularExp regularExp = MobileRegularExp.OT;
                 isMobileNumber = mobile.matches(regularExp.getRegularExp());
             } else {
-                logger.error("不支持的国家代码：" + countryCode);
+                logger.error("Unsupported country code：" + countryCode);
             }
         }
         return isMobileNumber;
