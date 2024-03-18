@@ -9,9 +9,9 @@ getRandomId逻辑为获取指定位数随机id的方法,可选是否包含数字
 ### 逻辑一
 getRandomId
 输入参数：
-* @param length 生成id长度 (int类型)
+* @param idLength 生成id长度 (int类型)
 * @param includeNumbers 是否包含数字 (布尔类型)
-* @param includeLetters 是否包含字母 (布尔类型)
+* @param includeLetters 是否包含大小写字母 (布尔类型)
 
 输出参数：生成的String类型的随机id号
 
