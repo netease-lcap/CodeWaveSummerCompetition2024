@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.netease.lowcode</groupId>
-    <artifactId>createTest1</artifactId>
+    <groupId>com.netease.lib.random</groupId>
+    <artifactId>random-id-utils</artifactId>
     <version>1.0.1</version>
 
     <properties>
@@ -13,6 +13,20 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <name>random-id-utils</name>
+    <description>提供ID生成器逻辑，包含生成随机长度的字符串，包含生成特定长度，是否包含数字和是否包含字母(涵盖大小写)</description>
+
+    <dependencies>
+        <dependency>
+            <artifactId>nasl-metadata-collector</artifactId>
+            <groupId>com.netease.lowcode</groupId>
+            <version>0.7.0</version>
+            <optional>true</optional>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jar/nasl-metadata-collector-0.7.0.jar</systemPath>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -30,15 +44,5 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <dependency>
-            <artifactId>nasl-metadata-collector</artifactId>
-            <groupId>com.netease.lowcode</groupId>
-            <version>0.7.0</version>
-            <optional>true</optional>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/jar/nasl-metadata-collector-0.7.0.jar</systemPath>
-        </dependency>
-    </dependencies>
 
 </project>
