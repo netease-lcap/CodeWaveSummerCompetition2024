@@ -6,7 +6,9 @@
     
     <groupId>com.fdddf</groupId>
     <artifactId>IPUtil</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
+    <name>IP工具类</name>
+    <description>获取本机IP的工具类</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -36,7 +38,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>
-             <version>1.7.30</version>
+            <version>1.7.30</version>
         </dependency>
     </dependencies>
     <build>
