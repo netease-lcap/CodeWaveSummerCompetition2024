@@ -3,15 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-        <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.9.RELEASE</version><!--与当前制品应用默认版本统一-->
-    </parent>
 
     <groupId>com.fdddf</groupId>
     <artifactId>DataMaskingUtil</artifactId>
-    <version>1.0.0</version>
+    <name>数据脱敏工具类</name>
+    <description>将敏感数据字段进行掩码处理，目前支持的字段类型有：姓名、座机号、地址、身份证、车牌、手机号、邮箱、IP地址、银行卡号</description>
+    <version>1.0.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -31,31 +28,6 @@
             <optional>true</optional>
             <scope>system</scope>
             <systemPath>${project.basedir}/jar/nasl-metadata-collector-0.7.0.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!--制品应用使用Springboot框架，父应用引用了的包，为了防止版本冲突，scope可设置为provided-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
     <build>

@@ -2,7 +2,6 @@ package com.fdddf.datamaskingutil.api;
 
 import com.fdddf.datamaskingutil.StrUtil;
 import com.netease.lowcode.core.annotation.NaslLogic;
-import org.springframework.stereotype.Component;
 
 /**
  * 脱敏工具类，支持以下类型信息的脱敏自动处理：
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
  * @author dazer and neusoft and qiaomu
  * @since 5.6.2
  */
-@Component
 public class DataMaskingUtil {
 
     /**
@@ -214,9 +212,9 @@ public class DataMaskingUtil {
     }
 
     /**
-     * IPv4脱敏，如：脱敏前：2001:0db8:86a3:08d3:1319:8a2e:0370:7344；脱敏后：2001:*:*:*:*:*:*:*
+     * IPv6脱敏，如：脱敏前：2001:0db8:86a3:08d3:1319:8a2e:0370:7344；脱敏后：2001:*:*:*:*:*:*:*
      *
-     * @param ipv6 IPv4地址
+     * @param ipv6 IPv6地址
      * @return 脱敏后的地址
      */
     @NaslLogic
