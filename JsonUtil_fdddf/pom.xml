@@ -3,15 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-        <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.9.RELEASE</version><!--与当前制品应用默认版本统一-->
-    </parent>
 
     <groupId>com.fdddf</groupId>
     <artifactId>JsonUtil</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
+    <name>Json工具包</name>
+    <description>提供JSON字符串解析，XML字符串转为JSON字符串逻辑，并支持JSONPath提取值</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -41,6 +38,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>
+            <version>1.7.30</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
@@ -48,26 +46,6 @@
             <version>20240303</version>
         </dependency>
 
-        <!--制品应用使用Springboot框架，父应用引用了的包，为了防止版本冲突，scope可设置为provided-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>1.1</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>

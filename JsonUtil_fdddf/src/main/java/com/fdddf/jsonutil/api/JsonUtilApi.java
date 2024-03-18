@@ -5,23 +5,29 @@ import com.netease.lowcode.core.annotation.NaslLogic;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Component
 public class JsonUtilApi {
+
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtilApi.class);
 
     /**
      * 将XML格式的字符串转换为JSON格式的字符串
      *
-     * @param xml 需要转换的XML格式字符串。
-     * @return 转换后的JSON格式字符串。
-     * @throws JSONException 如果转换过程中发生错误。
+     * @param xml 需要转换的XML格式字符串
+     * @return 转换后的JSON格式字符串
      */
     @NaslLogic
-    public static String xmlToJson(String xml) throws JSONException {
-        // 将XML字符串转换为JSONObject
-        JSONObject json = XML.toJSONObject(xml);
-        return json.toString();
+    public static String xmlToJson(String xml) {
+        try {
+            // 将XML字符串转换为JSONObject
+            JSONObject json = XML.toJSONObject(xml);
+            return json.toString();
+        } catch (JSONException e) {
+            logger.error("Convert xml to json failed:", e);
+            return null;
+        }
     }
 
     /**
@@ -38,6 +44,7 @@ public class JsonUtilApi {
             return JSONPath.eval(json, key).toString();
         } catch (Exception e) {
             // 查询失败或出现异常时返回null
+            logger.error("Query json failed:", e);
             return null;
         }
     }
