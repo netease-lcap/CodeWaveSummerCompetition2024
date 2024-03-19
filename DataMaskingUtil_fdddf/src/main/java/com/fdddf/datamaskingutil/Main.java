@@ -5,7 +5,7 @@ import com.fdddf.datamaskingutil.api.DataMaskingUtil;
 public class Main {
     public static void main(String[] args) {
         System.out.println(DataMaskingUtil.email("godisgod@126.com"));
-        System.out.println(DataMaskingUtil.mobilePhone("13500981234"));
+        System.out.println(DataMaskingUtil.mobilePhone("13512341234"));
         System.out.println(DataMaskingUtil.address("上海市普陀区金沙江路 1518 弄", 5));
         System.out.println(DataMaskingUtil.carLicense("沪A891234"));
         System.out.println(DataMaskingUtil.idCardNum("310101199001010001", 4, 4));
