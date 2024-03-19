@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2a43fb75-5b4a-4445-bd92-166ebc99fffd" name="Changes" comment="fix:优化后端readme、补充演示图片" />
+    <list default="true" id="2a43fb75-5b4a-4445-bd92-166ebc99fffd" name="Changes" comment="fix:优化后端readme、补充演示图片">
+      <change afterPath="$PROJECT_DIR$/../.idea/CodeWaveAssetCompetition2024.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../cookie-util/src/main/java/com/netease/lowcode/http/NaslCookie.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../regex-validator-util/regex-validator-util.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-data_masking_util-1.0.1.zip" beforeDir="false" afterPath="$PROJECT_DIR$/library-data_masking_util-1.0.1.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/netease/lowcode/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wgx/lowcode/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/netease/lowcode/data/masking/BulkDataMasking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wgx/lowcode/data/masking/BulkDataMasking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/netease/lowcode/data/masking/SingleDataMasking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wgx/lowcode/data/masking/SingleDataMasking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/netease/lowcode/utils/CustomDataMasking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wgx/lowcode/utils/CustomDataMasking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端readme-data-masking-util依赖库.md" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,7 +66,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/idea_code/CodeWaveAssetCompetition2024",
+    "last_opened_file_path": "D:/idea_code/CodeWaveAssetCompetition2024/data-masking-util",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -69,6 +82,26 @@
       <recent name="D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.wgx.lowcode.Main" />
+      <module name="data-masking-util" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.wgx.lowcode.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -80,6 +113,7 @@
       <workItem from="1709738775882" duration="1233000" />
       <workItem from="1709740238026" duration="903000" />
       <workItem from="1710599498248" duration="3685000" />
+      <workItem from="1710856498139" duration="3240000" />
     </task>
     <task id="LOCAL-00001" summary="add:新增依赖库源码、依赖库zip包、后端readme">
       <created>1709739250718</created>
