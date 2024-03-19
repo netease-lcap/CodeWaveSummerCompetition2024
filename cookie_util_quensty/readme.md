@@ -13,7 +13,7 @@ cookie工具
 
 ## 使用说明
 
-### 逻辑（setCookie）
+### 逻辑
 
 - **setCookie(key,value,expire,path):** 设置cookie，key-cookie名称，必填，value-cookie值，必填，expire-过期时间，单位秒，默认会话结束时，选填，path-cookie作用域，默认请求为域名，选填，返回cookie值
 - **getCookie(key):** 获取cookie值，key-cookie名称，必填，result-返回cookie值
