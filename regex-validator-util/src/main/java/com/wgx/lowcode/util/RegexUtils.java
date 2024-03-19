@@ -295,7 +295,7 @@ public class RegexUtils {
             return new RegexValidatorResult(Boolean.FALSE, "输入值不能为空");
         }
         // 正则表达式
-        String regex = "\\d+\\.\\d+$";
+        String regex = "^-?\\d+(\\.\\d+)?$";
         // 进行匹配
         if (Pattern.matches(regex, decimal)) {
             // 匹配成功
@@ -303,30 +303,6 @@ public class RegexUtils {
         } else {
             // 匹配失败
             return new RegexValidatorResult(Boolean.FALSE, "输入值不符合正则表达式");
-        }
-    }
-
-    /**
-     * 验证是否为正的小数 格式：1.11、2.23
-     *
-     * @param decimal 传入的字符串
-     * @return 如果是正的小数，则返回 true；否则返回 false
-     */
-    @NaslLogic
-    public static RegexValidatorResult checkPositiveDecimal(String decimal) {
-        if (decimal == null || decimal.isEmpty()) {
-            // 处理空值或空字符串的情况
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不能为空");
-        }
-        //正则表达式
-        String regex = "^\\+\\d+\\.\\d+$";
-        // 进行匹配
-        if (Pattern.matches(regex, decimal)) {
-            // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
-        } else {
-            // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
         }
     }
 
@@ -478,7 +454,7 @@ public class RegexUtils {
      * 验证密码 格式：长度至少为8位，必须包含字母和数字。
      *
      * @param password 要验证的密码
-     *                 * @return 如果密码有效，则返回 true；否则返回 false
+     * @return 如果密码有效，则返回 true；否则返回 false
      */
     @NaslLogic
     public static RegexValidatorResult checkPasswordLength8Easy(String password) {
@@ -526,7 +502,7 @@ public class RegexUtils {
      * 验证密码 格式：长度至少为8位，必须包含特殊字符、字母和数字。
      *
      * @param password 要验证的密码
-     *                 * @return 如果密码有效，则返回 true；否则返回 false
+     *  @return 如果密码有效，则返回 true；否则返回 false
      */
     @NaslLogic
     public static RegexValidatorResult checkPasswordLength8Difficult(String password) {

@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2a43fb75-5b4a-4445-bd92-166ebc99fffd" name="Changes" comment="fix:优化工具类代码、优化pom文件以来、优化后端readme、">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library-data_masking_util-1.0.1.zip" beforeDir="false" afterPath="$PROJECT_DIR$/library-data_masking_util-1.0.1.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../regex-validator-util/src/main/java/com/netease/lowcode/util/RegexUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../regex-validator-util/src/main/java/com/wgx/lowcode/util/RegexUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../regex-validator-util/src/main/java/com/netease/lowcode/validation/RegexValidatorResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/../regex-validator-util/src/main/java/com/wgx/lowcode/validation/RegexValidatorResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../regex-validator-util/src/test/java/RegexValidatorUtilTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../regex-validator-util/regex-validator-util.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../regex-validator-util/regex-validator-util.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +27,6 @@
     <option name="importingSettings">
       <MavenImportingSettings>
         <option name="jdkForImporter" value="#JAVA_HOME" />
-        <option name="workspaceImportEnabled" value="true" />
       </MavenImportingSettings>
     </option>
   </component>
@@ -45,24 +40,24 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/idea_code/CodeWaveAssetCompetition2024/data-masking-util",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "File.Encoding",
-    "spring.configuration.checksum": "11b028c05c0b1a2a2ee472807eaec350",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/idea_code/CodeWaveAssetCompetition2024/data-masking-util&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;11b028c05c0b1a2a2ee472807eaec350&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util" />
