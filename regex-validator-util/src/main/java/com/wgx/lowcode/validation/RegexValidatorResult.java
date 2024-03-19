@@ -1,4 +1,4 @@
-package com.netease.lowcode.validation;
+package com.wgx.lowcode.validation;
 
 import com.netease.lowcode.core.annotation.NaslStructure;
 

@@ -4,32 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2a43fb75-5b4a-4445-bd92-166ebc99fffd" name="Changes" comment="fix:优化后端readme、补充演示图片">
-      <change afterPath="$PROJECT_DIR$/../.idea/CodeWaveAssetCompetition2024.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../cookie-util/src/main/java/com/netease/lowcode/http/NaslCookie.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../regex-validator-util/regex-validator-util.iml" afterDir="false" />
+    <list default="true" id="2a43fb75-5b4a-4445-bd92-166ebc99fffd" name="Changes" comment="fix:优化工具类代码、优化pom文件以来、优化后端readme、">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library-data_masking_util-1.0.1.zip" beforeDir="false" afterPath="$PROJECT_DIR$/library-data_masking_util-1.0.1.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/netease/lowcode/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wgx/lowcode/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/netease/lowcode/data/masking/BulkDataMasking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wgx/lowcode/data/masking/BulkDataMasking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/netease/lowcode/data/masking/SingleDataMasking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wgx/lowcode/data/masking/SingleDataMasking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/netease/lowcode/utils/CustomDataMasking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/wgx/lowcode/utils/CustomDataMasking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/后端readme-data-masking-util依赖库.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../regex-validator-util/src/main/java/com/netease/lowcode/util/RegexUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../regex-validator-util/src/main/java/com/wgx/lowcode/util/RegexUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../regex-validator-util/src/main/java/com/netease/lowcode/validation/RegexValidatorResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/../regex-validator-util/src/main/java/com/wgx/lowcode/validation/RegexValidatorResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../regex-validator-util/src/test/java/RegexValidatorUtilTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="Git.Settings">
-    <option name="PUSH_TAGS">
-      <GitPushTagMode>
-        <option name="argument" value="--tags" />
-        <option name="title" value="All" />
-      </GitPushTagMode>
-    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -113,7 +99,7 @@
       <workItem from="1709738775882" duration="1233000" />
       <workItem from="1709740238026" duration="903000" />
       <workItem from="1710599498248" duration="3685000" />
-      <workItem from="1710856498139" duration="3240000" />
+      <workItem from="1710856498139" duration="3897000" />
     </task>
     <task id="LOCAL-00001" summary="add:新增依赖库源码、依赖库zip包、后端readme">
       <created>1709739250718</created>
@@ -136,7 +122,21 @@
       <option name="project" value="LOCAL" />
       <updated>1710602683982</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix:优化工具类代码、优化pom文件以来、优化后端readme、">
+      <created>1710859950395</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1710859950395</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix:优化工具类代码、优化pom文件以来、优化后端readme、">
+      <created>1710860059622</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1710860059622</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +156,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add:新增依赖库源码、依赖库zip包、后端readme" />
     <MESSAGE value="fix:优化后端readme、补充演示图片" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix:优化后端readme、补充演示图片" />
+    <MESSAGE value="fix:优化工具类代码、优化pom文件以来、优化后端readme、" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix:优化工具类代码、优化pom文件以来、优化后端readme、" />
   </component>
 </project>

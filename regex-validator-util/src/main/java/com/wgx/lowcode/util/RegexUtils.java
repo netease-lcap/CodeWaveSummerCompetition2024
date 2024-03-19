@@ -1,7 +1,7 @@
-package com.netease.lowcode.util;
+package com.wgx.lowcode.util;
 
 import com.netease.lowcode.core.annotation.NaslLogic;
-import com.netease.lowcode.validation.RegexValidatorResult;
+import com.wgx.lowcode.validation.RegexValidatorResult;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
