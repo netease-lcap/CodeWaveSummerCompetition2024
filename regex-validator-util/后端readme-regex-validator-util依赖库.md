@@ -37,7 +37,7 @@
 
 3. 逻辑调用示例截图
 
-   ![1709736256327](https://github.com/superName-w/CodeWaveAssetCompetition2024/blob/2f8abdcb6a7eb2411e02fb0e4103e5e92fc51352/data-masking-util/assets/1710604099941.jpg)
+   ![1709736256327](https://github.com/superName-w/CodeWaveAssetCompetition2024/blob/73c25e396702406d368ff43deeb4597069982a87/regex-validator-util/assets/img.png)
 
 ## 应用演示链接
 
