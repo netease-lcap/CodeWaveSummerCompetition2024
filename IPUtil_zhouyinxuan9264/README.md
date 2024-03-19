@@ -11,10 +11,6 @@
 
 获取ipv4地址，返回List<String>
 
-### 逻辑三
-
-判断ip地址是否是有效的ipv4地址  入参 String  返回 boolean
-
 ## 使用步骤说明
 
 1.  应用引用依赖库
