@@ -2,7 +2,7 @@
   "name": "library_colorpicker",
   "title": "颜色选择器",
   "description": "",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "main": "./index.js",
   "author": "",
   "repository": "",

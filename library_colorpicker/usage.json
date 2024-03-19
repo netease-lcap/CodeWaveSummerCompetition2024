@@ -5,7 +5,7 @@
     "specVersion": "1.0.0",
     "type": "module",
     "subType": "extension",
-    "version": "0.1.5",
+    "version": "0.1.7",
     "frontends": [
         {
             "concept": "FrontendLibrary",
@@ -159,7 +159,7 @@
     "summary": {
         "name": "library_colorpicker",
         "title": "颜色选择器",
-        "version": "0.1.5",
+        "version": "0.1.7",
         "description": "",
         "frontends": [
             {

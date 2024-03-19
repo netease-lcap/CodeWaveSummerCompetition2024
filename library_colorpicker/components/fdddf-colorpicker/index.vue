@@ -23,7 +23,7 @@ export default {
     props:{
       value:{
         type:String,
-        default:"#000000" //默认颜色, {hex: '#000000',rgba: { r: 0, g: 0, b: 0, a: 1 },color: 'rgba(0,0,0,1)'}
+        default:"#000000"
       },
       isShowColorPicker: {//是否显示
         type:Boolean,
@@ -42,6 +42,7 @@ export default {
         default:true
       }
     },
+    emits: ['change', 'close'],
     data() {
       return {
         style: '',
@@ -52,15 +53,17 @@ export default {
       }
     },
     mounted() {
-      this.run()
+      console.log('mounted: ' + this.color)
+    },
+    created() {
+      console.log('mounted: ' + this.color)
     },
     methods: {
-      async run() {
-      },
       changeColor({ style, colors, deg, color }) {
-        this.value = color.hex
+        // this.value = color.hex
         this.$emit('change', { color })
-        this.$emit("update:value", color.hex)
+        // this.$emit("update:value", color.hex)
+
       },
       showPicker() {
         this.isShowColorPicker = true
