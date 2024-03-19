@@ -1,11 +1,3 @@
-<!--
- * @Author: xgj
- * @since: 2024-03-19 00:06:53
- * @lastTime: 2024-03-19 00:44:30
- * @LastAuthor: xgj
- * @FilePath: /CodeWaveAssetCompetition2024/lxy_swiper_library/README.md
- * @message: 
--->
 # lxy_swiper_library
 
 **依赖库设计**

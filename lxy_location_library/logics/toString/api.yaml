@@ -1,5 +1,0 @@
-- name: toString
-  description: 获取当前页面的完整URL
-  type: both
-  belong: logic
-  labels: [Runtime]

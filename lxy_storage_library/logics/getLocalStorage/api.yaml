@@ -1,5 +1,0 @@
-- name: getLocalStorage
-  description: 获取本地存储
-  type: both
-  belong: logic
-  labels: [Runtime]
