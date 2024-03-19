@@ -1,5 +1,0 @@
-- name: origin
-  description: 返回页面来源的域名
-  type: both
-  belong: logic
-  labels: [Runtime]

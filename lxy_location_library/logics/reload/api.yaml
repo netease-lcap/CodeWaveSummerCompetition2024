@@ -1,5 +1,0 @@
-- name: reload
-  description: 该方法用于重新加载当前页面
-  type: both
-  belong: logic
-  labels: [Runtime]

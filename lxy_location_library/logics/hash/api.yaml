@@ -1,5 +1,0 @@
-- name: hash
-  description: 返回url中代表页面某个区域的带有#的字符串
-  type: both
-  belong: logic
-  labels: [Runtime]
