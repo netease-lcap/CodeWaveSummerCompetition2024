@@ -2,7 +2,7 @@
   "name": "library_colorpicker",
   "title": "颜色选择器",
   "description": "",
-  "version": "0.1.7",
+  "version": "0.2.1",
   "main": "./index.js",
   "author": "",
   "repository": "",
@@ -49,6 +49,6 @@
     "inited": true
   },
   "dependencies": {
-    "vue2-color-picker-gradient": "^0.15.0"
+    "lightvue": "^0.5.1"
   }
 }

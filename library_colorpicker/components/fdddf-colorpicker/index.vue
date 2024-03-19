@@ -1,77 +1,65 @@
 <template>
-  <ColorPicker
-    v-model="isShowColorPicker"
-    type="linear"
-    @changeColor="changeColor"
-    @onClose="onClosePicker"
-    :pDeg="90"
-    :pColor="value"
-    :showClose="isShowClose"
-    :closeOnClickBody="false"
-    :titleConfig="{ show: this.isShowTitle, text: this.title }"
+  <LvColorpicker
+      v-model="color"
+      :label="label"
+      :withoutInput="withoutInput"
+      :hidePalette="hidePalette"
+      :colors="colors"
+      clearable
   />
 </template>
 
 <script>
-import ColorPicker from 'vue2-color-picker-gradient'
+import LvColorpicker from 'lightvue/color-picker';
 
 export default {
     name:"fdddf-colorpicker",
     components: {
-      ColorPicker
+      LvColorpicker
     },
     props:{
       value:{
         type:String,
         default:"#000000"
       },
-      isShowColorPicker: {//是否显示
-        type:Boolean,
-        default:true
+      colors: { // 默认的调色板
+        type: Array,
+        default: () => [
+            '#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5',
+            '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50',
+            '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107',
+            '#FF9800', '#795548'
+        ]
       },
-      title:{ //顶部文字
+      hidePalette: {//是否显示调色板
+        type:Boolean,
+        default:false
+      },
+      label:{ //顶部文字
         type:String,
-        default:"颜色选择器"
+        default:"ColorPicker"
       },
-      isShowClose:{ //是否显示
+      withoutInput:{ //没有输入框
         type:Boolean,
-        default:true
+        default:false
       },
-      isShowTitle:{ //是否显示标题
-        type:Boolean,
-        default:true
-      }
     },
-    emits: ['change', 'close'],
+    emits: ['change'],
     data() {
       return {
-        style: '',
-        titleConfig: {
-          show: this.isShowTitle,//控制顶部文字 关闭按钮 显隐
-          text: this.title//顶部文字
-        }
+        color: this.value
+      }
+    },
+    watch: {
+      value(val) {
+        this.color = val
+        this.$emit('change', { val })
       }
     },
     mounted() {
-      console.log('mounted: ' + this.color)
-    },
-    created() {
-      console.log('mounted: ' + this.color)
+      // console.log('mounted: ' + this.color)
     },
     methods: {
-      changeColor({ style, colors, deg, color }) {
-        // this.value = color.hex
-        this.$emit('change', { color })
-        // this.$emit("update:value", color.hex)
-
-      },
-      showPicker() {
-        this.isShowColorPicker = true
-      },
-      onClosePicker() {
-        this.isShowColorPicker = false
-        this.$emit('close', {})
-      },
     },
 }
 </script>
