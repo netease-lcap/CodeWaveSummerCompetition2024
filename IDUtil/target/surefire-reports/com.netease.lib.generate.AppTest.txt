@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.netease.lib.generate.AppTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.27 s - in com.netease.lib.generate.AppTest

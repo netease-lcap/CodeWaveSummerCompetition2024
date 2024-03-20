@@ -12,8 +12,7 @@
     <version>2.3.0.RELEASE</version>
   </parent>
 
-  <name>IDUtil</name>
-  <url>http://maven.apache.org</url>
+  <name>IDUtil依赖库</name>
 
   <properties>
     <maven.compiler.source>8</maven.compiler.source>
@@ -39,25 +38,6 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>5.2.8.RELEASE</version>
-    </dependency>
   </dependencies>
 
 <build>

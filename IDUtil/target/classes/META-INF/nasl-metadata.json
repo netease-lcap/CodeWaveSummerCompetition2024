@@ -1,7 +1,7 @@
 {
   "ideVersion": "3.3",
   "name": "IDUtil",
-  "title": "IDUtil",
+  "title": "IDUtil依赖库",
   "description": "",
   "specVersion": "1.0.0",
   "type": "module",
@@ -19,82 +19,82 @@
     ],
     "type": "logic",
     "className": "IDUtil",
-    "packageName": "com.netease.lowcode",
+    "packageName": "com.netease.lib.generate",
+    "naslName": "generateRandomString",
     "javaTypes": {
       "": "String",
       "stringLength": "Integer",
       "includeDigits": "Boolean",
       "includeLetters": "Boolean"
-    },
-    "naslName": "generateRandomString"
+    }
   }]},
   "logics": [{
     "name": "generateRandomString",
-    "description": "",
+    "description": "生成随机字符串",
     "params": [
       {
         "name": "stringLength",
-        "description": "",
+        "description": "生成随机字符串的长度",
         "required": false,
         "concept": "Param",
         "typeAnnotation": {
           "typeName": "Long",
-          "typeNamespace": "nasl.core",
+          "concept": "TypeAnnotation",
           "typeKind": "primitive",
-          "concept": "TypeAnnotation"
+          "typeNamespace": "nasl.core"
         }
       },
       {
         "name": "includeDigits",
-        "description": "",
+        "description": "是否包含数字",
         "required": false,
         "concept": "Param",
         "typeAnnotation": {
           "typeName": "Boolean",
-          "typeNamespace": "nasl.core",
+          "concept": "TypeAnnotation",
           "typeKind": "primitive",
-          "concept": "TypeAnnotation"
+          "typeNamespace": "nasl.core"
         }
       },
       {
         "name": "includeLetters",
-        "description": "",
+        "description": "是否包含字母",
         "required": false,
         "concept": "Param",
         "typeAnnotation": {
           "typeName": "Boolean",
-          "typeNamespace": "nasl.core",
+          "concept": "TypeAnnotation",
           "typeKind": "primitive",
-          "concept": "TypeAnnotation"
+          "typeNamespace": "nasl.core"
         }
       }
     ],
     "returns": [{
       "name": "result",
-      "description": "",
+      "description": "随机字符串",
       "concept": "Return",
       "typeAnnotation": {
         "typeName": "Union",
         "typeArguments": [
           {
             "typeName": "String",
-            "typeNamespace": "nasl.core",
+            "concept": "TypeAnnotation",
             "typeKind": "primitive",
-            "concept": "TypeAnnotation"
+            "typeNamespace": "nasl.core"
           },
           {
             "typeName": "Error",
-            "typeNamespace": "nasl.ui",
+            "concept": "TypeAnnotation",
             "typeKind": "reference",
-            "concept": "TypeAnnotation"
+            "typeNamespace": "nasl.ui"
           }
         ],
-        "typeNamespace": "nasl.core",
+        "concept": "TypeAnnotation",
         "typeKind": "union",
-        "concept": "TypeAnnotation"
+        "typeNamespace": "nasl.core"
       }
     }],
-    "concept": "Logic",
-    "overridable": false
+    "overridable": false,
+    "concept": "Logic"
   }]
 }
