@@ -1,8 +1,8 @@
 {
-  "name": "library_colorpicker",
+  "name": "library_fdddf_colorpicker",
   "title": "颜色选择器",
   "description": "",
-  "version": "0.2.1",
+  "version": "0.1.0",
   "main": "./index.js",
   "author": "",
   "repository": "",

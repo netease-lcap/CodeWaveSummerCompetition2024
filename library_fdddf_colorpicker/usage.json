@@ -1,11 +1,11 @@
 {
-    "name": "library_colorpicker",
+    "name": "library_fdddf_colorpicker",
     "title": "颜色选择器",
     "description": "",
     "specVersion": "1.0.0",
     "type": "module",
     "subType": "extension",
-    "version": "0.2.1",
+    "version": "0.1.0",
     "frontends": [
         {
             "concept": "FrontendLibrary",
@@ -16,7 +16,7 @@
                     "concept": "ViewComponent",
                     "name": "fdddf-colorpicker",
                     "title": "颜色选择器",
-                    "category": "library_colorpicker(颜色选择器)",
+                    "category": "library_fdddf_colorpicker(颜色选择器)",
                     "blocks": [
                         {
                             "title": "基本用法",
@@ -93,7 +93,7 @@
                     "concept": "ViewComponent",
                     "name": "fdddf-colorpicker",
                     "title": "颜色选择器",
-                    "category": "library_colorpicker(颜色选择器)",
+                    "category": "library_fdddf_colorpicker(颜色选择器)",
                     "blocks": [
                         {
                             "title": "基本用法",
@@ -163,9 +163,9 @@
         }
     ],
     "summary": {
-        "name": "library_colorpicker",
+        "name": "library_fdddf_colorpicker",
         "title": "颜色选择器",
-        "version": "0.2.1",
+        "version": "0.1.0",
         "description": "",
         "frontends": [
             {
