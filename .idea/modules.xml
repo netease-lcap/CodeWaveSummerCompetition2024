@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/CodeWaveAssetCompetition2024.iml" filepath="$PROJECT_DIR$/.idea/CodeWaveAssetCompetition2024.iml" />
-      <module fileurl="file://$PROJECT_DIR$/data-masking-util/data-masking-util.iml" filepath="$PROJECT_DIR$/data-masking-util/data-masking-util.iml" />
-      <module fileurl="file://$PROJECT_DIR$/regex-validator-util/regex-validator-util.iml" filepath="$PROJECT_DIR$/regex-validator-util/regex-validator-util.iml" />
     </modules>
   </component>
 </project>

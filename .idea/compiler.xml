@@ -6,8 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="data-masking-util" />
-        <module name="regex-validator-util" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
@@ -17,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="data-masking-util" options="-parameters" />
+      <module name="data-masking-util" options="" />
       <module name="regex-validator-util" options="-parameters" />
     </option>
   </component>
