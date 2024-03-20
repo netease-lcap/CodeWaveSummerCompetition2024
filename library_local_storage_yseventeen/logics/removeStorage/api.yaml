@@ -1,0 +1,5 @@
+- name: removeStorage
+  description: 删除 removeStorage
+  type: pc
+  belong: logic
+  labels: [Runtime]

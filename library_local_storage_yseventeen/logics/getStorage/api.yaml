@@ -1,0 +1,5 @@
+- name: getStorage
+  description: 获取 getStorage
+  type: pc
+  belong: logic
+  labels: [Runtime]

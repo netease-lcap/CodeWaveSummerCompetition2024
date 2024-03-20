@@ -1,0 +1,157 @@
+{
+    "name": "library_local_storage_yseventeen",
+    "title": "客户端存储逻辑依赖库",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.8",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "clearStorage",
+                    "description": "清空 clearStorage",
+                    "category": "library_local_storage_yseventeen"
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getStorage",
+                    "description": "获取 getStorage",
+                    "category": "library_local_storage_yseventeen",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "存储的 key",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "removeStorage",
+                    "description": "删除 removeStorage",
+                    "category": "library_local_storage_yseventeen",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "存储的 key",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "setStorage",
+                    "description": "设置 setStorage",
+                    "category": "library_local_storage_yseventeen",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "存储的 key",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "value",
+                            "concept": "Param",
+                            "description": "存储的值",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "expire",
+                            "concept": "Param",
+                            "description": "过期时间，单位：秒，默认 60*60",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_local_storage_yseventeen.structures"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "name": "library_local_storage_yseventeen",
+        "title": "客户端存储逻辑依赖库",
+        "version": "0.1.8",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "clearStorage",
+                        "description": "清空 clearStorage"
+                    },
+                    {
+                        "name": "getStorage",
+                        "description": "获取 getStorage"
+                    },
+                    {
+                        "name": "removeStorage",
+                        "description": "删除 removeStorage"
+                    },
+                    {
+                        "name": "setStorage",
+                        "description": "设置 setStorage"
+                    }
+                ]
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

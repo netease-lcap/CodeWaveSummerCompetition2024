@@ -1,0 +1,5 @@
+- name: clearStorage
+  description: 清空 clearStorage
+  type: pc
+  belong: logic
+  labels: [Runtime]
