@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/../../Envirconment/apache-maven-3.8.8/maven-repo/org/springframework/boot/spring-boot-starter-parent/2.3.0.RELEASE/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/data-masking-util/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/regex-validator-util/src/main/java" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

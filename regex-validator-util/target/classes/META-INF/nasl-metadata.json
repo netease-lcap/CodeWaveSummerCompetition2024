@@ -1,0 +1,1268 @@
+{
+  "ideVersion": "3.3",
+  "name": "regex_validator_util",
+  "title": "正则校验依赖库",
+  "description": "",
+  "specVersion": "1.0.0",
+  "type": "module",
+  "subType": "extension",
+  "version": "1.0.1",
+  "externalDependencyMap": {"maven": [{
+    "groupId": "com.wgx",
+    "artifactId": "regex-validator-util",
+    "version": "1.0.1"
+  }]},
+  "compilerInfoMap": {"java": [
+    {
+      "type": "structure",
+      "className": "RegexValidatorResult",
+      "packageName": "com.wgx.lowcode.validation",
+      "naslName": "RegexValidatorResult",
+      "javaTypes": {
+        "isValid": "Boolean",
+        "errorMessage": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "customValidate",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "value": "String",
+        "regex": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkMobile",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "mobile": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkIdCard",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "idCard": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkEmail",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "email": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkPostcode",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "postcode": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkDate",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "birthday": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkDateTime",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "dateTime": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkInterAndZero",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "digit": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkIntegerNotZero",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "digit": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkDigit",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "digit": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkDecimal",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "decimal": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkNegativeDecimal",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "decimal": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkChinese",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "chinese": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkLetter",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "letter": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkMacAddress",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "macAddress": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkIPv4Address",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "ipAddress": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkIPv6Address",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "ipv6Address": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkPasswordLength8Easy",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "password": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkPasswordLength6Easy",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "password": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkPasswordLength8Difficult",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "password": "String"
+      }
+    },
+    {
+      "modifiers": [
+        "public",
+        "static"
+      ],
+      "type": "logic",
+      "className": "RegexUtils",
+      "packageName": "com.wgx.lowcode.util",
+      "naslName": "checkPasswordLength6Difficult",
+      "javaTypes": {
+        "": "com.wgx.lowcode.validation.RegexValidatorResult",
+        "password": "String"
+      }
+    }
+  ]},
+  "structures": [{
+    "name": "RegexValidatorResult",
+    "properties": [
+      {
+        "name": "isValid",
+        "required": false,
+        "concept": "StructureProperty",
+        "typeAnnotation": {
+          "typeName": "Boolean",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      },
+      {
+        "name": "errorMessage",
+        "required": false,
+        "concept": "StructureProperty",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }
+    ],
+    "description": "",
+    "concept": "Structure"
+  }],
+  "logics": [
+    {
+      "name": "customValidate",
+      "description": "自定义校验规则 验证输入的值是否符合给定的正则表达式",
+      "params": [
+        {
+          "name": "value",
+          "description": "待验证的输入字符串",
+          "required": false,
+          "concept": "Param",
+          "typeAnnotation": {
+            "typeName": "String",
+            "concept": "TypeAnnotation",
+            "typeNamespace": "nasl.core",
+            "typeKind": "primitive"
+          }
+        },
+        {
+          "name": "regex",
+          "description": "用于验证的正则表达式",
+          "required": false,
+          "concept": "Param",
+          "typeAnnotation": {
+            "typeName": "String",
+            "concept": "TypeAnnotation",
+            "typeNamespace": "nasl.core",
+            "typeKind": "primitive"
+          }
+        }
+      ],
+      "returns": [{
+        "name": "result",
+        "description": "如果输入符合正则表达式，则返回 true；否则返回 false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkMobile",
+      "description": "验证手机号码（支持国际格式，+86135xxxx...",
+      "params": [{
+        "name": "mobile",
+        "description": "移动、联通、电信运营商的号码段               <p>移动的号段：134(0-8)、135、136、137、138、139、147（预计用于TD上网卡）               、150、151、152、157（TD专用）、158、159、187（未启用）、188（TD专用）<\/p>               <p>联通的号段：130、131、132、155、156（世界风专用）、185（未启用）、186（3g）<\/p>               <p>电信的号段：133、153、180（未启用）、189<\/p>",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "如果手机号码符合正则表达式，则返回 RegexValidatorResult.TRUE 和相应的消息；否则返回 RegexValidatorResult.FALSE 和相应的消息",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkIdCard",
+      "description": "验证身份证号码 居民身份证号码18位，第一位不能为0，最后一位可能是数字或字母，中间16位为数字 d同[0-9]",
+      "params": [{
+        "name": "idCard",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "验证成功返回true，验证失败返回false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkEmail",
+      "description": "验证Email格式.",
+      "params": [{
+        "name": "email",
+        "description": "传入的字符串",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "符合Email格式返回true，否则返回false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkPostcode",
+      "description": "匹配中国邮政编码",
+      "params": [{
+        "name": "postcode",
+        "description": "邮政编码",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "验证成功返回true，验证失败返回false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkDate",
+      "description": "验证日期（年月日） 格式：1992-09-03，或1992.09.03",
+      "params": [{
+        "name": "birthday",
+        "description": "日期，",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "验证成功返回true，验证失败返回false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkDateTime",
+      "description": "验证日期（年月日时分秒） 格式：1992-09-03 12:22:21",
+      "params": [{
+        "name": "dateTime",
+        "description": "日期，",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "验证成功返回true，验证失败返回false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkInterAndZero",
+      "description": "验证整数 格式：正整数和负整包括0",
+      "params": [{
+        "name": "digit",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkIntegerNotZero",
+      "description": "验证整数 格式：正整数和负整不包括0",
+      "params": [{
+        "name": "digit",
+        "description": "一位或多位0-9之间的整数",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "验证成功返回true，验证失败返回false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkDigit",
+      "description": "验证整数和小数（正负整数和正负小数以及0） 格式：一位或多位0-9之间的浮点数，如：1.23，233.30",
+      "params": [{
+        "name": "digit",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "验证成功返回true，验证失败返回false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkDecimal",
+      "description": "验证是否为小数 格式：-1.1，1.1",
+      "params": [{
+        "name": "decimal",
+        "description": "传入的字符串",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "如果是小数，则返回 true；否则返回 false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkNegativeDecimal",
+      "description": "验证是否为负的小数 格式：-1.22、-2.3",
+      "params": [{
+        "name": "decimal",
+        "description": "传入的字符串",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "如果是负的小数，则返回 true；否则返回 false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkChinese",
+      "description": "验证中文 格式：中文字符 例如：王、李",
+      "params": [{
+        "name": "chinese",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "验证成功返回true，验证失败返回false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkLetter",
+      "description": "判断是否是字母 格式：包括大写及小写字母  例如：A、b、C",
+      "params": [{
+        "name": "letter",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkMacAddress",
+      "description": "验证MAC地址 格式：01:23:45:67:89:ab或01-23-45-67-89-ab",
+      "params": [{
+        "name": "macAddress",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkIPv4Address",
+      "description": "验证IPv4地址 格式：192.168.0.1 每个部分由 0 到 255 之间的数字组成用点隔开。",
+      "params": [{
+        "name": "ipAddress",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkIPv6Address",
+      "description": "验证IPv6地址 格式：2001:0db8:85a3:0000:0000:8a2e:0370:7334 每个部分由 1 到 4 个十六进制数字组成，以冒号分隔，且总共有 8 个部分",
+      "params": [{
+        "name": "ipv6Address",
+        "description": "",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkPasswordLength8Easy",
+      "description": "验证密码 格式：长度至少为8位，必须包含字母和数字。",
+      "params": [{
+        "name": "password",
+        "description": "要验证的密码",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "如果密码有效，则返回 true；否则返回 false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkPasswordLength6Easy",
+      "description": "验证密码 格式：长度至少为6位，必须包含字母和数字。",
+      "params": [{
+        "name": "password",
+        "description": "要验证的密码                 * @return 如果密码有效，则返回 true；否则返回 false",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkPasswordLength8Difficult",
+      "description": "验证密码 格式：长度至少为8位，必须包含特殊字符、字母和数字。",
+      "params": [{
+        "name": "password",
+        "description": "要验证的密码",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "description": "如果密码有效，则返回 true；否则返回 false",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    },
+    {
+      "name": "checkPasswordLength6Difficult",
+      "description": "验证密码 格式：长度至少为6位，必须包含特殊字符、字母和数字。",
+      "params": [{
+        "name": "password",
+        "description": "要验证的密码                 * @return 如果密码有效，则返回 true；否则返回 false",
+        "required": false,
+        "concept": "Param",
+        "typeAnnotation": {
+          "typeName": "String",
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "primitive"
+        }
+      }],
+      "returns": [{
+        "name": "result",
+        "concept": "Return",
+        "typeAnnotation": {
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "typeName": "RegexValidatorResult",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "extensions.regex_validator_util.structures",
+              "typeKind": "reference"
+            },
+            {
+              "typeName": "Error",
+              "concept": "TypeAnnotation",
+              "typeNamespace": "nasl.ui",
+              "typeKind": "reference"
+            }
+          ],
+          "concept": "TypeAnnotation",
+          "typeNamespace": "nasl.core",
+          "typeKind": "union"
+        }
+      }],
+      "concept": "Logic",
+      "overridable": false
+    }
+  ]
+}
