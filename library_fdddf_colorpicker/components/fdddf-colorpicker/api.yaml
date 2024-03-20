@@ -14,26 +14,18 @@
       type: array
       default: "['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#795548']"
       description: 调色板颜色列表
-      sync: true
-      model: true
     - name: label
       type: string
       default: "ColorPicker"
       description: 标题
-      sync: true
-      model: true
     - name: hidePalette
       type: boolean
       default: false
-      sync: true
-      model: true
       description: 是否显示调色板
     - name: withoutInput
       type: boolean
       default: false
       description: 没有输入框
-      sync: true
-      model: true
   events:
     - name: change
       title: change

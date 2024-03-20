@@ -5,7 +5,7 @@
     "specVersion": "1.0.0",
     "type": "module",
     "subType": "extension",
-    "version": "0.1.0",
+    "version": "0.1.7",
     "frontends": [
         {
             "concept": "FrontendLibrary",
@@ -37,33 +37,25 @@
                             "name": "colors",
                             "type": "array",
                             "default": "['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#795548']",
-                            "description": "调色板颜色列表",
-                            "sync": true,
-                            "model": true
+                            "description": "调色板颜色列表"
                         },
                         {
                             "name": "label",
                             "type": "string",
                             "default": "ColorPicker",
-                            "description": "标题",
-                            "sync": true,
-                            "model": true
+                            "description": "标题"
                         },
                         {
                             "name": "hidePalette",
                             "type": "boolean",
                             "default": false,
-                            "sync": true,
-                            "model": true,
                             "description": "是否显示调色板"
                         },
                         {
                             "name": "withoutInput",
                             "type": "boolean",
                             "default": false,
-                            "description": "没有输入框",
-                            "sync": true,
-                            "model": true
+                            "description": "没有输入框"
                         }
                     ],
                     "events": [
@@ -114,33 +106,25 @@
                             "name": "colors",
                             "type": "array",
                             "default": "['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#795548']",
-                            "description": "调色板颜色列表",
-                            "sync": true,
-                            "model": true
+                            "description": "调色板颜色列表"
                         },
                         {
                             "name": "label",
                             "type": "string",
                             "default": "ColorPicker",
-                            "description": "标题",
-                            "sync": true,
-                            "model": true
+                            "description": "标题"
                         },
                         {
                             "name": "hidePalette",
                             "type": "boolean",
                             "default": false,
-                            "sync": true,
-                            "model": true,
                             "description": "是否显示调色板"
                         },
                         {
                             "name": "withoutInput",
                             "type": "boolean",
                             "default": false,
-                            "description": "没有输入框",
-                            "sync": true,
-                            "model": true
+                            "description": "没有输入框"
                         }
                     ],
                     "events": [
@@ -165,7 +149,7 @@
     "summary": {
         "name": "library_fdddf_colorpicker",
         "title": "颜色选择器",
-        "version": "0.1.0",
+        "version": "0.1.7",
         "description": "",
         "frontends": [
             {

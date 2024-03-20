@@ -52,15 +52,16 @@ export default {
     },
     watch: {
       value(val) {
+        // console.log("watch value" + this.value)
         this.color = val
-        this.$emit('change', { val })
+      },
+      color(val) {
+        // console.log("watch color" + this.color)
+        const color = this.color
+        this.$emit('change', { color })
+        this.$emit("update:value", color);
       }
-    },
-    mounted() {
-      // console.log('mounted: ' + this.color)
-    },
-    methods: {
-    },
+    }
 }
 </script>
 
