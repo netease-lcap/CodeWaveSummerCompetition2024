@@ -40,7 +40,8 @@ Cookie操作依赖库，可实现对Cookie的读写清除等操作。
 ## 使用步骤说明
 
 1. 应用引用依赖库
-3. 逻辑调用示例截图
+2. 逻辑调用示例截图
+![图片1](https://github.com/superName-w/CodeWaveAssetCompetition2024/blob/23d412f581d5936a53f8c8e96c7df5e843d26808/cookie-util/assets/1710948659782.png)
 
 ## 应用演示链接
 
