@@ -1,0 +1,64 @@
+# library_banner_yseventeen
+
+**依赖库设计**
+
+轮播图组件，能够支持同时展示多个内容页面，并支持手动切换和自动轮播功能。兼容pc或h5页面。
+
+**主要特性**
+
+- **banner：** 能够支持同时展示多个内容页面，并支持手动切换和自动轮播功能。兼容pc或h5页面。
+
+  
+
+## 使用说明
+
+### banner
+
+- **attrs**
+  
+  - bannerlist: 轮播图数据源；
+  
+    ```json
+    // bannerlist 数据结构说明如下:
+    {
+        imgUrl: "轮播图片的访问地址",
+        linkUrl:"点击轮播图片后的页面跳转地址，没有可以填空",
+        imgCss: {}, // 自定义轮播图片的样式
+    },
+    {
+        imgUrl: "https://community.codewave.163.com/upload/app/image_cb6c29124b9f47c5be3f9bf1e64a2570_afaec238-82f5-4996-8fdd-0aae42f393de_efp3MHZ9_20240227123642225_ori.png",
+        linkUrl:         "https://community.codewave.163.com/CommunityParent/CommunityDetail?productId=lcap&postsId=2817250106217728&opener=https%3A%2F%2Fsf.163.com%2F2024lcapassetcompetition&clue_button_position=2022-%E5%9B%BE%E7%89%87%E6%8B%BC%E6%8E%A5%E5%B1%95%E7%A4%BA&clue_button_content=",
+        imgCss: { width: "640px", height: "400px" },
+    },
+    ```
+  
+    
+  
+  - customClickLink: 是否使用自定义的点击事件，默认false；
+  
+- **methods**
+  -  无
+
+- **events**
+  - click: 点击轮播图事件，轮播图组件本身能够支持配置图片点击跳转的链接，若是有更自定义化的需求支持通过事件更改。
+
+
+
+## 使用步骤说明
+
+1. 应用引用依赖库
+
+2. 无需配置
+
+3. 逻辑调用示例截图
+   ![image info](./Screenshot/WX20240321-192430@2x.png)
+
+​	![image info](./Screenshot/WX20240321-192614@2x.png)
+
+
+
+## 应用演示链接
+
+[查看示例演示](示例演示链接)
+
+https://dev-yseventeenlcap-yseventeen.app.codewave.163.com/dashboard/testBanner
