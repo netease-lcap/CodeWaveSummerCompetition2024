@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class IDUtil {
-//    @NaslConfiguration
+    @NaslConfiguration
     static
     String randomString = "";
-//    @NaslConfiguration
+    @NaslConfiguration
     static
     String isDigits = "0123456789";
-//    @NaslConfiguration
+    @NaslConfiguration
     static
     String isLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     /**
