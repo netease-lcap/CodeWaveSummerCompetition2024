@@ -1,0 +1,5 @@
+- name: getUserAgent
+  description: 获取浏览器用户代理（UserAgent）字符串
+  type: both
+  belong: logic
+  labels: [Runtime]
