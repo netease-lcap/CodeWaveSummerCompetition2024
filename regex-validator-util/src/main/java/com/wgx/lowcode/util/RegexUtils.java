@@ -50,15 +50,15 @@ public class RegexUtils {
         // 进行匹配
         if (matcher.matches()) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则");
         }
     }
 
     /**
-     * 验证手机号码（支持国际格式，+86135xxxx...（中国内地），+00852137xxxx...（中国香港））
+     * 验证手机号码 支持国际和内地格式，+86135xxxx...（中国内地）、13503906547）
      *
      * @param mobile 移动、联通、电信运营商的号码段
      *               <p>移动的号段：134(0-8)、135、136、137、138、139、147（预计用于TD上网卡）
@@ -67,7 +67,6 @@ public class RegexUtils {
      *               <p>电信的号段：133、153、180（未启用）、189</p>
      * @return 如果手机号码符合正则表达式，则返回 RegexValidatorResult.TRUE 和相应的消息；否则返回 RegexValidatorResult.FALSE 和相应的消息
      */
-
     @NaslLogic
     public static RegexValidatorResult checkMobile(String mobile) {
         if (mobile == null || mobile.isEmpty()) {
@@ -79,10 +78,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, mobile)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则,应输入手机号（包含国内、国外手机号）例如：18303968745、+8618303968745");
         }
     }
 
@@ -103,10 +102,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, idCard)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则,应输入18位居民身份证号码 例如：410802199608130069");
         }
     }
 
@@ -131,10 +130,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, email)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入邮箱 例如：17303945758@163.com");
         }
     }
 
@@ -155,10 +154,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, postcode)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入邮政编码 例如：454000");
         }
     }
 
@@ -179,10 +178,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, birthday)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入日期（年月日） 例如：1992-09-03，或1992.09.03");
         }
     }
 
@@ -203,10 +202,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, dateTime)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入日期时间（年月日时分秒） 例如：1992-09-03 12:22:21");
         }
     }
 
@@ -227,10 +226,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, digit)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则,应输入整数（正整数和负整包括0） 例如：-11、18、0");
         }
     }
 
@@ -251,10 +250,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, digit)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入整数（正整数和负整不包括0） 例如：11、-17");
         }
     }
 
@@ -275,10 +274,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, digit)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入整数和小数（正负整数和正负小数以及0） 例如：89、1.23、233.30");
         }
     }
 
@@ -299,10 +298,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, decimal)) {
             // 匹配成功
-            return new RegexValidatorResult(Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(Boolean.FALSE, "输入值不符合校验规则");
         }
     }
 
@@ -323,10 +322,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, decimal)) {
             // 匹配成功
-            return new RegexValidatorResult(Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(Boolean.FALSE, "输入值不符合校验规则。应输入为负的小数 例如：-1.22、-2.3");
         }
     }
 
@@ -340,17 +339,17 @@ public class RegexUtils {
     public static RegexValidatorResult checkChinese(String chinese) {
         if (chinese == null || chinese.isEmpty()) {
             // 处理空值或空字符串的情况
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不能为空");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值符合校验规则");
         }
         //正则表达式
         String regex = "^[\u4E00-\u9FA5]+$";
         // 进行匹配
         if (Pattern.matches(regex, chinese)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入中文 例如：王、李");
         }
     }
 
@@ -371,10 +370,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, letter)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入字母（包括大小写字母） 例如：A、b、C");
         }
     }
 
@@ -395,10 +394,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, macAddress)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入MAC地址 例如：01:23:45:67:89:ab或01-23-45-67-89-ab");
         }
     }
 
@@ -419,10 +418,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, ipAddress)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入IPv4地址 例如：192.168.0.1");
         }
     }
 
@@ -443,10 +442,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, ipv6Address)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入IPv6地址 例如：2001:0db8:85a3:0000:0000:8a2e:0370:7334");
         }
     }
 
@@ -467,10 +466,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, password)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入长度至少为8位，必须包含字母和数字的密码 例如：password123");
         }
     }
 
@@ -491,10 +490,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, password)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入长度至少为6位，必须包含字母和数字的密码 例如：passwor");
         }
     }
 
@@ -515,10 +514,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, password)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入长度至少为8位，必须包含特殊字符、字母和数字。 例如：password123!#");
         }
     }
 
@@ -540,10 +539,10 @@ public class RegexUtils {
         // 进行匹配
         if (Pattern.matches(regex, password)) {
             // 匹配成功
-            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.TRUE, "输入值符合校验规则");
         } else {
             // 匹配失败
-            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合正则表达式");
+            return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不符合校验规则，应输入长度至少为6位，必须包含特殊字符、字母和数字。 例如：pa123!#");
         }
     }
 }
