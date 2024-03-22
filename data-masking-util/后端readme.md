@@ -48,9 +48,9 @@
    
    多条数据脱敏
    
-   ![1711125211861](D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util\assets\1711125211861.png)
+   ![1711125211861](https://github.com/superName-w/CodeWaveAssetCompetition2024/blob/af76de893c1bc22577609df91af8f2db5429b04d/data-masking-util/assets/1711125211861.png)
 
-![1711127016564](D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util\assets\1711127016564.png)
+![1711127016564](https://github.com/superName-w/CodeWaveAssetCompetition2024/blob/af76de893c1bc22577609df91af8f2db5429b04d/data-masking-util/assets/1711127016564.png)
 
 ## 应用演示链接
 
