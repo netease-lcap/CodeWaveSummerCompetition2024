@@ -8,13 +8,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class IDUtil {
-    @NaslConfiguration
+
     static
     String randomString = "";
-    @NaslConfiguration
     static
     String isDigits = "0123456789";
-    @NaslConfiguration
     static
     String isLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     /**
@@ -26,6 +24,7 @@ public class IDUtil {
      */
     @NaslLogic
     public static String generateRandomString(Integer stringLength, Boolean includeDigits, Boolean includeLetters) {
+
         if (includeDigits == null) {
             includeDigits = false;
         }
@@ -33,7 +32,7 @@ public class IDUtil {
             includeLetters = false;
         }
         if (stringLength == null) {
-            return "";
+            return "长度不能为null";
         }
         if (includeDigits) {
             randomString += isDigits;
