@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class BulkDataMasking {
 
     /**
-     * 手机号批量脱敏 例:183****5376
+     * 手机号批量脱敏 支持国内、国际、座机号码 例:183****5376、(+86)136****8906、+86136****8906、0755-****567、010-****567
      * @param phoneList 手机号列表
      * @return
      */
@@ -28,7 +28,7 @@ public class BulkDataMasking {
         }
         return phoneList.stream()
                 // 使用 map 操作将每个手机号进行脱敏
-                .map(CustomDataMasking::mobilePhone)
+                .map(CustomDataMasking::phoneDesensitization)
                 // 将脱敏后的手机号收集到新的列表中
                 .collect(Collectors.toList());
     }
@@ -109,18 +109,17 @@ public class BulkDataMasking {
     /**
      * 地址批量脱敏 例:山东省泰安市************
      * @param addressList 地址
-     * @param sensitiveSize 需要格式化为*的长度，从后往前
      * @return
      */
     @NaslLogic
-    public static List<String> addressBulkDataMasking(List<String> addressList, Integer sensitiveSize) {
+    public static List<String> addressBulkDataMasking(List<String> addressList) {
         if (addressList == null || addressList.isEmpty()) {
             // 参数异常，返回空字符串列表
             return new ArrayList<String>();
         }
         return addressList.stream()
                 // 使用 map 操作将每个地址进行脱敏
-                .map(address -> CustomDataMasking.address(address, sensitiveSize))
+                .map(address -> CustomDataMasking.addressDesensitization(address))
                 // 将脱敏后的地址收集到新的列表中
                 .collect(Collectors.toList());
     }

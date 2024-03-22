@@ -10,7 +10,7 @@
 
 所有数据脱敏逻辑如果入参为非法参数或者为空都会返回空白字符串不会返回原字符主要考虑数据安全问题避免泄露
 
-1. `mobilePhoneSingleDataMasking(String phone)`: 这个方法用于对手机号进行脱敏。它接受一个手机号作为参数，参数类型为`String`，并返回脱敏后的手机号，返回值类型为`String`。例如，输入`18312345678`可能会返回`183****5678`。
+1. `mobilePhoneSingleDataMasking(String phone)`: 这个方法用于对手机号进行脱敏。它接受一个手机号、座机号、国际号码作为参数，参数类型为`String`，并返回脱敏后的手机号，返回值类型为`String`。例如，输入`18312345678`可能会返回`183****5678`。
 2. `chineseNameSingleDataMasking(String chineseName)`: 这个方法用于对中国姓名进行脱敏。它接受一个中国姓名作为参数，参数类型为`String`，并返回脱敏后的中国姓名，返回值类型为`String`。例如，输入`张三丰`可能会返回`张**`。
 3. `idCardNumSingleDataMasking(String idCardNum, Integer startSaveLength, Integer endSaveLength)`: 这个方法用于对身份证号码进行脱敏。它接受一个身份证号码和保留身份证前面的长度作及保留身份证后面的长度为参数，参数类型分别为`String`、`Integer`和`Integer`，并返回脱敏后的身份证号码，返回值类型为`String`。例如，输入`410101199001011234`和`6`、`4`可能会返回`410123********1234`。
 4. `emailSingleDataMasking(String email)`: 这个方法用于对邮箱进行脱敏。它接受一个邮箱作为参数，参数类型为`String`，并返回脱敏后的邮箱，返回值类型为`String`。例如，输入`walter@163.com`可能会返回`w***********@163.com`。
@@ -42,7 +42,15 @@
 
 3. 逻辑调用示例截图
 
+   单条数据脱敏
+   
    ![1709736256327](https://github.com/superName-w/CodeWaveAssetCompetition2024/blob/b7d4bba501d0cc82cc7e7c36f78d3def72383b52/data-masking-util/assets/1710604099941.jpg)
+   
+   多条数据脱敏
+   
+   ![1711125211861](D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util\assets\1711125211861.png)
+
+![1711127016564](D:\idea_code\CodeWaveAssetCompetition2024\data-masking-util\assets\1711127016564.png)
 
 ## 应用演示链接
 

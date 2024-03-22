@@ -13,13 +13,13 @@ import com.wgx.lowcode.utils.CustomDataMasking;
 public class SingleDataMasking {
 
     /**
-     * 手机号脱敏 例:183****5376
+     * 手机号脱敏 支持国内、国际、座机号码 例:183****5376、(+86)13645678906、+8613645678906、0755-1234567、010-1234567
      * @param phone 手机号
      * @return
      */
     @NaslLogic
     public static String mobilePhoneSingleDataMasking(String phone){
-        return CustomDataMasking.mobilePhone(phone);
+        return CustomDataMasking.phoneDesensitization(phone);
     }
 
     /**
@@ -51,7 +51,6 @@ public class SingleDataMasking {
      */
     @NaslLogic
     public static String emailSingleDataMasking(String email){
-
         return CustomDataMasking.email(email);
     }
 
@@ -68,12 +67,11 @@ public class SingleDataMasking {
     /**
      * 地址脱敏 例:山东省泰安市************
      * @param address 地址
-     * @param sensitiveSize 需要格式化为*的长度，从后往前
      * @return
      */
     @NaslLogic
-    public static String addressSingleDataMasking(String address,Integer sensitiveSize){
-        return CustomDataMasking.address(address,sensitiveSize);
+    public static String addressSingleDataMasking(String address){
+        return CustomDataMasking.addressDesensitization(address);
     }
 
     /**
