@@ -1,0 +1,5 @@
+- name: getWindowInnerHeight
+  description: 获取浏览器窗口内高度
+  type: both
+  belong: logic
+  labels: [Runtime]

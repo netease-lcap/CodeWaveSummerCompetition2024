@@ -1,0 +1,5 @@
+- name: getAllStorage
+  description: 获取全部本地存储
+  type: pc
+  belong: logic
+  labels: [Runtime]
