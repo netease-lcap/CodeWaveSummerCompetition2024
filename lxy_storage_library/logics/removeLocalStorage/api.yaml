@@ -1,5 +1,0 @@
-- name: removeLocalStorage
-  description: 删除本地存储
-  type: both
-  belong: logic
-  labels: [Runtime]
