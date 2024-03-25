@@ -1,0 +1,5 @@
+- name: hasStorage
+  description: 传入Key判断本地存储中是否存在
+  type: pc
+  belong: logic
+  labels: [Runtime]
