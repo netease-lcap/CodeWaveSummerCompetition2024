@@ -1,0 +1,5 @@
+- name: getStorage
+  description: 根据Key获取指定的本地存储，支持过期删除，未过期期间被调用自动续期进行保活
+  type: pc
+  belong: logic
+  labels: [Runtime]

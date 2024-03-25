@@ -1,0 +1,5 @@
+- name: setStorage
+  description: 设置本地存储
+  type: pc
+  belong: logic
+  labels: [Runtime]

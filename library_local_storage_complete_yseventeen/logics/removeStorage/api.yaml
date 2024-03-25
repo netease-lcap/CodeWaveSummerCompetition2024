@@ -1,0 +1,5 @@
+- name: removeStorage
+  description: 根据 Key 删除指定的本地存储
+  type: pc
+  belong: logic
+  labels: [Runtime]
