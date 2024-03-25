@@ -1,0 +1,103 @@
+{
+    "name": "lxy_swiper_library",
+    "title": "轮播图",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "lxy-swiper-view",
+                    "title": "轮播图组件",
+                    "category": "lxy_swiper_library(轮播图)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<lxy-swiper-view></lxy-swiper-view>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "图片地址数组",
+                            "type": "array",
+                            "description": "需要传入的值"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "lxy-swiper-view",
+                    "title": "轮播图组件",
+                    "category": "lxy_swiper_library(轮播图)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<lxy-swiper-view></lxy-swiper-view>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "图片地址数组",
+                            "type": "array",
+                            "description": "需要传入的值"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "lxy_swiper_library",
+        "title": "轮播图",
+        "version": "0.1.0",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "lxy-swiper-view",
+                        "title": "轮播图组件"
+                    }
+                ],
+                "logics": []
+            },
+            {
+                "type": "h5",
+                "viewComponents": [
+                    {
+                        "name": "lxy-swiper-view",
+                        "title": "轮播图组件"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}
