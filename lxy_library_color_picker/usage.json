@@ -1,0 +1,119 @@
+{
+    "name": "lxy_library_color_picker",
+    "title": "颜色选择器",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.6",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "lxy-color-picker",
+                    "title": "颜色选择器",
+                    "category": "lxy_library_color_picker(颜色选择器)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<lxy-color-picker></lxy-color-picker>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "值",
+                            "type": "string",
+                            "description": "需要传入的值",
+                            "sync": true,
+                            "model": true
+                        }
+                    ],
+                    "events": [
+                        {
+                            "name": "onChange",
+                            "title": "改变后"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "lxy-color-picker",
+                    "title": "颜色选择器",
+                    "category": "lxy_library_color_picker(颜色选择器)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<lxy-color-picker></lxy-color-picker>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "值",
+                            "type": "string",
+                            "description": "需要传入的值",
+                            "sync": true,
+                            "model": true
+                        }
+                    ],
+                    "events": [
+                        {
+                            "name": "onChange",
+                            "title": "改变后"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "lxy_library_color_picker",
+        "title": "颜色选择器",
+        "version": "0.1.6",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "lxy-color-picker",
+                        "title": "颜色选择器"
+                    }
+                ],
+                "logics": []
+            },
+            {
+                "type": "h5",
+                "viewComponents": [
+                    {
+                        "name": "lxy-color-picker",
+                        "title": "颜色选择器"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

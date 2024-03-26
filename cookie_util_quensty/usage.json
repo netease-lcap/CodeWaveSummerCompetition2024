@@ -1,0 +1,317 @@
+{
+    "name": "cookie_util",
+    "title": "cookie工具",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "getCookie",
+                    "description": "获取cookie",
+                    "category": "cookie_util",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "cookie名称",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "removeCookie",
+                    "description": "移除cookie",
+                    "category": "cookie_util",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "要删除的cookie名称",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "setCookie",
+                    "description": "设置cookie",
+                    "category": "cookie_util",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "cookie名称",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "value",
+                            "concept": "Param",
+                            "description": "cookie值",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "expire",
+                            "concept": "Param",
+                            "description": "`<false>` 过期时间,单位秒",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Long",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "path",
+                            "concept": "Param",
+                            "description": "`<false>` cookie作用域,默认为‘/’",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "getCookie",
+                    "description": "获取cookie",
+                    "category": "cookie_util",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "cookie名称",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "removeCookie",
+                    "description": "移除cookie",
+                    "category": "cookie_util",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "要删除的cookie名称",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "setCookie",
+                    "description": "设置cookie",
+                    "category": "cookie_util",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "cookie名称",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "value",
+                            "concept": "Param",
+                            "description": "cookie值",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "expire",
+                            "concept": "Param",
+                            "description": "`<false>` 过期时间,单位秒",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Long",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "path",
+                            "concept": "Param",
+                            "description": "`<false>` cookie作用域,默认为‘/’",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "name": "cookie_util",
+        "title": "cookie工具",
+        "version": "0.1.0",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "getCookie",
+                        "description": "获取cookie"
+                    },
+                    {
+                        "name": "removeCookie",
+                        "description": "移除cookie"
+                    },
+                    {
+                        "name": "setCookie",
+                        "description": "设置cookie"
+                    }
+                ]
+            },
+            {
+                "type": "h5",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "getCookie",
+                        "description": "获取cookie"
+                    },
+                    {
+                        "name": "removeCookie",
+                        "description": "移除cookie"
+                    },
+                    {
+                        "name": "setCookie",
+                        "description": "设置cookie"
+                    }
+                ]
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

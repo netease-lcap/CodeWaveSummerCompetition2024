@@ -1,0 +1,311 @@
+{
+    "name": "library_local_storage_complete_yseventeen",
+    "title": "客户端存储逻辑依赖库-完整版",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.12",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "clearStorage",
+                    "description": "清空本地存储",
+                    "category": "library_local_storage_complete_yseventeen"
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getAllStorage",
+                    "description": "获取全部本地存储",
+                    "category": "library_local_storage_complete_yseventeen",
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeName": "List",
+                                "typeKind": "generic",
+                                "typeNamespace": "nasl.collection",
+                                "typeArguments": [
+                                    {
+                                        "concept": "TypeAnnotation",
+                                        "typeKind": "reference",
+                                        "typeName": "",
+                                        "typeNamespace": "extensions.library_local_storage_complete_yseventeen.structures"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getStorage",
+                    "description": "根据Key获取指定的本地存储，支持过期删除，未过期期间被调用自动续期进行保活",
+                    "category": "library_local_storage_complete_yseventeen",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "存储的 key",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getStorageArrLength",
+                    "description": "获取本地存储的数组长度",
+                    "category": "library_local_storage_complete_yseventeen",
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getStorageKeyForIndex",
+                    "description": "根据索引获取本地存储的key",
+                    "category": "library_local_storage_complete_yseventeen",
+                    "params": [
+                        {
+                            "name": "index",
+                            "concept": "Param",
+                            "description": "索引",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_local_storage_complete_yseventeen.structures"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getStorageKeys",
+                    "description": "获取本地存储所有的key值",
+                    "category": "library_local_storage_complete_yseventeen",
+                    "returns": [
+                        {
+                            "name": "keys",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeName": "List",
+                                "typeKind": "generic",
+                                "typeNamespace": "nasl.collection",
+                                "typeArguments": [
+                                    {
+                                        "concept": "TypeAnnotation",
+                                        "typeKind": "reference",
+                                        "typeName": "",
+                                        "typeNamespace": "extensions.library_local_storage_complete_yseventeen.structures"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "hasStorage",
+                    "description": "传入Key判断本地存储中是否存在",
+                    "category": "library_local_storage_complete_yseventeen",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "想要获取的客户端存储的key",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "removeStorage",
+                    "description": "根据 Key 删除指定的本地存储",
+                    "category": "library_local_storage_complete_yseventeen",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "存储的 key",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "setStorage",
+                    "description": "设置本地存储",
+                    "category": "library_local_storage_complete_yseventeen",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "存储的 key",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "value",
+                            "concept": "Param",
+                            "description": "存储的值",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "expire",
+                            "concept": "Param",
+                            "description": "过期时间，单位：秒，默认 60*60",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_local_storage_complete_yseventeen.structures"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "name": "library_local_storage_complete_yseventeen",
+        "title": "客户端存储逻辑依赖库-完整版",
+        "version": "0.1.12",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "clearStorage",
+                        "description": "清空本地存储"
+                    },
+                    {
+                        "name": "getAllStorage",
+                        "description": "获取全部本地存储"
+                    },
+                    {
+                        "name": "getStorage",
+                        "description": "根据Key获取指定的本地存储，支持过期删除，未过期期间被调用自动续期进行保活"
+                    },
+                    {
+                        "name": "getStorageArrLength",
+                        "description": "获取本地存储的数组长度"
+                    },
+                    {
+                        "name": "getStorageKeyForIndex",
+                        "description": "根据索引获取本地存储的key"
+                    },
+                    {
+                        "name": "getStorageKeys",
+                        "description": "获取本地存储所有的key值"
+                    },
+                    {
+                        "name": "hasStorage",
+                        "description": "传入Key判断本地存储中是否存在"
+                    },
+                    {
+                        "name": "removeStorage",
+                        "description": "根据 Key 删除指定的本地存储"
+                    },
+                    {
+                        "name": "setStorage",
+                        "description": "设置本地存储"
+                    }
+                ]
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}
