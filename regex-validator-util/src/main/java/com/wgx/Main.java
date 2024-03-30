@@ -103,7 +103,7 @@ public class Main {
         System.out.println("密码长度为 6 且较简单的校验结果: " + checkPasswordLength6EasyResult.isIsValid() + ", 消息: " + checkPasswordLength6EasyResult.getErrorMessage());
 
         // 测试密码长度至少为 8 且较困难的校验
-        String password3 = "Passw12ord123@";
+        String password3 = "password123!#";
         RegexValidatorResult checkPasswordLength8DifficultResult = checkPasswordLength8Difficult(password3);
         System.out.println("密码长度为 8 且较困难的校验结果: " + checkPasswordLength8DifficultResult.isIsValid() + ", 消息: " + checkPasswordLength8DifficultResult.getErrorMessage());
 
@@ -111,5 +111,11 @@ public class Main {
         String password4 = "Password123@";
         RegexValidatorResult checkPasswordLength6DifficultResult = checkPasswordLength6Difficult(password4);
         System.out.println("密码长度为 6 且较困难的校验结果: " + checkPasswordLength6DifficultResult.isIsValid() + ", 消息: " + checkPasswordLength6DifficultResult.getErrorMessage());
+
+        //测试日期
+        System.out.println(checkDate("1992-02-28"));
+        System.out.println(checkDate("1992.09.03"));
+        System.out.println(checkDate("1992-9-3"));
+        System.out.println(checkDate("1992.09.2"));
     }
 }
