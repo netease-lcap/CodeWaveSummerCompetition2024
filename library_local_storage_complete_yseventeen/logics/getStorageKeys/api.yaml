@@ -1,0 +1,5 @@
+- name: getStorageKeys
+  description: 获取本地存储所有的key值
+  type: pc
+  belong: logic
+  labels: [Runtime]

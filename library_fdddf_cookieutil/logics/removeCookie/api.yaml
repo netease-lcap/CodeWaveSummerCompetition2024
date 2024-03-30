@@ -1,0 +1,5 @@
+- name: removeCookie
+  description: 删除 cookie
+  type: both
+  belong: logic
+  labels: [Runtime]

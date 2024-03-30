@@ -1,0 +1,5 @@
+- name: getStorageKeyForIndex
+  description: 根据索引获取本地存储的key
+  type: pc
+  belong: logic
+  labels: [Runtime]
