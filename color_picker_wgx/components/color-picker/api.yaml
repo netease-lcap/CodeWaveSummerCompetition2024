@@ -1,0 +1,46 @@
+- name: color-picker
+  title: 颜色选择器
+  type: both
+  belong: component
+  labels: [Runtime]
+  attrs:
+    - name: value
+      title: 颜色值
+      type: string
+      default: "#000000"
+      description: 支持HEX、RGBA、HSLA格式
+      sync: true
+      model: true
+    - name: colors
+      title: 调色板颜色列表
+      type: array
+      default: "['#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4','#FF9800', '#795548']"
+      description: 调色板颜色列表
+    - name: label
+      title: 标题
+      type: string
+      default: "颜色选择器"
+      description: 标题
+    - name: hidePalette
+      title: 是否隐藏调色板
+      type: boolean
+      default: false
+      description: 是否隐藏调色板
+    - name: withoutInput
+      title: 是否隐藏输入框
+      type: boolean
+      default: false
+      description: 是否隐藏输入框
+    - name: clearable
+      title: 是否可清除输入框
+      type: boolean
+      default: true
+      description: 是否可清除输入框
+  events:
+    - name: change
+      title: 改变后
+      description: 颜色值改变后触发
+      params: 
+        - name: event
+          type: object
+          description: 可获取新的色值(newColorValue)以及旧的色值(oldColorValue)
