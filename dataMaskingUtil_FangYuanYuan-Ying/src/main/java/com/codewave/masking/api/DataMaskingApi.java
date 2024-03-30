@@ -89,7 +89,7 @@ public class DataMaskingApi {
     }
 
     private static StringBuilder getMaskingContent(String dataMaskingContent, Integer holdLength, String maskingChar, Integer fixedMaskingLength) {
-        final int maskingLength = dataMaskingContent.length() - holdLength == 0 ? 1 : dataMaskingContent.length() - holdLength ;
+        final int maskingLength = dataMaskingContent.length() - holdLength <= 0 ? 1 : dataMaskingContent.length() - holdLength ;
         StringBuilder maskingContent = new StringBuilder();
         // 不固定
         for (int index = 0; index < (fixedMaskingLength == -1 ? maskingLength : fixedMaskingLength) ; index++) {
