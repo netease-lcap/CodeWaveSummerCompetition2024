@@ -1,5 +1,0 @@
-- name: getStorageArrLength
-  description: 获取本地存储的数组长度
-  type: pc
-  belong: logic
-  labels: [Runtime]

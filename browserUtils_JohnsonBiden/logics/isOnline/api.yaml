@@ -1,5 +1,0 @@
-- name: isOnline
-  description: 设备是否联网
-  type: both
-  belong: logic
-  labels: [Runtime]

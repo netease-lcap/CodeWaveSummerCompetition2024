@@ -1,5 +1,0 @@
-- name: getBrowserName
-  description: 获取浏览器名称
-  type: both
-  belong: logic
-  labels: [Runtime]

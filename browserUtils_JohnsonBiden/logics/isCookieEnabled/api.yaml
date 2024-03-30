@@ -1,5 +1,0 @@
-- name: isCookieEnabled
-  description: 是否启用Cookie
-  type: both
-  belong: logic
-  labels: [Runtime]

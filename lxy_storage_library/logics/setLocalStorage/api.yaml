@@ -1,5 +1,0 @@
-- name: setLocalStorage
-  description: 设置本地存储
-  type: both
-  belong: logic
-  labels: [Runtime]

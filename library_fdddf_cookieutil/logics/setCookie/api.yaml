@@ -1,5 +1,0 @@
-- name: setCookie
-  description: 设置cookie
-  type: both
-  belong: logic
-  labels: [Runtime]

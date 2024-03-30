@@ -1,5 +1,0 @@
-- name: getOsName
-  description: 获取操作系统名称
-  type: both
-  belong: logic
-  labels: [Runtime]

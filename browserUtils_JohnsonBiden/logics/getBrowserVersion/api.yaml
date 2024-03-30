@@ -1,5 +1,0 @@
-- name: getBrowserVersion
-  description: 获取浏览器版本
-  type: both
-  belong: logic
-  labels: [Runtime]
