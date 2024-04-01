@@ -6,12 +6,13 @@ import org.json.XML;
 
 
 public class JsonUtilApi {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(JsonUtilApi.class);
 
 
     /**
      * 将xml内容转json
      * @param xmlString xml内容
-     * @return json字符串,当返回错误，返回null且打印error日志
+     * @return json字符串,当返回错误，返回null并且打印error日志
      */
     @NaslLogic
     public static String convertXmlToJson(String xmlString) {
@@ -19,6 +20,7 @@ public class JsonUtilApi {
             org.json.JSONObject jsonObject = XML.toJSONObject(xmlString);
             return jsonObject.toString();
         } catch (Exception e){
+            log.error("XmlString format error, xmlString: {}", xmlString, e);
             return null;
         }
     }
@@ -38,9 +40,11 @@ public class JsonUtilApi {
     @NaslLogic
     public static String getXPathKey(String json, String key) {
         if(!validateJson(json)){
+            log.error("The current incoming JSON content does not conform to JSON format,json:{}", json);
             return null;
         }
         if(key == null || key.length() == 0){
+            log.error("The key is empty");
             return null;
         }
         return JSONPath.eval(json, key).toString();
