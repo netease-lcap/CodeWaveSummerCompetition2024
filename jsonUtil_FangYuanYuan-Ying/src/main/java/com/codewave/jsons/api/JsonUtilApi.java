@@ -11,7 +11,7 @@ public class JsonUtilApi {
     /**
      * 将xml内容转json
      * @param xmlString xml内容
-     * @return json字符串,当返回错误，返回null并且打印error日志
+     * @return json字符串,当返回错误，返回null且打印error日志
      */
     @NaslLogic
     public static String convertXmlToJson(String xmlString) {
