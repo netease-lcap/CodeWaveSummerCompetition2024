@@ -174,7 +174,7 @@ public class RegexUtils {
             return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不能为空");
         }
         //正则表达式
-        String regex = "[1-9]{4}([-./])\\d{1,2}\\1\\d{1,2}";
+        String regex = "(\\d{4}[.\\-](0?[13578]|1[02])[.\\-](0?[1-9]|[12]\\d|3[01]))|(\\d{4}[.\\-](0?[469]|11)[.\\-](0?[1-9]|[12]\\d|30))|(\\d{4}[.\\-]0?2[.\\-](0?[1-9]|1\\d|2[0-8]))|(\\d{2}([02468][048]|[13579][26])[.\\-]0?2[.\\-]29)";
         // 进行匹配
         if (Pattern.matches(regex, birthday)) {
             // 匹配成功
@@ -510,7 +510,7 @@ public class RegexUtils {
             return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不能为空");
         }
         //正则表达式
-        String regex = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%])(?=.*[A-Z]).{8,}$";
+        String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
         // 进行匹配
         if (Pattern.matches(regex, password)) {
             // 匹配成功
@@ -535,7 +535,7 @@ public class RegexUtils {
             return new RegexValidatorResult(java.lang.Boolean.FALSE, "输入值不能为空");
         }
         //正则表达式
-        String regex = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%])(?=.*[A-Z]).{6,}$";
+        String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{6,}$";
         // 进行匹配
         if (Pattern.matches(regex, password)) {
             // 匹配成功
