@@ -1,5 +1,5 @@
 # 依赖库名称
-
+作者： superName-w
 该依赖库定义了多个方法用于进行不同类型的验证。每个方法都接受一个输入值（除了customValidate()方法），并使用[正则表达式](coco://sendMessage?ext={"s%24wiki_link"%3A"https%3A%2F%2Fm.baike.com%2Fwikiid%2F2753457736136585089"}&msg=正则表达式)来验证该值是否符合特定的格式要求。
 
 ## 逻辑详情
