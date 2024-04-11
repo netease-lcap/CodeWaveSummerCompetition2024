@@ -73,9 +73,13 @@ public class TestDataMaskingApi {
         Assert.assertEquals("codeve",DataMaskingApi.middleSuffixMasking("codewave", 4, 2, maskingChar, 0));
         Assert.assertEquals("code-ve",DataMaskingApi.middleSuffixMasking("codewave", 4, 2, maskingChar, 1));
         Assert.assertEquals("cod---ewave",DataMaskingApi.middleSuffixMasking("codewave", 4, 5, maskingChar, 3));
-        Assert.assertEquals("codewave",DataMaskingApi.middleSuffixMasking("codewave", 4, 5, maskingChar, -1));
+        Assert.assertEquals("cod-ewave",DataMaskingApi.middleSuffixMasking("codewave", 4, 5, maskingChar, -1));
         Assert.assertEquals("cod---ewave",DataMaskingApi.middleSuffixMasking("codewave", 4, 5, maskingChar, 3));
+        Assert.assertEquals("123-456789",DataMaskingApi.middleSuffixMasking("123456789", 4, 6, maskingChar, -1));
+        Assert.assertEquals("123-456789",DataMaskingApi.middleSuffixMasking("123456789", 3, 6, maskingChar, -1));
+
     }
+
 
     @Test
     public void testSimple(){

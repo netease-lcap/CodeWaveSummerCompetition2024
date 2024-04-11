@@ -73,7 +73,11 @@ public class CustomDataMasking extends DesensitizedUtil {
                     }
                     addressDesensitized = StrUtil.hide(address, indexDistrictOrCounty + 1, address.length());
                 }
-            } else { // 5.其余的脱敏2/3
+            } else { // 5.判断长度是否超过三位如没有则脱敏2/3
+                if(address.length()<=3){
+                    addressDesensitized = address;
+                    return addressDesensitized;
+                }
                 addressDesensitized = StrUtil.hide(address, address.length() / 3, address.length());
             }
             return addressDesensitized;

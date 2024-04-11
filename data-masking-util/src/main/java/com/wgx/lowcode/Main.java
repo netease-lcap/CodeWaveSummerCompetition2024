@@ -9,30 +9,108 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.wgx.lowcode.data.masking.SingleDataMasking.addressSingleDataMasking;
 import static com.wgx.lowcode.data.masking.SingleDataMasking.mobilePhoneSingleDataMasking;
 
 
 public class Main {
     public static void main(String[] args) {
 
+        String address1 = "北京市";
+        String address2 = "上海市浦东新区";
+        String address3 = "盟";
+        String address4 = "内蒙古自治区";
+        String address5 = "云南省昆明市呈贡区";
+        String address6 = "云南省昆明市官渡区";
+        String address7 = "黑龙江省哈尔滨市";
+        String address8 = "吉林省四平市梨树县";
+        String address9 = "新疆维吾尔自治区";
+        String address10 = "河北省";
+        String address11 = "广西壮族自治区桂林市阳朔县";
+        String address12 = "广西壮族自治区桂林市";
+        String address13 = "广西桂林市";
+        String address14 = "桂林市";
+        String address15 = "广东省广州市天河区";
+        String address16 = "广州市天河区";
+        String address17 = "广州市";
+        String address18 = "天河区";
+        String address19 = "广东广州";
+        String address20 = "广东";
+        String address21 = "广州";
+        String address22 = "广西";
+        String address23 = "桂林";
+        String address24 = "北京朝阳区";
+        String address25 = "朝阳区";
+        String address26 = "北京海淀区";
+        String address27 = "海淀区";
+        String address28 = "朝阳区";
+        String address29 = "海淀区";
+        String address30 = "北京";
+        String address31 = "海淀";
+        String address32 = "朝阳";
+        String address33 = "区";
+        String address34 = "海";
+        String address35 = "广西桂林";
+        String address36 = "中国";
+
+        // 测试
+        System.out.println(addressSingleDataMasking(address1));
+        System.out.println(addressSingleDataMasking(address2));
+        System.out.println(addressSingleDataMasking(address3));
+        System.out.println(addressSingleDataMasking(address4));
+        System.out.println(addressSingleDataMasking(address5));
+        System.out.println(addressSingleDataMasking(address6));
+        System.out.println(addressSingleDataMasking(address7));
+        System.out.println(addressSingleDataMasking(address8));
+        System.out.println(addressSingleDataMasking(address9));
+        System.out.println(addressSingleDataMasking(address10));
+        System.out.println(addressSingleDataMasking(address11));
+        System.out.println(addressSingleDataMasking(address12));
+        System.out.println(addressSingleDataMasking(address13));
+        System.out.println(addressSingleDataMasking(address14));
+        System.out.println(addressSingleDataMasking(address15));
+        System.out.println(addressSingleDataMasking(address16));
+        System.out.println(addressSingleDataMasking(address17));
+        System.out.println(addressSingleDataMasking(address18));
+        System.out.println(addressSingleDataMasking(address19));
+        System.out.println(addressSingleDataMasking(address20));
+        System.out.println(addressSingleDataMasking(address21));
+        System.out.println(addressSingleDataMasking(address22));
+        System.out.println(addressSingleDataMasking(address23));
+        System.out.println(addressSingleDataMasking(address24));
+        System.out.println(addressSingleDataMasking(address25));
+        System.out.println(addressSingleDataMasking(address26));
+        System.out.println(addressSingleDataMasking(address27));
+        System.out.println(addressSingleDataMasking(address28));
+        System.out.println(addressSingleDataMasking(address29));
+        System.out.println(addressSingleDataMasking(address30));
+        System.out.println(addressSingleDataMasking(address31));
+        System.out.println(addressSingleDataMasking(address32));
+        System.out.println(addressSingleDataMasking(address33));
+        System.out.println(addressSingleDataMasking(address34));
+        System.out.println(addressSingleDataMasking(address35));
+        System.out.println(addressSingleDataMasking(address36));
+
         String phoneNumber1 = "13185217412";
         String phoneNumber2 = "131 8521 7412";
         String phoneNumber3 = "(+86)13645678906";
         String phoneNumber4 = "0755-1234567";
         String phoneNumber5 = "010-12345678";
+        String phoneNumber6 = "010-12345678";
 
         System.out.println("原号码: " + phoneNumber1 + ", 脱敏后: " + mobilePhoneSingleDataMasking(phoneNumber1));
         System.out.println("原号码: " + phoneNumber2 + ", 脱敏后: " + mobilePhoneSingleDataMasking(phoneNumber2));
         System.out.println("原号码: " + phoneNumber3 + ", 脱敏后: " + mobilePhoneSingleDataMasking(phoneNumber3));
         System.out.println("原号码: " + phoneNumber4 + ", 脱敏后: " + mobilePhoneSingleDataMasking(phoneNumber4));
         System.out.println("原号码: " + phoneNumber5 + ", 脱敏后: " + mobilePhoneSingleDataMasking(phoneNumber5));
+        System.out.println("原号码: " + phoneNumber6 + ", 脱敏后: " + mobilePhoneSingleDataMasking(phoneNumber6));
 
         //测试SingleDataMasking
         String chineseName = CustomDataMasking.chineseName("张三");
         String idCardNum = CustomDataMasking.idCardNum("410123199001011234", 6, 4);
         String email = CustomDataMasking.email("example@example.com");
         String bankCard = CustomDataMasking.bankCard("62220211111111111111");
-        String address = CustomDataMasking.addressDesensitization("山东省泰安市泰山区文化路 123 号");
+        String address = addressSingleDataMasking("山东省泰安市泰山区文化路 123 号");
         String password = CustomDataMasking.password("1234567890");
         String ipv4 = CustomDataMasking.ipv4("192.168.0.1");
         String ipv6 = CustomDataMasking.ipv6("FC00:AB:CD:EF:12:34:56:78");
