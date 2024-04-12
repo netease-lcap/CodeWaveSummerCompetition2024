@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.netease.lowcode</groupId>
-    <artifactId>baidu_translate</artifactId>
-    <version>0.0.3</version>
+    <groupId>com.moocsk.lowcode</groupId>
+    <artifactId>baidu-translate</artifactId>
+    <version>0.0.5</version>
     <name>百度翻译连接器</name>
     <description>百度翻译API</description>
 

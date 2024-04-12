@@ -1,4 +1,4 @@
-package com.lowcode.netease.utils;
+package com.moocsk.lowcode.util;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -110,6 +110,10 @@ public class HttpUtil {
         return builder.toString();
     }
 
+    /**
+     * 关闭连接
+     * @param closeable Closeable对象
+     */
     protected static void close(Closeable closeable) {
         if (closeable != null) {
             try {

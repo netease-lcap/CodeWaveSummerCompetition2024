@@ -1,10 +1,12 @@
-package com.lowcode.netease.model;
+package com.moocsk.lowcode.model;
 
 import com.netease.lowcode.core.annotation.NaslStructure;
 
+/**
+ * 翻译结果
+ */
 @NaslStructure
-public class Translate {
-    
+public class Translate {  
     /**
      * 原文
      */

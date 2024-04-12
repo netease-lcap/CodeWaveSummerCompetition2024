@@ -1,4 +1,4 @@
-package com.lowcode.netease.utils;
+package com.moocsk.lowcode.util;
 
 import java.security.MessageDigest;
 
@@ -31,6 +31,11 @@ public class MD5 {
         return byteArrayToHex(resultByteArray);
     }
 
+    /**
+     * 字节数组转换
+     * @param byteArray 字节数组
+     * @return 转换结果
+     */
     private static String byteArrayToHex(byte[] byteArray) {
         // new一个字符数组，这个就是用来组成结果字符串的（解释一下：一个byte是八位二进制，也就是2位十六进制字符（2的8次方等于16的2次方））
         char[] resultCharArray = new char[byteArray.length * 2];

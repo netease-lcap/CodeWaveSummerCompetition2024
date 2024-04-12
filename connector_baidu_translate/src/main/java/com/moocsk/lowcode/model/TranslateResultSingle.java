@@ -1,11 +1,12 @@
-package com.lowcode.netease.model;
-
-import java.util.List;
+package com.moocsk.lowcode.model;
 
 import com.netease.lowcode.core.annotation.NaslStructure;
 
+/**
+ * 单条文本翻译结果响应
+ */
 @NaslStructure
-public class TranslateResult {
+public class TranslateResultSingle {
     /**
      * 错误码
      */
@@ -27,9 +28,14 @@ public class TranslateResult {
     public String to;
 
     /**
-     * 翻译结果
+     * 原文
      */
-    public List<Translate> transResult;
+    public String src;
+
+    /**
+     * 译文
+     */
+    public String dst;
 
     public String getErrorCode() {
         return errorCode;
@@ -63,18 +69,26 @@ public class TranslateResult {
         this.to = to;
     }
 
-    public List<Translate> getTransResult() {
-        return transResult;
+    public String getSrc() {
+        return src;
     }
 
-    public void setTransResult(List<Translate> transResult) {
-        this.transResult = transResult;
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
+    public String getDst() {
+        return dst;
+    }
+
+    public void setDst(String dst) {
+        this.dst = dst;
     }
 
     @Override
     public String toString() {
-        return "TranslateResult [errorCode=" + errorCode + ", errorMsg=" + errorMsg + ", from=" + from + ", to=" + to
-                + ", transResult=" + transResult + "]";
+        return "TranslateResultSingle [errorCode=" + errorCode + ", errorMsg=" + errorMsg + ", from=" + from + ", to="
+                + to + ", src=" + src + ", dst=" + dst + "]";
     }
     
 }
