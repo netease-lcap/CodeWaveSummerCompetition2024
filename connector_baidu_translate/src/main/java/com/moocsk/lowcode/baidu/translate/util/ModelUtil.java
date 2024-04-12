@@ -1,13 +1,13 @@
-package com.moocsk.lowcode.util;
+package com.moocsk.lowcode.baidu.translate.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.moocsk.lowcode.model.Translate;
-import com.moocsk.lowcode.model.TranslateResult;
-import com.moocsk.lowcode.model.TranslateResultSingle;
+import com.moocsk.lowcode.baidu.translate.model.Translate;
+import com.moocsk.lowcode.baidu.translate.model.TranslateResult;
+import com.moocsk.lowcode.baidu.translate.model.TranslateResultSingle;
 
 /**
  * 模型转换类

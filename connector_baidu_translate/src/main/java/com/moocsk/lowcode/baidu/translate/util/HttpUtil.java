@@ -1,4 +1,4 @@
-package com.moocsk.lowcode.util;
+package com.moocsk.lowcode.baidu.translate.util;
 
 import java.io.BufferedReader;
 import java.io.Closeable;

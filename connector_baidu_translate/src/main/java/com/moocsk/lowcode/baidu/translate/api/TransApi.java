@@ -1,14 +1,14 @@
-package com.moocsk.lowcode.api;
+package com.moocsk.lowcode.baidu.translate.api;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.moocsk.lowcode.model.TranslateResult;
-import com.moocsk.lowcode.util.HttpUtil;
-import com.moocsk.lowcode.util.MD5;
-import com.moocsk.lowcode.util.ModelUtil;
+import com.moocsk.lowcode.baidu.translate.model.TranslateResult;
+import com.moocsk.lowcode.baidu.translate.util.HttpUtil;
+import com.moocsk.lowcode.baidu.translate.util.MD5;
+import com.moocsk.lowcode.baidu.translate.util.ModelUtil;
 
 public class TransApi {
     /** 通用文本翻译地址 */

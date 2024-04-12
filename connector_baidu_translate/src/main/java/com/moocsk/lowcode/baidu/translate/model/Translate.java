@@ -1,4 +1,4 @@
-package com.moocsk.lowcode.model;
+package com.moocsk.lowcode.baidu.translate.model;
 
 import com.netease.lowcode.core.annotation.NaslStructure;
 

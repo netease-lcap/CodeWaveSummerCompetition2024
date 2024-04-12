@@ -1,12 +1,14 @@
-package com.moocsk.lowcode.model;
+package com.moocsk.lowcode.baidu.translate.model;
+
+import java.util.List;
 
 import com.netease.lowcode.core.annotation.NaslStructure;
 
 /**
- * 单条文本翻译结果响应
+ * 批量文本翻译结果响应
  */
 @NaslStructure
-public class TranslateResultSingle {
+public class TranslateResult {
     /**
      * 错误码
      */
@@ -28,14 +30,9 @@ public class TranslateResultSingle {
     public String to;
 
     /**
-     * 原文
+     * 翻译结果
      */
-    public String src;
-
-    /**
-     * 译文
-     */
-    public String dst;
+    public List<Translate> transResult;
 
     public String getErrorCode() {
         return errorCode;
@@ -69,26 +66,18 @@ public class TranslateResultSingle {
         this.to = to;
     }
 
-    public String getSrc() {
-        return src;
+    public List<Translate> getTransResult() {
+        return transResult;
     }
 
-    public void setSrc(String src) {
-        this.src = src;
-    }
-
-    public String getDst() {
-        return dst;
-    }
-
-    public void setDst(String dst) {
-        this.dst = dst;
+    public void setTransResult(List<Translate> transResult) {
+        this.transResult = transResult;
     }
 
     @Override
     public String toString() {
-        return "TranslateResultSingle [errorCode=" + errorCode + ", errorMsg=" + errorMsg + ", from=" + from + ", to="
-                + to + ", src=" + src + ", dst=" + dst + "]";
+        return "TranslateResult [errorCode=" + errorCode + ", errorMsg=" + errorMsg + ", from=" + from + ", to=" + to
+                + ", transResult=" + transResult + "]";
     }
     
 }

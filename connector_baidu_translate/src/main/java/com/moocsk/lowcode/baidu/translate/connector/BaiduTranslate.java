@@ -1,12 +1,12 @@
-package com.moocsk.lowcode.connector;
+package com.moocsk.lowcode.baidu.translate.connector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.moocsk.lowcode.api.TransApi;
-import com.moocsk.lowcode.model.TranslateResult;
-import com.moocsk.lowcode.model.TranslateResultSingle;
-import com.moocsk.lowcode.util.ModelUtil;
+import com.moocsk.lowcode.baidu.translate.api.TransApi;
+import com.moocsk.lowcode.baidu.translate.model.TranslateResult;
+import com.moocsk.lowcode.baidu.translate.model.TranslateResultSingle;
+import com.moocsk.lowcode.baidu.translate.util.ModelUtil;
 import com.netease.lowcode.core.annotation.NaslConnector;
 
 /**
