@@ -105,14 +105,19 @@ public class LunarConverter {
      */
     @NaslLogic
     public static String getTerm(String inputDate) {
-        LocalDate time = LocalDate.parse(inputDate, formatter);
-        // 日期字符串符合格式，可以进行后续处理
-        ChineseDate chineseDate = new ChineseDate(DateUtil.parseDate(inputDate));
-        String term = chineseDate.getTerm();
-        if (StringUtils.isEmpty(term)) {
-            term = "此日期非节气";
+        try {
+            LocalDate time = LocalDate.parse(inputDate, formatter);
+            // 日期字符串符合格式，可以进行后续处理
+            ChineseDate chineseDate = new ChineseDate(DateUtil.parseDate(inputDate));
+            String term = chineseDate.getTerm();
+            if (isEmpty(term)) {
+                term = "此日期非节气";
+            }
+            return term;
+        } catch (Exception e) {
+            // 日期字符串不符合格式，可以进行相应的错误处理
+            return "请传入yyyy-MM-dd格式的时间";
         }
-        return term;
     }
 
     /**
@@ -166,7 +171,7 @@ public class LunarConverter {
         festival = festival.substring(1, festival.length() - 1);
         String otherFestival = lunar.getOtherFestivals().toString();
         otherFestival = otherFestival.substring(1, otherFestival.length() - 1);
-        if (StringUtils.isEmpty(festival) && StringUtils.isEmpty(otherFestival)) {
+        if (isEmpty(festival) && isEmpty(otherFestival)) {
             return "非传统节日";
         } else {
             return festival + " " + otherFestival;
@@ -194,5 +199,9 @@ public class LunarConverter {
         LocalDate date2 = LocalDate.parse(solar2.toString());
         long between = ChronoUnit.DAYS.between(date1, date2);
         return String.valueOf(between);
+    }
+
+    private static Boolean isEmpty(String s){
+        return s == null || s.length() == 0;
     }
 }
