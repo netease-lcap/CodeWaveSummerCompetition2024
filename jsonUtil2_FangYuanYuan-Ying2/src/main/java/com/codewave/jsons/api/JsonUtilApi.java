@@ -10,8 +10,8 @@ public class JsonUtilApi {
 
 
     /**
-     * 将xml内容转json
-     * @param xmlString xml内容
+     * 将xml格式的字符串转换为json格式的字符串
+     * @param xml 需要转换JSON格式的字符串
      * @return json字符串,当返回错误，返回null并且打印error日志
      */
     @NaslLogic
@@ -27,7 +27,7 @@ public class JsonUtilApi {
 
 
     /**
-     * 通过JSONPath 表达式在json内容获得特定的KEY
+     * 通过JSONPath 表达式在json字符串获得特定的KEY
      * 实例：
      * json: "{"name":"John","age":30,"address":{"city":"Hangzhou"}}"
      * key: $.name -> 表示顶层的 name key
