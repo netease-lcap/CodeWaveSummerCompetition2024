@@ -15,7 +15,7 @@
     <artifactId>httpclient_opensource</artifactId>
     <name>httpclient</name>
     <description>httpclient</description>
-    <version>0.12.15</version>
+    <version>0.12.17</version>
 
     <dependencies>
         <dependency>
