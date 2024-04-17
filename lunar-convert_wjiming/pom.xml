@@ -6,7 +6,7 @@
     
     <groupId>com.wjm</groupId>
     <artifactId>lunar-convert</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>阴历日历依赖库</name>
     <description>提供了一系列阴历阳历转换的方法</description>
 
