@@ -3,6 +3,7 @@ package com.netease.http.config;
 import com.netease.http.util.RestTemplateUtil;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -21,6 +22,7 @@ public class HttpSpringConfiguration {
      * @return
      */
     @Bean("restTemplatePrimary")
+    @ConditionalOnMissingBean(RestTemplate.class)
     public RestTemplate restTemplatePrimary() {
         HttpComponentsClientHttpRequestFactory requestFactory = RestTemplateUtil.createRequestFactory();
         requestFactory.setHttpClient(HttpClients.custom().setRedirectStrategy(new LaxRedirectStrategy()).build());
