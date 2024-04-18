@@ -1,0 +1,5 @@
+- name: getSolar
+  description: 阴历转阳历
+  type: both
+  belong: logic
+  labels: [Runtime]

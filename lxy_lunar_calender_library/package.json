@@ -1,8 +1,8 @@
 {
-  "name": "lxy_vconsole_library",
-  "title": "移动端调试工具",
+  "name": "lxy_lunar_calender_library",
+  "title": "阴历依赖库",
   "description": "",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "main": "./index.js",
   "author": "",
   "repository": "",
@@ -49,6 +49,8 @@
     "inited": true
   },
   "dependencies": {
-    "vconsole": "^3.15.1"
+    "chinese-workday": "^1.10.0",
+    "dayjs": "^1.11.10",
+    "lunar-javascript": "^1.6.12"
   }
 }
