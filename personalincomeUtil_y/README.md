@@ -36,14 +36,19 @@ calculateEqualPrincipalAndInterest
 
 输入参数:
 /**
-* @param loanAmount 贷款总额
-* @param annualInterestRate 贷款利率
-* @param loanTermInYears 贷款年数
+* @param loanAmount 贷款总额  Double类型
+* @param annualInterestRate 贷款利率 Double类型
+* @param loanTermInYears 贷款年数 Integer类型 
   */
 
 输出参数:
-List<CalculateReturnStructure>
-包含返还参数:
+CalculateAndSumReturnStructure 
+包含
+List<CalculateReturnStructure> listCalculateReturnStructure;//每期还款实体
+String sumInterest ;//总利息
+
+CalculateReturnStructure
+实体包含返还参数:
 Integer month;//月份(期数)
 String principal;//本金
 String interest;//利息
@@ -72,8 +77,13 @@ calculateEqualPrincipal
 
 
 输出参数:
-List<CalculateReturnStructure>
-包含返还参数:
+CalculateAndSumReturnStructure
+包含
+List<CalculateReturnStructure> listCalculateReturnStructure;//每期还款实体
+String sumInterest ;//总利息
+
+CalculateReturnStructure
+实体包含返还参数:
 Integer month;//月份(期数)
 String principal;//本金
 String interest;//利息
@@ -90,7 +100,7 @@ String loanAmount;//剩余贷款
 3. ![2.png](2.png)
 ## 应用演示链接
 jar包为:
-[library-personalincomeUtil_y-1.0.3.zip](library-personalincomeUtil_y-1.0.3.zip)
+[library-personalincomeUtil_y-1.0.5.zip](library-personalincomeUtil_y-1.0.5.zip)
 使用了本依赖库的应用的链接。
 https://dev-test123-suber.app.codewave.163.com/dashboard/test1
 

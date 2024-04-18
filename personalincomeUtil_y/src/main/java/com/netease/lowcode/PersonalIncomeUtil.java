@@ -34,6 +34,9 @@ public class PersonalIncomeUtil {
         }
 
 
+        if (Month < 0 || income < 0 || totalSal < 0 || socInsur < 0) {
+            throw new IllegalArgumentException("输入参数必须为正数");
+        }
         //期数为1-12
         if (Month < 1 || Month > 12) {
             throw new IllegalArgumentException("Month must be between 1 and 12");
@@ -93,9 +96,13 @@ public class PersonalIncomeUtil {
 //        PersonalReturnStructure personalReturnStructure = calculateIncomeTax(4, 7000D, 2000d, 1000d);
         System.out.println("金额=="+personalReturnStructure);
         //calculateEqualPrincipalAndInterest(1500000d,4.45,30);
-        List<CalculateReturnStructure> calculateReturnStructures = calculateEqualPrincipal(1500000d, 4.45, 30);
 
-        System.out.println(calculateReturnStructures.toString());
+        //等额本息
+//        List<CalculateReturnStructure> calculateReturnStructures = calculateEqualPrincipal(1500000d, 4.45, 30);
+        //等额本金
+        CalculateAndSumReturnStructure calculateAndSumReturnStructure = calculateEqualPrincipalAndInterest(1500000d, 4.45, 30);
+
+        System.out.println(calculateAndSumReturnStructure.toString());
     }
 
 
@@ -106,9 +113,17 @@ public class PersonalIncomeUtil {
      * @param loanTermInYears 贷款年数
      */
     @NaslLogic
-    public static List<CalculateReturnStructure> calculateEqualPrincipalAndInterest(Double loanAmount, Double annualInterestRate, Integer loanTermInYears) {
+    public static CalculateAndSumReturnStructure calculateEqualPrincipalAndInterest(Double loanAmount, Double annualInterestRate, Integer loanTermInYears) {
         if (Objects.isNull(loanAmount)|| Objects.isNull(annualInterestRate) || Objects.isNull(loanTermInYears) ) {
             throw new IllegalArgumentException("入参不能为null");
+        }
+
+        if (loanAmount < 0 || annualInterestRate < 0 || loanTermInYears < 0 ) {
+            throw new IllegalArgumentException("输入参数必须为正数");
+        }
+
+        if(loanTermInYears<1 || loanTermInYears>30){
+            throw new IllegalArgumentException("loanTermInYears must be between 1 and 30");
         }
 
             double monthlyInterestRate = annualInterestRate / 12 / 100;
@@ -119,12 +134,13 @@ public class PersonalIncomeUtil {
             DecimalFormat df = new DecimalFormat("#.##");
 
     System.out.println("等额本息每月还款金额： " + df.format(monthlyPayment));
-
+        double sumInterest=0;
     for (int i = 1; i <= loanTermInMonths; i++) {
         double interest = loanAmount * monthlyInterestRate;
         double principal = monthlyPayment - interest;
         loanAmount -= principal;
 
+        sumInterest+=interest;
         CalculateReturnStructure calculateReturnStructure = new CalculateReturnStructure();
         String format = df.format(principal);
 
@@ -137,7 +153,14 @@ public class PersonalIncomeUtil {
         resultList.add(calculateReturnStructure);
         System.out.println("第" + i + "月还款： 本金：" + df.format(principal) + " 利息：" + df.format(interest) + " 剩余贷款：" + df.format(loanAmount));
     }
-    return resultList;
+
+        System.out.println("总利息=="+df.format(sumInterest));
+
+        //返回实体
+        CalculateAndSumReturnStructure calculateAndSumReturnStructure = new CalculateAndSumReturnStructure();
+        calculateAndSumReturnStructure.setListCalculateReturnStructure(resultList);
+        calculateAndSumReturnStructure.setSumInterest(df.format(sumInterest));
+        return calculateAndSumReturnStructure;
 }
 
     /**
@@ -147,9 +170,18 @@ public class PersonalIncomeUtil {
      * @param loanTermInYears 贷款年数
      */
     @NaslLogic
-    public static List<CalculateReturnStructure> calculateEqualPrincipal(Double loanAmount, Double annualInterestRate, Integer loanTermInYears) {
+    public static CalculateAndSumReturnStructure calculateEqualPrincipal(Double loanAmount, Double annualInterestRate, Integer loanTermInYears) {
         if (Objects.isNull(loanAmount)|| Objects.isNull(annualInterestRate) || Objects.isNull(loanTermInYears) ) {
             throw new IllegalArgumentException("入参不能为null");
+        }
+
+
+        if (loanAmount < 0 || annualInterestRate < 0 || loanTermInYears < 0 ) {
+            throw new IllegalArgumentException("输入参数必须为正数");
+        }
+
+        if(loanTermInYears<1 || loanTermInYears>30){
+            throw new IllegalArgumentException("loanTermInYears must be between 1 and 30");
         }
 
         double monthlyInterestRate = annualInterestRate / 12 / 100;
@@ -163,11 +195,13 @@ public class PersonalIncomeUtil {
         System.out.println("等额本金每月还款金额： " + df.format(monthlyPrincipal));
 
         double remainingLoan = loanAmount;
+        double sumInterest=0;
         for (int i = 1; i <= loanTermInMonths; i++) {
             CalculateReturnStructure calculateReturnStructure = new CalculateReturnStructure();
 
             double interest = remainingLoan * monthlyInterestRate;
             double totalPayment = monthlyPrincipal + interest;
+            sumInterest+=interest;
             remainingLoan -= monthlyPrincipal;
             //组装
             calculateReturnStructure.setMonth(i);
@@ -180,7 +214,14 @@ public class PersonalIncomeUtil {
             System.out.println("第" + i + "月还款： 本金：" + df.format(monthlyPrincipal) + " 利息：" + df.format(interest) + " 总计：" + df.format(totalPayment) + " 剩余贷款："+ df.format(remainingLoan));
         }
 
-        return resultList;
+        System.out.println("总利息=="+df.format(sumInterest));
+
+
+        //返回实体
+        CalculateAndSumReturnStructure calculateAndSumReturnStructure = new CalculateAndSumReturnStructure();
+        calculateAndSumReturnStructure.setListCalculateReturnStructure(resultList);
+        calculateAndSumReturnStructure.setSumInterest(df.format(sumInterest));
+        return calculateAndSumReturnStructure;
     }
 
 
