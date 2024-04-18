@@ -3,8 +3,6 @@ package com.wgx;
 import com.wgx.lowcode.util.MathUtil;
 
 /**
- * @Date: ${DATE} - ${MONTH} - ${DAY} - ${TIME}
- * @Description: com.netease
  * @version: 1.0
  */
 public class Main {

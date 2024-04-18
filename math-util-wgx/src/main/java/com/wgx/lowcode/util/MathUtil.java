@@ -16,6 +16,8 @@ public class MathUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(MathUtil.class);
 
+    private static final long negativeZeroDoubleBits = Double.doubleToRawLongBits(-0.0d);
+
     /**
      * 返回整数的绝对值
      * @param a
@@ -28,7 +30,7 @@ public class MathUtil {
             logger.error("参数不能为null");
             throw new NullPointerException("参数不能为null");
         }
-        return Math.abs(a);
+        return (a < 0) ? -a : a;
     }
 
     /**
@@ -43,7 +45,7 @@ public class MathUtil {
             logger.error("参数不能为null");
             throw new NullPointerException("参数不能为null");
         }
-        return Math.abs(a);
+        return (a <= 0.0D) ? 0.0D - a : a;
     }
 
     /**
@@ -119,7 +121,15 @@ public class MathUtil {
             logger.error("参数 a 或 b 不能为 null");
             throw new NullPointerException("参数 a 或 b 不能为 null");
         }
-        return Math.min(a, b);
+        if (a != a)
+            return a;   // a is NaN
+        if ((a == 0.0d) &&
+                (b == 0.0d) &&
+                (Double.doubleToRawLongBits(b) == negativeZeroDoubleBits)) {
+            // Raw conversion ok since NaN can't map to -0.0.
+            return b;
+        }
+        return (a <= b) ? a : b;
     }
 
     /**
@@ -130,17 +140,25 @@ public class MathUtil {
      */
     @NaslLogic
     public static Double maxDecimal(Double a, Double b) {
-        // 检查参数是否为null，如果为null则抛出nullPointException异常
+        // 如果a或b为null，则抛出NullPointerException异常
         if (a == null || b == null) {
             logger.error("参数 a 或 b 不能为 null");
             throw new NullPointerException("参数 a 或 b 不能为 null");
         }
-        return Math.max(a, b);
+        if (a != a)
+            return a;   // a is NaN
+        if ((a == 0.0d) &&
+                (b == 0.0d) &&
+                (Double.doubleToRawLongBits(a) == negativeZeroDoubleBits)) {
+            // Raw conversion ok since NaN can't map to -0.0.
+            return b;
+        }
+        return (a >= b) ? a : b;
     }
 
 
     /**
-     * 将小数转化为小数点后指定位数的字符串
+     * 将小数转化为小数点后指定位数的字符串并进行四舍五入 例如传入：a=123.456，digits=2，则返回：123.46
      * @param a 待格式化的小数
      * @param digits 小数点后的位数。
      * @return 格式化后的字符串。
@@ -165,8 +183,9 @@ public class MathUtil {
             throw new IllegalArgumentException("参数不能为null、非法数字、正无穷大或负无穷小，这些值无法进行格式化操作");
         }
 
+        System.out.println("a = " + a);
         // 使用 String.format 进行格式化
-        return String.format("%." + digits + "f", a);
+        return new BigDecimal(a).setScale(digits, RoundingMode.HALF_DOWN).toString();
     }
 
     /**
@@ -190,7 +209,7 @@ public class MathUtil {
      *
      * @param a 第一个加数
      * @param b 第二个加数
-     * @return 两数之和
+     * @return 两数之和(四舍五入)
      */
     @NaslLogic
     public static Double addRounded(Double a, Double b) {
@@ -202,11 +221,11 @@ public class MathUtil {
     }
 
     /**
-     * 计算两数之和,保留两位小数,向上取整
+     * 计算两数之和,向上取整
      *
      * @param a 第一个加数
      * @param b 第二个加数
-     * @return 两数之和
+     * @return 两数之和 (向上取整)
      */
     @NaslLogic
     public static Double addCeiling(Double a, Double b) {
@@ -214,15 +233,15 @@ public class MathUtil {
             logger.error("加数不能为null");
             throw new IllegalArgumentException("加数不能为null");
         }
-        return new BigDecimal(a).add(new BigDecimal(b)).setScale(2, RoundingMode.CEILING).doubleValue();
+        return new BigDecimal(a).add(new BigDecimal(b))         .setScale(0, RoundingMode.CEILING).doubleValue();
     }
 
     /**
-     * 计算两数之和,保留两位小数,向下取整
+     * 计算两数之和,向下取整
      *
      * @param a 第一个加数
      * @param b 第二个加数
-     * @return 两数之和
+     * @return 两数之和 (向下取整)
      */
     @NaslLogic
     public static Double addFloor(Double a, Double b) {
@@ -230,7 +249,7 @@ public class MathUtil {
             logger.error("加数不能为null");
             throw new IllegalArgumentException("加数不能为null");
         }
-        return new BigDecimal(a).add(new BigDecimal(b)).setScale(2, RoundingMode.FLOOR).doubleValue();
+        return new BigDecimal(a).add(new BigDecimal(b)).setScale(0, RoundingMode.FLOOR).doubleValue();
     }
 
     /**
@@ -240,7 +259,7 @@ public class MathUtil {
      * @param b         第二个加数
      * @param scale     结果的精度（小数点后的位数），必须是非负整数
      * @param roundingType 取舍方式：0 - 不进行取舍，1 - 四舍五入，2 - 向上取整，3 - 向下取整
-     * @return          两数之和
+     * @return          两数之和(自定义保留小数位数和取舍方式)
      */
     @NaslLogic
     public static Double addCustomScale(Double a, Double b, Integer scale, Integer roundingType) {
@@ -279,7 +298,7 @@ public class MathUtil {
      *
      * @param a 被减数
      * @param b 减数
-     * @return 两数之差
+     * @return 两数之差(四舍五入)
      */
     @NaslLogic
     public static Double subtractRounded(Double a, Double b) {
@@ -291,11 +310,11 @@ public class MathUtil {
     }
 
     /**
-     * 计算两数之差，保留两位小数，向上取整
+     * 计算两数之差，向上取整
      *
      * @param a 被减数
      * @param b 减数
-     * @return 两数之差
+     * @return 两数之差(向上取整)
      */
     @NaslLogic
     public static Double subtractCeiling(Double a, Double b) {
@@ -303,15 +322,15 @@ public class MathUtil {
             logger.error("被减数或减数不能为null");
             throw new IllegalArgumentException("被减数或减数不能为null");
         }
-        return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(2, RoundingMode.CEILING).doubleValue();
+        return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(0, RoundingMode.CEILING).doubleValue();
     }
 
     /**
-     * 计算两数之差，保留两位小数，向下取整
+     * 计算两数之差，向下取整
      *
      * @param a 被减数
      * @param b 减数
-     * @return 两数之差
+     * @return 两数之差(向下取整)
      */
     @NaslLogic
     public static Double subtractFloor(Double a, Double b) {
@@ -319,7 +338,7 @@ public class MathUtil {
             logger.error("被减数或减数不能为null");
             throw new IllegalArgumentException("被减数或减数不能为null");
         }
-        return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(2, RoundingMode.FLOOR).doubleValue();
+        return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(0, RoundingMode.FLOOR).doubleValue();
     }
 
     /**
@@ -342,9 +361,7 @@ public class MathUtil {
         //根据给定的取舍方式枚举值返回对应的RoundingMode对象。
         RoundingMode roundingMode = getRoundingMode(roundingType);
 
-        return new BigDecimal(a).subtract(new BigDecimal(b))
-                .setScale(scale, roundingMode)
-                .doubleValue();
+        return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(scale, roundingMode).doubleValue();
     }
 
     /**
@@ -368,7 +385,7 @@ public class MathUtil {
      *
      * @param dividend 被除数
      * @param divisor  除数
-     * @return 两数之商
+     * @return 两数之商（四舍五入）
      */
     @NaslLogic
     public static Double divideRounded(Double dividend, Double divisor) {
@@ -384,7 +401,7 @@ public class MathUtil {
      *
      * @param dividend 被除数
      * @param divisor  除数
-     * @return 两数之商
+     * @return 两数之商（向上取整）
      */
     @NaslLogic
     public static Double divideCeiling(Double dividend, Double divisor) {
@@ -392,7 +409,7 @@ public class MathUtil {
             logger.error("被除数或除数不能为null");
             throw new IllegalArgumentException("被除数或除数不能为null");
         }
-        return new BigDecimal(dividend).divide(new BigDecimal(divisor), 2, RoundingMode.CEILING).doubleValue();
+        return new BigDecimal(dividend).divide(new BigDecimal(divisor), 0, RoundingMode.CEILING).doubleValue();
     }
 
     /**
@@ -400,7 +417,7 @@ public class MathUtil {
      *
      * @param dividend 被除数
      * @param divisor  除数
-     * @return 两数之商
+     * @return 两数之商（向下取整）
      */
     @NaslLogic
     public static Double divideFloor(Double dividend, Double divisor) {
@@ -408,7 +425,7 @@ public class MathUtil {
             logger.error("被除数或除数不能为null");
             throw new IllegalArgumentException("被除数或除数不能为null");
         }
-        return new BigDecimal(dividend).divide(new BigDecimal(divisor), 2, RoundingMode.FLOOR).doubleValue();
+        return new BigDecimal(dividend).divide(new BigDecimal(divisor), 0, RoundingMode.FLOOR).doubleValue();
     }
 
     /**
@@ -456,7 +473,7 @@ public class MathUtil {
      *
      * @param a 第一个乘数
      * @param b 第二个乘数
-     * @return 两数之积
+     * @return 两数之积（四舍五入）
      */
     @NaslLogic
     public static Double multiplyRounded(Double a, Double b) {
@@ -472,7 +489,7 @@ public class MathUtil {
      *
      * @param a 第一个乘数
      * @param b 第二个乘数
-     * @return 两数之积
+     * @return 两数之积（向上取整）
      */
     @NaslLogic
     public static Double multiplyCeiling(Double a, Double b) {
@@ -480,7 +497,7 @@ public class MathUtil {
             logger.error("乘数不能为null");
             throw new IllegalArgumentException("乘数不能为null");
         }
-        return new BigDecimal(a).multiply(new BigDecimal(b)).setScale(2, RoundingMode.CEILING).doubleValue();
+        return new BigDecimal(a).multiply(new BigDecimal(b)).setScale(0, RoundingMode.CEILING).doubleValue();
     }
 
     /**
@@ -488,7 +505,7 @@ public class MathUtil {
      *
      * @param a 第一个乘数
      * @param b 第二个乘数
-     * @return 两数之积
+     * @return 两数之积（向下取整）
      */
     @NaslLogic
     public static Double multiplyFloor(Double a, Double b) {
@@ -496,7 +513,7 @@ public class MathUtil {
             logger.error("乘数不能为null");
             throw new IllegalArgumentException("乘数不能为null");
         }
-        return new BigDecimal(a).multiply(new BigDecimal(b)).setScale(2, RoundingMode.FLOOR).doubleValue();
+        return new BigDecimal(a).multiply(new BigDecimal(b)).setScale(0, RoundingMode.FLOOR).doubleValue();
     }
 
     /**
