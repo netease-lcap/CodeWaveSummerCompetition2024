@@ -12,7 +12,7 @@
 ### 逻辑 getGregorianDate
 
 农历日期转公历
-入参：lunarYear  年（农历）,lunarMonth 月（农历），1到12，闰月为负，即闰2月=-2,lunarDay   日（农历），1到31  举例：2024,3,6
+入参：lunarYear  年（农历）,lunarMonth 月（农历），1到12，闰月为负，即闰2月=-2,lunarDay   日（农历），1到30  举例：2024,3,6
 返回示例：2024-04-14
 
 ### 逻辑 getChineseMonthInfo
@@ -42,13 +42,13 @@
 ### 逻辑 getFestivals
 
 判断特定阴历日期是否为传统节日，如春节、中秋节等
-入参：lunarYear  年（农历）,lunarMonth 月（农历），1到12，闰月为负，即闰2月=-2,lunarDay   日（农历），1到31  举例：2024,5,5
+入参：lunarYear  年（农历）,lunarMonth 月（农历），1到12，闰月为负，即闰2月=-2,lunarDay   日（农历），1到30  举例：2024,5,5
 返回示例：端午节
 
 ### 逻辑 getDaysDifference
 
 计算两个阴历日期之间的天数差
-入参：lunarYear1  年（农历）,lunarMonth1 月（农历），1到12，闰月为负，即闰2月=-2,lunarDay1   日（农历），1到31 
+入参：lunarYear1  年（农历）,lunarMonth1 月（农历），1到12，闰月为负，即闰2月=-2,lunarDay1   日（农历），1到30 
       lunarYear2,lunarMonth2,lunarDay2同上 举例：2024,3,24,2024,4,2
 返回示例：7
 

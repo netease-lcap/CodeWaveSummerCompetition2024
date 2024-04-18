@@ -30,14 +30,9 @@
             <systemPath>${project.basedir}/jar/nasl-metadata-collector-0.8.0.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <scope>provided</scope>
+            <artifactId>slf4j-simple</artifactId>
+<!--            <scope>provided</scope>-->
              <version>1.7.30</version>
         </dependency>
         <dependency>
