@@ -29,7 +29,7 @@ public class LoggingAspect {
     @NaslConfiguration(defaultValue = {
             @Environment(type = EnvironmentType.DEV,value = "true"),
             @Environment(type = EnvironmentType.ONLINE,value = "false")
-    })
+    },alias = "是否开启日志")
     private boolean isLoggingEnabled;
 
     //切点匹配类上有@Controller、@RestController注解的类下的所有方法
@@ -38,7 +38,7 @@ public class LoggingAspect {
 
     @Around("controller()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        if (!isLoggingEnabled) {
+        if (!Boolean.TRUE.equals(isLoggingEnabled)) {
             return joinPoint.proceed();
         }
 
