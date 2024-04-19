@@ -7,6 +7,7 @@ import com.moocsk.lowcode.youdao.translate.api.TransApi;
 import com.moocsk.lowcode.youdao.translate.model.TranslateResult;
 import com.moocsk.lowcode.youdao.translate.model.TranslateResultSingle;
 import com.moocsk.lowcode.youdao.translate.util.ModelUtil;
+import com.moocsk.lowcode.youdao.translate.util.StringUtil;
 import com.netease.lowcode.core.annotation.NaslConnector;
 
 /**
@@ -65,11 +66,19 @@ public class YoudaoTranslate {
      */
     @NaslConnector.Logic
     public TranslateResultSingle translation(String q, String from, String to) {
+        TranslateResultSingle translateResultSingle = new TranslateResultSingle();
+        // 翻译文本总长度控制在 5000 字节以内
+        int qLen = StringUtil.getStringLengthByByte(q); // 翻译文本字节长度
+        if (qLen > 5000) {
+            translateResultSingle.setErrorCode("500");
+            translateResultSingle.setErrorMsg("请将翻译内容控制在5000字节以内");
+            return translateResultSingle;
+        }
         TransApi transApi = new TransApi(this.appid, this.secretKey);
         List<String> qList = new ArrayList<>();
         qList.add(q);
         TranslateResult translateResult = transApi.generalTextTranslation(qList, from, to);
-        TranslateResultSingle translateResultSingle = ModelUtil.getSingleTranslate(translateResult);
+        translateResultSingle = ModelUtil.getSingleTranslate(translateResult);
         return translateResultSingle;
     }
 
@@ -83,8 +92,25 @@ public class YoudaoTranslate {
      */
     @NaslConnector.Logic
     public TranslateResult translationBatch(List<String> q, String from, String to) {
+        TranslateResult translateResult = new TranslateResult();
+        // 批量翻译限制 List 长度为 6000
+        int qSize = q.size();
+        if (qSize > 5000) {
+            translateResult.setErrorCode("500");
+            translateResult.setErrorMsg("请将批量翻译数量控制在5000个以内");
+            return translateResult;
+        }
+        // 批量翻译文本总长度控制在 5000 字节以内
+        String qStr = String.join("", q);
+        int qStrLen = StringUtil.getStringLengthByByte(qStr); // 翻译文本字节长度
+        if (qStrLen > 5000) {
+            translateResult.setErrorCode("500");
+            translateResult.setErrorMsg("请将翻译内容控制在5000字节以内");
+            return translateResult;
+        }
         TransApi transApi = new TransApi(this.appid, this.secretKey);
-        return transApi.generalTextTranslation(q, from, to);
+        translateResult = transApi.generalTextTranslation(q, from, to);
+        return translateResult;
     }
 
     public static void main(String[] args) {
