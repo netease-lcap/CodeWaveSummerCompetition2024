@@ -82,27 +82,43 @@ public class CurrencyConverter {
      * @return
      */
     @NaslLogic
-    public static String convertToEnglish(Double amount) {
-
-        if (amount < 0) {
-            return "NEGATIVE  " + convertToEnglish(-amount);
+    public static String convertToEnglish(String amount) {
+        if (isEmpty(amount)) {
+            throw new IllegalArgumentException("传入字符串不能为空");
         }
-        if (amount == 0) {
+        BigDecimal value;
+        try {
+            value = new BigDecimal(amount.trim());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("传入参数只能为数字");
+        }
+        // 返回值:-1-表示负数;0-表示0;1-表示正数
+        int signum = value.signum();
+        if (signum < 0) {
+            return "NEGATIVE " + convertToEnglish(value.abs().toString());
+        }
+        if (signum == 0) {
             return "DOLLARS ZERO AND CENTS ZERO";
         }
+        value = value.setScale(2, BigDecimal.ROUND_HALF_UP);
+        String valStr = String.valueOf(value);
+        // 取整数部分
+        String dollars = valStr.split("\\.")[0];
+        // 取小数部分
+        String cents = valStr.split("\\.")[1];
 
-        long dollars = (long) (amount*1.0);
-        double cents = (amount * 100 - dollars * 100.0);
 
-        String dollarPart = convertIntegerPart(dollars);
-        String centPart = convertIntegerPart((int) cents);
+        String dollarPart = convertIntegerPart(Long.parseLong(dollars));
+        String centPart = convertIntegerPart(Long.parseLong(cents));
+
 
         return ("DOLLARS " + dollarPart + " AND CENTS " + centPart).replaceAll("\\s+", " ");
     }
 
+
     private static String convertIntegerPart(long amount) {
         if (amount == 0) {
-            return "";
+            return "ZERO";
         }
 
         String result = "";
@@ -144,7 +160,17 @@ public class CurrencyConverter {
      */
     @NaslLogic
     public static String convertEnglishToNumber(String englishNumber) {
-        englishNumber = englishNumber.replaceAll("[,]", "").replace("DOLLARS", "");
+        if (isEmpty(englishNumber)) {
+            throw new IllegalArgumentException("传入字符串不能为空");
+        }
+        englishNumber = englishNumber.toUpperCase();
+        //处理负数
+        String negative = "";
+        if (englishNumber.contains("NEGATIVE")) {
+            englishNumber = englishNumber.replace("NEGATIVE", "");
+            negative = "-";
+        }
+        englishNumber = englishNumber.replace(",", "").replace("DOLLARS", "");
         String[] small = new String[0];
         if (englishNumber.contains("CENTS")) {
             String[] cents = englishNumber.split("CENTS");
@@ -195,7 +221,7 @@ public class CurrencyConverter {
             result += smallPart / 100;
         }
         DecimalFormat df = new DecimalFormat("#.00");
-        return df.format(result);
+        return negative + df.format(result);
     }
 
     /**
@@ -206,6 +232,9 @@ public class CurrencyConverter {
      */
     @NaslLogic
     public static String rmbToBig(String rmb) {
+        if (isEmpty(rmb)) {
+            throw new IllegalArgumentException("传入字符串不能为空");
+        }
         BigDecimal value;
         try {
             value = new BigDecimal(rmb.trim());
@@ -317,6 +346,14 @@ public class CurrencyConverter {
      */
     @NaslLogic
     public static String convertChineseToNumber(String chineseNumber) {
+        if (isEmpty(chineseNumber)) {
+            throw new IllegalArgumentException("传入字符串不能为空");
+        }
+        String negative = "";
+        if (chineseNumber.contains("负")) {
+            chineseNumber = chineseNumber.replace("负", "");
+            negative = "-";
+        }
         chineseNumber = chineseNumber.replace("整", "");
         String small = "";
         if (chineseNumber.contains("角") || chineseNumber.contains("分")) {
@@ -388,7 +425,7 @@ public class CurrencyConverter {
             }
         }
         DecimalFormat df = new DecimalFormat("0.00");
-        return df.format(result);
+        return negative + df.format(result);
     }
 
     private static Boolean isEmpty(String s) {

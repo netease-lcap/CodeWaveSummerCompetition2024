@@ -6,13 +6,13 @@
 ### 逻辑 convertToEnglish
 
 小写美元转大写美元
-入参为 数字 Double类型 例如 128.24
+入参为 数字 String类型 例如 128.24
 返回示例：DOLLARS ONE HUNDRED TWENTY EIGHT AND CENTS TWENTY FOUR
 
 ### 逻辑 convertEnglishToNumber
 
 大写美元转小写美元 
-入参：为英文字母 例如 DOLLARS ONE HUNDRED TWENTY EIGHT AND CENTS TWENTY FOUR
+入参：为英文字母 例如 DOLLARS ONE HUNDRED TWENTY EIGHT AND CENTS TWENTY FOUR（如果为负数，在最前面加NEGATIVE,例如：NEGATIVE DOLLARS ONE HUNDRED TWENTY EIGHT AND CENTS TWENTY FOUR
 返回示例：128.24
 
 ### 逻辑 rmbToBig
@@ -24,7 +24,7 @@
 ### 逻辑 convertChineseToNumber
 
 大写人民币转小写
-入参为 String 字符串 例如 壹佰贰拾捌元贰角肆分
+入参为 String 字符串 例如 壹佰贰拾捌元贰角肆分（如果是负数，在最前面加“负”字，例如，负壹佰贰拾捌元贰角肆分）
 返回示例：128.24
 
 ## 使用步骤说明
