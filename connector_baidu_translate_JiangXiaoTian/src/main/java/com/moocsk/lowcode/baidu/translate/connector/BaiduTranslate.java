@@ -90,11 +90,18 @@ public class BaiduTranslate {
     public TranslateResult translationBatch(List<String> q, String from, String to) {
         TranslateResult translateResult = new TranslateResult();
         String qStr = String.join("\n", q);
+        // 批量翻译限制 List 长度为 6000
+        int qSize = q.size();
+        if (qSize > 4000) {
+            translateResult.setErrorCode("500");
+            translateResult.setErrorMsg("请将批量翻译数量控制在4000个以内");
+            return translateResult;
+        }
         // 批量翻译文本总长度控制在 6000 字节以内
         int qStrLen = StringUtil.getStringLengthByByte(qStr); // 翻译文本字节长度
         if (qStrLen > 6000) {
             translateResult.setErrorCode("500");
-            translateResult.setErrorMsg("请将翻译内容控制在6000字节以内");
+            translateResult.setErrorMsg("请将批量翻译内容控制在6000字节以内");
             return translateResult;
         }
         TransApi transApi = new TransApi(this.appid, this.secretKey);
