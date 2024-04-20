@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 
 @NaslStructure
-public class OcrInvoice {
+public class OcrInvoiceResponse {
     @JSONField(name = "angle")
     public Integer angle;
 

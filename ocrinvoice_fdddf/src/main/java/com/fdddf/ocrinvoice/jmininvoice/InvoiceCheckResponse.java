@@ -3,10 +3,8 @@ package com.fdddf.ocrinvoice.jmininvoice;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.netease.lowcode.core.annotation.NaslStructure;
 
-import java.util.List;
-
 @NaslStructure
-public class InvoiceCheckResult {
+public class InvoiceCheckResponse {
     @JSONField(name = "data")
     public Data data;
 

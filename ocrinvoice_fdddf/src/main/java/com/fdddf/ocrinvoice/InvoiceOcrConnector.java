@@ -1,16 +1,17 @@
 package com.fdddf.ocrinvoice;
 
 import com.fdddf.ocrinvoice.jmininvoice.AliyunJminInvocieValidate;
-import com.fdddf.ocrinvoice.jmininvoice.InvoiceCheckResult;
+import com.fdddf.ocrinvoice.jmininvoice.InvoiceCheckRequest;
+import com.fdddf.ocrinvoice.jmininvoice.InvoiceCheckResponse;
 import com.fdddf.ocrinvoice.ocrinvoice.AliyunOcrInvoice;
-import com.fdddf.ocrinvoice.ocrinvoice.OcrInvoice;
+import com.fdddf.ocrinvoice.ocrinvoice.OcrInvoiceRequest;
+import com.fdddf.ocrinvoice.ocrinvoice.OcrInvoiceResponse;
 import com.fdddf.ocrinvoice.rollticket.AliyunOcrRollTicket;
-import com.fdddf.ocrinvoice.rollticket.RollTicketInvoice;
+import com.fdddf.ocrinvoice.rollticket.RollTicketResponse;
+import com.fdddf.ocrinvoice.rollticket.RollTicketRequest;
 import com.netease.lowcode.core.annotation.NaslConnector;
 
 import java.util.function.Function;
-
-import java.io.IOException;
 
 @NaslConnector(connectorKind = "invoiceOcr")
 public class InvoiceOcrConnector {
@@ -31,43 +32,45 @@ public class InvoiceOcrConnector {
     /**
      * 卷票识别
      *
-     * @param url 图片地址
+     * @param request RollTicketRequest
      * @return RollTicketInvoice
      */
     @NaslConnector.Logic
-    public RollTicketInvoice rollTicketOcr(String url) {
+    public RollTicketResponse rollTicketOcr(RollTicketRequest request) {
         AliyunOcrRollTicket aliyunOcrRollTicket = new AliyunOcrRollTicket();
-        return aliyunOcrRollTicket.request(this.appCode, url);
+        return aliyunOcrRollTicket.request(this.appCode, request);
     }
 
     /**
      * 发票识别
      *
-     * @param url 图片地址
-     * @return OcrInvoice
+     * @param request OcrInvoiceRequest
+     * @return OcrInvoiceResponse
      */
     @NaslConnector.Logic
-    public OcrInvoice invoiceOcr(String url) {
+    public OcrInvoiceResponse invoiceOcr(OcrInvoiceRequest request) {
         AliyunOcrInvoice aliyunOcrInvoice = new AliyunOcrInvoice();
-        return aliyunOcrInvoice.request(this.appCode, url);
+        return aliyunOcrInvoice.request(this.appCode, request);
     }
 
     /**
      * 发票校验
      *
-     * @param fphm  发票号码 必填
-     * @param kprq  发票日期 必填
-     * @param fpdm  发票代码
-     * @param xym   校验码
-     * @param bhsje 不含税金额
+     * @param req InvoiceCheckRequest
      * @return InvoiceCheckResult
      */
     @NaslConnector.Logic
-    public InvoiceCheckResult invoiceCheck(String fphm, String kprq, String fpdm, String xym, String bhsje) {
+    public InvoiceCheckResponse invoiceCheck(InvoiceCheckRequest req) {
         AliyunJminInvocieValidate aliyunJminInvocieValidate = new AliyunJminInvocieValidate();
-        return aliyunJminInvocieValidate.request(this.appCode, fphm, kprq, fpdm, xym, bhsje);
+        return aliyunJminInvocieValidate.request(this.appCode, req);
     }
 
+    /**
+     * 测试触发器，暂无用
+     *
+     * @param msg      String
+     * @param handleMsg Function<String, String>
+     */
     @NaslConnector.Trigger
     public void testTrigger(String msg, Function<String, String> handleMsg) {
         handleMsg.apply(msg);
@@ -77,15 +80,23 @@ public class InvoiceOcrConnector {
         System.out.println("hello world");
 
         InvoiceOcrConnector connector = new InvoiceOcrConnector().initBean("ffbd4a857cf045219e2cb6a8970c0f56");
-        RollTicketInvoice result = connector.rollTicketOcr("https://lankuaiji.cn/img/roll_ticket.jpg");
+        RollTicketRequest request = new RollTicketRequest("https://lankuaiji.cn/img/roll_ticket.jpg", "");
+        RollTicketResponse result = connector.rollTicketOcr(request);
         System.out.println(result.data.invoiceNumber);
+        System.out.println(result.data.buyerName);
+        System.out.println(result.data.sellerName);
 
-        OcrInvoice result2 = connector.invoiceOcr("https://fapiao.youshang.com/zx/wp-content/uploads/2020/01/20160831113346-1157589472.png");
+        OcrInvoiceRequest request2 = new OcrInvoiceRequest("https://fapiao.youshang.com/zx/wp-content/uploads/2020/01/20160831113346-1157589472.png", "", 1);
+        OcrInvoiceResponse result2 = connector.invoiceOcr(request2);
         System.out.println(result2.data.invoiceCode);
+        System.out.println(result2.data.invoiceNumber);
+        System.out.println(result2.data.invoiceDate);
 
-        InvoiceCheckResult result3 = connector.invoiceCheck("24617000000027471236", "20240418", "", "", "55.93");
+        InvoiceCheckRequest request3 = new InvoiceCheckRequest("24617000000027471236", "20240418", "", "", "55.93");
+        InvoiceCheckResponse result3 = connector.invoiceCheck(request3);
         System.out.println(result3.ret_message);
         System.out.println(result3.code);
+        System.out.println(result3.data.result);
 
         connector.testTrigger("123", new Function<String, String>() {
             @Override

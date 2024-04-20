@@ -3,16 +3,14 @@ package com.fdddf.ocrinvoice.ocrinvoice;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fdddf.ocrinvoice.rollticket.AliyunOcrRollTicket;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import com.fdddf.ocrinvoice.utils.HttpUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 【阿里官方】增值税发票OCR文字识别
@@ -21,41 +19,31 @@ import java.io.IOException;
 public class AliyunOcrInvoice {
     private static final Logger log = LoggerFactory.getLogger(AliyunOcrRollTicket.class);
 
-    public OcrInvoice request(String appCode, String url) throws RuntimeException {
-        if (appCode.isEmpty() || url.isEmpty()) {
-            throw new RuntimeException("appCode or url is empty");
+    public OcrInvoiceResponse request(String appCode, OcrInvoiceRequest req) throws RuntimeException {
+        if (appCode.isEmpty() || !req.validate()) {
+            throw new RuntimeException("appCode or request is empty");
         }
 
         try {
-            OkHttpClient client = new OkHttpClient();
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("url", url);
-            jsonObject.put("img", "");
+            String host = "https://dgfp.market.alicloudapi.com";
+            String path = "/ocrservice/invoice";
+            String method = "POST";
 
-            RequestBody requestJsonBody = RequestBody.create(
-                    jsonObject.toString(),
-                    MediaType.parse("application/json")
-            );
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put("Authorization", "APPCODE " + appCode);
+            headers.put("Content-Type", "application/json; charset=UTF-8");
+            Map<String, String> querys = new HashMap<String, String>();
+            String body = JSON.toJSONString(req);
 
-            Request request = new Request.Builder()
-                    .url("https://dgfp.market.alicloudapi.com/ocrservice/invoice")
-                    .post(requestJsonBody)
-                    .addHeader("Authorization", "APPCODE " + appCode)
-                    .addHeader("Content-Type", "application/json; charset=UTF-8")
-                    .build();
+            HttpResponse response = HttpUtils.doPost(host, path, method, headers, querys, body);
+            System.out.println(response.toString());
 
-            Response response = client.newCall(request).execute();
-            ResponseBody body = response.body();
-
-            assert body != null;
-            String bodyString = body.string();
-            System.out.printf("API response body %s\n", bodyString);
-            log.info("API response body {}", bodyString);
-            return JSONObject.toJavaObject(JSON.parseObject(bodyString), OcrInvoice.class);
-        } catch (IOException e) {
-            System.out.printf("API request failed %s\n", e);
-            log.info("API request exception: {}", e.getMessage());
-            return null;
+            String bodyString = EntityUtils.toString(response.getEntity());
+            return JSONObject.toJavaObject(JSON.parseObject(bodyString), OcrInvoiceResponse.class);
+        } catch (Exception e) {
+            log.error("request error", e);
+            throw new RuntimeException(e);
         }
+
     }
 }

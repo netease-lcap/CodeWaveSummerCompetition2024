@@ -5,7 +5,7 @@ import com.netease.lowcode.core.annotation.NaslStructure;
 
 
 @NaslStructure
-public class RollTicketInvoice {
+public class RollTicketResponse {
     @JSONField(name="data")
     public RollTicketInvoiceData data;
     public Integer angle;
