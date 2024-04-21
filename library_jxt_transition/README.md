@@ -132,27 +132,27 @@
 
 1. 实现页面布局，将需要实现动画效果的组件拖入到`transition`组件中。
 
-![image](images/transition_001.png)
+![image](transition_001.png)
 
 > 注意：由于预设动画很多依赖于元素为非内联元素，如果使用文本组件，需要对文本添加样式，设置为非内联元素。
 
-![image](images/transition_001_02.png)
+![image](transition_001_02.png)
 
 2. 在页面创建`Boolean`类型局部变量`show`，默认值为`false`，并将变量绑定到`transition`包裹组件的显示条件。
 
-![image](images/transition_002.png)
+![image](transition_002.png)
 
 3. 给`显示切换`按钮添加点击事件，对局部变量`show`的值进行取反。
 
-![image](images/transition_003.png)
+![image](transition_003.png)
 
 4. 选择`transition`组件，设置进入**进入动画**和**离开动画**。
 
-![image](images/transition_004.png)
+![image](transition_004.png)
 
 5. 预览应用，点击显示切换按钮，即可看到`transition`包裹组件在显示与隐藏切换时展示了选择的动画效果。
 
-![image](images/transition_005.png)
+![image](transition_005.png)
 
 #### 自定义动画
 
@@ -160,47 +160,47 @@
 
 1. 实现页面布局，将需要实现动画效果的组件拖入到`transition`组件中。
 
-![image](images/transition_001.png)
+![image](transition_001.png)
 
 > 注意：由于预设动画很多依赖于元素为非内联元素，如果使用文本组件，需要对文本添加样式，设置为非内联元素。
 
-![image](images/transition_001_02.png)
+![image](transition_001_02.png)
 
 2. 在页面创建`Boolean`类型局部变量`show`，默认值为`false`，并将变量绑定到`transition`包裹组件的显示条件。
 
-![image](images/transition_002.png)
+![image](transition_002.png)
 
 3. 给`显示切换`按钮添加点击事件，对局部变量`show`的值进行取反。
 
-![image](images/transition_003.png)
+![image](transition_003.png)
 
 4. 设置**动画方式**为`自定义动画`
 
 > 注意：设置自定义动画后，**动画效果**配置及**动画配置**中除`初次展示内容时执行进入动画效果`外将全部失效。
 
-![image](images/transition_006.png)
+![image](transition_006.png)
 
 5. 选择`transition`组件，设置`进入动画开始前`事件，通过该事件，设置元素执行进入动画前的初始状态。
 
-![image](images/transition_007.png)
+![image](transition_007.png)
 
-![image](images/transition_008.png)
+![image](transition_008.png)
 
 6. 选择`transition`组件，设置`进入动画开始时`事件，通过该事件，设置进入时执行的动画效果。
 
 注意：此事件中存在`done`函数，用于在动画完成之后调用。
 
-![image](images/transition_009.png)
+![image](transition_009.png)
 
 7. 选择`transition`组件，设置`离开动画开始时`事件，通过该事件，设置离开时执行的动画效果。
 
 注意：此事件中存在`done`函数，用于在动画完成之后调用。
 
-![image](images/transition_010.png)
+![image](transition_010.png)
 
 8. 预览应用，点击显示切换按钮，即可看到`transition`包裹组件在显示与隐藏切换时展示了自定义的动画效果。
 
-![image](images/transition_005.png)
+![image](transition_005.png)
 
 ### transition-group
 
@@ -210,26 +210,26 @@
 
 1. 实现页面布局如下。
 
-![image](images/transition-group_001.png)
+![image](transition-group_001.png)
 
 2. 在页面创建`List<String>`类型局部变量`list`，并将变量绑定到`transition-group`的数据源。
 
-![image](images/transition-group_002.png)
+![image](transition-group_002.png)
 
 3. 拖拽文本组件到`transition-group`，并给文本组件绑定列表项的值。
 
-![image](images/transition-group_003.png)
+![image](transition-group_003.png)
 
-![image](images/transition-group_004.png)
+![image](transition-group_004.png)
 
 4. 显示切换按钮添加点击事件，当`list`长度大于 0 时清空`list`；否则给`list`赋值。
 
-![image](images/transition-group_005.png)
+![image](transition-group_005.png)
 
 5. 选择`transition-group`组件，设置进入**进入动画**和**离开动画**。
 
-![image](images/transition-group_006.png)
+![image](transition-group_006.png)
 
 8. 预览应用，点击显示切换按钮，即可看到`transition-group`包裹组件在显示切换时展示了自定义的动画效果。
 
-![image](images/transition-group_007.png)
+![image](transition-group_007.png)
