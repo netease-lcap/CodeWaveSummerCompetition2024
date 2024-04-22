@@ -56,12 +56,24 @@ String totalPayment;//总计
 String loanAmount;//剩余贷款
 
 返回参数示例:
-[CalculateReturnStructure
-{month=1, principal='4166.67', interest='5562.5', totalPayment='9729.17', loanAmount='1495833.33'},
-CalculateReturnStructure{month=2, principal='4166.67', interest='5547.05', totalPayment='9713.72', loanAmount='1491666.67'}, 
-CalculateReturnStructure{month=3, principal='4166.67', interest='5531.6', totalPayment='9698.26', loanAmount='1487500'}, 
-CalculateReturnStructure{month=4, principal='4166.67', interest='5516.15', totalPayment='9682.81', loanAmount='1483333.33'}
-......]
+"CalculateAndSumReturnStructure": 
+{
+"sumInterest": "1220081.31",
+"listCalculateReturnStructure": 
+[{
+"month": 1,
+"principal": "1993.28",
+"interest": "5562.5",
+"totalPayment": "7555.78",
+"loanAmount": "1498006.72"
+},
+{
+"month": 2,
+"principal": "2000.67",
+"interest": "5555.11",
+"totalPayment": "7555.78",
+"loanAmount": "1496006.05"
+},......]}
 
 ### 逻辑三
 * 房贷等额本金
@@ -74,6 +86,7 @@ calculateEqualPrincipal
 * @param annualInterestRate 贷款利率
 * @param loanTermInYears 贷款年数
 */
+
 
 
 输出参数:
@@ -90,6 +103,26 @@ String interest;//利息
 String totalPayment;//总计
 String loanAmount;//剩余贷款
 
+
+返回参数示例:
+"CalculateAndSumReturnStructure":
+{
+"sumInterest": "1220081.31",
+"listCalculateReturnStructure":
+[{
+"month": 1,
+"principal": "1993.28",
+"interest": "5562.5",
+"totalPayment": "7555.78",
+"loanAmount": "1498006.72"
+},
+{
+"month": 2,
+"principal": "2000.67",
+"interest": "5555.11",
+"totalPayment": "7555.78",
+"loanAmount": "1496006.05"
+},......]}
 ## 使用步骤说明
 
 1.  应用引用依赖库
@@ -100,7 +133,7 @@ String loanAmount;//剩余贷款
 3. ![2.png](2.png)
 ## 应用演示链接
 jar包为:
-[library-personalincomeUtil_y-1.0.5.zip](library-personalincomeUtil_y-1.0.5.zip)
+[library-personalincomeUtil_y-1.0.6.zip](library-personalincomeUtil_y-1.0.6.zip)
 使用了本依赖库的应用的链接。
-https://dev-test123-suber.app.codewave.163.com/dashboard/test1
+https://test123-suber.app.codewave.163.com/dashboard/test1
 
