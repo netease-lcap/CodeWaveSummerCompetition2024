@@ -1,0 +1,56 @@
+- name: lxy-turning-step-bar
+  title: 转弯步骤条
+  type: both
+  belong: component
+  labels: [Runtime]
+  attrs:
+    - name: value
+      title: 值
+      type: string
+      description: 值
+      sync: true
+      model: true
+    - name: data-source
+      title: 数据源
+      type: array
+      description: 展示数据的输入源，可设置为数据集对象或者返回数据集的逻辑
+      group: 数据属性
+      brifeDoc: ""
+      docDescription: 组件的数据源，配置内容为数据集对象或者返回数据集的逻辑。
+      tooltipLink: ""
+    - name: data-schema
+      title: 数据类型
+      type: schema
+      description: 数据源返回的数据结构的类型，自动识别类型进行展示说明
+      compType: dataTypeComsItem
+      group: 数据属性
+      brifeDoc: ""
+      docDescription: IDE 根据配置的数据源动态计算返回内容的数据结构，用于动态配置项 current.item 的类型说明。
+      tooltipLink: ""
+    - name: itemWidth
+      type: string
+      description: 步骤条宽度
+      title: "步骤条宽度"
+  events:
+    - name: onCellClick
+      title: 步骤条点击
+      description: 步骤条点击
+      params: []
+  slots:
+    - concept: Slot
+      name: default
+      description: 内容自定义
+      slotProps:
+        concept: Param
+        name: current
+        typeAnnotation:
+          concept: TypeAnnotation
+          typeKind: generic
+          typeNamespace: nasl.ui
+          typeName: Current
+          typeArguments:
+            - concept: TypeAnnotation
+              typeKind: typeParam
+              typeName: T
+
+
