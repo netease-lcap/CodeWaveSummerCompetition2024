@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.wgx.spring.SpringEnvironmentConfiguration
+com.wgx.spring.CustomLogSpringEnvironmentConfig
