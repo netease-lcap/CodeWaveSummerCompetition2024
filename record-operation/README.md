@@ -28,11 +28,16 @@ record-operation一个利用Java提供的AOP机制来打印请求日志的依赖
    - 开发环境默认值：detailed
    - 生产环境默认值：simple
 
-5. loggingClassNames：指定需要拦截并记录日志的控制器类。
+5.  loggingClassNames：指定需要拦截并记录日志的逻辑（控制类）。
 
-6. - 使用all表示拦截所有控制器类。
-   - 如果配置为null或空字符串，则不拦截任何控制器类。
-   - 特定控制器类以全限定名指定，使用英文逗号分隔，如：com.example.controller.Class1,com.example.controller.Class2。
+   -   使用all表示拦截所有逻辑（控制类）。
+-   如果配置为null或空字符串，则不拦截任何控制器类。
+   -   逻辑名称需要使用英文逗号分隔，如：logic1,logic2
+-   如果为依赖库逻辑命名规范为：依赖库标识(首字母大写)+逻辑名（大驼峰）例如：record-operation依赖库的getRestControllerNames逻辑需要写为Record_operationGetRestControllerNames
+   -   开发环境默认值：all
+-   生产环境默认值：all
+
+注意：默认就屏蔽SystemTaskController类的日志。（流程相关）
 
 依赖库逻辑：
 
@@ -59,4 +64,4 @@ record-operation一个利用Java提供的AOP机制来打印请求日志的依赖
 
 3. 调用逻辑
 
-   ![1713811285567](assets/%E8%B0%83%E7%94%A8%E9%80%BB%E8%BE%91.png)
+   ![1713811285567](%E8%B0%83%E7%94%A8%E9%80%BB%E8%BE%91.png)

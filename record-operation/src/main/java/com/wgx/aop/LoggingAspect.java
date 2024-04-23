@@ -1,5 +1,6 @@
 package com.wgx.aop;
 
+import com.alibaba.fastjson.JSON;
 import com.netease.lowcode.core.EnvironmentType;
 import com.netease.lowcode.core.annotation.Environment;
 import com.netease.lowcode.core.annotation.NaslConfiguration;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 @Order(1)
 public class LoggingAspect {
 
+    public static final String CONTROLLER = "Controller";
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
     //true开启打印日志、false关闭打印日志
@@ -42,7 +44,7 @@ public class LoggingAspect {
     private String loggingFormat;
 
     // 需要拦截打印日志的控制类：all表示拦截所有控制类,如果为null或空字符串则不会拦截任何控制类，
-    // 若需要拦截特定的控制类格式为 例如：com.zhangsan.web.Test1Controller,com.zhangsan.web.Test2Controller。注意：需要使用英文逗号为分隔符
+    // 若需要拦截特定的控制类格式为 例如：logic1,logic2。注意：需要使用英文逗号为分隔符
     @Value("${loggingClassNames}")
     @NaslConfiguration(defaultValue = {
             @Environment(type = EnvironmentType.DEV,value = "all"),
@@ -83,7 +85,7 @@ public class LoggingAspect {
                         joinPoint.getSignature().getName(),
                         requestIP,
                         requestURL,
-                        args,
+                        serializeObject(args),
                         ex.toString());
                 logger.error("Exception stack trace:", ex);
             }
@@ -104,8 +106,8 @@ public class LoggingAspect {
                             joinPoint.getSignature().getName(),
                             requestIP,
                             requestURL,
-                            args,
-                            result,
+                            serializeObject(args),
+                            serializeObject(result),
                             executionTime);
                 }
             }
@@ -118,19 +120,34 @@ public class LoggingAspect {
             return true;
         }
 
+        String[] split = joinPoint.getSignature().getDeclaringTypeName().split("\\.");
+        //String lastElement = split[split.length - 1];
+        String lastElement = split[split.length - 1] + CONTROLLER;
+
         if ("all".equals(loggingClassNames)) {
+            // 直接判断目标类名是否为SystemTaskController，如果是，则返回true表示不应记录日志
+            if ("SystemTaskController".equals(lastElement)) {
+                return true;
+            }
             return false;
         }
 
         String[] classNameList = loggingClassNames.split(",");
         for (String className : classNameList) {
-            //String[] split = joinPoint.getSignature().getDeclaringTypeName().split("\\.");
-           // String lastElement = split[split.length - 1];
-            if (className.trim().equals(joinPoint.getSignature().getDeclaringTypeName())) {
+            if (className.trim().equals(lastElement)) {
                 return false;
             }
         }
         return true;
+    }
+
+    private String serializeObject(Object obj) {
+        try {
+            return JSON.toJSONString(obj);
+        } catch (Exception e) {
+            logger.error("Error serializing object to JSON", e);
+            return "Error";
+        }
     }
 }
 
