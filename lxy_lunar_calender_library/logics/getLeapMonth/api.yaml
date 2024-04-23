@@ -1,0 +1,5 @@
+- name: getLeapMonth
+  description: 获取闰月
+  type: both
+  belong: logic
+  labels: [Runtime]

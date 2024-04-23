@@ -27,6 +27,7 @@ public class JsonUtil {
         try {
             // 将XML字符串解析为DOM对象
             XmlMapper xmlMapper = new XmlMapper();
+            xml = "<root>" + xml + "</root>";
             JsonNode node = xmlMapper.readTree(xml.getBytes());
             // 将DOM对象转换为JSON对象
             ObjectMapper jsonMapper = new ObjectMapper();

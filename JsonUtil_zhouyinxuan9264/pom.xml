@@ -6,7 +6,7 @@
 
     <groupId>com.yu</groupId>
     <artifactId>json-util</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <name>json 工具包</name>
     <description>提供从xml转成json和从json中提取指定值的方法</description>
     <properties>
@@ -32,6 +32,11 @@
             <optional>true</optional>
             <scope>system</scope>
             <systemPath>${project.basedir}/jar/nasl-metadata-collector-0.8.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.83</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
