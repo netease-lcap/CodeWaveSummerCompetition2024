@@ -8,10 +8,12 @@ package com.yu.connector;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
-import com.netease.lowcode.core.annotation.NaslConnector;
+import com.netease.lowcode.core.annotation.NaslLogic;
 import com.sun.mail.imap.IMAPStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.activation.DataHandler;
 import javax.mail.*;
@@ -32,10 +34,10 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@NaslConnector(connectorKind = "email-connector")
-public class EmailConnector {
+@Component
+public class EmailConnectorUtil {
     public static final String EMAIL_PATTERN = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
-    private static final Logger log = LoggerFactory.getLogger(EmailConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(EmailConnectorUtil.class);
     /**
      * 你的邮箱账号 必填
      */
@@ -51,6 +53,7 @@ public class EmailConnector {
     private String imapHost = "imap.163.com";
     private Session session;
 
+
     /**
      * 对中文字符进行UTF-8编码
      *
@@ -58,7 +61,7 @@ public class EmailConnector {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public static String tranformStyle(String source) throws UnsupportedEncodingException {
+    private String tranformStyle(String source) throws UnsupportedEncodingException {
         char[] arr = source.toCharArray();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < arr.length; i++) {
@@ -78,7 +81,7 @@ public class EmailConnector {
      * @param c
      * @return
      */
-    public static boolean isChinese(char c) {
+    public boolean isChinese(char c) {
         Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
         if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
                 || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
@@ -91,23 +94,15 @@ public class EmailConnector {
         return false;
     }
 
-
-    /**
-     * @param account  你的邮箱账号 必填 支持个人邮箱和企业邮箱
-     * @param authCode 你授权给第三方的授权码
-     * @param smtpHost 你的邮箱的smtp服务器地址
-     * @return
-     */
-    @NaslConnector.Creator
-    public EmailConnector init(String account, String authCode, String smtpHost, String imapHost) {
-        this.account = account;
-        this.authCode = authCode;
-        if (!isEmpty(smtpHost)) this.smtpHost = smtpHost;
-        if (!isEmpty(smtpHost)) this.imapHost = imapHost;
+    public EmailConnectorUtil(@Autowired EmailConfigProp emailProp) {
+        this.account = emailProp.getAccount();
+        this.authCode = emailProp.getAuthCode();
+        if (!isEmpty(smtpHost)) this.smtpHost = emailProp.getSmtpHost();
+        if (!isEmpty(smtpHost)) this.imapHost = emailProp.getImapHost();
         this.session = createSession(account, authCode);
-        this.session.setDebug(true);
-        return this;
+        //this.session.setDebug(true);
     }
+
 
     /**
      * 收取邮件，支持获取
@@ -115,7 +110,7 @@ public class EmailConnector {
      * @param needMsgCount 领取的邮件数量数量越大，拉取越慢
      * @return
      */
-    @NaslConnector.Logic
+    @NaslLogic
     public List<MailBody> getEmail(Integer needMsgCount) {
         List<MailBody> list = new ArrayList<>();
         try {
@@ -169,31 +164,6 @@ public class EmailConnector {
     }
 
     /**
-     * @param account  你的邮箱账号 必填 支持个人邮箱和企业邮箱
-     * @param authCode 你授权给第三方的授权码
-     * @param smtpHost 你的邮箱的smtp服务器地址
-     * @return
-     */
-    @NaslConnector.Tester
-    public Boolean connectTest(String account, String authCode, String smtpHost, String imapHost) {
-        init(account, authCode, smtpHost, imapHost);
-        //开发情况开启调试
-        //session.setDebug(true);
-        try {
-            Store store = session.getStore("imap");
-            store.connect(null, account, authCode);
-            store.close();
-            return true;
-        } catch (AuthenticationFailedException e) {
-            log.error("密码校验失败：", e);
-            throw new RuntimeException(e);
-        } catch (MessagingException e) {
-            log.error("服务器连接失败：", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * 163邮箱不支持明文连接，所以这里要使用tls病指定协议版本，不然可能会被java.security禁用
      *
      * @param account
@@ -239,7 +209,7 @@ public class EmailConnector {
      * @param content        内容 必填
      * @param ccRecipients   抄送人 非必填
      */
-    @NaslConnector.Logic
+    @NaslLogic
     public Boolean sendEmail(String receiveAccount, String subject, String content, List<String> ccRecipients) throws IllegalArgumentException {
         try {
             MimeMessage email = getMimeMessage(receiveAccount, subject, content, ccRecipients);
@@ -290,7 +260,7 @@ public class EmailConnector {
      * @return
      * @throws IllegalArgumentException
      */
-    @NaslConnector.Logic
+    @NaslLogic
     public Boolean sendEmailWithFile(String receiveAccount, String subject, String content, List<String> ccRecipients, List<String> files) throws IllegalArgumentException {
         if (files == null || files.size() == 0) throw new IllegalArgumentException("请至少传入一个文件路径");
         if (files.size() > 10) throw new IllegalArgumentException("最多同时提交10个附件");
