@@ -1,0 +1,5 @@
+- name: getYearShengXiao
+  description: 获取生肖
+  type: both
+  belong: logic
+  labels: [Runtime]
