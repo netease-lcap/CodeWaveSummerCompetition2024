@@ -39,3 +39,20 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### node_modules ###
+!**/node_modules/
+
+dist/
+
+node_modules/
+
+**/dist-theme/
+**/*.zip
+
+**/target/
+
+
+diff_stat.json
+pr_result.json
+test.md
