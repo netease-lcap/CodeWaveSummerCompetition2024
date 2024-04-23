@@ -22,6 +22,11 @@ public class Email {
      * 邮件接收时间
      */
     public String receivedDate;
+
+    /**
+     * 邮件发送时间
+     */
+    public String sentDate;
     /**
      * 邮件内容
      */

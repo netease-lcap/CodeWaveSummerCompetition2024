@@ -67,8 +67,10 @@ public class EmailFetcher implements Iterator<Message> {
 
             int start = (pageNumber - 1) * pageSize;
             int end = start + pageSize;
-            if (end > inbox.getMessageCount()) {
-                end = inbox.getMessageCount();
+            int count = inbox.getMessageCount();
+            System.out.printf("total emails %d\n", count);
+            if (end > count) {
+                end = count;
             }
 
             List<Email> emails = new ArrayList<>();
@@ -79,13 +81,15 @@ public class EmailFetcher implements Iterator<Message> {
                 sb.setLength(0);
                 getPartContent(message, sb);
                 Date receivedDate = message.getReceivedDate();
+                Date sentDate = message.getSentDate();
                 Email email = new Email(message, inbox.getName());
                 for (Address address : message.getFrom()) {
                     InternetAddress from = (InternetAddress) address;
                     email.from = from.getAddress();
                 }
                 email.content = sb.toString();
-                email.receivedDate = FORMAT.format(receivedDate);
+                email.receivedDate = receivedDate != null ? FORMAT.format(receivedDate) : "";
+                email.sentDate = sentDate != null ? FORMAT.format(sentDate) : "";
                 emails.add(email);
             }
 

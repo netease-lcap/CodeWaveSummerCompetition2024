@@ -28,6 +28,16 @@ public class EmailExtractor {
     private static final Logger log = LoggerFactory.getLogger(EmailExtractor.class);
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
+    public EmailExtractor() {
+//        cfg = new EmailConfig();
+//        cfg.protocol = "pop3";
+//        cfg.sslEnable = true;
+//        cfg.host = "pop.qq.com";
+//        cfg.port = "995";
+//        cfg.username = "111@qq.com";
+//        cfg.password = "";
+    }
+
     /**
      * Get all folders
      * @return List of folders
@@ -111,15 +121,17 @@ public class EmailExtractor {
                 fetcher.getPartContent(mail, sb);
 
                 Date receivedDate = mail.getReceivedDate();
+                Date sentDate = mail.getSentDate();
                 Email email = new Email(mail, fetcher.getFolder());
 
                 for (Address address : mail.getFrom()) {
                     InternetAddress from = (InternetAddress) address;
                     email.from = from.getAddress();
-                    System.out.format("from %s %s at %s \n", from.getAddress(), fetcher.getFolder(), FORMAT.format(receivedDate));
+                    System.out.format("from %s %s at %s \n", from.getAddress(), fetcher.getFolder(), FORMAT.format(sentDate));
                 }
                 email.content = sb.toString();
-                email.receivedDate = FORMAT.format(receivedDate);
+                email.receivedDate = receivedDate != null ? FORMAT.format(receivedDate) : "";
+                email.sentDate = sentDate != null ? FORMAT.format(sentDate) : "";
                 emails.add(email);
             } catch (Exception e) {
                 log.error("Can't read content from email", e);
@@ -165,7 +177,7 @@ public class EmailExtractor {
         }
 
         List<String> includes = Arrays.asList("INBOX", "已发送");
-        List<String> excludes = Arrays.asList("已删除");
+        List<String> excludes = Arrays.asList("已删除", "垃圾箱");
         List<Email> emails2 = new EmailExtractor().extractEmails(includes, excludes);
         for (Email email : emails2) {
             System.out.println(email);
