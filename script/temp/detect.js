@@ -1,9 +1,9 @@
-const fsp = require('fs/promises');
-const path = require('path');
-const { TEMP_FILE } = require('./env');
-const { getPackage } = require('./packageInfo/getPackage');
-const { getPackageRoot } = require('./packageInfo/getPackageRoot');
-const { getChangedFileFromRange, getChangedFile } = require('./git');
+const fsp = require("fs/promises");
+const path = require("path");
+const { TEMP_FILE } = require("./env");
+const { getPackage } = require("./packageInfo/getPackage");
+const { getPackageRoot } = require("./packageInfo/getPackageRoot");
+const { getChangedFileFromRange, getChangedFile } = require("./git");
 
 const createLibraryStore = () => {
   const store = new Map();
@@ -32,7 +32,9 @@ const createLibraryStore = () => {
     const info = await getPackage(packageRoot).catch((e) => {
       return {
         packageRoot,
-        error: e,
+        error: {
+          message: e.message || `${e.message}`,
+        },
       };
     });
     Object.assign(package, info);
@@ -50,7 +52,7 @@ const createLibraryStore = () => {
 };
 
 const main = async (needWrite = false) => {
-  const isRelease = process.argv[2] === 'from-release';
+  const isRelease = process.argv[2] === "from-release";
   const fn = !isRelease ? getChangedFileFromRange : getChangedFile;
   const changedFiles = await fn();
   if (changedFiles.length === 0) return;
@@ -61,15 +63,15 @@ const main = async (needWrite = false) => {
   const info = {
     packages,
     noPackageFiles,
-    needJAVA: packages.filter((v) => v.type !== 'f').length > 0,
+    needJAVA: packages.filter((v) => v.type !== "f").length > 0,
   };
 
-  if (needWrite) await fsp.writeFile(TEMP_FILE, JSON.stringify(info), 'utf-8');
+  if (needWrite) await fsp.writeFile(TEMP_FILE, JSON.stringify(info), "utf-8");
   return info;
 };
 
 module.exports = main;
 
-if (path.basename(process.argv[1]) === 'detect.js') {
+if (path.basename(process.argv[1]) === "detect.js") {
   main(true);
 }
