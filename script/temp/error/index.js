@@ -12,7 +12,7 @@ const {
 const footer = `
 资产共建大赛提交内容中原有的截图，现升级为依赖库使用说明文档。现交内容包括
 
-依赖库代码本身；2. readme代码说明文档；3. 依赖库使用文档说明。
+1. 依赖库代码本身；2. readme代码说明文档；3. 依赖库使用文档说明。
 其中readme面向开发者，使用文档面向使用者。
 请自己阅读提交作品路径说明。
 https://github.com/netease-lcap/CodeWaveAssetCompetition2024/blob/main/%E8%B5%84%E4%BA%A7%E5%85%B1%E5%BB%BA%E5%A4%A7%E8%B5%9B%E6%8F%90%E4%BA%A4%E5%86%85%E5%AE%B9%E8%AF%B4%E6%98%8E.md
