@@ -71,20 +71,20 @@
   - 返回值：两数之和，保留两位小数，四舍五入后的值，类型为 Double。
   - 特殊说明：如果任一加数为 null，则抛出 IllegalArgumentException。
 - `addCeiling(Double a, Double b)`：
-  - 作用：计算两数之和，保留两位小数，向上取整。
+  - 作用：计算两数之和，并向上取整，返回取整后的小数。
   - 入参：两个加数 a 和 b。
   - 入参类型：Double 类型的两个参数。
   - 返回值：两数之和，向上取整后的值，类型为 Double。
   - 特殊说明：如果任一加数为 null，则抛出 IllegalArgumentException。
 - `addFloor(Double a, Double b)`：
-  - 作用：计算两数之和，保留两位小数，向下取整。
+  - 作用：计算两数之和，并向下取整，返回取整后的小数。
   - 入参：两个加数 a 和 b。
   - 入参类型：Double 类型的两个参数。
   - 返回值：两数之和，向下取整后的值，类型为 Double。
   - 特殊说明：如果任一加数为 null，则抛出 IllegalArgumentException。
 - `addCustomScale(Double a, Double b, Integer scale, Integer roundingType)`：
   - 作用：计算两数之和，自定义保留小数位数和取舍方式。
-  - 入参：两个加数 a 和 b，结果的精度 scale，取舍方式 roundingType。
+  - 入参：两个加数 a 和 b，结果的精度 scale，取舍方式 roundingType。取舍方式统一为Integer类型（0 - 不进行取舍，1 - 四舍五入，2 - 向上取整，3 - 向下取整），如果为其他结果则会抛出异常。
   - 入参类型：Double 类型的两个参数，Integer 类型的精度和取舍方式。
   - 返回值：根据给定的精度和取舍方式计算的两数之和，类型为 Double。
   - 特殊说明：如果任一加数、精度或取舍方式为 null，或者精度不在有效范围内，则抛出相应的异常。
@@ -101,20 +101,20 @@
   - 返回值：两数之差，保留两位小数，四舍五入后的值，类型为 Double。
   - 特殊说明：如果任一参数为 null，则抛出 IllegalArgumentException。
 - `subtractCeiling(Double a, Double b)`：
-  - 作用：计算两数之差，保留两位小数，向上取整。
+  - 作用：计算两数之差，并向上取整，返回取整后的小数。
   - 入参：被减数 a 和减数 b。
   - 入参类型：Double 类型的两个参数。
   - 返回值：两数之差，向上取整后的值，类型为 Double。
   - 特殊说明：如果任一参数为 null，则抛出 IllegalArgumentException。
 - `subtractFloor(Double a, Double b)`：
-  - 作用：计算两数之差，保留两位小数，向下取整。
+  - 作用：计算两数之差，并向下取整，返回取整后的小数。
   - 入参：被减数 a 和减数 b。
   - 入参类型：Double 类型的两个参数。
   - 返回值：两数之差，向下取整后的值，类型为 Double。
   - 特殊说明：如果任一参数为 null，则抛出 IllegalArgumentException。
 - `subtractCustomScale(Double a, Double b, Integer scale, Integer roundingType)`：
   - 作用：计算两数之差，自定义保留小数位数和取舍方式。
-  - 入参：被减数 a 和减数 b，结果的精度 scale，取舍方式 roundingType。
+  - 入参：被减数 a 和减数 b，结果的精度 scale，取舍方式 roundingType。取舍方式统一为Integer类型（0 - 不进行取舍，1 - 四舍五入，2 - 向上取整，3 - 向下取整），如果为其他结果则会抛出异常。
   - 入参类型：Double 类型的两个参数，Integer 类型的精度和取舍方式。
   - 返回值：根据给定的精度和取舍方式计算的两数之差，类型为 Double。
   - 特殊说明：如果任一参数、精度或取舍方式为 null，或者精度不在有效范围内，则抛出相应的异常。
@@ -131,20 +131,20 @@
   - 返回值：两数之商，保留两位小数，四舍五入后的值，类型为 Double。
   - 特殊说明：如果任一参数为 null，或者 divisor 为 0，则抛出相应的异常。
 - `divideCeiling(Double dividend, Double divisor)`：
-  - 作用：计算两数之商，保留两位小数，向上取整。
+  - 作用：计算两数之商，并向上取整，返回取整后的小数。
   - 入参：被除数 dividend 和除数 divisor。
   - 入参类型：Double 类型的两个参数。
   - 返回值：两数之商，向上取整后的值，类型为 Double。
   - 特殊说明：如果任一参数为 null，或者 divisor 为 0，则抛出相应的异常。
 - `divideFloor(Double dividend, Double divisor)`：
-  - 作用：计算两数之商，保留两位小数，向下取整。
+  - 作用：计算两数之商，并向下取整，返回取整后的小数。
   - 入参：被除数 dividend 和除数 divisor。
   - 入参类型：Double 类型的两个参数。
   - 返回值：两数之商，向下取整后的值，类型为 Double。
   - 特殊说明：如果任一参数为 null，或者 divisor 为 0，则抛出相应的异常。
 - `divideCustomScale(Double dividend, Double divisor, Integer scale, Integer roundingType)`：
   - 作用：计算两数之商，支持自定义保留小数位数和多种取舍方式。
-  - 入参：被除数 `dividend`，除数 `divisor`，结果的精度 `scale`（小数点后的位数），取舍方式 `roundingType`（0 - 不进行取舍，1 - 四舍五入，2 - 向上取整，3 - 向下取整）。
+  - 入参：被除数 `dividend`，除数 `divisor`，结果的精度 `scale`（小数点后的位数），取舍方式 `roundingType`，取舍方式统一为Integer类型（0 - 不进行取舍，1 - 四舍五入，2 - 向上取整，3 - 向下取整），如果为其他结果则会抛出异常。
   - 入参类型：方法接受两个 `Double` 类型的数值作为被除数和除数，一个 `Integer` 类型的数值作为精度，以及一个表示取舍方式的 `Integer`。
   - 返回值：返回根据给定精度和取舍方式计算出的两数之商，结果为 `Double` 类型。
   - 特殊说明：方法首先检查所有参数是否为 `null`，以及精度是否为非负整数和取舍方式是否有效。如果参数无效，则抛出 `IllegalArgumentException`。然后，根据取舍方式创建对应的 `RoundingMode` 对象，并使用 `BigDecimal` 类的 `divide` 方法进行精确除法运算。
@@ -161,20 +161,20 @@
   - 返回值：返回保留两位小数，四舍五入后的两数之积，结果为 `Double` 类型。
   - 特殊说明：方法检查乘数是否为 `null`。如果任一乘数为 `null`，则抛出 `IllegalArgumentException`。然后，使用 `BigDecimal` 类的 `setScale` 方法设置结果的精度和取舍方式为四舍五入。
 - `multiplyCeiling(Double a, Double b)`：
-  - 作用：计算两数之积，结果保留两位小数，向上取整。
+  - 作用：计算两数之积，并向上取整，返回取整后的小数。
   - 入参：第一个乘数 `a`，第二个乘数 `b`。
   - 入参类型：方法接受两个 `Double` 类型的数值作为乘数。
   - 返回值：返回向上取整后的两数之积，结果为 `Double` 类型。
   - 特殊说明：方法检查乘数是否为 `null`。如果任一乘数为 `null`，则抛出 `IllegalArgumentException`。取舍方式为向上取整。
 - `multiplyFloor(Double a, Double b)`：
-  - 作用：计算两数之积，结果保留两位小数，向下取整。
+  - 作用：计算两数之积，并向下取整，返回取整后的小数。
   - 入参：第一个乘数 `a`，第二个乘数 `b`。
   - 入参类型：方法接受两个 `Double` 类型的数值作为乘数。
   - 返回值：返回向下取整后的两数之积，结果为 `Double` 类型。
   - 特殊说明：方法检查乘数是否为 `null`。如果任一乘数为 `null`，则抛出 `IllegalArgumentException`。然后，取舍方式为向下取整。
 - `multiplyCustomScale(Double a, Double b, Integer scale, Integer roundingType)`：
   - 作用：计算两数之积，支持自定义保留小数位数和多种取舍方式。
-  - 入参：第一个乘数 `a`，第二个乘数 `b`，结果的精度 `scale`（小数点后的位数），取舍方式 `roundingType`（0 - 不进行取舍，1 - 四舍五入，2 - 向上取整，3 - 向下取整）。
+  - 入参：第一个乘数 `a`，第二个乘数 `b`，结果的精度 `scale`（小数点后的位数），取舍方式 `roundingType`，取舍方式统一为Integer类型（0 - 不进行取舍，1 - 四舍五入，2 - 向上取整，3 - 向下取整），如果为其他结果则会抛出异常。
   - 入参类型：方法接受两个 `Double` 类型的数值作为乘数，一个 `Integer` 类型的数值作为精度，以及一个表示取舍方式的 `Integer`。
   - 返回值：返回根据给定精度和取舍方式计算出的两数之积，结果为 `Double` 类型。
   - 特殊说明：方法首先检查所有参数是否为 `null`，以及精度是否为非负整数和取舍方式是否有效。如果参数无效，则抛出 `IllegalArgumentException`。然后，根据取舍方式创建对应的 `RoundingMode` 对象，并使用 `BigDecimal` 类的 `setScale` 方法进行精确乘法运算，并设置结果的精度和取舍方式。
