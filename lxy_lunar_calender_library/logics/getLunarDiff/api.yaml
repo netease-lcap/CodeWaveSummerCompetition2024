@@ -1,0 +1,5 @@
+- name: getLunarDiff
+  description: 获取阴历天数差
+  type: both
+  belong: logic
+  labels: [Runtime]

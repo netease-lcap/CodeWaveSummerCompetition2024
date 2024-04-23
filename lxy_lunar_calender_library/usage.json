@@ -1,0 +1,749 @@
+{
+    "name": "lxy_lunar_calender_library",
+    "title": "阴历依赖库",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "getJieQi",
+                    "description": "获取节气信息",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getLeapMonth",
+                    "description": "获取闰月",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getLunar",
+                    "description": "转阴历",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "isFull",
+                            "concept": "Param",
+                            "description": "是否完整",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getLunarDiff",
+                    "description": "获取阴历天数差",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "str1",
+                            "concept": "Param",
+                            "description": "阴历日期1",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "str2",
+                            "concept": "Param",
+                            "description": "阴历日期2",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getMonthInChinese",
+                    "description": "转阴历月份",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getSolar",
+                    "description": "阴历转阳历",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "str",
+                            "concept": "Param",
+                            "description": "阴历日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getYearShengXiao",
+                    "description": "获取生肖",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "isFestivals",
+                    "description": "获取节日",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "isFestivalsByLunar",
+                    "description": "阴历是否节日",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "str",
+                            "concept": "Param",
+                            "description": "阴历日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "getJieQi",
+                    "description": "获取节气信息",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getLeapMonth",
+                    "description": "获取闰月",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getLunar",
+                    "description": "转阴历",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "isFull",
+                            "concept": "Param",
+                            "description": "是否完整",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getLunarDiff",
+                    "description": "获取阴历天数差",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "str1",
+                            "concept": "Param",
+                            "description": "阴历日期1",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "str2",
+                            "concept": "Param",
+                            "description": "阴历日期2",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getMonthInChinese",
+                    "description": "转阴历月份",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getSolar",
+                    "description": "阴历转阳历",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "str",
+                            "concept": "Param",
+                            "description": "阴历日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "getYearShengXiao",
+                    "description": "获取生肖",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "isFestivals",
+                    "description": "获取节日",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "dateData",
+                            "concept": "Param",
+                            "description": "日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "isFestivalsByLunar",
+                    "description": "阴历是否节日",
+                    "category": "lxy_lunar_calender_library",
+                    "params": [
+                        {
+                            "name": "str",
+                            "concept": "Param",
+                            "description": "阴历日期",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "name": "lxy_lunar_calender_library",
+        "title": "阴历依赖库",
+        "version": "0.1.0",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "getJieQi",
+                        "description": "获取节气信息"
+                    },
+                    {
+                        "name": "getLeapMonth",
+                        "description": "获取闰月"
+                    },
+                    {
+                        "name": "getLunar",
+                        "description": "转阴历"
+                    },
+                    {
+                        "name": "getLunarDiff",
+                        "description": "获取阴历天数差"
+                    },
+                    {
+                        "name": "getMonthInChinese",
+                        "description": "转阴历月份"
+                    },
+                    {
+                        "name": "getSolar",
+                        "description": "阴历转阳历"
+                    },
+                    {
+                        "name": "getYearShengXiao",
+                        "description": "获取生肖"
+                    },
+                    {
+                        "name": "isFestivals",
+                        "description": "获取节日"
+                    },
+                    {
+                        "name": "isFestivalsByLunar",
+                        "description": "阴历是否节日"
+                    }
+                ]
+            },
+            {
+                "type": "h5",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "getJieQi",
+                        "description": "获取节气信息"
+                    },
+                    {
+                        "name": "getLeapMonth",
+                        "description": "获取闰月"
+                    },
+                    {
+                        "name": "getLunar",
+                        "description": "转阴历"
+                    },
+                    {
+                        "name": "getLunarDiff",
+                        "description": "获取阴历天数差"
+                    },
+                    {
+                        "name": "getMonthInChinese",
+                        "description": "转阴历月份"
+                    },
+                    {
+                        "name": "getSolar",
+                        "description": "阴历转阳历"
+                    },
+                    {
+                        "name": "getYearShengXiao",
+                        "description": "获取生肖"
+                    },
+                    {
+                        "name": "isFestivals",
+                        "description": "获取节日"
+                    },
+                    {
+                        "name": "isFestivalsByLunar",
+                        "description": "阴历是否节日"
+                    }
+                ]
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}
