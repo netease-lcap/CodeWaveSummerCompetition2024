@@ -1,4 +1,4 @@
-const ALLOW_MODIFY_OTHERS = process.env.ALLOW_MODIFY_OTHERS || "true"; // 是否允许配置非依赖库文件
+const ALLOW_MODIFY_OTHERS = process.env.ALLOW_MODIFY_OTHERS || "false"; // 是否允许配置非依赖库文件
 
 const LINT_WITH_PARALLEL = process.env.LINT_WITH_PARALLEL || "true"; // lint parallel
 const COMPlIE_WITH_PARALLEL = process.env.BUILD_WITH_PARALLEL || "true"; // complie parallel
