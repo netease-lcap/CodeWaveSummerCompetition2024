@@ -1,0 +1,63 @@
+{
+    "name": "lxy_vconsole_library",
+    "title": "移动端调试工具",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.1",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "init",
+                    "description": "初始化",
+                    "category": "lxy_vconsole_library",
+                    "params": [
+                        {
+                            "name": "theme",
+                            "concept": "Param",
+                            "description": "主题默认light,可选dark",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "name": "lxy_vconsole_library",
+        "title": "移动端调试工具",
+        "version": "0.1.1",
+        "description": "",
+        "frontends": [
+            {
+                "type": "h5",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "init",
+                        "description": "初始化"
+                    }
+                ]
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}
