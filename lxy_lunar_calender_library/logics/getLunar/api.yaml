@@ -1,0 +1,5 @@
+- name: getLunar
+  description: 转阴历
+  type: both
+  belong: logic
+  labels: [Runtime]
