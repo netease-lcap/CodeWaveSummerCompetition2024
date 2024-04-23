@@ -1,0 +1,5 @@
+- name: isFestivalsByLunar
+  description: 阴历是否节日
+  type: both
+  belong: logic
+  labels: [Runtime]
