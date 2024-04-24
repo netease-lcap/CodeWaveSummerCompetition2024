@@ -4,7 +4,6 @@ import com.sun.mail.imap.IMAPMessage;
 import com.sun.mail.imap.IMAPStore;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -24,6 +23,9 @@ public class EmailFetcher implements Iterator<Message> {
     private final String[] includes;
 
     private Store mailbox;
+
+    private List<String> keywords;
+
     private FolderIterator folderIter;
     private MessageIterator msgIter;
 
@@ -90,6 +92,7 @@ public class EmailFetcher implements Iterator<Message> {
                 email.content = sb.toString();
                 email.receivedDate = receivedDate != null ? FORMAT.format(receivedDate) : "";
                 email.sentDate = sentDate != null ? FORMAT.format(sentDate) : "";
+                email.folderName = inbox.getName();
                 emails.add(email);
             }
 
@@ -113,7 +116,7 @@ public class EmailFetcher implements Iterator<Message> {
                 if (next == null) {
                     return false;
                 }
-                msgIter = new MessageIterator(next, batchSize);
+                msgIter = new MessageIterator(next, batchSize, keywords);
             }
         } catch (EmailFetchException e) {
             log.error("Fetching email failed", e);
@@ -135,6 +138,10 @@ public class EmailFetcher implements Iterator<Message> {
             return null;
         }
         return msgIter.getFolder();
+    }
+
+    public void setFilterKeywords(List<String> keywords) {
+        this.keywords = keywords;
     }
 
     public boolean jumpToMessageId(String id) {
@@ -165,7 +172,7 @@ public class EmailFetcher implements Iterator<Message> {
             while (newFolderIter.hasNext()) {
                 Folder next = newFolderIter.next();
                 if (folderName.equals(next.getFullName())) {
-                    newMsgIter = new MessageIterator(next, batchSize);
+                    newMsgIter = new MessageIterator(next, batchSize, keywords);
                     folderIter = newFolderIter;
                     msgIter = newMsgIter;
                     return true;

@@ -20,7 +20,7 @@
 ### extractEmails
 
 提取邮件内容
-* 入参：includes 文件夹包含, excludes 文件夹不包含
+* 入参：includes 文件夹包含, excludes 文件夹不包含, keywords 关键词
 * 出参：List<Email>
 
 ## 使用步骤说明

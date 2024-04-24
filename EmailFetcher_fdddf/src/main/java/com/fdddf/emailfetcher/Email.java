@@ -5,6 +5,7 @@ import com.netease.lowcode.core.annotation.NaslStructure;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeUtility;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,33 +54,42 @@ public class Email {
         recipientBcc = new ArrayList<>();
     }
 
+    private static String decode(String recipient) {
+        try {
+            return MimeUtility.decodeText(recipient);
+        } catch (Exception e) {
+            return recipient;
+        }
+    }
+
     public Email(Message message, String folderName) throws Exception {
         receivedDate = String.valueOf(message.getReceivedDate());
         subject = message.getSubject();
         content = EmailFetcher.decode(message.getContent().toString(), "UTF-8");
         from = ((InternetAddress) message.getFrom()[0]).getAddress();
         recipientTo = new ArrayList<>();
-
+        recipientCc = new ArrayList<>();
+        recipientBcc = new ArrayList<>();
 
         if (message.getRecipients(Message.RecipientType.TO) != null) {
             Address[] toAddresses = message.getRecipients(Message.RecipientType.TO);
             for (Address address : toAddresses) {
-                recipientTo.add(address.toString());
+                recipientTo.add(decode(address.toString()));
             }
         }
         if (message.getRecipients(Message.RecipientType.CC) != null) {
             Address[] ccAddresses = message.getRecipients(Message.RecipientType.CC);
             for (Address address : ccAddresses) {
-                recipientCc.add(address.toString());
+                recipientCc.add(decode(address.toString()));
             }
         }
         if (message.getRecipients(Message.RecipientType.BCC) != null) {
             Address[] bccAddresses = message.getRecipients(Message.RecipientType.BCC);
             for (Address address : bccAddresses) {
-                recipientBcc.add(address.toString());
+                recipientBcc.add(decode(address.toString()));
             }
         }
-        folderName = folderName;
+        this.folderName = folderName;
     }
 
     @Override
@@ -90,7 +100,7 @@ public class Email {
                 "Recipient Cc: " + recipientCc + "\n" +
                 "Recipient Bcc: " + recipientBcc + "\n" +
                 "Received Date: " + receivedDate + "\n" +
-                "Folder: " + folderName + "\n" +
-                "Content: " + content;
+                "Folder: " + folderName + "\n";
+//                "Content: " + content;
     }
 }

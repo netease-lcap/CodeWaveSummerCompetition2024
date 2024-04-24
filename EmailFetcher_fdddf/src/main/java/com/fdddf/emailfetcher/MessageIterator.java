@@ -8,6 +8,7 @@ import javax.mail.FetchProfile;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeUtility;
 import javax.mail.search.*;
 import java.util.Date;
 import java.util.Iterator;
@@ -32,10 +33,11 @@ public class MessageIterator implements Iterator<Message> {
 
     private Date fetchMailsSince;
 
-    public MessageIterator(Folder folder, int batchSize) throws EmailFetchException {
+    public MessageIterator(Folder folder, int batchSize, List<String> keywords) throws EmailFetchException {
         try {
             this.folder = folder;
             this.batchSize = batchSize;
+            this.keywords = keywords;
             SearchTerm st = getSearchTerm();
             if (st != null) {
                 doBatching = false;
@@ -88,6 +90,10 @@ public class MessageIterator implements Iterator<Message> {
         return hasMore;
     }
 
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+
     private SearchTerm getSearchTerm() {
         SearchTerm st = null;
 
@@ -100,6 +106,11 @@ public class MessageIterator implements Iterator<Message> {
             SearchTerm[] terms = new SearchTerm[keywords.size() * 2];
             int i = 0;
             for (String keyword : keywords) {
+                try {
+                    keyword = MimeUtility.encodeText(keyword, "UTF-8", null);
+                } catch (Exception e) {
+                    log.error("Error encoding keyword: {}", keyword);
+                }
                 terms[i++] = new SubjectTerm(keyword);
                 terms[i++] = new BodyTerm(keyword);
             }

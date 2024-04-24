@@ -2,6 +2,7 @@ package com.fdddf.emailfetcher.api;
 
 import com.fdddf.emailfetcher.*;
 import com.netease.lowcode.core.annotation.NaslLogic;
+import com.sun.mail.imap.IMAPMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -28,14 +29,8 @@ public class EmailExtractor {
     private static final Logger log = LoggerFactory.getLogger(EmailExtractor.class);
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    public EmailExtractor() {
-//        cfg = new EmailConfig();
-//        cfg.protocol = "pop3";
-//        cfg.sslEnable = true;
-//        cfg.host = "pop.qq.com";
-//        cfg.port = "995";
-//        cfg.username = "111@qq.com";
-//        cfg.password = "";
+    public void setCfg(EmailConfig cfg) {
+        this.cfg = cfg;
     }
 
     /**
@@ -91,13 +86,16 @@ public class EmailExtractor {
      * Extract emails
      * @param includes List of folders to include
      * @param excludes List of folders to exclude
+     * @param keywords Keywords to filter emails
      * @return List of emails
      */
     @NaslLogic
-    public List<Email> extractEmails(List<String> includes, List<String> excludes) {
+    public List<Email> extractEmails(List<String> includes, List<String> excludes, List<String> keywords) {
         String[] incs = includes.toArray(new String[0]);
         String[] excs = excludes.toArray(new String[0]);
         EmailFetcher fetcher = new EmailFetcher(cfg, incs, excs);
+
+        fetcher.setFilterKeywords(keywords);
         if (!fetcher.connectToMailBox()) {
             log.error("Can't connect to mailbox");
             return null;
@@ -105,6 +103,7 @@ public class EmailExtractor {
 
         int restartCount = 0;
         String lastFolder = "";
+        String lastSuccessMsgId = null;
 
         List<Email> emails = new ArrayList<>();
 
@@ -133,6 +132,9 @@ public class EmailExtractor {
                 email.receivedDate = receivedDate != null ? FORMAT.format(receivedDate) : "";
                 email.sentDate = sentDate != null ? FORMAT.format(sentDate) : "";
                 emails.add(email);
+                if (mail instanceof IMAPMessage) {
+                    lastSuccessMsgId = ((IMAPMessage)mail).getMessageID();
+                }
             } catch (Exception e) {
                 log.error("Can't read content from email", e);
 
@@ -145,6 +147,13 @@ public class EmailExtractor {
                     if (!fetcher.connectToMailBox() || !fetcher.jumpToFolder(curFolder)) {
                         log.info("Jump to folder {} failed. Skip the failed email and continue", curFolder);
                     }
+                    if (lastSuccessMsgId != null) {
+                        if (fetcher.jumpToMessageId(lastSuccessMsgId)) {
+                            log.info("Jump to last failed mail");
+                        } else {
+                            log.info("Can't jump to last failed mail");
+                        }
+                    }
                 } else {
                     log.info("Skip the failed email and continue");
                 }
@@ -153,35 +162,6 @@ public class EmailExtractor {
 
         fetcher.disconnectFromMailBox();
         return emails;
-    }
-
-    public static void main(String[] args) {
-//        EmailConfig config = new EmailConfig();
-//        config.protocol = "imap";
-//        config.sslEnable = false;
-//        config.host = "imap.163.com";
-//        config.port = "143";
-//        config.username = "aaa@163.com";
-//        config.password = "123123";
-
-        List<String> folders = new EmailExtractor().getFolders();
-        for (String folder : folders) {
-            System.out.printf("----------%s\n", folder);
-        }
-
-        System.out.println("--------------------");
-
-        List<Email> emails = new EmailExtractor().getInboxEmails(1, 100);
-        for (Email email : emails) {
-            System.out.println(email);
-        }
-
-        List<String> includes = Arrays.asList("INBOX", "已发送");
-        List<String> excludes = Arrays.asList("已删除", "垃圾箱");
-        List<Email> emails2 = new EmailExtractor().extractEmails(includes, excludes);
-        for (Email email : emails2) {
-            System.out.println(email);
-        }
     }
 
 }
