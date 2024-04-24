@@ -52,5 +52,9 @@
     "chinese-workday": "^1.10.0",
     "dayjs": "^1.11.10",
     "lunar-javascript": "^1.6.12"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "c4f587b0a64e95176319f5186adeecd0"
 }
