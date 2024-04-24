@@ -4,12 +4,11 @@ import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
-import com.aliyun.oss.model.PutObjectRequest;
-import com.aliyun.oss.model.PutObjectResult;
+import com.aliyun.oss.model.*;
 import com.netease.lowcode.core.annotation.NaslConnector;
-import com.netease.lowcode.core.annotation.NaslLogic;
 
 import java.io.File;
+import java.util.List;
 
 @NaslConnector(connectorKind = "ali_default")
 public class Ali_oss {
@@ -132,18 +131,61 @@ public class Ali_oss {
         }
         return "fail";
     }
-
-    /**
-     已经实现需求：
-        创建桶
-        上传文件
-        删除文件
-     暂未实现：
-        访问控制
-        获取文件信息
-        支持多家云服务
-     */
-///Users/nitro-blow/Desktop/瞬-clean.html
+    @NaslConnector.Logic
+    public String set_object_acl(String bucketName, String objectName,String object_acl){
+        Ali_oss my_oss = new Ali_oss().initBean(id,secret,endpoint);
+        try {
+            // 设置Object的访问权限为公共读。
+            my_oss.ossclient.setObjectAcl(bucketName, objectName, CannedAccessControlList.parse(object_acl));
+            return "修改对象读写权限为"+object_acl;
+        } catch (OSSException oe) {
+            System.out.println("Caught an OSSException, which means your request made it to OSS, "
+                    + "but was rejected with an error response for some reason.");
+            System.out.println("Error Message:" + oe.getErrorMessage());
+            System.out.println("Error Code:" + oe.getErrorCode());
+            System.out.println("Request ID:" + oe.getRequestId());
+            System.out.println("Host ID:" + oe.getHostId());
+        } catch (ClientException ce) {
+            System.out.println("Caught an ClientException, which means the client encountered "
+                    + "a serious internal problem while trying to communicate with OSS, "
+                    + "such as not being able to access the network.");
+            System.out.println("Error Message:" + ce.getMessage());
+        } finally {
+            if (my_oss.ossclient != null) {
+                my_oss.ossclient.shutdown();
+            }
+        }
+        return "修改失败";
+    }
+    @NaslConnector.Logic
+    public String list_file(String bucketName,String keyPrefix){
+        Ali_oss my_oss = new Ali_oss().initBean(id,secret,endpoint);
+        try {
+            // 列举文件。如果不设置keyPrefix，则列举存储空间下的所有文件。如果设置keyPrefix，则列举包含指定前缀的文件。
+            ListObjectsV2Result result = my_oss.ossclient.listObjectsV2(bucketName, keyPrefix);
+            List<OSSObjectSummary> ossObjectSummaries = result.getObjectSummaries();
+            for (OSSObjectSummary s : ossObjectSummaries) {
+                System.out.println("\t" + s.getKey());
+            }
+        } catch (OSSException oe) {
+            System.out.println("Caught an OSSException, which means your request made it to OSS, "
+                    + "but was rejected with an error response for some reason.");
+            System.out.println("Error Message:" + oe.getErrorMessage());
+            System.out.println("Error Code:" + oe.getErrorCode());
+            System.out.println("Request ID:" + oe.getRequestId());
+            System.out.println("Host ID:" + oe.getHostId());
+        } catch (ClientException ce) {
+            System.out.println("Caught an ClientException, which means the client encountered "
+                    + "a serious internal problem while trying to communicate with OSS, "
+                    + "such as not being able to access the network.");
+            System.out.println("Error Message:" + ce.getMessage());
+        } finally {
+            if (my_oss.ossclient != null) {
+                my_oss.ossclient.shutdown();
+            }
+        }
+        return "fail";
+    }
     public static void main(String[] args) {
 //        MyConnector myConnector = new MyConnector().initBean("appKey");
 //        alioss.test("appKey");
