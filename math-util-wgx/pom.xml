@@ -6,7 +6,7 @@
 
     <groupId>com.wgx</groupId>
     <artifactId>math-util-wgx</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>数学算术依赖库</name>
     <description>该依赖库定义了多个方法用于数学计算的逻辑,如绝对值 、取整、最小值、最大值、加法、减法、乘法、除法等。</description>
 

@@ -201,7 +201,7 @@ public class MathUtil {
             logger.error("加数不能为null");
             throw new IllegalArgumentException("加数不能为null");
         }
-        return new BigDecimal(a).add(new BigDecimal(b)).doubleValue();
+        return new BigDecimal(a.toString()).add(new BigDecimal(b.toString())).doubleValue();
     }
 
     /**
@@ -217,11 +217,11 @@ public class MathUtil {
             logger.error("加数不能为null");
             throw new IllegalArgumentException("加数不能为null");
         }
-        return new BigDecimal(a).add(new BigDecimal(b)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return new BigDecimal(a.toString()).add(new BigDecimal(b.toString())).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     /**
-     * 计算两数之和,向上取整
+     * 计算两数之和,返回向上取整后的小数
      *
      * @param a 第一个加数
      * @param b 第二个加数
@@ -233,11 +233,12 @@ public class MathUtil {
             logger.error("加数不能为null");
             throw new IllegalArgumentException("加数不能为null");
         }
-        return new BigDecimal(a).add(new BigDecimal(b))         .setScale(0, RoundingMode.CEILING).doubleValue();
+        return new BigDecimal(a).add(new BigDecimal(b))
+                .setScale(0, RoundingMode.CEILING).doubleValue();
     }
 
     /**
-     * 计算两数之和,向下取整
+     * 计算两数之和,返回向下取整后的小数
      *
      * @param a 第一个加数
      * @param b 第二个加数
@@ -249,7 +250,7 @@ public class MathUtil {
             logger.error("加数不能为null");
             throw new IllegalArgumentException("加数不能为null");
         }
-        return new BigDecimal(a).add(new BigDecimal(b)).setScale(0, RoundingMode.FLOOR).doubleValue();
+        return new BigDecimal(a.toString()).add(new BigDecimal(b.toString())).setScale(0, RoundingMode.FLOOR).doubleValue();
     }
 
     /**
@@ -271,10 +272,15 @@ public class MathUtil {
 
         //根据给定的取舍方式枚举值返回对应的RoundingMode对象。
         RoundingMode roundingMode = getRoundingMode(roundingType);
+        
+        BigDecimal result = new BigDecimal(a.toString()).add(new BigDecimal(b.toString()));
 
-        return new BigDecimal(a).add(new BigDecimal(b))
-                .setScale(scale, roundingMode)
-                .doubleValue();
+        //如果取舍方式不为0，则对结果进行取舍
+        if (roundingType != 0) {
+            result = result.setScale(scale, roundingMode);
+        }
+
+        return result.doubleValue();
     }
 
     /**
@@ -290,7 +296,7 @@ public class MathUtil {
             logger.error("被减数或减数不能为null");
             throw new IllegalArgumentException("被减数或减数不能为null");
         }
-        return new BigDecimal(a).subtract(new BigDecimal(b)).doubleValue();
+        return new BigDecimal(a.toString()).subtract(new BigDecimal(b.toString())).doubleValue();
     }
 
     /**
@@ -306,11 +312,11 @@ public class MathUtil {
             logger.error("被减数或减数不能为null");
             throw new IllegalArgumentException("被减数或减数不能为null");
         }
-        return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return new BigDecimal(a.toString()).subtract(new BigDecimal(b.toString())).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     /**
-     * 计算两数之差，向上取整
+     * 计算两数之差，返回向上取整后的小数
      *
      * @param a 被减数
      * @param b 减数
@@ -322,11 +328,11 @@ public class MathUtil {
             logger.error("被减数或减数不能为null");
             throw new IllegalArgumentException("被减数或减数不能为null");
         }
-        return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(0, RoundingMode.CEILING).doubleValue();
+        return new BigDecimal(a.toString()).subtract(new BigDecimal(b.toString())).setScale(0, RoundingMode.CEILING).doubleValue();
     }
 
     /**
-     * 计算两数之差，向下取整
+     * 计算两数之差，返回向下取整后的小数
      *
      * @param a 被减数
      * @param b 减数
@@ -338,7 +344,7 @@ public class MathUtil {
             logger.error("被减数或减数不能为null");
             throw new IllegalArgumentException("被减数或减数不能为null");
         }
-        return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(0, RoundingMode.FLOOR).doubleValue();
+        return new BigDecimal(a.toString()).subtract(new BigDecimal(b.toString())).setScale(0, RoundingMode.FLOOR).doubleValue();
     }
 
     /**
@@ -361,7 +367,14 @@ public class MathUtil {
         //根据给定的取舍方式枚举值返回对应的RoundingMode对象。
         RoundingMode roundingMode = getRoundingMode(roundingType);
 
-        return new BigDecimal(a).subtract(new BigDecimal(b)).setScale(scale, roundingMode).doubleValue();
+        BigDecimal result = new BigDecimal(a.toString()).subtract(new BigDecimal(b.toString()));
+
+        //如果取舍方式不为0，则对结果进行取舍
+        if (roundingType != 0) {
+            result = result.setScale(scale, roundingMode);
+        }
+
+        return result.doubleValue();
     }
 
     /**
@@ -377,7 +390,7 @@ public class MathUtil {
             logger.error("被除数或除数不能为null");
             throw new IllegalArgumentException("被除数或除数不能为null");
         }
-        return new BigDecimal(dividend).divide(new BigDecimal(divisor), MathContext.DECIMAL128).doubleValue();
+        return new BigDecimal(dividend.toString()).divide(new BigDecimal(divisor.toString()), MathContext.DECIMAL128).doubleValue();
     }
 
     /**
@@ -393,11 +406,11 @@ public class MathUtil {
             logger.error("被除数或除数不能为null");
             throw new IllegalArgumentException("被除数或除数不能为null");
         }
-        return new BigDecimal(dividend).divide(new BigDecimal(divisor), 2, RoundingMode.HALF_UP).doubleValue();
+        return new BigDecimal(dividend.toString()).divide(new BigDecimal(divisor.toString()), 2, RoundingMode.HALF_UP).doubleValue();
     }
 
     /**
-     * 计算两数之商，保留两位小数，向上取整
+     * 计算两数之商，返回向上取整后的小数
      *
      * @param dividend 被除数
      * @param divisor  除数
@@ -409,11 +422,11 @@ public class MathUtil {
             logger.error("被除数或除数不能为null");
             throw new IllegalArgumentException("被除数或除数不能为null");
         }
-        return new BigDecimal(dividend).divide(new BigDecimal(divisor), 0, RoundingMode.CEILING).doubleValue();
+        return new BigDecimal(dividend.toString()).divide(new BigDecimal(divisor.toString()), 0, RoundingMode.CEILING).doubleValue();
     }
 
     /**
-     * 计算两数之商，保留两位小数，向下取整
+     * 计算两数之商，返回向下取整后的小数
      *
      * @param dividend 被除数
      * @param divisor  除数
@@ -425,7 +438,7 @@ public class MathUtil {
             logger.error("被除数或除数不能为null");
             throw new IllegalArgumentException("被除数或除数不能为null");
         }
-        return new BigDecimal(dividend).divide(new BigDecimal(divisor), 0, RoundingMode.FLOOR).doubleValue();
+        return new BigDecimal(dividend.toString()).divide(new BigDecimal(divisor.toString()), 0, RoundingMode.FLOOR).doubleValue();
     }
 
     /**
@@ -434,7 +447,7 @@ public class MathUtil {
      * @param dividend      被除数
      * @param divisor       除数
      * @param scale         结果的精度（小数点后的位数），必须是非负整数
-     * @param roundingType  取舍方式：0 - 不进行取舍，1 - 四舍五入，2 - 向上取整，3 - 向下取整
+     * @param roundingType  取舍方式：0（不进行取舍） 1 - 四舍五入，2 - 向上取整，3 - 向下取整
      * @return              两数之商
      */
     @NaslLogic
@@ -445,11 +458,30 @@ public class MathUtil {
             throw new IllegalArgumentException("被除数、除数、精度或取舍方式不能为null，精度必须为非负整数，取舍方式应为0（不进行取舍）、1（四舍五入）、2（向上取整）或3（向下取整）");
         }
 
+        if (divisor == 0.0) {
+            // 抛出异常或者返回一个特定的值，比如 null 或者 Double.POSITIVE_INFINITY
+            logger.error("除数不能为0");
+            throw new ArithmeticException("除数不能为0");
+        }
+
         // 根据给定的取舍方式枚举值返回对应的RoundingMode对象。
         RoundingMode roundingMode = getRoundingMode(roundingType);
+        BigDecimal result = null;
 
-        return new BigDecimal(dividend).divide(new BigDecimal(divisor), scale, roundingMode)
-                .doubleValue();
+        try{
+            result = new BigDecimal(dividend.toString())
+                    .divide(new BigDecimal(divisor.toString()), MathContext.DECIMAL128);
+        }catch (ArithmeticException e){
+            logger.error("算数异常: ",e);
+            throw e;
+        }
+
+        //如果取舍方式不为0，则对结果进行取舍
+        if (roundingType != 0) {
+            result = result.setScale(scale, roundingMode);
+        }
+
+        return result.doubleValue();
     }
 
     /**
@@ -465,7 +497,7 @@ public class MathUtil {
             logger.error("乘数不能为null");
             throw new IllegalArgumentException("乘数不能为null");
         }
-        return new BigDecimal(a).multiply(new BigDecimal(b)).doubleValue();
+        return new BigDecimal(a.toString()).multiply(new BigDecimal(b.toString())).doubleValue();
     }
 
     /**
@@ -481,11 +513,11 @@ public class MathUtil {
             logger.error("乘数不能为null");
             throw new IllegalArgumentException("乘数不能为null");
         }
-        return new BigDecimal(a).multiply(new BigDecimal(b)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return new BigDecimal(a.toString()).multiply(new BigDecimal(b.toString())).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     /**
-     * 计算两数之积，保留两位小数，向上取整
+     * 计算两数之积，返回向上取整后的小数
      *
      * @param a 第一个乘数
      * @param b 第二个乘数
@@ -497,11 +529,11 @@ public class MathUtil {
             logger.error("乘数不能为null");
             throw new IllegalArgumentException("乘数不能为null");
         }
-        return new BigDecimal(a).multiply(new BigDecimal(b)).setScale(0, RoundingMode.CEILING).doubleValue();
+        return new BigDecimal(a.toString()).multiply(new BigDecimal(b.toString())).setScale(0, RoundingMode.CEILING).doubleValue();
     }
 
     /**
-     * 计算两数之积，保留两位小数，向下取整
+     * 计算两数之积，返回向下取整后的小数
      *
      * @param a 第一个乘数
      * @param b 第二个乘数
@@ -513,7 +545,7 @@ public class MathUtil {
             logger.error("乘数不能为null");
             throw new IllegalArgumentException("乘数不能为null");
         }
-        return new BigDecimal(a).multiply(new BigDecimal(b)).setScale(0, RoundingMode.FLOOR).doubleValue();
+        return new BigDecimal(a.toString()).multiply(new BigDecimal(b.toString())).setScale(0, RoundingMode.FLOOR).doubleValue();
     }
 
     /**
@@ -536,9 +568,14 @@ public class MathUtil {
         // 根据给定的取舍方式枚举值返回对应的RoundingMode对象。
         RoundingMode roundingMode = getRoundingMode(roundingType);
 
-        return new BigDecimal(a).multiply(new BigDecimal(b))
-                .setScale(scale, roundingMode)
-                .doubleValue();
+        BigDecimal result = new BigDecimal(a.toString()).multiply(new BigDecimal(b.toString()));
+
+        //如果取舍方式不为0，则对结果进行取舍
+        if (roundingType != 0) {
+            result = result.setScale(scale, roundingMode);
+        }
+
+        return result.doubleValue();
     }
 
     /**
