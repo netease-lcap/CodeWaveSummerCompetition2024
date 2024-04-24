@@ -1,14 +1,9 @@
 package com.wjm.api;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
 import com.netease.lowcode.core.annotation.NaslLogic;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashSet;
 import java.util.List;
 
@@ -18,6 +13,24 @@ import java.util.List;
  * @create: 2024/04/20
  **/
 public class RegionUtil {
+    static String fileName = "regionCopy.json";
+    static String path;
+
+    static {
+        String fileContent = readResourceFile("region.json");
+        path = System.getProperty("user.dir") + File.separator + fileName;
+        File file = new File(path);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write(fileContent);
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 提供输入省份，给出其地级市列表
@@ -30,14 +43,13 @@ public class RegionUtil {
         if (isEmpty(provinceName)) {
             throw new IllegalArgumentException("省份名不能为空");
         }
-        String fileName = "region.json";
-        String fileContent = readResourceFile(fileName);
-        JSONObject regionObject = JSON.parseObject(fileContent);
-        JSONArray provinces = regionObject.getJSONArray("districts");
+        String fileContent = readFile();
+        Region regionObject = JSON.parseObject(fileContent, Region.class);
+        List<Region> provinces = regionObject.getDistricts();
         List<Region> prefectureCities = null;
-        for (Object province : provinces) {
-            if (provinceName.equals(((JSONObject) province).getString("name"))) {
-                prefectureCities = ((JSONObject) province).getJSONArray("districts").toJavaList(Region.class);
+        for (Region province : provinces) {
+            if (provinceName.equals(province.getName())) {
+                prefectureCities = province.getDistricts();
             }
         }
         return prefectureCities;
@@ -55,16 +67,15 @@ public class RegionUtil {
         if (isEmpty(prefectureCity)) {
             throw new IllegalArgumentException("地级市名不能为空");
         }
-        String fileName = "region.json";
-        String fileContent = readResourceFile(fileName);
-        JSONObject regionObject = JSON.parseObject(fileContent);
+        String fileContent = readFile();
+        Region regionObject = JSON.parseObject(fileContent, Region.class);
         List<Region> counties = null;
-        JSONArray provinces = regionObject.getJSONArray("districts");
-        for (Object province : provinces) {
-            JSONArray prefectureCities = ((JSONObject) province).getJSONArray("districts");
-            for (Object prefecture : prefectureCities) {
-                if (prefectureCity.equals(((JSONObject) prefecture).getString("name"))) {
-                    counties = ((JSONObject) prefecture).getJSONArray("districts").toJavaList(Region.class);
+        List<Region> provinces = regionObject.getDistricts();
+        for (Region province : provinces) {
+            List<Region> prefectureCities = province.getDistricts();
+            for (Region prefecture : prefectureCities) {
+                if (prefectureCity.equals(prefecture.getName())) {
+                    counties = prefecture.getDistricts();
                 }
             }
         }
@@ -87,19 +98,18 @@ public class RegionUtil {
         if (isEmpty(prefectureCityName)) {
             throw new IllegalArgumentException("地级市名不能为空");
         }
-        String fileName = "region.json";
         HashSet<String> cities = new HashSet<>();
-        String fileContent = readResourceFile(fileName);
-        JSONObject regionObject = JSON.parseObject(fileContent);
-        JSONArray provinces = regionObject.getJSONArray("districts");
-        JSONArray prefectureCities = null;
-        for (Object province : provinces) {
-            if (provinceName.equals(((JSONObject) province).getString("name"))) {
-                prefectureCities = ((JSONObject) province).getJSONArray("districts");
+        String fileContent = readFile();
+        Region regionObject = JSON.parseObject(fileContent, Region.class);
+        List<Region> provinces = regionObject.getDistricts();
+        List<Region> prefectureCities = null;
+        for (Region province : provinces) {
+            if (provinceName.equals(province.getName())) {
+                prefectureCities = province.getDistricts();
             }
             if (prefectureCities != null) {
-                for (Object prefectureCity : prefectureCities) {
-                    String name = ((JSONObject) prefectureCity).getString("name");
+                for (Region prefectureCity : prefectureCities) {
+                    String name = prefectureCity.getName();
                     cities.add(name);
                 }
             }
@@ -122,19 +132,18 @@ public class RegionUtil {
         if (isEmpty(countyName)) {
             throw new IllegalArgumentException("区县名不能为空");
         }
-        String fileName = "region.json";
         HashSet<String> counties = new HashSet<>();
-        String fileContent = readResourceFile(fileName);
-        JSONObject regionObject = JSON.parseObject(fileContent);
-        JSONArray provinces = regionObject.getJSONArray("districts");
-        for (Object province : provinces) {
-            JSONArray prefectureCities = ((JSONObject) province).getJSONArray("districts");
-            for (Object prefecture : prefectureCities) {
-                if (prefectureCityName.equals(((JSONObject) prefecture).getString("name"))) {
-                    JSONArray arrays = ((JSONObject) prefecture).getJSONArray("districts");
+        String fileContent = readFile();
+        Region regionObject = JSON.parseObject(fileContent, Region.class);
+        List<Region> provinces = regionObject.getDistricts();
+        for (Region province : provinces) {
+            List<Region> prefectureCities = province.getDistricts();
+            for (Region prefecture : prefectureCities) {
+                if (prefectureCityName.equals(prefecture.getName())) {
+                    List<Region> arrays = prefecture.getDistricts();
                     if (arrays != null) {
-                        for (Object county : arrays) {
-                            String name = ((JSONObject) county).getString("name");
+                        for (Region county : arrays) {
+                            String name = county.getName();
                             counties.add(name);
                         }
                     }
@@ -159,24 +168,36 @@ public class RegionUtil {
         if (isEmpty(countyName)) {
             throw new IllegalArgumentException("区县名不能为空");
         }
-        String fileName = "region.json";
         HashSet<String> counties = new HashSet<>();
-        String fileContent = readResourceFile(fileName);
-        JSONObject regionObject = JSON.parseObject(fileContent);
-        JSONArray provinces = regionObject.getJSONArray("districts");
-        for (Object province : provinces) {
-            if (provinceName.equals(((JSONObject) province).getString("name"))) {
-                JSONArray prefectureCities = ((JSONObject) province).getJSONArray("districts");
-                for (Object prefecture : prefectureCities) {
-                    JSONArray arrays = ((JSONObject) prefecture).getJSONArray("districts");
-                    for (Object county : arrays) {
-                        String name = ((JSONObject) county).getString("name");
+        String fileContent = readFile();
+        Region regionObject = JSON.parseObject(fileContent, Region.class);
+        List<Region> provinces = regionObject.getDistricts();
+        for (Region province : provinces) {
+            if (provinceName.equals(province.getName())) {
+                List<Region> prefectureCities = province.getDistricts();
+                for (Region prefecture : prefectureCities) {
+                    List<Region> arrays = prefecture.getDistricts();
+                    for (Region county : arrays) {
+                        String name = county.getName();
                         counties.add(name);
                     }
                 }
             }
         }
         return counties.contains(countyName);
+    }
+
+    private static String readFile() {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content.toString();
     }
 
     private static String readResourceFile(String fileName) {
@@ -193,6 +214,38 @@ public class RegionUtil {
         }
         return content.toString();
     }
+
+
+    /**
+     * 获取行政区信息
+     * @return
+     */
+    @NaslLogic
+    public static Region getRegion() {
+        String fileContent = readFile();
+        return JSON.parseObject(fileContent, Region.class);
+    }
+
+    /**
+     * 修改行政区信息
+     * @param region
+     * @return
+     */
+    @NaslLogic
+    public static Boolean editRegion(Region region) {
+        if (region == null){
+            throw new IllegalArgumentException("传入参数不能为空");
+        }
+        String regionJson = JSON.toJSONString(region);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+            writer.write(regionJson);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
     private static Boolean isEmpty(String s) {
         return s == null || s.length() == 0;

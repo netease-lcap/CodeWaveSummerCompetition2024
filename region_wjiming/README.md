@@ -35,6 +35,25 @@ districts:下级行政区列表，包含district元素
 提供输入省份和区县，判断两者是否有所属关系
 入参：String 省份名，例如：浙江省,String 区县名，例如：滨江区
 出参: boolean true代表存在所属关系  false代表不存在所属关系
+
+### 逻辑六 getRegion
+获取现有的行政区信息
+出参：Region
+citycode:城市编码，adcode:区域编码，name:行政区名称,zipCode:邮编,center:区域中心点,
+level:行政区划级别(country:国家,province:省份（直辖市会在province显示）,city:市（直辖市会在province显示）, district:区县,street:街道)
+districts:下级行政区列表，包含district元素
+
+### 逻辑七 editRegion
+修改行政区信息
+入参：Region
+citycode:城市编码，adcode:区域编码，name:行政区名称,zipCode:邮编,center:区域中心点,
+level:行政区划级别(country:国家,province:省份（直辖市会在province显示）,city:市（直辖市会在province显示）, district:区县,street:街道)
+districts:下级行政区列表，包含district元素
+
+出参: boolean true修改成功  false修改失败
+
+如果要更新行政区数据可以先调用getRegion()获取现有的行政区信息，然后在此基础上更新，更新后调用editRegion(),把更新后的Region传入即可修改
+
 ## 使用步骤说明
 
 1.  应用引用依赖库

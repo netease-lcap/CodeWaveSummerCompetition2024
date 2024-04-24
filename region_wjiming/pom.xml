@@ -6,7 +6,7 @@
 
     <groupId>com.wjm</groupId>
     <artifactId>region</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <name>行政区依赖库</name>
     <description>封装了一些行政区的查询方法</description>
 
