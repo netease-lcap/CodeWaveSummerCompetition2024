@@ -2,34 +2,35 @@ package com.wjm.api;
 
 import com.alibaba.fastjson2.JSON;
 import com.netease.lowcode.core.annotation.NaslLogic;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
-import java.io.*;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @program: region
  * @author: Mr.Wang
  * @create: 2024/04/20
  **/
+@Component
 public class RegionUtil {
-    static String fileName = "regionCopy.json";
-    static String path;
+    @Resource
+    private RedisTemplate redisTemplate;
 
-    static {
+    private static final String REGION_KEY = "region-json";
+
+    @PostConstruct
+    public void init() {
         String fileContent = readResourceFile("region.json");
-        path = System.getProperty("user.dir") + File.separator + fileName;
-        File file = new File(path);
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                writer.write(fileContent);
-                writer.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        redisTemplate.opsForValue().setIfAbsent(REGION_KEY, fileContent);
     }
 
     /**
@@ -39,7 +40,7 @@ public class RegionUtil {
      * @return
      */
     @NaslLogic
-    public static List<Region> getPrefectureCity(String provinceName) {
+    public List<Region> getPrefectureCity(String provinceName) {
         if (isEmpty(provinceName)) {
             throw new IllegalArgumentException("省份名不能为空");
         }
@@ -63,7 +64,7 @@ public class RegionUtil {
      * @return
      */
     @NaslLogic
-    public static List<Region> getCountry(String prefectureCity) {
+    public List<Region> getCountry(String prefectureCity) {
         if (isEmpty(prefectureCity)) {
             throw new IllegalArgumentException("地级市名不能为空");
         }
@@ -91,7 +92,7 @@ public class RegionUtil {
      * @return
      */
     @NaslLogic
-    public static Boolean estimateProvinceAndCity(String provinceName, String prefectureCityName) {
+    public Boolean estimateProvinceAndCity(String provinceName, String prefectureCityName) {
         if (isEmpty(provinceName)) {
             throw new IllegalArgumentException("省份名不能为空");
         }
@@ -125,7 +126,7 @@ public class RegionUtil {
      * @return
      */
     @NaslLogic
-    public static Boolean estimateCityAndCounty(String prefectureCityName, String countyName) {
+    public Boolean estimateCityAndCounty(String prefectureCityName, String countyName) {
         if (isEmpty(prefectureCityName)) {
             throw new IllegalArgumentException("地级市名不能为空");
         }
@@ -161,7 +162,7 @@ public class RegionUtil {
      * @return
      */
     @NaslLogic
-    public static Boolean estimateProvinceAndCounty(String provinceName, String countyName) {
+    public Boolean estimateProvinceAndCounty(String provinceName, String countyName) {
         if (isEmpty(provinceName)) {
             throw new IllegalArgumentException("省份名不能为空");
         }
@@ -187,20 +188,17 @@ public class RegionUtil {
         return counties.contains(countyName);
     }
 
-    private static String readFile() {
-        StringBuilder content = new StringBuilder();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                content.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private String readFile() {
+        Object o = this.redisTemplate.opsForValue().get(REGION_KEY);
+        if(o==null){
+            init();
+            return this.redisTemplate.opsForValue().get(REGION_KEY).toString();
+        }else {
+            return o.toString();
         }
-        return content.toString();
     }
 
-    private static String readResourceFile(String fileName) {
+    private String readResourceFile(String fileName) {
         StringBuilder content = new StringBuilder();
         try (InputStream inputStream = RegionUtil.class.getClassLoader().getResourceAsStream(fileName);
              InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -218,36 +216,34 @@ public class RegionUtil {
 
     /**
      * 获取行政区信息
+     *
      * @return
      */
     @NaslLogic
-    public static Region getRegion() {
+    public Region getRegion() {
         String fileContent = readFile();
         return JSON.parseObject(fileContent, Region.class);
     }
 
     /**
      * 修改行政区信息
+     *
      * @param region
      * @return
      */
     @NaslLogic
-    public static Boolean editRegion(Region region) {
-        if (region == null){
+    public Boolean editRegion(Region region) {
+        if (region == null) {
             throw new IllegalArgumentException("传入参数不能为空");
         }
+
         String regionJson = JSON.toJSONString(region);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write(regionJson);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        this.redisTemplate.opsForValue().set(REGION_KEY, regionJson);
         return true;
     }
 
 
-    private static Boolean isEmpty(String s) {
+    private Boolean isEmpty(String s) {
         return s == null || s.length() == 0;
     }
 
