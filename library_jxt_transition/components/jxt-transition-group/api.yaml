@@ -1,0 +1,421 @@
+- name: jxt-transition-group
+  title: transition-group
+  type: both
+  belong: component
+  labels: [Runtime]
+  attrs:
+      - name: data-source
+        title: 数据源
+        type: array
+        description: 展示数据的输入源，可设置为数据集对象或者返回数据集的逻辑
+        group: 数据属性
+        brifeDoc: ''
+        docDescription: 组件的数据源，配置内容为数据集对象或者返回数据集的逻辑。
+        tooltipLink: ''
+      - name: data-schema
+        title: 数据类型
+        type: schema
+        description: 数据源返回的数据结构的类型，自动识别类型进行展示说明
+        compType: dataTypeComsItem
+        group: 数据属性
+        brifeDoc: ''
+        docDescription: IDE 根据配置的数据源动态计算返回内容的数据结构，用于动态配置项 current.item 的类型说明。
+        tooltipLink: ''
+      - name: repeat
+        title: 网格数
+        type: number
+        default: 4
+        description: 每行排列几项
+        group: 主要属性
+        brifeDoc: ''
+        docDescription: 每行排列多少个网格。
+        tooltipLink: ''
+
+      - name: customer
+        title: 自定义动画
+        description: 是否自定义动画效果
+        type: boolean
+        default: false
+        group: 动画方式
+
+      - name: enterAnimationType
+        title: 进入动画类型
+        type: string
+        options:
+            - value: Back entrances
+              title: Back entrances
+            - value: Bouncing entrances
+              title: Bouncing entrances
+            - value: Fading entrances
+              title: Fading entrances
+            - value: Rotating entrances
+              title: Rotating entrances
+            - value: Zooming entrances
+              title: Zooming entrances
+            - value: Sliding entrances
+              title: Sliding entrances
+        group: 动画效果
+        toggleclear:
+            - enterAnimation
+
+      - name: enterAnimation
+        title: 进入动画
+        type: string
+        options:
+            - value: backInDown
+              title: backInDown
+            - value: backInLeft
+              title: backInLeft
+            - value: backInRight
+              title: backInRight
+            - value: backInUp
+              title: backInUp
+        group: 动画效果
+        dependency:
+            - enterAnimationType: Back entrances
+
+      - name: enterAnimation
+        title: 进入动画
+        type: string
+        options:
+            - value: bounceIn
+              title: bounceIn
+            - value: bounceInDown
+              title: bounceInDown
+            - value: bounceInLeft
+              title: bounceInLeft
+            - value: bounceInRight
+              title: bounceInRight
+            - value: bounceInUp
+              title: bounceInUp
+        group: 动画效果
+        dependency:
+            - enterAnimationType: Bouncing entrances
+
+      - name: enterAnimation
+        title: 进入动画
+        type: string
+        options:
+            - value: fadeIn
+              title: fadeIn
+            - value: fadeInDown
+              title: fadeInDown
+            - value: fadeInDownBig
+              title: fadeInDownBig
+            - value: fadeInLeft
+              title: fadeInLeft
+            - value: fadeInLeftBig
+              title: fadeInLeftBig
+            - value: fadeInRight
+              title: fadeInRight
+            - value: fadeInRightBig
+              title: fadeInRightBig
+            - value: fadeInUp
+              title: fadeInUp
+            - value: fadeInUpBig
+              title: fadeInUpBig
+            - value: fadeInTopLeft
+              title: fadeInTopLeft
+            - value: fadeInTopRight
+              title: fadeInTopRight
+            - value: fadeInBottomLeft
+              title: fadeInBottomLeft
+            - value: fadeInBottomRight
+              title: fadeInBottomRight
+        group: 动画效果
+        dependency:
+            - enterAnimationType: Fading entrances
+
+      - name: enterAnimation
+        title: 进入动画
+        type: string
+        options:
+            - value: rotateIn
+              title: rotateIn
+            - value: rotateInDownLeft
+              title: rotateInDownLeft
+            - value: rotateInDownRight
+              title: rotateInDownRight
+            - value: rotateInUpLeft
+              title: rotateInUpLeft
+            - value: rotateInUpRight
+              title: rotateInUpRight
+        group: 动画效果
+        dependency:
+            - enterAnimationType: Rotating entrances
+
+      - name: enterAnimation
+        title: 进入动画
+        type: string
+        options:
+            - value: zoomIn
+              title: zoomIn
+            - value: zoomInDown
+              title: zoomInDown
+            - value: zoomInLeft
+              title: zoomInLeft
+            - value: zoomInRight
+              title: zoomInRight
+            - value: zoomInRight
+              title: zoomInRight
+        group: 动画效果
+        dependency:
+            - enterAnimationType: Zooming entrances
+
+      - name: enterAnimation
+        title: 进入动画
+        type: string
+        options:
+            - value: slideInDown
+              title: slideInDown
+            - value: slideInLeft
+              title: slideInLeft
+            - value: slideInRight
+              title: slideInRight
+            - value: slideInUp
+              title: slideInUp
+        group: 动画效果
+        dependency:
+            - enterAnimationType: Sliding entrances
+
+      - name: leaveAnimationType
+        title: 离开动画类型
+        type: string
+        options:
+            - value: Back exits
+              title: Back exits
+            - value: Bouncing exits
+              title: Bouncing exits
+            - value: Fading exits
+              title: Fading exits
+            - value: Rotating exits
+              title: Rotating exits
+            - value: Zooming exits
+              title: Zooming exits
+            - value: Sliding exits
+              title: Sliding exits
+        group: 动画效果
+        toggleclear:
+            - leaveAnimation
+
+      - name: leaveAnimation
+        title: 离开动画
+        type: string
+        options:
+            - value: backOutDown
+              title: backOutDown
+            - value: backOutLeft
+              title: backOutLeft
+            - value: backOutRight
+              title: backOutRight
+            - value: backOutUp
+              title: backOutUp
+        group: 动画效果
+        dependency:
+            - leaveAnimationType: Back exits
+
+      - name: leaveAnimation
+        title: 离开动画
+        type: string
+        options:
+            - value: bounceOut
+              title: bounceOut
+            - value: bounceOutDown
+              title: bounceOutDown
+            - value: bounceOutLeft
+              title: bounceOutLeft
+            - value: bounceOutRight
+              title: bounceOutRight
+            - value: bounceOutUp
+              title: bounceOutUp
+        group: 动画效果
+        dependency:
+            - leaveAnimationType: Bouncing exits
+
+      - name: leaveAnimation
+        title: 离开动画
+        type: string
+        options:
+            - value: fadeOut
+              title: fadeOut
+            - value: fadeOutDown
+              title: fadeOutDown
+            - value: fadeOutDownBig
+              title: fadeOutDownBig
+            - value: fadeOutLeft
+              title: fadeOutLeft
+            - value: fadeOutLeftBig
+              title: fadeOutLeftBig
+            - value: fadeOutRight
+              title: fadeOutRight
+            - value: fadeOutRightBig
+              title: fadeOutRightBig
+            - value: fadeOutUp
+              title: fadeOutUp
+            - value: fadeOutUpBig
+              title: fadeOutUpBig
+            - value: fadeOutTopLeft
+              title: fadeOutTopLeft
+            - value: fadeOutTopRight
+              title: fadeOutTopRight
+            - value: fadeOutBottomLeft
+              title: fadeOutBottomLeft
+            - value: fadeOutBottomRight
+              title: fadeOutBottomRight
+        group: 动画效果
+        dependency:
+            - leaveAnimationType: Fading exits
+
+      - name: leaveAnimation
+        title: 离开动画
+        type: string
+        options:
+            - value: rotateOut
+              title: rotateOut
+            - value: rotateOutDownLeft
+              title: rotateOutDownLeft
+            - value: rotateOutDownRight
+              title: rotateOutDownRight
+            - value: rotateOutUpLeft
+              title: rotateOutUpLeft
+            - value: rotateOutUpRight
+              title: rotateOutUpRight
+        group: 动画效果
+        dependency:
+            - leaveAnimationType: Rotating exits
+
+      - name: leaveAnimation
+        title: 离开动画
+        type: string
+        options:
+            - value: zoomOut
+              title: zoomOut
+            - value: zoomOutDown
+              title: zoomOutDown
+            - value: zoomOutLeft
+              title: zoomOutLeft
+            - value: zoomOutRight
+              title: zoomOutRight
+            - value: zoomOutRight
+              title: zoomOutRight
+        group: 动画效果
+        dependency:
+            - leaveAnimationType: Zooming exits
+
+      - name: leaveAnimation
+        title: 离开动画
+        type: string
+        options:
+            - value: slideOutDown
+              title: slideOutDown
+            - value: slideOutLeft
+              title: slideOutLeft
+            - value: slideOutRight
+              title: slideOutRight
+            - value: slideOutUp
+              title: slideOutUp
+        group: 动画效果
+        dependency:
+            - leaveAnimationType: Sliding exits
+
+      - name: appear
+        title: 初次展示内容时执行进入动画效果
+        decription: 设置初次展示内容时，是否执行进入动画效果
+        type: boolean
+        default: false
+        group: 动画配置
+
+      - name: enterAnimationDuration
+        title: 进入动画持续时间（秒）
+        description: 设置进入动画持续时间
+        type: number
+        default: 1
+        group: 动画配置
+
+      - name: leaveAnimationDuration
+        title: 离开动画持续时间（秒）
+        description: 设置离开动画持续时间
+        type: number
+        default: 1
+        group: 动画配置
+  events:
+      - name: before-enter
+        title: 进入动画开始前
+        description: 进入动画开始前
+        params:
+            - name: event
+              type: object
+              description: 参数
+
+      - name: enter
+        title: 进入动画刚开始时
+        description: 进入动画刚开始时
+        params:
+            - name: event
+              type: object
+              description: 参数
+
+      - name: after-enter
+        title: 进入动画完成时
+        description: 进入动画完成时
+        params:
+            - name: event
+              type: object
+              description: 参数
+
+      - name: enter-cancelled
+        title: 进入动画完成之前被取消时
+        description: 进入动画完成之前被取消时
+        params:
+            - name: event
+              type: object
+              description: 参数
+
+      - name: before-leave
+        title: 离开动画开始前
+        description: 离开动画开始前
+        params:
+            - name: event
+              type: object
+              description: 参数
+
+      - name: leave
+        title: 离开动画刚开始时
+        description: 离开动画刚开始时
+        params:
+            - name: event
+              type: object
+              description: 参数
+
+      - name: after-leave
+        title: 离开动画完成时
+        description: 离开动画完成时
+        params:
+            - name: event
+              type: object
+              description: 参数
+
+      - name: leave-cancelled
+        title: 离开动画完成之前被取消时
+        description: 离开动画完成之前被取消时
+        params:
+            - name: event
+              type: object
+              description: 参数
+
+  slots:
+      - concept: Slot
+        name: default
+        description: 内容自定义
+        slotProps:
+            concept: Param
+            name: current
+            typeAnnotation:
+                concept: TypeAnnotation
+                typeKind: generic
+                typeNamespace: nasl.ui
+                typeName: Current
+                typeArguments:
+                    - concept: TypeAnnotation
+                      typeKind: typeParam
+                      typeName: T
