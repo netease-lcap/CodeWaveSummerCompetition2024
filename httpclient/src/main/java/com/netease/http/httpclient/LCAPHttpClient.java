@@ -11,18 +11,17 @@ import com.netease.lowcode.core.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -42,14 +41,16 @@ import java.util.Map;
 @EnableRetry
 public class LCAPHttpClient {
     private static final Logger logger = LoggerFactory.getLogger(LCAPHttpClient.class);
-
-    @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
-    private RestTemplate restTemplateIgnoreCrt;
+ 
     @Autowired
     private HttpClientService httpClientService;
-
+    @Autowired
+    @Qualifier("restTemplatePrimary")
+    private RestTemplate restTemplatePrimary;
+    
+    @Autowired
+    @Qualifier("restTemplateIgnoreCrt")
+    private RestTemplate restTemplateIgnoreCrt;
     /**
      * http/https调用（非form使用）
      *
@@ -69,7 +70,7 @@ public class LCAPHttpClient {
         requestParam.setUrl(url);
         requestParam.setHttpMethod(httpMethod);
         requestParam.setHeader(header);
-        ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplate, String.class);
+        ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplatePrimary, String.class);
         if (exchange.getStatusCode() == HttpStatus.OK) {
             return exchange.getBody();
         } else {
@@ -93,7 +94,7 @@ public class LCAPHttpClient {
         requestParam.setUrl(fileUrl);
         requestParam.setHeader(header);
         requestParam.setHttpMethod(HttpMethod.GET.name());
-        File file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
+        File file = httpClientService.downloadFile(requestParam, restTemplatePrimary, fileName);
         String key = "/extension_" + file.getName();
         NosUtil.put(key, file);
         file.delete();
@@ -119,7 +120,7 @@ public class LCAPHttpClient {
         }
         requestParamGetFile.setUrl(url.getProtocol() + "://" + url.getHost() + fileUrl);
         requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
-        File file = httpClientService.downloadFile(requestParamGetFile, restTemplate, null);
+        File file = httpClientService.downloadFile(requestParamGetFile, restTemplatePrimary, null);
         RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         requestParam.getBody().forEach(body::add);
@@ -128,7 +129,7 @@ public class LCAPHttpClient {
         requestParamInner.setHttpMethod(requestParam.getHttpMethod());
         requestParamInner.setUrl(requestParam.getUrl());
         requestParamInner.setHeader(requestParam.getHeader());
-        ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParamInner, restTemplate, String.class);
+        ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParamInner, restTemplatePrimary, String.class);
         if (exchange.getStatusCode() == HttpStatus.OK) {
             return exchange.getBody();
         } else {
@@ -147,7 +148,7 @@ public class LCAPHttpClient {
     @NaslLogic(enhance = false)
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
     public String exchangeCrt(RequestParam requestParam) {
-        RestTemplate restTemplateFinal = restTemplate;
+        RestTemplate restTemplateFinal = restTemplatePrimary;
         try {
             if (requestParam.getIsIgnoreCrt() == null) {
                 requestParam.setIsIgnoreCrt(false);
@@ -178,7 +179,7 @@ public class LCAPHttpClient {
     @NaslLogic
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
     public String exchangeAllBodyType(RequestParamAllBodyType requestParam) {
-        RestTemplate restTemplateFinal = restTemplate;
+        RestTemplate restTemplateFinal = restTemplatePrimary;
         try {
             if (requestParam.getIsIgnoreCrt() == null) {
                 requestParam.setIsIgnoreCrt(false);
@@ -218,7 +219,7 @@ public class LCAPHttpClient {
         requestParam.setUrl(url);
         requestParam.setHttpMethod(httpMethod);
         requestParam.setHeader(header);
-        ResponseEntity<String> exchange = httpClientService.exchangeWithoutUriEncode(requestParam, restTemplate, String.class);
+        ResponseEntity<String> exchange = httpClientService.exchangeWithoutUriEncode(requestParam, restTemplatePrimary, String.class);
         if (exchange.getStatusCode() == HttpStatus.OK) {
             return exchange.getBody();
         } else {

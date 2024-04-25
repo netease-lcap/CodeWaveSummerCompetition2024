@@ -1,0 +1,19 @@
+{
+  "name": "code-wave-asset-competition-2024",
+  "version": "0.0.3",
+  "private": true,
+  "description": "mono example",
+  "scripts": {
+    "checkPR": "rm -rf dist && node script/temp/check.js",
+    "detectPR": "node script/temp/detect.js",
+    "successPR": "node script/temp/success.js",
+    "release": "node script/temp/release.js"
+  },
+  "devDependencies": {
+    "fast-xml-parser": "^4.3.6",
+    "glob": "^10.3.12",
+    "lodash.mergewith": "^4.6.2",
+    "semver": "^7.6.0",
+    "node-fetch": "2"
+  }
+}
