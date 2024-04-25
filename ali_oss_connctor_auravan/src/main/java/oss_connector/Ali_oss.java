@@ -186,7 +186,7 @@ public class Ali_oss {
         }
         return "fail";
     }
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        MyConnector myConnector = new MyConnector().initBean("appKey");
 //        alioss.test("appKey");
 //        Ali_oss alioss = new Ali_oss().initBean();
@@ -198,5 +198,5 @@ public class Ali_oss {
 //            @Override
 //            public String apply(String s) {
 //                return null;
-    }
+//    }
 }
