@@ -10,11 +10,11 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface LinkRepository extends JpaRepository<Link, Long> {
-    Link findByShortUrl(String shortUrl);
+    Link findByShortCode(String shortCode);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Link a SET a.accessCount = a.accessCount + 1 WHERE a.shortUrl = ?1")
+    @Query("UPDATE Link a SET a.accessCount = a.accessCount + 1 WHERE a.shortCode = ?1")
     void incrementAccessCountByShortUrl(String shortUrl);
 
 }

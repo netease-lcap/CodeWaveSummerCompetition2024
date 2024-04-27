@@ -12,10 +12,10 @@ public class ShortUrlRequest {
     /**
      * 有效期 天数
      */
-    public Integer days;
+    public Integer days = 365;
 
     /**
      * 最大访问次数
      */
-    public Long maxAccessCount;
+    public Long maxAccessCount = 0L;
 }

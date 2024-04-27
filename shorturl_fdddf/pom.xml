@@ -11,7 +11,9 @@
 
     <groupId>fdddf</groupId>
     <artifactId>shorturl</artifactId>
-    <version>1.0.5</version>
+    <name>ShortUrl</name>
+    <description>长链接转短链接，支持时间，访问次数限制，需要外部MySQL数据库支持。</description>
+    <version>1.0.6</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -47,15 +49,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

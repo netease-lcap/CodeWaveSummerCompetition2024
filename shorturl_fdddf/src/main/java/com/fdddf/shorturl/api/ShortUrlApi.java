@@ -10,35 +10,33 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.regex.Pattern;
-
 @Component
 public class ShortUrlApi {
+
     @Autowired
-    LinkService linkService;
+    private LinkService linkService;
 
-    private static final Logger log = LoggerFactory.getLogger(ShortUrlApi.class);
-    private static final Pattern URL_REGEX = Pattern.compile("^(((ht|f)tps?):\\/\\/)?[\\w-]+(\\.[\\w-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?$");
+    private static final Logger logger = LoggerFactory.getLogger(ShortUrlApi.class);
 
-
+    /**
+     * 生成短链接即哈希值
+     * @param request ShortUrlRequest
+     * @return String
+     */
     @NaslLogic
-    public String generateShortLink(ShortUrlRequest request) {
-        if (!checkUrl(request.longUrl)) {
-            throw new RuntimeException("Invalid URL");
-        }
-
-        if (!request.longUrl.startsWith("http")) {
-            request.longUrl = "http://" + request.longUrl;
-        }
-
-        linkService = new LinkService();
+    public String generateShortCode(ShortUrlRequest request) {
         Link link = linkService.saveUrlMap(request);
-
-        return link.shortUrl;
+        return link.shortCode;
     }
 
-    private static Boolean checkUrl(String url) {
-        return URL_REGEX.matcher(url).matches();
+    /**
+     * 获取长链接即原始链接
+     * @param shortCode String
+     * @return 长链接
+     */
+    @NaslLogic
+    public String getLongUrl(String shortCode) {
+        return linkService.getLongUrl(shortCode);
     }
 
 }

@@ -1,28 +1,31 @@
 package com.fdddf.shorturl.model;
 
+import com.netease.lowcode.core.annotation.NaslStructure;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "link")
+@Table(name = "links")
+@NaslStructure
 public class Link implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(name = "long_url")
+    @Column(nullable = false)
     public String longUrl;
 
-    @Column(name = "short_url")
-    public String shortUrl;
+    @Column(nullable = false, unique = true)
+    public String shortCode;
 
-    @Column(name = "expiration_time")
+    @Column
     public String expirationTime;
 
-    @Column(name = "max_access_count")
+    @Column
     public Long maxAccessCount;
 
-    @Column(name = "access_count")
+    @Column
     public Long accessCount;
 }

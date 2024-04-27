@@ -1,6 +1,5 @@
 package com.fdddf.shorturl;
 
-import com.fdddf.shorturl.api.ShortUrlApi;
 import com.fdddf.shorturl.model.Link;
 import com.fdddf.shorturl.model.ShortUrlRequest;
 import com.fdddf.shorturl.utils.HashUtils;
@@ -13,40 +12,33 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 @Service
 public class LinkService {
     private static final Logger log = LoggerFactory.getLogger(LinkService.class);
 
-    private final String datetimeFormat = "yyyy-MM-dd HH:mm:ss";
-
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    private static final String datetimeFormat = "yyyy-MM-dd HH:mm:ss";
 
     @Autowired
     private LinkRepository linkRepository;
 
-    private static final long timeout = 10;
+    private static final Pattern URL_REGEX = Pattern.compile("^(((ht|f)tps?):\\/\\/)?[\\w-]+(\\.[\\w-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?$");
 
-    public String getLongUrl(String shortURL) {
-        // 查找Redis中是否有缓存
-        String longUrl = redisTemplate.opsForValue().get(shortURL);
-        if (longUrl != null) {
-            // 有缓存,增加缓存时间
-            redisTemplate.expire(shortURL, timeout, TimeUnit.MINUTES);
-            return longUrl;
-        }
-        // Redis没有缓存,查数据库
-        Link link = linkRepository.findByShortUrl(shortURL);
+    private static Boolean checkUrl(String url) {
+        return URL_REGEX.matcher(url).matches();
+    }
+
+    public String getLongUrl(String shortCode) {
+        Link link = linkRepository.findByShortCode(shortCode);
         if (link == null) {
             return null;
         }
-        if (link.accessCount + 1 > link.maxAccessCount) {
+        // 判断是否超过最大访问次数
+        if (link.maxAccessCount > 0 && link.accessCount + 1 > link.maxAccessCount) {
             return null;
         }
 
@@ -60,10 +52,7 @@ public class LinkService {
             log.error("date time parse failed");
 //            e.printStackTrace();
         }
-        longUrl = link.longUrl;
-        // 将短链接添加缓存
-        redisTemplate.opsForValue().set(shortURL,longUrl,timeout,TimeUnit.MINUTES);
-        return longUrl;
+        return link.longUrl;
     }
 
     public void updateAccessCount(String shortURL) {
@@ -71,25 +60,28 @@ public class LinkService {
     }
 
     public Link saveUrlMap(ShortUrlRequest request) {
-        String shortURL = HashUtils.hashToBase62(request.longUrl);
+        if (!checkUrl(request.longUrl)) {
+            throw new RuntimeException("Invalid URL");
+        }
+
+        if (!request.longUrl.startsWith("http")) {
+            request.longUrl = "http://" + request.longUrl;
+        }
+
+        String shortCode = HashUtils.hashToBase62(request.longUrl);
         // check exist in db
-        Link link = linkRepository.findByShortUrl(shortURL);
+        Link link = linkRepository.findByShortCode(shortCode);
         if (link != null) {
             throw new DuplicateKeyException("the short url exists");
         }
 
         link = new Link();
-        link.shortUrl = shortURL;
+        link.shortCode = shortCode;
         link.accessCount = 0L;
         link.maxAccessCount = request.maxAccessCount;
         link.longUrl = request.longUrl;
         link.expirationTime = getExpiredTime(request.days);
-        linkRepository.save(link);
-
-        // 添加缓存
-        redisTemplate.opsForValue().set(shortURL,request.longUrl,timeout,TimeUnit.MINUTES);
-
-        return link;
+        return linkRepository.save(link);
     }
 
     public static String getExpiredTime(Integer days) {
