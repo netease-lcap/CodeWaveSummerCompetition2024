@@ -1,0 +1,57 @@
+{
+    "name": "library_jxt_transition",
+    "title": "过渡组件",
+    "description": "transition组件与transition-group组件",
+    "version": "0.2.1",
+    "main": "./index.js",
+    "author": "",
+    "repository": "",
+    "homepage": "",
+    "license": "MIT",
+    "keywords": [
+        "lcap",
+        "material",
+        "component"
+    ],
+    "scripts": {
+        "dev": "vue-cli-service doc --port 9090",
+        "build:theme": "vue-cli-service library-build --dest dist-theme",
+        "build:doc": "vue-cli-service doc-build",
+        "build": "npm run build:theme",
+        "usage": "lcap usage",
+        "deploy": "lcap deploy dist-theme",
+        "prepublishOnly": "lcap publish",
+        "release": "lcap publish",
+        "release:version": "npm run change:version & npm run release",
+        "change:version": "node ./scripts/change-version.js"
+    },
+    "vuePlugins": {},
+    "babel": {},
+    "vusion": {
+        "ui": "cloud-ui.vusion"
+    },
+    "lcapVersion": "0.3.0",
+    "devDependencies": {
+        "@vue/cli-service": "^4.4.1",
+        "cloud-ui.vusion": "^0.11.20",
+        "core-js": "^3.6.5",
+        "vue": "^2.6.12",
+        "vue-cli-plugin-vusion": "0.14.2-beta",
+        "vue-loader": "15.9.8"
+    },
+    "peerDependencies": {
+        "cloud-ui.vusion": "^0.11.20",
+        "vue": "^2.6.12"
+    },
+    "vetur": {
+        "tags": "./vetur/tags.json",
+        "attributes": "./vetur/attributes.json"
+    },
+    "template": {
+        "inited": true
+    },
+    "dependencies": {
+        "animate.css": "^4.1.1",
+        "gsap": "^3.12.5"
+    }
+}
