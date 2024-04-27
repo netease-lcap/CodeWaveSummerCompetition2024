@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
-import java.io.UnsupportedEncodingException;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeUtility;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,7 +31,7 @@ public class EmailFetcher implements Iterator<Message> {
     private FolderIterator folderIter;
     private MessageIterator msgIter;
 
-    private static final Logger log = LoggerFactory.getLogger(EmailFetcher.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmailFetcher.class);
 
     public EmailFetcher(EmailConfig config, String[] includes, String[] excludes) {
         this.config = config;
@@ -89,6 +91,10 @@ public class EmailFetcher implements Iterator<Message> {
                     InternetAddress from = (InternetAddress) address;
                     email.from = from.getAddress();
                 }
+                Map<String, InputStream> attachmentsMap = new HashMap<>();
+                saveAttachment(message, attachmentsMap);
+                Obs obs = new Obs(this.config);
+                email.attachments = obs.saveAttachmentToOSS(attachmentsMap);
                 email.content = sb.toString();
                 email.receivedDate = receivedDate != null ? FORMAT.format(receivedDate) : "";
                 email.sentDate = sentDate != null ? FORMAT.format(sentDate) : "";
@@ -98,7 +104,7 @@ public class EmailFetcher implements Iterator<Message> {
 
             return emails;
         } catch (Exception e) {
-            log.error("Error while fetching emails", e);
+            logger.error("Error while fetching emails", e);
             throw new RuntimeException(e);
         }
     }
@@ -119,7 +125,7 @@ public class EmailFetcher implements Iterator<Message> {
                 msgIter = new MessageIterator(next, batchSize, keywords);
             }
         } catch (EmailFetchException e) {
-            log.error("Fetching email failed", e);
+            logger.error("Fetching email failed", e);
             return false;
         }
         return true;
@@ -181,7 +187,7 @@ public class EmailFetcher implements Iterator<Message> {
 
             return false;
         } catch (EmailFetchException e) {
-            log.error("Fetching email failed", e);
+            logger.error("Fetching email failed", e);
             return false;
         }
     }
@@ -207,6 +213,37 @@ public class EmailFetcher implements Iterator<Message> {
         }
     }
 
+    public Map<String, InputStream> saveAttachment(Part part, Map<String, InputStream> attachmentsMap) throws MessagingException, IOException {
+        if (part.isMimeType("multipart/*")) {
+            Multipart multipart = (Multipart) part.getContent();
+            int partCount = multipart.getCount();
+            for (int i = 0; i < partCount; i++) {
+                BodyPart bodyPart = multipart.getBodyPart(i);
+                String disp = bodyPart.getDisposition();
+                if (disp != null && (disp.equalsIgnoreCase(Part.ATTACHMENT) || disp.equalsIgnoreCase(Part.INLINE))) {
+                    InputStream is = bodyPart.getInputStream();
+                    String fileName = MimeUtility.decodeText(bodyPart.getFileName());
+                    attachmentsMap.put(fileName, is);
+                } else if (bodyPart.isMimeType("multipart/*")) {
+                    // Recursively call saveAttachment if there's nested multipart
+                    attachmentsMap.putAll(saveAttachment(bodyPart, attachmentsMap));
+                } else {
+                    String contentType = bodyPart.getContentType();
+                    if (contentType.contains("name") || contentType.contains("application")) {
+                        InputStream is = bodyPart.getInputStream();
+                        String fileName = MimeUtility.decodeText(bodyPart.getFileName());
+                        attachmentsMap.put(fileName, is);
+                    }
+                }
+            }
+        } else if (part.isMimeType("message/rfc822")) {
+            // Recursively call saveAttachment if it's a nested message
+            attachmentsMap.putAll(saveAttachment((Part) part.getContent(), attachmentsMap));
+        }
+
+        return attachmentsMap;
+    }
+
     public Boolean connectToMailBox() {
         try {
             EmailServerProps props = new EmailServerProps(config.protocol, config.host, config.port, config.sslEnable);
@@ -214,7 +251,7 @@ public class EmailFetcher implements Iterator<Message> {
             Session session = Session.getDefaultInstance(properties);
             mailbox = session.getStore();
             mailbox.connect(config.username, config.password);
-            log.info("Connected to mailbox");
+            logger.info("Connected to mailbox");
             if (config.protocol.equals("imap")) {
                 HashMap<String, String> IAM = new HashMap<>();
                 IAM.put("name", config.username);
@@ -226,7 +263,7 @@ public class EmailFetcher implements Iterator<Message> {
         } catch (AuthenticationFailedException e) {
             handleAuthenticationFailure(e);
         }catch (MessagingException e) {
-            log.error("Error while connecting to mailbox", e);
+            logger.error("Error while connecting to mailbox", e);
             return false;
         }
         return true;
@@ -237,14 +274,14 @@ public class EmailFetcher implements Iterator<Message> {
         msgIter = null;
         try {
             mailbox.close();
-            log.info("Disconnected from mailbox");
+            logger.info("Disconnected from mailbox");
         } catch (MessagingException e) {
-            log.error("Connection failed", e);
+            logger.error("Connection failed", e);
         }
     }
 
     private void handleAuthenticationFailure(Exception e) {
-        log.error("authentication failed {}", decode(e.getLocalizedMessage(), "gbk"));
+        logger.error("authentication failed {}", decode(e.getLocalizedMessage(), "gbk"));
         throw new RuntimeException(e);
     }
 
@@ -254,5 +291,20 @@ public class EmailFetcher implements Iterator<Message> {
         } catch (UnsupportedEncodingException e) {
             return message;
         }
+    }
+
+    public String getPriority(MimeMessage msg) throws MessagingException {
+        String priority = "normal";
+        String[] headers = msg.getHeader("X-Priority");
+        if (headers != null) {
+            String headerPriority = headers[0];
+            if (headerPriority.contains("1") || headerPriority.contains("High"))
+                priority = "high";
+            else if (headerPriority.contains("5") || headerPriority.contains("Low"))
+                priority = "low";
+            else
+                priority = "normal";
+        }
+        return priority;
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MessageIterator implements Iterator<Message> {
 
-    private static final Logger log = LoggerFactory.getLogger(MessageIterator.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageIterator.class);
 
     private Folder folder;
     private Message[] messagesInCurBatch;
@@ -45,11 +45,11 @@ public class MessageIterator implements Iterator<Message> {
                 totalInFolder = messagesInCurBatch.length;
                 folder.fetch(messagesInCurBatch, fp);
                 current = 0;
-                log.info("Total messages: {}", totalInFolder);
-                log.info("Search criteria applied. Batching disabled.");
+                logger.info("Total messages: {}", totalInFolder);
+                logger.info("Search criteria applied. Batching disabled.");
             } else {
                 totalInFolder = folder.getMessageCount();
-                log.info("Total messages: {}", totalInFolder);
+                logger.info("Total messages: {}", totalInFolder);
                 getNextBatch(batchSize, folder);
             }
         } catch (MessagingException e) {
@@ -72,8 +72,8 @@ public class MessageIterator implements Iterator<Message> {
         folder.fetch(messagesInCurBatch, fp);
         current = 0;
         currentBatch++;
-        log.info("Current batch: {}", currentBatch);
-        log.info("Messages in this batch: {}", messagesInCurBatch.length);
+        logger.info("Current batch: {}", currentBatch);
+        logger.info("Messages in this batch: {}", messagesInCurBatch.length);
     }
 
     public boolean hasNext() {
@@ -84,7 +84,7 @@ public class MessageIterator implements Iterator<Message> {
                 getNextBatch(batchSize, folder);
                 hasMore = current < messagesInCurBatch.length;
             } catch (MessagingException e) {
-                log.error("Message retreival failed");
+                logger.error("Message retreival failed");
             }
         }
         return hasMore;
@@ -109,7 +109,7 @@ public class MessageIterator implements Iterator<Message> {
                 try {
                     keyword = MimeUtility.encodeText(keyword, "UTF-8", null);
                 } catch (Exception e) {
-                    log.error("Error encoding keyword: {}", keyword);
+                    logger.error("Error encoding keyword: {}", keyword);
                 }
                 terms[i++] = new SubjectTerm(keyword);
                 terms[i++] = new BodyTerm(keyword);

@@ -30,4 +30,27 @@ public class EmailConfig {
     @NaslConfiguration
     public String password;
 
+    @Value("${ossBucketDomain}")
+    @NaslConfiguration
+    public String ossBucketDomain;
+
+    @Value("${ossEndpoint}")
+    @NaslConfiguration
+    public String ossEndpoint;
+
+    @Value("${ossAccessKeyId}")
+    @NaslConfiguration
+    public String ossAccessKeyId;
+
+    @Value("${ossAccessKeySecret}")
+    @NaslConfiguration
+    public String ossAccessKeySecret;
+
+    @Value("${ossBucketName}")
+    @NaslConfiguration
+    public String ossBucketName;
+
+    @Value("${ossFolder}")
+    @NaslConfiguration
+    public String ossFolder;
 }

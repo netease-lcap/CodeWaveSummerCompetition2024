@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class FolderIterator implements Iterator<Folder> {
-    private static final Logger log = LoggerFactory.getLogger(FolderIterator.class);
+    private static final Logger logger = LoggerFactory.getLogger(FolderIterator.class);
 
     private final Store mailbox;
     private final String[] excludes;
@@ -58,17 +58,17 @@ public class FolderIterator implements Iterator<Folder> {
                         hasMessages = (next.getType() & Folder.HOLDS_MESSAGES) != 0;
                         next.open(Folder.READ_ONLY);
                         lastFolder = next;
-                        log.info("Opened folder: {}", fullName);
+                        logger.info("Opened folder: {}", fullName);
                     }
                     if (((next.getType() & Folder.HOLDS_FOLDERS) != 0)) {
                         Folder[] children = next.list();
-                        log.debug("Adding its children to list");
+                        logger.debug("Adding its children to list");
                         for (int i = children.length - 1; i >= 0; i--) {
                             folders.add(0, children[i]);
-                            log.debug("Child name: {}", children[i].getFullName());
+                            logger.debug("Child name: {}", children[i].getFullName());
                         }
                         if (children.length == 0) {
-                            log.debug("No children");
+                            logger.debug("No children");
                         }
                     }
                 }

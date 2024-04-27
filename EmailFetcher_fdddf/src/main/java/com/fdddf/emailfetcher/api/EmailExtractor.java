@@ -1,8 +1,14 @@
 package com.fdddf.emailfetcher.api;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.OSSException;
+import com.aliyun.oss.common.auth.CredentialsProviderFactory;
+import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.fdddf.emailfetcher.*;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.sun.mail.imap.IMAPMessage;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,11 +18,10 @@ import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class EmailExtractor {
@@ -26,7 +31,7 @@ public class EmailExtractor {
      */
     @Resource
     private EmailConfig cfg;
-    private static final Logger log = LoggerFactory.getLogger(EmailExtractor.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmailExtractor.class);
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public void setCfg(EmailConfig cfg) {
@@ -43,7 +48,7 @@ public class EmailExtractor {
         EmailFetcher fetcher = new EmailFetcher(cfg, includes, null);
         try {
             if (!fetcher.connectToMailBox()) {
-                log.error("Can't connect to mailbox");
+                logger.error("Can't connect to mailbox");
                 return null;
             }
 
@@ -52,7 +57,7 @@ public class EmailExtractor {
 
             return folders;
         } catch (EmailFetchException e) {
-            log.error("Can't connect to mailbox");
+            logger.error("Can't connect to mailbox");
             return null;
         } catch (MessagingException e) {
             throw new RuntimeException(e);
@@ -70,14 +75,14 @@ public class EmailExtractor {
         try {
             EmailFetcher fetcher = new EmailFetcher(cfg, null, null);
             if (!fetcher.connectToMailBox()) {
-                log.error("Can't connect to mailbox");
+                logger.error("Can't connect to mailbox");
                 return null;
             }
             List<Email> emails = fetcher.getInboxMails(pageNumber, pageSize);
             fetcher.disconnectFromMailBox();
             return emails;
         } catch (Exception e) {
-            log.error("Can't connect to mailbox or fetch emails %s", e);
+            logger.error("Can't connect to mailbox or fetch emails %s", e);
             throw new RuntimeException(e);
         }
     }
@@ -97,7 +102,7 @@ public class EmailExtractor {
 
         fetcher.setFilterKeywords(keywords);
         if (!fetcher.connectToMailBox()) {
-            log.error("Can't connect to mailbox");
+            logger.error("Can't connect to mailbox");
             return null;
         }
 
@@ -128,34 +133,40 @@ public class EmailExtractor {
                     email.from = from.getAddress();
                     System.out.format("from %s %s at %s \n", from.getAddress(), fetcher.getFolder(), FORMAT.format(sentDate));
                 }
+
+                Map<String, InputStream> attachmentsMap = new HashMap<>();
+                fetcher.saveAttachment(mail, attachmentsMap);
+                Obs obs = new Obs(cfg);
+                email.attachments = obs.saveAttachmentToOSS(attachmentsMap);
                 email.content = sb.toString();
                 email.receivedDate = receivedDate != null ? FORMAT.format(receivedDate) : "";
                 email.sentDate = sentDate != null ? FORMAT.format(sentDate) : "";
+                email.priority = fetcher.getPriority((MimeMessage) mail);
                 emails.add(email);
                 if (mail instanceof IMAPMessage) {
                     lastSuccessMsgId = ((IMAPMessage)mail).getMessageID();
                 }
             } catch (Exception e) {
-                log.error("Can't read content from email", e);
-
+                logger.error("Can't read content from email", e);
+                e.printStackTrace();
                 restartCount++;
-                // restart (connect/disconnect) and continue from current folder
+//                 restart (connect/disconnect) and continue from current folder
                 if (restartCount <= 3) {
                     String curFolder = fetcher.getFolder();
-                    log.info("Restart at folder {} time {}", curFolder, restartCount);
+                    logger.info("Restart at folder {} time {}", curFolder, restartCount);
                     fetcher.disconnectFromMailBox();
                     if (!fetcher.connectToMailBox() || !fetcher.jumpToFolder(curFolder)) {
-                        log.info("Jump to folder {} failed. Skip the failed email and continue", curFolder);
+                        logger.info("Jump to folder {} failed. Skip the failed email and continue", curFolder);
                     }
                     if (lastSuccessMsgId != null) {
                         if (fetcher.jumpToMessageId(lastSuccessMsgId)) {
-                            log.info("Jump to last failed mail");
+                            logger.info("Jump to last failed mail");
                         } else {
-                            log.info("Can't jump to last failed mail");
+                            logger.info("Can't jump to last failed mail");
                         }
                     }
                 } else {
-                    log.info("Skip the failed email and continue");
+                    logger.info("Skip the failed email and continue");
                 }
             }
         }

@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class MailsSinceLastCheckFilter implements CustomFilter {
 
-    private static final Logger log = LoggerFactory.getLogger(MailsSinceLastCheckFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(MailsSinceLastCheckFilter.class);
 
     private Date since;
 
@@ -28,7 +28,7 @@ public class MailsSinceLastCheckFilter implements CustomFilter {
         final SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
         final String sinceText = new SimpleDateFormat("yyyy-MM-dd").format(since);
 
-        log.info("Building mail filter for messages in {} that occur from {}", folder.getName(), sinceText);
+        logger.info("Building mail filter for messages in {} that occur from {}", folder.getName(), sinceText);
         return new DateTerm(ComparisonTerm.GE, since) {
             private int matched = 0;
             private int seen = 0;
@@ -45,18 +45,18 @@ public class MailsSinceLastCheckFilter implements CustomFilter {
                         ++matched;
                         isMatch = true;
                     } else {
-                        if (log.isDebugEnabled()) {
+                        if (logger.isDebugEnabled()) {
                             String msgDateStr = (msgDate != null) ? parser.format(msgDate) : "null";
                             String sinceDateStr = (since != null) ? sinceText : "null";
-                            log.debug("Message {} was received at [{}], since filter is [{}]", msg.getSubject(), msgDateStr, sinceDateStr);
+                            logger.debug("Message {} was received at [{}], since filter is [{}]", msg.getSubject(), msgDateStr, sinceDateStr);
                         }
                     }
                 } catch (MessagingException e) {
-                    log.warn("Failed to process message", e);
+                    logger.warn("Failed to process message", e);
                 }
 
                 if (seen % 100 == 0) {
-                    log.info("Matched {} of {} messages since {}", matched, seen, sinceText);
+                    logger.info("Matched {} of {} messages since {}", matched, seen, sinceText);
                 }
 
                 return isMatch;

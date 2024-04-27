@@ -46,12 +46,23 @@ public class Email {
      */
     public List<String> recipientBcc;
 
+    /**
+     * 邮件附件 OSS存储的URL
+     */
+    public List<String> attachments;
+
     public String folderName;
+
+    /**
+     * 邮件优先级, high, normal, low
+     */
+    public String priority;
 
     public Email() {
         recipientTo = new ArrayList<>();
         recipientCc = new ArrayList<>();
         recipientBcc = new ArrayList<>();
+        attachments = new ArrayList<>();
     }
 
     private static String decode(String recipient) {
@@ -70,6 +81,7 @@ public class Email {
         recipientTo = new ArrayList<>();
         recipientCc = new ArrayList<>();
         recipientBcc = new ArrayList<>();
+        attachments = new ArrayList<>();
 
         if (message.getRecipients(Message.RecipientType.TO) != null) {
             Address[] toAddresses = message.getRecipients(Message.RecipientType.TO);
@@ -96,6 +108,8 @@ public class Email {
     public String toString() {
         return "From: " + from + "\n" +
                 "Subject: " + subject + "\n" +
+                "Sent Date: " + sentDate + "\n" +
+                "Priority: " + priority + "\n" +
                 "Recipient To: " + recipientTo + "\n" +
                 "Recipient Cc: " + recipientCc + "\n" +
                 "Recipient Bcc: " + recipientBcc + "\n" +
