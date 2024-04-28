@@ -4,33 +4,38 @@
 
 ## 逻辑详情
 
-### generateShortCode
+### saveUrlMap
 
 生成短链接哈希值  
-入参： ShortUrlRequest request  
-出参： String shortCode
+入参： 
+* ShortUrlRequest request 
+* Function<Link, Link> saveShortUrlLogic 入库保存逻辑
+* Function<String, Boolean> checkLongUrlExistLogic  检查长链接是否存在逻辑
+
+出参： Link
 
 ### getLongUrl
 
 获取长链接  
 
-入参： String shortCode  
+入参： 
+* String shortCode
+* Function<String, Link> findLinkByShortCode  根据短链接码查询短链接逻辑
+* Function<Link, Boolean> updateLink  更新短链接访问次数逻辑
+
 出参： String longUrl  
 
 
 ## 使用步骤说明
 
 1.  应用引用依赖库
-2.  配置应用配置参数 
-      1. shorturl.dataSourceUrl   JDBC地址，如 jdbc:mysql://127.0.0.1:3306/shorturl 
-      2. shorturl.dataSourceUsername MySql数据库用户名
-      3. shorturl.dataSourcePassword MySql数据库密码
+2.  配置应用配置参数 （无需配置）
 3. 逻辑调用示例截图
 
-![Snipaste_2024-04-28_01-33-21.jpg](Snipaste_2024-04-28_01-33-21.jpg)
-
+![Snipaste_2024-04-29_01-51-36.jpg](Snipaste_2024-04-29_01-51-36.jpg)
 
 ## 应用演示链接
 
 [使用了本依赖库的制品应用链接]
+
 https://dev-testshorturl-qa.app.codewave.163.com/shorturl
