@@ -62,7 +62,7 @@
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
                 <version>1.3.0</version>
                 <configuration>
-                    <jarWithDependencies>true</jarWithDependencies>
+                    <jarWithDependencies>false</jarWithDependencies>
                 </configuration>
                 <executions>
                     <execution>
