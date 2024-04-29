@@ -1,10 +1,11 @@
 package com.fdddf.emailfetcher;
 
-import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.OSSException;
-import com.aliyun.oss.common.auth.CredentialsProviderFactory;
-import com.aliyun.oss.common.auth.DefaultCredentialProvider;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.fdddf.emailfetcher.api.EmailExtractor;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -15,22 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Obs {
+public class AmazonOSS {
     protected final EmailConfig cfg;
-
-    public Obs(EmailConfig cfg) {
-        this.cfg = cfg;
-    }
 
     private static final Logger logger = LoggerFactory.getLogger(EmailExtractor.class);
 
-    /**
-     * Save attachments to OSS
-     * @param attachments List of attachments in /tmp folder
-     * @return List of saved attachments
-     */
+    public AmazonOSS(EmailConfig cfg) {
+        this.cfg = cfg;
+    }
+
     public List<String> saveAttachmentToOSS(Map<String, InputStream> attachments) {
-        DefaultCredentialProvider provider = CredentialsProviderFactory.newDefaultCredentialProvider(cfg.ossAccessKeyId, cfg.ossAccessKeySecret);
+        BasicAWSCredentials credentials = new BasicAWSCredentials(cfg.ossAccessKeyId, cfg.ossAccessKeySecret);
+        AWSStaticCredentialsProvider provider = new AWSStaticCredentialsProvider(credentials);
+
         String endpoint = cfg.ossEndpoint;
         if (!endpoint.startsWith("http")) {
             endpoint = "https://" + endpoint;
@@ -40,8 +38,17 @@ public class Obs {
             bucketDomain = "https://" + bucketDomain;
         }
 
-        OSS ossClient = new OSSClientBuilder().build(endpoint, provider);
+        AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                .withCredentials(provider)
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
+                        endpoint,
+                        ""))
+                .withPathStyleAccessEnabled(false)
+                .withChunkedEncodingDisabled(true)
+                .build();
+
         List<String> savedAttachments = new ArrayList<>();
+
         for (String filename : attachments.keySet()) {
             logger.info("will put attachment to oss: {}", filename);
             String objectName = FilenameUtils.getName(filename);
@@ -50,22 +57,24 @@ public class Obs {
             }
 
             try {
-                if (ossClient.doesObjectExist(cfg.ossBucketName, objectName)) {
+                if (s3Client.doesObjectExist(cfg.ossBucketName, objectName)) {
                     savedAttachments.add(bucketDomain + "/" + objectName);
                     continue;
                 }
-                ossClient.putObject(cfg.ossBucketName, objectName, attachments.get(filename));
-            } catch (OSSException oe) {
+                s3Client.putObject(cfg.ossBucketName, objectName, attachments.get(filename), null);
+            } catch (AmazonServiceException e) {
                 logger.error("Caught an OSSException, which means your request made it to OSS, "
-                        + "but was rejected with an error response for some reason.", oe);
-                oe.printStackTrace();
+                        + "but was rejected with an error response for some reason.", e);
+                e.printStackTrace();
                 continue;
             }
 
             savedAttachments.add(bucketDomain + "/" + objectName);
         }
-        ossClient.shutdown();
+        s3Client.shutdown();
 
         return savedAttachments;
     }
+
 }
+

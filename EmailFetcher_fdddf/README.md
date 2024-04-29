@@ -1,5 +1,5 @@
 # 邮件拉取器
-邮件拉取器，适配IMAP, POP3协议邮箱。支持将附件保存到阿里云OSS中。
+邮件拉取器，适配IMAP, POP3协议邮箱。支持将附件保存到OSS中。
 
 ## 逻辑详情
 
@@ -7,13 +7,26 @@
 
 获取邮箱收件箱邮件列表
 
-* 入参：int page, int pageSize
+* 入参：int page 默认1, int pageSize 默认10
+* 出参：`List<Email>`
+
+### getInboxEmailsWithConfig
+
+获取邮箱收件箱邮件列表，支持运行时配置参数
+
+* 入参：int page 默认1, int pageSize 默认10, EmailConfig config
 * 出参：`List<Email>`
 
 ### extractEmails
 
 提取邮件内容
 * 入参：无
+* 出参：`List<Email>`
+
+### extractEmailsWithConfig
+
+提取邮件内容，支持运行时配置参数
+* 入参：EmailConfig config
 * 出参：`List<Email>`
 
 ## 使用步骤说明

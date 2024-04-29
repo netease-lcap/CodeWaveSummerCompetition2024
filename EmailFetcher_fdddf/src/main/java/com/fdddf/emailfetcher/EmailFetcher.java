@@ -54,8 +54,9 @@ public class EmailFetcher implements Iterator<Message> {
 
     /**
      * Get inbox mails
+     *
      * @param pageNumber page number, default 1
-     * @param pageSize page size, default 10
+     * @param pageSize   page size, default 10
      * @return list of Email
      */
     public List<Email> getInboxMails(Integer pageNumber, Integer pageSize) {
@@ -93,7 +94,7 @@ public class EmailFetcher implements Iterator<Message> {
                 }
                 Map<String, InputStream> attachmentsMap = new HashMap<>();
                 saveAttachment(message, attachmentsMap);
-                Obs obs = new Obs(this.config);
+                AmazonOSS obs = new AmazonOSS(this.config);
                 email.attachments = obs.saveAttachmentToOSS(attachmentsMap);
                 email.content = sb.toString();
                 email.receivedDate = receivedDate != null ? FORMAT.format(receivedDate) : "";
@@ -156,7 +157,7 @@ public class EmailFetcher implements Iterator<Message> {
 
             try {
                 if (mail instanceof IMAPMessage) {
-                    if (((IMAPMessage)mail).getMessageID().equals(id)) {
+                    if (((IMAPMessage) mail).getMessageID().equals(id)) {
                         return true;
                     }
                 } else {
@@ -244,25 +245,36 @@ public class EmailFetcher implements Iterator<Message> {
         return attachmentsMap;
     }
 
+    public static Session getSession(EmailConfig emailConfig) {
+        EmailServerProps props = new EmailServerProps(
+                emailConfig.protocol, emailConfig.host, emailConfig.port, emailConfig.sslEnable);
+        Properties properties = props.getProperties();
+        return Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                return new javax.mail.PasswordAuthentication(emailConfig.username, emailConfig.password);
+            }
+        });
+    }
+
     public Boolean connectToMailBox() {
         try {
-            EmailServerProps props = new EmailServerProps(config.protocol, config.host, config.port, config.sslEnable);
-            Properties properties = props.getProperties();
-            Session session = Session.getDefaultInstance(properties);
+            Session session = getSession(config);
             mailbox = session.getStore();
             mailbox.connect(config.username, config.password);
             logger.info("Connected to mailbox");
-            if (config.protocol.equals("imap")) {
+            if (config.protocol.equals("imap") && (
+                    config.host.contains("163.com") || config.host.contains("126.com"))
+            ) {
                 HashMap<String, String> IAM = new HashMap<>();
                 IAM.put("name", config.username);
                 IAM.put("version", "1.0.0");
                 IAM.put("vendor", "emailfetchor");
                 IAM.put("support-email", config.username);
-                ((IMAPStore)mailbox).id(IAM);
+                ((IMAPStore) mailbox).id(IAM);
             }
         } catch (AuthenticationFailedException e) {
             handleAuthenticationFailure(e);
-        }catch (MessagingException e) {
+        } catch (MessagingException e) {
             logger.error("Error while connecting to mailbox", e);
             return false;
         }
@@ -282,7 +294,7 @@ public class EmailFetcher implements Iterator<Message> {
 
     private void handleAuthenticationFailure(Exception e) {
         logger.error("authentication failed {}", decode(e.getLocalizedMessage(), "gbk"));
-        throw new RuntimeException(e);
+        throw new RuntimeException(e.getMessage() + " " + this.config.toString());
     }
 
     public static String decode(String message, String charset) {

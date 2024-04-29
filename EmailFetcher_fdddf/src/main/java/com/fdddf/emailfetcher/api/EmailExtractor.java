@@ -34,9 +34,10 @@ public class EmailExtractor {
 
     /**
      * Get all folders
+     *
      * @return List of folders
      */
-    public List<String> getFolders()  {
+    public List<String> getFolders() {
         String[] includes = new String[]{"INBOX"};
         EmailFetcher fetcher = new EmailFetcher(cfg, includes, null);
         try {
@@ -45,7 +46,7 @@ public class EmailExtractor {
                 return null;
             }
 
-            List <String> folders = fetcher.getFolders();
+            List<String> folders = fetcher.getFolders();
             fetcher.disconnectFromMailBox();
 
             return folders;
@@ -58,13 +59,54 @@ public class EmailExtractor {
     }
 
     /**
+     * Get all emails with page number and size, config
+     *
+     * @param pageNumber Page number, default 1
+     * @param pageSize   Page size, default 10
+     * @param emailConfig     EmailConfig
+     * @return List<Email>
+     */
+    @NaslLogic
+    public static List<Email> getInboxEmailsWithConfig(Integer pageNumber, Integer pageSize, EmailConfig emailConfig) {
+        if (emailConfig == null || !emailConfig.validate()) {
+            throw new RuntimeException("EmailConfig is invalid");
+        }
+        if (pageNumber == null) {
+            pageNumber = 1;
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }
+        try {
+            EmailFetcher fetcher = new EmailFetcher(emailConfig, null, null);
+            if (!fetcher.connectToMailBox()) {
+                logger.error("Can't connect to mailbox");
+                return null;
+            }
+            List<Email> emails = fetcher.getInboxMails(pageNumber, pageSize);
+            fetcher.disconnectFromMailBox();
+            return emails;
+        } catch (Exception e) {
+            logger.error("Can't connect to mailbox or fetch emails %s", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Get all emails with page number and size
-     * @param pageNumber Page number
-     * @param pageSize Page size
+     *
+     * @param pageNumber Page number, default 1
+     * @param pageSize   Page size, default 10
      * @return List of emails
      */
     @NaslLogic
     public List<Email> getInboxEmails(Integer pageNumber, Integer pageSize) {
+        if (pageNumber == null) {
+            pageNumber = 1;
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }
         try {
             EmailFetcher fetcher = new EmailFetcher(cfg, null, null);
             if (!fetcher.connectToMailBox()) {
@@ -82,15 +124,36 @@ public class EmailExtractor {
 
     /**
      * Extract emails
-     * @return List of emails
+     *
+     * @return List<Email> List of emails
      */
     @NaslLogic
     public List<Email> extractEmails() {
+        return extractInboxEmails(cfg);
+    }
+
+
+    /**
+     * Extract emails with config
+     *
+     * @param emailConfig EmailConfig
+     * @return List<Email>
+     */
+    @NaslLogic
+    public static List<Email> extractEmailsWithConfig(EmailConfig emailConfig) {
+        if (emailConfig == null || !emailConfig.validate()) {
+            throw new RuntimeException("EmailConfig is invalid");
+        }
+        return new EmailExtractor().extractInboxEmails(emailConfig);
+    }
+
+    private List<Email> extractInboxEmails(EmailConfig config) {
+
 //        String[] incs = includes.toArray(new String[0]);
 //        String[] excs = excludes.toArray(new String[0]);
         String[] incs = new String[]{"INBOX"};
         String[] excs = null;
-        EmailFetcher fetcher = new EmailFetcher(cfg, incs, excs);
+        EmailFetcher fetcher = new EmailFetcher(config, incs, excs);
 
 //        fetcher.setFilterKeywords(keywords);
         if (!fetcher.connectToMailBox()) {
@@ -128,7 +191,7 @@ public class EmailExtractor {
 
                 Map<String, InputStream> attachmentsMap = new HashMap<>();
                 fetcher.saveAttachment(mail, attachmentsMap);
-                Obs obs = new Obs(cfg);
+                AmazonOSS obs = new AmazonOSS(config);
                 email.attachments = obs.saveAttachmentToOSS(attachmentsMap);
                 email.content = sb.toString();
                 email.receivedDate = receivedDate != null ? FORMAT.format(receivedDate) : "";
@@ -136,7 +199,7 @@ public class EmailExtractor {
                 email.priority = fetcher.getPriority((MimeMessage) mail);
                 emails.add(email);
                 if (mail instanceof IMAPMessage) {
-                    lastSuccessMsgId = ((IMAPMessage)mail).getMessageID();
+                    lastSuccessMsgId = ((IMAPMessage) mail).getMessageID();
                 }
             } catch (Exception e) {
                 logger.error("Can't read content from email", e);
