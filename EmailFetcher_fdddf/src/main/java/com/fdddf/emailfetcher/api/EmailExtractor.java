@@ -1,14 +1,8 @@
 package com.fdddf.emailfetcher.api;
 
-import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.OSSException;
-import com.aliyun.oss.common.auth.CredentialsProviderFactory;
-import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.fdddf.emailfetcher.*;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.sun.mail.imap.IMAPMessage;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,7 +36,6 @@ public class EmailExtractor {
      * Get all folders
      * @return List of folders
      */
-    @NaslLogic
     public List<String> getFolders()  {
         String[] includes = new String[]{"INBOX"};
         EmailFetcher fetcher = new EmailFetcher(cfg, includes, null);
@@ -65,7 +58,7 @@ public class EmailExtractor {
     }
 
     /**
-     * Get all emails
+     * Get all emails with page number and size
      * @param pageNumber Page number
      * @param pageSize Page size
      * @return List of emails
@@ -89,18 +82,17 @@ public class EmailExtractor {
 
     /**
      * Extract emails
-     * @param includes List of folders to include
-     * @param excludes List of folders to exclude
-     * @param keywords Keywords to filter emails
      * @return List of emails
      */
     @NaslLogic
-    public List<Email> extractEmails(List<String> includes, List<String> excludes, List<String> keywords) {
-        String[] incs = includes.toArray(new String[0]);
-        String[] excs = excludes.toArray(new String[0]);
+    public List<Email> extractEmails() {
+//        String[] incs = includes.toArray(new String[0]);
+//        String[] excs = excludes.toArray(new String[0]);
+        String[] incs = new String[]{"INBOX"};
+        String[] excs = null;
         EmailFetcher fetcher = new EmailFetcher(cfg, incs, excs);
 
-        fetcher.setFilterKeywords(keywords);
+//        fetcher.setFilterKeywords(keywords);
         if (!fetcher.connectToMailBox()) {
             logger.error("Can't connect to mailbox");
             return null;
