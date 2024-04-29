@@ -1,6 +1,7 @@
 package com.wjm.api;
 
-import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
 import com.netease.lowcode.core.annotation.NaslConfiguration;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -30,6 +32,8 @@ public class RegionUtil {
   @Value("${jsonFileUrl}")
   private String jsonFileUrl;
 
+  private Region region;
+
   /**
    * 提供输入省份，给出其地级市列表
    *
@@ -41,12 +45,10 @@ public class RegionUtil {
     if (isEmpty(provinceName)) {
       throw new IllegalArgumentException("省份名不能为空");
     }
-    String fileContent = readFile();
-    Region regionObject = JSON.parseObject(fileContent, Region.class);
-    List<Region> provinces = regionObject.getDistricts();
+    List<Region> provinces = region.getDistricts();
     List<Region> prefectureCities = null;
     for (Region province : provinces) {
-      if (provinceName.equals(province.getName())) {
+      if (province.getName().startsWith(provinceName)) {
         prefectureCities = province.getDistricts();
       }
     }
@@ -65,14 +67,12 @@ public class RegionUtil {
     if (isEmpty(prefectureCity)) {
       throw new IllegalArgumentException("地级市名不能为空");
     }
-    String fileContent = readFile();
-    Region regionObject = JSON.parseObject(fileContent, Region.class);
     List<Region> counties = null;
-    List<Region> provinces = regionObject.getDistricts();
+    List<Region> provinces = region.getDistricts();
     for (Region province : provinces) {
       List<Region> prefectureCities = province.getDistricts();
       for (Region prefecture : prefectureCities) {
-        if (prefectureCity.equals(prefecture.getName())) {
+        if (prefecture.getName().startsWith(prefectureCity)) {
           counties = prefecture.getDistricts();
         }
       }
@@ -97,9 +97,7 @@ public class RegionUtil {
       throw new IllegalArgumentException("地级市名不能为空");
     }
     HashSet<String> cities = new HashSet<>();
-    String fileContent = readFile();
-    Region regionObject = JSON.parseObject(fileContent, Region.class);
-    List<Region> provinces = regionObject.getDistricts();
+    List<Region> provinces = region.getDistricts();
     List<Region> prefectureCities = null;
     for (Region province : provinces) {
       if (provinceName.equals(province.getName())) {
@@ -131,9 +129,7 @@ public class RegionUtil {
       throw new IllegalArgumentException("区县名不能为空");
     }
     HashSet<String> counties = new HashSet<>();
-    String fileContent = readFile();
-    Region regionObject = JSON.parseObject(fileContent, Region.class);
-    List<Region> provinces = regionObject.getDistricts();
+    List<Region> provinces = region.getDistricts();
     for (Region province : provinces) {
       List<Region> prefectureCities = province.getDistricts();
       for (Region prefecture : prefectureCities) {
@@ -167,9 +163,7 @@ public class RegionUtil {
       throw new IllegalArgumentException("区县名不能为空");
     }
     HashSet<String> counties = new HashSet<>();
-    String fileContent = readFile();
-    Region regionObject = JSON.parseObject(fileContent, Region.class);
-    List<Region> provinces = regionObject.getDistricts();
+    List<Region> provinces = region.getDistricts();
     for (Region province : provinces) {
       if (provinceName.equals(province.getName())) {
         List<Region> prefectureCities = province.getDistricts();
@@ -183,6 +177,16 @@ public class RegionUtil {
       }
     }
     return counties.contains(countyName);
+  }
+
+  /**
+   * 获取现有的行政区信息
+   *
+   * @return
+   */
+  @NaslLogic
+  public Region getRegion() {
+    return readResourceFile();
   }
 
   /**
@@ -225,7 +229,8 @@ public class RegionUtil {
     return false;
   }
 
-  private String readFile() {
+
+  private Region readFile() {
     if (!isEmpty(this.jsonFileUrl)) {
       try {
         StringBuilder content = new StringBuilder();
@@ -239,9 +244,12 @@ public class RegionUtil {
         while ((line = bufferedReader.readLine()) != null) {
           content.append(line);
         }
-        return content.toString();
+        return JSON.parseObject(content.toString(), Region.class);
       } catch (IOException e) {
         log.error("获取json文件异常：", e);
+        throw new RegionException(e);
+      } catch (JSONException e) {
+        log.error("自定义json文件格式异常：", e);
         throw new RegionException(e);
       }
     } else {
@@ -249,7 +257,7 @@ public class RegionUtil {
     }
   }
 
-  private String readResourceFile() {
+  private Region readResourceFile() {
     StringBuilder content = new StringBuilder();
     try (InputStream inputStream = RegionUtil.class.getClassLoader().getResourceAsStream("region.json");
          InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -261,23 +269,16 @@ public class RegionUtil {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return content.toString();
+    return JSON.parseObject(content.toString(), Region.class);
+  }
+
+  @PostConstruct
+  public void init() {
+    region = readFile();
   }
 
 
-  /**
-   * 获取现有的行政区信息
-   *
-   * @return
-   */
-  @NaslLogic
-  public Region getRegion() {
-    String fileContent = readResourceFile();
-    return JSON.parseObject(fileContent, Region.class);
-  }
-
-  private boolean isEmpty(String s) {
+  private static boolean isEmpty(String s) {
     return s == null || s.length() == 0;
   }
-
 }
