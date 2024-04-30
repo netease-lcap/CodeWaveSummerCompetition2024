@@ -13,7 +13,7 @@
     <artifactId>EmailFetcher</artifactId>
     <name>EmailFetcher</name>
     <description>邮件拉取工具，支持IMAP/POP3协议；支持邮件附件保存到OSS</description>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
