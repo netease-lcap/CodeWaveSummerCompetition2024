@@ -13,4 +13,9 @@ public class EmailRuntimeException extends RuntimeException {
     {        
         super(cause);
     }
+
+    public EmailRuntimeException(String message)
+    {        
+        super(message);
+    }
 }

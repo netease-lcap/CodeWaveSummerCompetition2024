@@ -37,7 +37,7 @@ public class EmailExtractor {
      *
      * @return List of folders
      */
-    public List<String> getFolders() {
+    public List<String> getFolders() throws EmailFetchException {
         String[] includes = new String[]{"INBOX"};
         EmailFetcher fetcher = new EmailFetcher(cfg, includes, null);
         try {
@@ -65,11 +65,12 @@ public class EmailExtractor {
      * @param pageSize   Page size, default 10
      * @param emailConfig     EmailConfig
      * @return List<Email>
+     * @throws EmailRuntimeException
      */
     @NaslLogic
-    public static List<Email> getInboxEmailsWithConfig(Integer pageNumber, Integer pageSize, EmailConfig emailConfig) {
+    public static List<Email> getInboxEmailsWithConfig(Integer pageNumber, Integer pageSize, EmailConfig emailConfig) throws EmailRuntimeException {
         if (emailConfig == null || !emailConfig.validate()) {
-            throw new RuntimeException("EmailConfig is invalid");
+            throw new EmailRuntimeException("EmailConfig is invalid");
         }
         if (pageNumber == null) {
             pageNumber = 1;
@@ -98,9 +99,10 @@ public class EmailExtractor {
      * @param pageNumber Page number, default 1
      * @param pageSize   Page size, default 10
      * @return List of emails
+     * @throws EmailRuntimeException
      */
     @NaslLogic
-    public List<Email> getInboxEmails(Integer pageNumber, Integer pageSize) {
+    public List<Email> getInboxEmails(Integer pageNumber, Integer pageSize) throws EmailRuntimeException {
         if (pageNumber == null) {
             pageNumber = 1;
         }
@@ -138,11 +140,12 @@ public class EmailExtractor {
      *
      * @param emailConfig EmailConfig
      * @return List<Email>
+     * @throws EmailRuntimeException
      */
     @NaslLogic
-    public static List<Email> extractEmailsWithConfig(EmailConfig emailConfig) {
+    public static List<Email> extractEmailsWithConfig(EmailConfig emailConfig) throws EmailRuntimeException {
         if (emailConfig == null || !emailConfig.validate()) {
-            throw new RuntimeException("EmailConfig is invalid");
+            throw new EmailRuntimeException("EmailConfig is invalid");
         }
         return new EmailExtractor().extractInboxEmails(emailConfig);
     }
