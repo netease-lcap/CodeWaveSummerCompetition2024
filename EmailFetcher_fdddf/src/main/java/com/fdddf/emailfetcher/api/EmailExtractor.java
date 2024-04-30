@@ -54,7 +54,7 @@ public class EmailExtractor {
             logger.error("Can't connect to mailbox");
             return null;
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            throw new EmailRuntimeException(e);
         }
     }
 
@@ -88,7 +88,7 @@ public class EmailExtractor {
             return emails;
         } catch (Exception e) {
             logger.error("Can't connect to mailbox or fetch emails %s", e);
-            throw new RuntimeException(e);
+            throw new EmailRuntimeException(e);
         }
     }
 
@@ -118,7 +118,7 @@ public class EmailExtractor {
             return emails;
         } catch (Exception e) {
             logger.error("Can't connect to mailbox or fetch emails %s", e);
-            throw new RuntimeException(e);
+            throw new EmailRuntimeException(e);
         }
     }
 

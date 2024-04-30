@@ -294,7 +294,7 @@ public class EmailFetcher implements Iterator<Message> {
 
     private void handleAuthenticationFailure(Exception e) {
         logger.error("authentication failed {}", decode(e.getLocalizedMessage(), "gbk"));
-        throw new RuntimeException(e.getMessage() + " " + this.config.toString());
+        throw new EmailRuntimeException(e);
     }
 
     public static String decode(String message, String charset) {
