@@ -79,9 +79,9 @@ public class LinkService {
      */
     @NaslLogic
     public static Link saveUrlMap(ShortUrlRequest request, Function<Link, Link> saveShortUrlLogic,
-                           Function<String, Boolean> checkLongUrlExistLogic) {
+                           Function<String, Boolean> checkLongUrlExistLogic) throws LinkRuntimeException, LinkDuplicateException {
         if (!checkUrl(request.longUrl)) {
-            throw new RuntimeException("Invalid URL");
+            throw new LinkRuntimeException("Invalid URL");
         }
 
         if (!request.longUrl.startsWith("http")) {
@@ -91,7 +91,7 @@ public class LinkService {
         String shortCode = HashUtils.hashToBase62(request.longUrl);
         // check exist in db
         if (checkLongUrlExistLogic.apply(request.longUrl)) {
-            throw new RuntimeException("the long url exists");
+            throw new LinkDuplicateException("the long url exists");
         }
 
         Link link = new Link();

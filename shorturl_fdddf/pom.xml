@@ -13,7 +13,7 @@
     <artifactId>shorturl</artifactId>
     <name>ShortUrl</name>
     <description>长链接转短链接，支持时间，访问次数限制，需要外部MySQL数据库支持。</description>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
