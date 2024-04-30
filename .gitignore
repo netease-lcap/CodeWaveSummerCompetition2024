@@ -49,6 +49,8 @@ node_modules/
 
 **/dist-theme/
 **/*.zip
+*.zip
+jar/
 
 **/target/
 
