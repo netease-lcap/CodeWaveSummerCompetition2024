@@ -23,6 +23,9 @@ public class LinkService {
     private static final Pattern URL_REGEX = Pattern.compile("^(((ht|f)tps?):\\/\\/)?[\\w-]+(\\.[\\w-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?$");
 
     private static Boolean checkUrl(String url) {
+        if (url == null || url.isEmpty()) {
+            return false;
+        }
         return URL_REGEX.matcher(url).matches();
     }
 
@@ -78,9 +81,11 @@ public class LinkService {
      * @return Link
      */
     @NaslLogic
-    public static Link saveUrlMap(ShortUrlRequest request, Function<Link, Link> saveShortUrlLogic,
-                           Function<String, Boolean> checkLongUrlExistLogic) throws LinkRuntimeException, LinkDuplicateException {
-        if (!checkUrl(request.longUrl)) {
+    public static Link saveUrlMap(ShortUrlRequest request,
+                                  Function<Link, Link> saveShortUrlLogic,
+                                  Function<String, Boolean> checkLongUrlExistLogic
+    ) throws LinkRuntimeException, LinkDuplicateException {
+        if (request == null || !checkUrl(request.longUrl)) {
             throw new LinkRuntimeException("Invalid URL");
         }
 

@@ -12,8 +12,8 @@
     <groupId>fdddf</groupId>
     <artifactId>shorturl</artifactId>
     <name>ShortUrl</name>
-    <description>长链接转短链接，支持时间，访问次数限制，需要外部MySQL数据库支持。</description>
-    <version>1.1.1</version>
+    <description>长链接转短链接，支持时间，访问次数限制，通过平台服务端逻辑可保存到平台数据库中。</description>
+    <version>1.1.2</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
