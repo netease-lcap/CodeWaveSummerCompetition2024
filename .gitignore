@@ -50,7 +50,7 @@ node_modules/
 **/dist-theme/
 **/*.zip
 *.zip
-Jar/
+jar/
 
 **/target/
 
