@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.yu</groupId>
-    <artifactId>ali-oss-connector</artifactId>
-    <version>0.0.4</version>
-    <name>aliyun对象存储连接器</name>
-    <description>支持文件上传、文件访问控制、删除文件、获取文件信息列表</description>
+    <artifactId>oss-connector</artifactId>
+    <version>0.0.7</version>
+    <name>对象存储连接器</name>
+    <description>支持阿里云华为云腾讯云和s3协议的对象存储器的文件上传、文件访问控制、删除文件、获取文件信息列表</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -42,11 +42,22 @@
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
+<!--        <dependency>-->
+<!--            <groupId>com.aliyun.oss</groupId>-->
+<!--            <artifactId>aliyun-sdk-oss</artifactId>-->
+<!--            <version>3.15.1</version>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.15.1</version>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.440</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.83</version>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

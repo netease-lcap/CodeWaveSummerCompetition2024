@@ -1,11 +1,9 @@
 package com.yu.connector;
 
-import com.aliyun.oss.model.Bucket;
-import com.aliyun.oss.model.OSSObjectSummary;
-import com.aliyun.oss.model.PutObjectResult;
+import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.yu.vo.BucketVo;
 import com.yu.vo.OssFileVo;
-import com.yu.vo.UploadReturnVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -18,9 +16,7 @@ import org.mapstruct.factory.Mappers;
 public interface UserConvertUtils {
     UserConvertUtils INSTANCE = Mappers.getMapper(UserConvertUtils.class);
 
-    UploadReturnVo convertPutObjRes(PutObjectResult putObjectResult);
-
-    OssFileVo convertOSSObjectSummary(OSSObjectSummary objSummary);
+    OssFileVo convertOSSObjectSummary(S3ObjectSummary objSummary);
 
     BucketVo convertBucket(Bucket bucket);
 

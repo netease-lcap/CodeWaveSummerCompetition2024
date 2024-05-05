@@ -7,9 +7,9 @@
 * @return List<BucketVo> 
 * BucketVo 介绍参考 <com.yu.vo.BucketVo>
 * 
-### 逻辑二  简单文件上传 simpleUpload
+### 逻辑二  文件上传 upload
 * @param uploadDto 入参类型 UploadDto 介绍参考<com.yu.dto.UploadDto>
-* @return UploadReturnVo  介绍参考 <com.yu.vo.UploadReturnVo>
+* @return String 上传到服务器的路径
 * 
 ### 逻辑三  获取文件信息列表 geFileList
 * @param bucketName bucket名称
