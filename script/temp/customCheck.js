@@ -1,4 +1,4 @@
-const { AUTHOR_NAME } = require("./env");
+const { AUTHOR_NAME } = require('./env');
 
 const customCheck = async ({
   processPackageWithParallelFlag,
@@ -8,7 +8,7 @@ const customCheck = async ({
 }) => {
   await processPackageWithParallelFlag(
     async ({ packageRoot }) => {
-      const [pathname] = packageRoot.split("/");
+      const [pathname] = packageRoot.split('/');
       if (pathname && AUTHOR_NAME) {
         if (
           pathname.endsWith(AUTHOR_NAME) ||
@@ -17,12 +17,12 @@ const customCheck = async ({
           return;
         }
         throw new Error(
-          `[${AUTHOR_NAME}]修改了他人提交的package[${pathname}]内部的文件`
+          `[${AUTHOR_NAME}]修改了他人提交的package[${pathname}]内部的文件`,
         );
       }
     },
     getValidPackages(),
-    true
+    true,
   );
   await processPackagesErrors(getErroredPackages());
 };

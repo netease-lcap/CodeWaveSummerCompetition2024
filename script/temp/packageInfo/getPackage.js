@@ -1,16 +1,16 @@
-const fs = require("fs");
-const path = require("path");
-const semver = require("semver");
-const { XMLParser } = require("fast-xml-parser");
+const fs = require('fs');
+const path = require('path');
+const semver = require('semver');
+const { XMLParser } = require('fast-xml-parser');
 
-const { execCommand } = require("../utils/execCommand");
+const { execCommand } = require('../utils/execCommand');
 
 const fsp = fs.promises;
 
 const getTagVersion = async (packageName) => {
   try {
     const tagRaw = await execCommand(
-      `git describe --tags --abbrev=0 --match '${packageName}*'`
+      `git describe --tags --abbrev=0 --match '${packageName}*'`,
     );
     const [tag] = tagRaw.split(/\s/);
     const result = new RegExp(`${packageName}@(\S+)`).exec(tag);
@@ -33,7 +33,7 @@ const getNpmVersion = async (packageName) => {
 };
 
 const getNextVersion = async (packageName, currentVersion) => {
-  let targetVersion = currentVersion || "0.0.1";
+  let targetVersion = currentVersion || '0.0.1';
   const tagVersion = await getTagVersion(packageName);
   if (tagVersion && semver.gt(tagVersion, targetVersion)) {
     targetVersion = tagVersion;
@@ -44,24 +44,24 @@ const getNextVersion = async (packageName, currentVersion) => {
   }
   return targetVersion === currentVersion
     ? currentVersion
-    : semver.inc(targetVersion, "patch");
+    : semver.inc(targetVersion, 'patch');
 };
 
 const readPackageJSON = async (filePath) => {
   try {
-    const fileContent = await fsp.readFile(filePath, "utf-8");
+    const fileContent = await fsp.readFile(filePath, 'utf-8');
     const packageInfo = JSON.parse(fileContent);
     if (!packageInfo.name || !packageInfo.version) throw new Error();
     return packageInfo;
   } catch {
-    throw new Error("不存在合法的package.json文件");
+    throw new Error('不存在合法的package.json文件');
   }
 };
 
 const getBackendPackage = async (packageRoot) => {
   try {
-    const filePath = path.resolve(packageRoot, "pom.xml");
-    const fileContent = await fsp.readFile(filePath, "utf-8");
+    const filePath = path.resolve(packageRoot, 'pom.xml');
+    const fileContent = await fsp.readFile(filePath, 'utf-8');
     const parser = new XMLParser();
     const packageInfo = parser.parse(fileContent);
     const packageName = packageInfo.project.artifactId;
@@ -72,7 +72,7 @@ const getBackendPackage = async (packageRoot) => {
       packageRoot,
       packageName,
       nextVersion,
-      type: "b",
+      type: 'b',
     };
   } catch {
     return null;
@@ -81,7 +81,7 @@ const getBackendPackage = async (packageRoot) => {
 
 const getFrontendPackage = async (packageRoot) => {
   try {
-    const filePath = path.resolve(packageRoot, "package.json");
+    const filePath = path.resolve(packageRoot, 'package.json');
     const packageInfo = await readPackageJSON(filePath);
     const packageName = packageInfo.name;
     const nextVersion = await getNextVersion(packageName, packageInfo.version);
@@ -91,7 +91,7 @@ const getFrontendPackage = async (packageRoot) => {
       packageRoot,
       packageName,
       nextVersion,
-      type: "f",
+      type: 'f',
     };
   } catch {
     return null;
@@ -104,7 +104,7 @@ const getPackage = async (packageRoot) => {
   const fe = await getFrontendPackage(packageRoot);
   if (fe) return fe;
   throw new Error(
-    "不存在合法的package配置,当前目录下找不到pom.xml或package.json"
+    '不存在合法的package配置,当前目录下找不到pom.xml或package.json',
   );
 };
 
