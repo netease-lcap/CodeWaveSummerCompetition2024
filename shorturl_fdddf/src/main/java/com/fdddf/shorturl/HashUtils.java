@@ -1,6 +1,7 @@
-package com.fdddf.shorturl.utils;
+package com.fdddf.shorturl;
 
 import cn.hutool.core.lang.hash.MurmurHash;
+import com.netease.lowcode.core.annotation.NaslLogic;
 
 public class HashUtils {
     private static final char[] CHARS = new char[]{
@@ -20,6 +21,13 @@ public class HashUtils {
         return sb.reverse().toString();
     }
 
+    /**
+     * 将字符串转换为base62编码
+     *
+     * @param str string
+     * @return base62编码
+     */
+    @NaslLogic
     public static String hashToBase62(String str) {
         int i = MurmurHash.hash32(str);
         long num = i < 0 ? Integer.MAX_VALUE - (long) i : i;

@@ -1,8 +1,5 @@
 package com.fdddf.shorturl;
 
-import com.fdddf.shorturl.model.Link;
-import com.fdddf.shorturl.model.ShortUrlRequest;
-import com.fdddf.shorturl.utils.HashUtils;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.Date;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 
 public class LinkService {
@@ -22,7 +18,14 @@ public class LinkService {
 
     private static final Pattern URL_REGEX = Pattern.compile("^(((ht|f)tps?):\\/\\/)?[\\w-]+(\\.[\\w-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?$");
 
-    private static Boolean checkUrl(String url) {
+    /**
+     * 校验长链接
+     *
+     * @param url 长链接
+     * @return boolean
+     */
+    @NaslLogic
+    public static Boolean checkUrl(String url) {
         if (url == null || url.isEmpty()) {
             return false;
         }
@@ -30,84 +33,35 @@ public class LinkService {
     }
 
     /**
-     * 根据短链接获取长链接
+     * 校验过期时间
      *
-     * @param shortCode           短链接码
-     * @param findLinkByShortCode 根据短链接码查询逻辑
-     * @param updateLink          更新短链接逻辑
-     * @return string
+     * @param expiredTime 过期时间 格式 yyyy-MM-dd HH:mm:ss
+     * @return boolean
      */
     @NaslLogic
-    public static String getLongUrl(String shortCode, Function<String, Link> findLinkByShortCode,
-                             Function<Link, Boolean> updateLink) {
-        if (shortCode == null || shortCode.isEmpty()) {
-            return null;
+    public static Boolean checkExpiredTime(String expiredTime) {
+        if (expiredTime == null || expiredTime.isEmpty()) {
+            return false;
         }
-        Link link = findLinkByShortCode.apply(shortCode);
-        if (link == null) {
-            log.error("shortCode not found");
-            return null;
-        }
-        // 判断是否超过最大访问次数
-        if (link.maxAccessCount > 0 && link.accessCount + 1 > link.maxAccessCount) {
-            log.error("max access count exceeded");
-            return null;
-        }
-
         SimpleDateFormat sdf = new SimpleDateFormat(datetimeFormat);
         try {
-            // 判断是否过期
-            if (sdf.parse(link.expirationTime).before(new Date())) {
-                log.error("expired");
-                return null;
-            }
+            Date date = sdf.parse(expiredTime);
+            return date.after(new Date());
         } catch (Exception e) {
             log.error("date time parse failed");
             e.printStackTrace();
         }
-        if (!updateLink.apply(link)) {
-            log.error("update access count failed");
-        }
-        return link.longUrl;
+        return false;
     }
 
 
     /**
-     * 保存短链接
+     * 获取过期时间
      *
-     * @param request                ShortUrlRequest
-     * @param saveShortUrlLogic      保存短链接到数据库逻辑
-     * @param checkLongUrlExistLogic 检查长链接是否存在逻辑
-     * @return Link
+     * @param days 天数
+     * @return string
      */
     @NaslLogic
-    public static Link saveUrlMap(ShortUrlRequest request,
-                                  Function<Link, Link> saveShortUrlLogic,
-                                  Function<String, Boolean> checkLongUrlExistLogic
-    ) throws LinkRuntimeException, LinkDuplicateException {
-        if (request == null || !checkUrl(request.longUrl)) {
-            throw new LinkRuntimeException("Invalid URL");
-        }
-
-        if (!request.longUrl.startsWith("http")) {
-            request.longUrl = "http://" + request.longUrl;
-        }
-
-        String shortCode = HashUtils.hashToBase62(request.longUrl);
-        // check exist in db
-        if (checkLongUrlExistLogic.apply(request.longUrl)) {
-            throw new LinkDuplicateException("the long url exists");
-        }
-
-        Link link = new Link();
-        link.shortCode = shortCode;
-        link.accessCount = 0L;
-        link.maxAccessCount = request.maxAccessCount;
-        link.longUrl = request.longUrl;
-        link.expirationTime = getExpiredTime(request.days);
-        return saveShortUrlLogic.apply(link);
-    }
-
     public static String getExpiredTime(Integer days) {
         LocalDateTime now = LocalDateTime.now();
         // Add seconds

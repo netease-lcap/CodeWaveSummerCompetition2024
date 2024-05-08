@@ -4,38 +4,54 @@
 
 ## 逻辑详情
 
-### saveUrlMap
+### hashToBase62
 
-生成短链接哈希值  
-入参： 
-* ShortUrlRequest request 
-* Function<Link, Link> saveShortUrlLogic 入库保存逻辑
-* Function<String, Boolean> checkLongUrlExistLogic  检查长链接是否存在逻辑
+将长链接转换为62进制
 
-出参： Link
+入参：
+* str string
 
-### getLongUrl
+出参： String
 
-获取长链接  
+### checkUrl
 
-入参： 
-* String shortCode
-* Function<String, Link> findLinkByShortCode  根据短链接码查询短链接逻辑
-* Function<Link, Boolean> updateLink  更新短链接访问次数逻辑
+验证长链接是否合法
 
-出参： String longUrl  
+入参：
+* url String
+
+出参： Boolean
+
+### checkExpiredTime
+
+验证短链接是否过期
+
+入参：
+* expiredTime String 过期时间 格式 yyyy-MM-dd HH:mm:ss
+
+出参： Boolean
+
+
+### getExpiredTime
+
+将天数转换为过期时间
+
+入参：
+* days Integer 天数
+ 
+出参： String 格式 yyyy-MM-dd HH:mm:ss
 
 
 ## 使用步骤说明
 
 1.  应用引用依赖库
 2.  配置应用配置参数 （无需配置）
-3. 逻辑调用示例截图
+3.  逻辑调用示例截图
 
-![Snipaste_2024-04-29_01-51-36.jpg](Snipaste_2024-04-29_01-51-36.jpg)
+![Snipaste_2024-05-09_00-16-24.jpg](Snipaste_2024-05-09_00-16-24.jpg)
 
 ## 应用演示链接
 
 [使用了本依赖库的制品应用链接]
 
-https://dev-testshorturl-qa.app.codewave.163.com/shorturl
+https://dev-testshorturl-qa.app.codewave.163.com/shorturl_manager
