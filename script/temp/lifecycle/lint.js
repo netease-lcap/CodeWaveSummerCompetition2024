@@ -11,7 +11,7 @@ const BE_PREFERED_FILE = {
   'src/**/*.java': '缺少java代码',
   'pom.xml': '缺少pom.xml',
   'README.md': '缺少README.md',
-  '依赖库使用文档说明.docx': '缺少依赖库使用文档说明.docx',
+  '*.docx': '缺少依赖库使用文档说明.docx',
 };
 
 const createGlobDetecter = (info) => {
@@ -43,8 +43,8 @@ const createGlobDetecter = (info) => {
       error = Object.keys(tmp);
     }
     if (error.length > 0) {
-          throw new Error(
-            `当前package缺乏必要文件：\n${error.map((x) => ` x ${x}`).join('\n')}
+      throw new Error(
+        `当前package缺乏必要文件：\n${error.map((x) => ` x ${x}`).join('\n')}
 \n
 资产共建大赛提交内容中原有的截图，现升级为依赖库使用说明文档。现交内容包括
 1. 依赖库代码本身；2. readme代码说明文档；3. 依赖库使用文档说明。
@@ -55,8 +55,8 @@ https://github.com/netease-lcap/CodeWaveAssetCompetition2024/blob/main/%E8%B5%84
 参考作品https://github.com/netease-lcap/CodeWaveAssetCompetition2024/tree/main/demo_bjz_JiazhenBao
 
 tips：README.md和依赖库使用文档说明.docx需要保持文件名称不动。后续我们会对提交的PR自动校验目录结构~`,
-          );
-        }
+      );
+    }
   };
 };
 
