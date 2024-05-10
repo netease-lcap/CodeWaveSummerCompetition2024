@@ -48,6 +48,9 @@
   "template": {
     "inited": true
   },
-  "dependencies": {
-  }
+  "dependencies": {},
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "4f3bf7b65046556e94b14ec4dd5df914"
 }
