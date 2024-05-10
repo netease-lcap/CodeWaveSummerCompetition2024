@@ -80,7 +80,7 @@ const main = async () => {
   await processPackagesErrors(getErroredPackages());
 
   await processPackageWithParallelFlag(
-    async ({ cwd, packageInfo, nextVersion, type }) => {
+    async ({ cwd, packageInfo, nextVersion, packageName, type }) => {
       const [zipFile] = await glob(['target/*.zip', '*.zip'], { cwd });
       let md5 = '';
       if (zipFile) {
@@ -108,7 +108,7 @@ const main = async () => {
       } else {
         await fsp.writeFile(path.resolve(cwd, '.lastRelease'), md5, 'utf-8');
       }
-      await execCommand(`git tag ${packageInfo.name}@${nextVersion}`);
+      await execCommand(`git tag ${packageName}@${nextVersion}`);
     },
     getValidPackages(),
     true,
