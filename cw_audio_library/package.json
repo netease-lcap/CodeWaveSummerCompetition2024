@@ -56,5 +56,9 @@
     "js-audio-recorder": "^1.0.7",
     "lamejs": "^1.2.1",
     "lodash": "^4.17.21"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "c146f5a91455413f6c86b091d6c8ef03"
 }
