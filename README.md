@@ -1,6 +1,6 @@
 # CodeWaveAssetCompetition2024
 网易低代码开发者活动-资产大赛2024 
-![image](https://github.com/netease-lcap/CodeWaveAssetCompetition2024/assets/158463965/ea58284c-5be6-4b2d-956b-7b300499ee1e)
+![image](./assets/158463965/ea58284c-5be6-4b2d-956b-7b300499ee1e)
 
 欢迎开发者们参加2024网易低代码资产共建大赛，活动官网介绍：https://sf.163.com/2024lcapassetcompetition
 
