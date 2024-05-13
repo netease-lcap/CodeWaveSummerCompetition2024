@@ -1,5 +1,5 @@
-const path = require("path");
-const fsp = require("fs/promises");
+const path = require('path');
+const fsp = require('fs/promises');
 
 const {
   GITHUB_REPOSITORY,
@@ -7,7 +7,7 @@ const {
   ACTION_ID,
   HEAD_REPOSITORY,
   PULL_REQUEST_ID,
-} = require("../env");
+} = require('../env');
 
 const footer = `
 资产共建大赛提交内容中原有的截图，现升级为依赖库使用说明文档。现交内容包括
@@ -26,15 +26,15 @@ const exitWithMessage = async (message, hasError = true) => {
   const url = `https://github.com/${GITHUB_REPOSITORY}/actions/runs/${ACTION_ID}`;
   try {
     const m = `关联[ACTION](${url})\n\n${message}`;
-    await fsp.writeFile("test.md", m, "utf-8");
+    await fsp.writeFile('test.md', m, 'utf-8');
     await fsp.writeFile(
-      "pr_result.json",
+      'pr_result.json',
       JSON.stringify({
         message: m,
         hasError,
         pull_request_id: PULL_REQUEST_ID,
       }),
-      "utf-8"
+      'utf-8',
     );
   } catch (e) {
     console.error(`IMPORTANT: exitWithMessage ~ m[exitCode]:`, e);
@@ -44,11 +44,11 @@ const exitWithMessage = async (message, hasError = true) => {
 };
 
 const erroredPackagesToMsg = (packages) => {
-  const str = packages.map(toError).join("\n\n");
+  const str = packages.map(toError).join('\n\n');
   return str;
   function toError({ error, packageName, packageRoot }) {
     const _errorMsg = error.message || `${error}`;
-    const errorMsg = _errorMsg.split("\n").slice(-100).join("\n");
+    const errorMsg = _errorMsg.split('\n').slice(-100).join('\n');
     const packgeRootURL = `https://github.com/${HEAD_REPOSITORY}/tree/${HEAD_BRANCH_NAME}/${packageRoot}`;
     const msg = `[${
       packageName || packageRoot
@@ -74,17 +74,17 @@ const prettyFileTree = (filenames) => {
   });
   return generateFileTree(treeObj);
 
-  function generateFileTree(obj, prefix = "") {
-    let tree = "";
+  function generateFileTree(obj, prefix = '') {
+    let tree = '';
     const files = Object.entries(obj);
 
     files.forEach(([key, value], index) => {
       const isLast = index === files.length - 1;
 
-      tree += `${prefix}${isLast ? "└──" : "├──"} ${key}\n`;
+      tree += `${prefix}${isLast ? '└──' : '├──'} ${key}\n`;
 
-      if (typeof value === "object") {
-        const newPrefix = `${prefix}${isLast ? "   " : "│  "}`;
+      if (typeof value === 'object') {
+        const newPrefix = `${prefix}${isLast ? '   ' : '│  '}`;
 
         tree += generateFileTree(value, newPrefix);
       }
@@ -96,19 +96,19 @@ const prettyFileTree = (filenames) => {
 
 const unsupportedFileToMsg = (filenames) => {
   const str = `意外修改了以下文件，这些文件目前无法被当前用户修改:\n\`\`\`bash\n${prettyFileTree(
-    filenames
+    filenames,
   )}\n\`\`\``;
   return str + footer;
 };
 
 const toManyPackagesToMsg = (packages) => {
-  const str = packages.map(toError).join("\n\n");
+  const str = packages.map(toError).join('\n\n');
   return `存在多处package修改:\n\n${str}\n${footer}`;
 
   function toError({ packageName, cwd, changedFiles }) {
     const packgeRootURL = `https://github.com/${HEAD_REPOSITORY}/tree/${HEAD_BRANCH_NAME}/${cwd}`;
     const msg = `[${packageName}](${packgeRootURL})涉及的修改：\n\`\`\`bash\n${prettyFileTree(
-      changedFiles
+      changedFiles,
     )}\n\`\`\``;
     return msg;
   }

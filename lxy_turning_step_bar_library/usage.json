@@ -5,7 +5,7 @@
     "specVersion": "1.0.0",
     "type": "module",
     "subType": "extension",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "frontends": [
         {
             "concept": "FrontendLibrary",
@@ -21,7 +21,7 @@
                         {
                             "title": "基本用法",
                             "description": "",
-                            "code": "<template>\n<lxy-turning-step-bar>\n     <template #default=\"current\">\n         <u-linear-layout style=\"height:40px;width:100px\" :mode=\"`flex`\" direction=\"vertical\" justify=\"center\" alignment=\"center\" gap=\"small\"></u-linear-layout>\n    </template>\n</lxy-turning-step-bar>\n</template>"
+                            "code": "<template>\n<lxy-turning-step-bar>\n     <template #default=\"current\">\n         <u-linear-layout style=\"height:40px;width:100px\" mode=\"flex\" direction=\"vertical\" justify=\"center\" alignment=\"center\" gap=\"small\"></u-linear-layout>\n    </template>\n</lxy-turning-step-bar>\n</template>"
                         }
                     ],
                     "attrs": [
@@ -111,7 +111,7 @@
                         {
                             "title": "基本用法",
                             "description": "",
-                            "code": "<template>\n<lxy-turning-step-bar>\n     <template #default=\"current\">\n         <u-linear-layout style=\"height:40px;width:100px\" :mode=\"`flex`\" direction=\"vertical\" justify=\"center\" alignment=\"center\" gap=\"small\"></u-linear-layout>\n    </template>\n</lxy-turning-step-bar>\n</template>"
+                            "code": "<template>\n<lxy-turning-step-bar>\n     <template #default=\"current\">\n         <u-linear-layout style=\"height:40px;width:100px\" mode=\"flex\" direction=\"vertical\" justify=\"center\" alignment=\"center\" gap=\"small\"></u-linear-layout>\n    </template>\n</lxy-turning-step-bar>\n</template>"
                         }
                     ],
                     "attrs": [
@@ -191,7 +191,7 @@
     "summary": {
         "name": "lxy_turning_step_bar_library",
         "title": "转弯步骤条",
-        "version": "0.1.8",
+        "version": "0.1.9",
         "description": "",
         "frontends": [
             {
