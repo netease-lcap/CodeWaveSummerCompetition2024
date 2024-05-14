@@ -65,7 +65,7 @@ jobs:
       - name: Secret Scanning
         uses: trufflesecurity/trufflehog@main
         with:
-          extra_args: --only-verified
+          extra_args: --only-verified --fail
 
       - name: see git1
         run: |
