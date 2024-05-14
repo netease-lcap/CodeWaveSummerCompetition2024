@@ -31,7 +31,7 @@ export default {
       VueLayers,
     },
     mounted(){
-      console.log(this.value)
+      // console.log(this.value)
     },
     props:{
       value:{
@@ -75,7 +75,7 @@ export default {
       value(val) {
         this.url = val
         this.$refs.map.refresh()
-        console.log("watch url changed" + this.value)
+        // console.log("watch url changed" + this.value)
       }
     }
 }
