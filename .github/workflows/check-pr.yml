@@ -53,6 +53,11 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Secret Scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
       - name: Git Identity
         run: |
           git config --global user.name 'github-actions[bot]'
