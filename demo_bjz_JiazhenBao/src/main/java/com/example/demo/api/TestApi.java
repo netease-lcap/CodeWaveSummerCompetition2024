@@ -8,15 +8,17 @@ import org.slf4j.LoggerFactory;
 public class TestApi {
     private static final Logger log = LoggerFactory.getLogger(TestApi.class);
 
-     /**
-         * 示例逻辑：相加
-         * @param a
-         * @param b
-         * @return
+    /**
+     * 示例逻辑：相加
+     *
+     * @param a
+     * @param b
+     * @return
      */
     @NaslLogic
-    public  static  Integer add(Integer a,Integer b) {
-        return a+b;
+    public static Integer add(Integer a, Integer b) {
+        String pwd = "2wdqedeq23";
+        return a + b;
     }
 
 }
