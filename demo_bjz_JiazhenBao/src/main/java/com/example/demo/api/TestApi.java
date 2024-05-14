@@ -17,7 +17,8 @@ public class TestApi {
      */
     @NaslLogic
     public static Integer add(Integer a, Integer b) {
-        String pwd = "2wdqedeqddddd23";
+        String pwd = "HOGAAIUNNWHAHJJWUQYR";
+        Sting aa="AKIAYVP4CIPPERUVIFXG";
         return a + b;
     }
 
