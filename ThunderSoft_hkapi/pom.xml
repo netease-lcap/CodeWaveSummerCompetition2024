@@ -33,19 +33,14 @@
             <artifactId>nasl-metadata-collector</artifactId>
             <groupId>com.netease.lowcode</groupId>
             <version>0.7.0</version>
+            <optional>true</optional>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/nasl-metadata-collector-0.8.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.hikvision.ga</groupId>
-            <artifactId>artemis-http-client</artifactId>
-            <version>1.1.11.release</version>
-<!--            <optional>true</optional>-->
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${project.basedir}/lib/artemis-http-client-1.1.11.RELEASE.jar</systemPath>-->
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

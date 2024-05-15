@@ -28,8 +28,6 @@ import com.hikvision.artemis.sdk.enums.Method;
 import com.hikvision.artemis.sdk.util.MessageDigestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
