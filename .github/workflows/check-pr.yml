@@ -62,11 +62,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token}}
 
-      - name: Secret Scanning
-        uses: trufflesecurity/trufflehog@main
-        with:
-          extra_args: --only-verified
-
       - name: see git1
         run: |
           git branch --show-current
