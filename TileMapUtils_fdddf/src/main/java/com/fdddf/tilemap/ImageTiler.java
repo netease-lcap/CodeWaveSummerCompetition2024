@@ -8,7 +8,11 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.awt.*;
@@ -30,6 +34,8 @@ public class ImageTiler {
     private static final int THREAD_COUNT = 50; // 设定线程数量
 
     private static final int MIN_ZOOM_LEVEL = 3;
+
+    private static final float quality = 0.75f;
 
     private AmazonOSS oss;
 
@@ -126,6 +132,7 @@ public class ImageTiler {
         TileResponse response = new TileResponse();
         response.tileSize = tileSize;
         try {
+            logger.info("url: {}, tileSize: {}, outputDirectory: {}", url, tileSize, outputDirectory);
             BufferedImage mapImage;
             if (url.startsWith("http")) {
                 mapImage = ImageIO.read(new URL(url));
@@ -140,10 +147,12 @@ public class ImageTiler {
             response.originalImageHeight = (long) height;
 
             System.out.printf("width: %d, height: %d\n", width, height);
+            logger.info("width: {}, height: {}", width, height);
             int zoomLevel = (int) Math.ceil(Math.log(squareSize / (double) tileSize) / Math.log(2));
             response.zoomLevel = (long) zoomLevel;
 
             System.out.printf("zoomLevel: %d\n", zoomLevel);
+            logger.info("zoomLevel: {}", zoomLevel);
             int newSquareSize = (int) Math.pow(2, zoomLevel) * tileSize;
             response.mapWidth = (long) newSquareSize;
             response.mapHeight = (long) newSquareSize;
@@ -164,6 +173,7 @@ public class ImageTiler {
 
             ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
 
+            logger.info("begin to split image in for loop with zoom {}", zoomLevel);
             for (int zoom = 0; zoom <= zoomLevel; zoom++) {
                 int rows, cols;
                 rows = cols = (int) Math.pow(2, zoom);
@@ -180,9 +190,27 @@ public class ImageTiler {
                         final int finalRow = row;
                         final int finalCol = col;
 
+                        // sale the tile as it's too big
+                        if (currentTileSize > tileSize) {
+                            int resizeSize = tileSize;
+                            if (zoom <= MIN_ZOOM_LEVEL) {
+                                resizeSize = (int) Math.pow(2, MIN_ZOOM_LEVEL) * tileSize;
+                            }
+                            tile = resizeImage(tile, resizeSize, resizeSize);
+                        }
+
+                        BufferedImage finalTile = tile;
                         executor.submit(() -> {
-                            String ossPath = outputDirectory + "/" + finalZoom + "/" + finalRow + "/" + finalCol + ".png";
-                            saveTileImage(ossPath, tile);
+                            String ossPath = outputDirectory + "/" + finalZoom + "/" + finalRow + "/" + finalCol + ".jpeg";
+                            logger.info("begin to upload image to oss: {}", ossPath);
+                            try {
+                                byte[] compressedImageBuffer = compressImageToByteArray(finalTile);
+                                handleCompressedImage(compressedImageBuffer, ossPath);
+                            } catch (IOException e) {
+                                System.out.println("Error occurred while processing tile: " + ossPath);
+                                logger.error("Error occurred while processing tile: " + ossPath, e);
+                                throw new RuntimeException(e);
+                            }
                         });
                     }
                 }
@@ -196,43 +224,81 @@ public class ImageTiler {
 
             if (outputDirectory.startsWith("file://")) {
                 String[] dirs = FilenameUtils.getPath(outputDirectory).split("/");
-                response.url = oss.getBucketDomain() + "/" + dirs[dirs.length - 1] + "/{z}/{x}/{y}.png";
+                response.url = oss.getBucketDomain() + "/" + dirs[dirs.length - 1] + "/{z}/{x}/{y}.jpeg";
             } else {
-                response.url = oss.getBucketDomain() + "/" + outputDirectory + "/{z}/{x}/{y}.png";
+                response.url = oss.getBucketDomain() + "/" + outputDirectory + "/{z}/{x}/{y}.jpeg";
             }
 
             System.out.println("Tiles generated completed.");
+            logger.info("Tiles generated completed.");
 
             return response;
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("Failed to generate tiles." + Arrays.toString(e.getStackTrace()));
             throw new TileRuntimeException("Failed to generate tiles." + Arrays.toString(e.getStackTrace()), e);
         }
     }
 
-    private void saveTileImage(String ossPath, BufferedImage tile) {
-        try {
-            // Check the output directory if it's local file system
-            if (ossPath.startsWith("file://")) {
-                String tmpfile = ossPath.substring(7);
-                File output = new File(tmpfile);
-                output.getParentFile().mkdirs();
-                ImageIO.write(tile, "png", output);
-            } else {
-                ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-                ImageIO.write(tile, "png", outstream);
-                byte[] buffer = outstream.toByteArray();
-                InputStream is = new ByteArrayInputStream(buffer);
-                // Upload the tile to OSS
-                ObjectMetadata meta = new ObjectMetadata();
-                meta.setContentType("image/png");
-                meta.setContentLength(buffer.length);
-                oss.putFile(ossPath, is, meta);
+    private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
+        Image scaledImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = resizedImage.createGraphics();
+        g2d.drawImage(scaledImage, 0, 0, null);
+        g2d.dispose();
+        return resizedImage;
+    }
+
+    public byte[] compressImageToByteArray(BufferedImage image) throws IOException {
+        ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+
+        // Get an ImageWriter for JPEG format
+        ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+
+        // Create an ImageOutputStream from the ByteArrayOutputStream
+        try (ImageOutputStream ios = ImageIO.createImageOutputStream(outstream)) {
+            writer.setOutput(ios);
+
+            // Set the compression quality
+            ImageWriteParam param = writer.getDefaultWriteParam();
+            if (param.canWriteCompressed()) {
+                param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                param.setCompressionQuality(quality);  // Quality between 0 and 1
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("Failed to write tile: " + e.getMessage());
-            throw new TileRuntimeException("Failed to save tile map.", e);
+
+            // Write the image to the ByteArrayOutputStream
+            writer.write(null, new IIOImage(image, null, null), param);
+        } finally {
+            // Dispose the writer to free up resources
+            writer.dispose();
+        }
+
+        // Get the byte array from the ByteArrayOutputStream
+        return outstream.toByteArray();
+    }
+
+    private void handleCompressedImage(byte[] buffer, String ossPath) throws IOException {
+        // Check the output directory if it's local file system
+        if (ossPath.startsWith("file://")) {
+            String tmpfile = ossPath.substring(7);
+            File output = new File(tmpfile);
+            output.getParentFile().mkdirs();
+
+            try (InputStream is = new ByteArrayInputStream(buffer)) {
+                BufferedImage compressedImage = ImageIO.read(is);
+                ImageIO.write(compressedImage, "jpeg", output);
+            }
+        } else {
+            // Create an InputStream from the byte array
+            InputStream is = new ByteArrayInputStream(buffer);
+
+            // Upload the tile to OSS
+            ObjectMetadata meta = new ObjectMetadata();
+            meta.setContentType("image/jpeg");
+            meta.setContentLength(buffer.length);
+            oss.putFile(ossPath, is, meta);
+
+            logger.info("Uploaded image to OSS: {}", ossPath);
         }
     }
 
