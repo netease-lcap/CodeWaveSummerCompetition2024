@@ -3,7 +3,7 @@
 ```html
 <watermark
   type="image"
-  src="https://pic.php1.cn/cover/small/3cccf/15579/882/94399448c89793a2.png"
+  src="https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png"
   :opacity="0.1"
 ></watermark>
 ```
