@@ -1,0 +1,165 @@
+{
+    "name": "cw_markdown",
+    "title": "cw_markdown",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "1.0.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "markdown",
+                    "title": "md编辑器",
+                    "category": "cw_markdown(cw_markdown)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<markdown ></markdown>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "default": "",
+                            "description": "需要传入的值",
+                            "title": "需要传入的值"
+                        },
+                        {
+                            "name": "mode",
+                            "type": "string",
+                            "description": "markdown模式",
+                            "title": "markdown模式",
+                            "default": "editor",
+                            "options": [
+                                {
+                                    "value": "editor",
+                                    "title": "编辑器"
+                                },
+                                {
+                                    "value": "viewer",
+                                    "title": "渲染器"
+                                }
+                            ]
+                        }
+                    ],
+                    "events": [
+                        {
+                            "name": "change",
+                            "title": "内容变化时",
+                            "params": [
+                                {
+                                    "name": "$event",
+                                    "type": "string",
+                                    "description": "value"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "markdown",
+                    "title": "md编辑器",
+                    "category": "cw_markdown(cw_markdown)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<markdown ></markdown>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "default": "",
+                            "description": "需要传入的值",
+                            "title": "需要传入的值"
+                        },
+                        {
+                            "name": "mode",
+                            "type": "string",
+                            "description": "markdown模式",
+                            "title": "markdown模式",
+                            "default": "editor",
+                            "options": [
+                                {
+                                    "value": "editor",
+                                    "title": "编辑器"
+                                },
+                                {
+                                    "value": "viewer",
+                                    "title": "渲染器"
+                                }
+                            ]
+                        }
+                    ],
+                    "events": [
+                        {
+                            "name": "change",
+                            "title": "内容变化时",
+                            "params": [
+                                {
+                                    "name": "$event",
+                                    "type": "string",
+                                    "description": "value"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "cw_markdown",
+        "title": "cw_markdown",
+        "version": "1.0.0",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "markdown",
+                        "title": "md编辑器"
+                    }
+                ],
+                "logics": []
+            },
+            {
+                "type": "h5",
+                "viewComponents": [
+                    {
+                        "name": "markdown",
+                        "title": "md编辑器"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}
