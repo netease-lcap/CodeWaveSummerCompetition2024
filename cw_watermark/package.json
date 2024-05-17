@@ -49,6 +49,7 @@
     "inited": true
   },
   "dependencies": {
+    "i-material-design.vue": "^5.1.1",
     "wybie-watermark": "^0.0.2"
   }
 }
