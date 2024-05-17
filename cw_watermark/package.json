@@ -51,5 +51,9 @@
   "dependencies": {
     "i-material-design.vue": "^5.1.1",
     "wybie-watermark": "^0.0.2"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "34d054e2ea0b0ce26ab85b70d52de7d7"
 }
