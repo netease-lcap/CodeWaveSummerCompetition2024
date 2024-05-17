@@ -50,5 +50,9 @@
   },
   "dependencies": {
     "smooth-signature": "^1.0.12"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "86f5214cd9bae403b13ffc23efffb7cd"
 }
