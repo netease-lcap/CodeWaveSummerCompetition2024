@@ -67,5 +67,9 @@
     "less-loader": "^5.0.0",
     "mermaid": "^10.6.1",
     "vditor": "^3.9.6"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "a9ffef7cf7c01920bb80c02a6c01e20e"
 }
