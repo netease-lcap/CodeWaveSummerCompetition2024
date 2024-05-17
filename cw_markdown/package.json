@@ -63,6 +63,7 @@
     "bytemd": "^1.21.0",
     "bytemd-plugin-code-copy": "0.0.1",
     "github-markdown-css": "^5.4.0",
+    "i-material-design.vue": "^5.1.1",
     "less-loader": "^5.0.0",
     "mermaid": "^10.6.1",
     "vditor": "^3.9.6"
