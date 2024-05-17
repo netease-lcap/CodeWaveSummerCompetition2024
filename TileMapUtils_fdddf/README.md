@@ -8,7 +8,18 @@
 检查图片信息是否可以切图
 
 入参：request TileRequest   
-出参：boolean 或 TileRuntimeException
+出参：TileValidateResponse 或 TileRuntimeException
+
+
+#### TileValidateResponse中的 errorCode枚举值：
+* 0: 成功
+* 1: 无效URL
+* 2: 瓦片大小不合法
+* 3: 输出目录不合法
+* 4: 图片类型不支持 (jpg/png)
+* 5: 图片尺寸太小
+* 6: 可用内存不足
+
 
 ### tileImage
 

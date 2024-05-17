@@ -37,6 +37,10 @@ public class ImageTiler {
 
     private static final float quality = 0.75f;
 
+    private static final String[] imageTypes = {"jpg", "jpeg", "png"};
+
+    private static final float memoryRate = 1.5f;
+
     private AmazonOSS oss;
 
     public ImageTiler(TileConfig cfg) {
@@ -51,7 +55,8 @@ public class ImageTiler {
 
     /**
      * 瓦片图片切图
-     * @param request TileRequest
+     *
+     * @param request  TileRequest
      * @param callback Function<TileResponse,Boolean>
      */
     @NaslLogic
@@ -65,7 +70,7 @@ public class ImageTiler {
                 resp.success = false;
                 resp.failedReason = e.getMessage();
                 e.printStackTrace();
-                logger.error("tileImage error: "+ Arrays.toString(e.getStackTrace()), e);
+                logger.error("tileImage error: " + Arrays.toString(e.getStackTrace()), e);
             }
             resp.id = request.id;
             callback.apply(resp);
@@ -75,28 +80,30 @@ public class ImageTiler {
 
     /**
      * 检查图片信息是否可以切图
+     *
      * @param request TileRequest
      * @return true or false
      */
     @NaslLogic
-    public Boolean validate(TileRequest request) {
+    public TileValidateResponse validate(TileRequest request) {
+        TileValidateResponse resp;
+
         if (request.url == null || request.url.isEmpty()) {
-            throw new TileRuntimeException("url is empty");
+            return new TileValidateResponse(ErrorCode.INVALID_URL);
         }
         if (request.tileSize == null || request.tileSize <= 0) {
-            throw new TileRuntimeException("tileSize is invalid，suggest 256");
+            return new TileValidateResponse(ErrorCode.INVALID_TILE_SIZE);
         }
         if (request.outputDirectory == null || request.outputDirectory.isEmpty()) {
-            throw new TileRuntimeException("outputDirectory is empty");
+            return new TileValidateResponse(ErrorCode.INVALID_OUTPUT_DIRECTORY);
         }
 
         if (!(request.outputDirectory.startsWith("file://") || !request.outputDirectory.contains("/"))) {
-            throw new TileRuntimeException("outputDirectory is invalid, " +
-                    "it should starts with file:// or just a folder name for OSS usage");
+            return new TileValidateResponse(ErrorCode.INVALID_OUTPUT_DIRECTORY);
         }
 
+        BufferedImage mapImage = null;
         try {
-            BufferedImage mapImage;
             if (request.url.startsWith("http")) {
                 mapImage = ImageIO.read(new URL(request.url));
             } else {
@@ -107,13 +114,44 @@ public class ImageTiler {
 
             int minSquareSize = (int) Math.pow(2, MIN_ZOOM_LEVEL) * request.tileSize;
             if (Math.min(width, height) < minSquareSize) {
-                throw new TileRuntimeException("image is too small, suggest image size is " + minSquareSize + "x" + minSquareSize);
+                resp = new TileValidateResponse(ErrorCode.INVALID_IMAGE_SIZE);
+                resp.setMessage("image is too small, suggest image size is " + minSquareSize + "x" + minSquareSize);
+                return resp;
             }
-            return true;
+            // check image format, should be png or jpg
+            String ext = FilenameUtils.getExtension(request.url).toLowerCase();
+            if (ext.isEmpty() || !Arrays.asList(imageTypes).contains(ext)) {
+                return new TileValidateResponse(ErrorCode.INVALID_IMAGE_TYPE);
+            }
+            // calculate runtime free memory and check if there is enough memory
+            long mem = (long) width * height * 4; // rgba 4 bytes
+            long freeMem = Runtime.getRuntime().freeMemory();
+            long memWants = (long) (mem * memoryRate);
+            if (freeMem < memWants) {
+                resp = new TileValidateResponse(ErrorCode.INVALID_MEMORY_LIMIT);
+                resp.setMessage("no enough memory( " + bytesToMiB(freeMem) + "<" + bytesToMiB(memWants) + ") to process the image");
+                return resp;
+            }
+            String tips = String.format("image info: %dx%d, wants memory:%s, the app's free memory:%s",
+                    width, height, bytesToMiB(memWants), bytesToMiB(freeMem));
+
+            logger.info(tips);
+            resp = new TileValidateResponse(ErrorCode.SUCCESS);
+            resp.tips = tips;
+            return resp;
 
         } catch (IOException e) {
-            throw new TileRuntimeException("url is invalid");
+            logger.error("io exception", e);
+            throw new TileRuntimeException(e);
+        } finally {
+            if (mapImage != null) {
+                mapImage.flush();
+            }
         }
+    }
+
+    private static String bytesToMiB(long bytes) {
+        return String.format("%.2f", bytes / 1024.0 / 1024.0) + " MiB";
     }
 
     /**
@@ -131,9 +169,10 @@ public class ImageTiler {
         }
         TileResponse response = new TileResponse();
         response.tileSize = tileSize;
+        BufferedImage mapImage = null;
+        BufferedImage squareImage = null;
         try {
             logger.info("url: {}, tileSize: {}, outputDirectory: {}", url, tileSize, outputDirectory);
-            BufferedImage mapImage;
             if (url.startsWith("http")) {
                 mapImage = ImageIO.read(new URL(url));
             } else {
@@ -160,16 +199,19 @@ public class ImageTiler {
             Image newImage = mapImage;
             // scale the image to the new size
             if (squareSize != newSquareSize) {
-                double ratio = (double)newSquareSize / squareSize;
+                double ratio = (double) newSquareSize / squareSize;
                 newImage = mapImage.getScaledInstance((int) (width * ratio), (int) (height * ratio), Image.SCALE_SMOOTH);
+                mapImage.flush();
             }
 
-            BufferedImage squareImage = new BufferedImage(newSquareSize, newSquareSize, BufferedImage.TYPE_INT_RGB);
+            squareImage = new BufferedImage(newSquareSize, newSquareSize, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2d = squareImage.createGraphics();
             g2d.setColor(new Color(255, 255, 255));
             g2d.fillRect(0, 0, newSquareSize, newSquareSize);
             g2d.drawImage(newImage, 0, 0, null);
             g2d.dispose();
+
+            newImage.flush();
 
             ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
 
@@ -210,6 +252,8 @@ public class ImageTiler {
                                 System.out.println("Error occurred while processing tile: " + ossPath);
                                 logger.error("Error occurred while processing tile: " + ossPath, e);
                                 throw new RuntimeException(e);
+                            } finally {
+                                finalTile.flush();
                             }
                         });
                     }
@@ -237,6 +281,13 @@ public class ImageTiler {
             e.printStackTrace();
             logger.error("Failed to generate tiles." + Arrays.toString(e.getStackTrace()));
             throw new TileRuntimeException("Failed to generate tiles." + Arrays.toString(e.getStackTrace()), e);
+        } finally {
+            if (mapImage != null) {
+                mapImage.flush();
+            }
+            if (squareImage != null) {
+                squareImage.flush();
+            }
         }
     }
 
@@ -295,7 +346,7 @@ public class ImageTiler {
             // Upload the tile to OSS
             ObjectMetadata meta = new ObjectMetadata();
             meta.setContentType("image/jpeg");
-            meta.setContentLength(buffer.length);
+            meta.setContentLength(is.available());
             oss.putFile(ossPath, is, meta);
 
             logger.info("Uploaded image to OSS: {}", ossPath);

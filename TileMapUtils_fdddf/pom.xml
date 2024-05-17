@@ -14,7 +14,7 @@
     <name>TileMapUtils</name>
     <description>超大图片分割瓦片，支持Amazon S3协议存储</description>
     <artifactId>TileMapUtils</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.8</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
