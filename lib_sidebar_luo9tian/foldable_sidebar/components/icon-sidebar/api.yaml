@@ -1,0 +1,14 @@
+- name: icon-sidebar
+  title: 图标侧边栏
+  type: both
+  belong: component
+  labels: [ Runtime ]
+  attrs:
+    - name: primaryColor
+      type: string
+      default: "#FF4500"
+      description: 选择侧边栏主题色
+    - name: iconUrl
+      type: string
+      default: https://img.zcool.cn/community/01e4315542ab990000019ae99f4ef0.jpg@1280w_1l_2o_100sh.jpg
+      description: 选择侧边栏的图标地址

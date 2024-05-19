@@ -1,0 +1,165 @@
+{
+    "name": "foldable_sidebar",
+    "title": "可展开收起的侧边栏",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.2.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "icon-sidebar-item",
+                    "title": "图标侧边栏项",
+                    "category": "foldable_sidebar(可展开收起的侧边栏)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<icon-sidebar-item></icon-sidebar-item>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "text",
+                            "type": "string",
+                            "default": "侧边栏",
+                            "description": "侧边栏项文本"
+                        },
+                        {
+                            "name": "url",
+                            "type": "string",
+                            "default": null,
+                            "description": "链接地址"
+                        },
+                        {
+                            "name": "value",
+                            "type": "int",
+                            "default": null,
+                            "description": "侧边栏项值"
+                        },
+                        {
+                            "name": "iconUrl",
+                            "type": "string",
+                            "default": null,
+                            "description": "侧边栏图标"
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "icon-sidebar",
+                    "title": "图标侧边栏",
+                    "category": "foldable_sidebar(可展开收起的侧边栏)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<icon-sidebar>\n</icon-sidebar>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "primaryColor",
+                            "type": "string",
+                            "default": "#FF4500",
+                            "description": "选择侧边栏主题色"
+                        },
+                        {
+                            "name": "iconUrl",
+                            "type": "string",
+                            "default": "https://img.zcool.cn/community/01e4315542ab990000019ae99f4ef0.jpg@1280w_1l_2o_100sh.jpg",
+                            "description": "选择侧边栏主题色"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "icon-sidebar-item",
+                    "title": "图标侧边栏项",
+                    "category": "foldable_sidebar(可展开收起的侧边栏)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<icon-sidebar-item></icon-sidebar-item>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "text",
+                            "type": "string",
+                            "default": "侧边栏",
+                            "description": "侧边栏项文本"
+                        },
+                        {
+                            "name": "url",
+                            "type": "string",
+                            "default": null,
+                            "description": "链接地址"
+                        },
+                        {
+                            "name": "value",
+                            "type": "int",
+                            "default": null,
+                            "description": "侧边栏项值"
+                        },
+                        {
+                            "name": "iconUrl",
+                            "type": "string",
+                            "default": null,
+                            "description": "侧边栏图标"
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "icon-sidebar",
+                    "title": "图标侧边栏",
+                    "category": "foldable_sidebar(可展开收起的侧边栏)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<icon-sidebar>\n</icon-sidebar>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "primaryColor",
+                            "type": "string",
+                            "default": "#FF4500",
+                            "description": "选择侧边栏主题色"
+                        },
+                        {
+                            "name": "iconUrl",
+                            "type": "string",
+                            "default": "https://img.zcool.cn/community/01e4315542ab990000019ae99f4ef0.jpg@1280w_1l_2o_100sh.jpg",
+                            "description": "选择侧边栏主题色"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

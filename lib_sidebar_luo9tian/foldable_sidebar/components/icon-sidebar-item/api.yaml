@@ -1,0 +1,22 @@
+- name: icon-sidebar-item
+  title: 图标侧边栏项
+  type: both
+  belong: component
+  labels: [Runtime]
+  attrs:
+    - name: text
+      type: string
+      default: 侧边栏
+      description: 侧边栏项文本
+    - name: url
+      type: string
+      default:
+      description: 链接地址
+    - name: value
+      type: string
+      default:
+      description: 侧边栏项值
+    - name: iconUrl
+      type: string
+      default:
+      description: 侧边栏图标
