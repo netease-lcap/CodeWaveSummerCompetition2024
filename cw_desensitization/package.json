@@ -47,5 +47,9 @@
   },
   "template": {
     "inited": true
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "3b7efaa11ce677306fc8333ff509d6e6"
 }
