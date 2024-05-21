@@ -29,7 +29,7 @@ public class ImageTiler {
     private TileConfig cfg;
     private static final Logger logger = LoggerFactory.getLogger(ImageTiler.class);
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+    private final ExecutorService executor = Executors.newFixedThreadPool(5);
 
     private static final int THREAD_COUNT = 50; // 设定线程数量
 
@@ -71,6 +71,10 @@ public class ImageTiler {
                 resp.failedReason = e.getMessage();
                 e.printStackTrace();
                 logger.error("tileImage error: " + Arrays.toString(e.getStackTrace()), e);
+            } catch (OutOfMemoryError e) {
+                resp.success = false;
+                resp.failedReason = "OOM: no enough memory to process image";
+                logger.error(resp.failedReason);
             }
             resp.id = request.id;
             callback.apply(resp);
@@ -97,57 +101,56 @@ public class ImageTiler {
         if (request.outputDirectory == null || request.outputDirectory.isEmpty()) {
             return new TileValidateResponse(ErrorCode.INVALID_OUTPUT_DIRECTORY);
         }
-
         if (!(request.outputDirectory.startsWith("file://") || !request.outputDirectory.contains("/"))) {
             return new TileValidateResponse(ErrorCode.INVALID_OUTPUT_DIRECTORY);
         }
 
-        BufferedImage mapImage = null;
+        BufferedImage mapImage;
         try {
             if (request.url.startsWith("http")) {
                 mapImage = ImageIO.read(new URL(request.url));
             } else {
                 mapImage = ImageIO.read(new File(request.url));
             }
-            int width = mapImage.getWidth();
-            int height = mapImage.getHeight();
-
-            int minSquareSize = (int) Math.pow(2, MIN_ZOOM_LEVEL) * request.tileSize;
-            if (Math.min(width, height) < minSquareSize) {
-                resp = new TileValidateResponse(ErrorCode.INVALID_IMAGE_SIZE);
-                resp.setMessage("image is too small, suggest image size is " + minSquareSize + "x" + minSquareSize);
-                return resp;
-            }
-            // check image format, should be png or jpg
-            String ext = FilenameUtils.getExtension(request.url).toLowerCase();
-            if (ext.isEmpty() || !Arrays.asList(imageTypes).contains(ext)) {
-                return new TileValidateResponse(ErrorCode.INVALID_IMAGE_TYPE);
-            }
-            // calculate runtime free memory and check if there is enough memory
-            long mem = (long) width * height * 4; // rgba 4 bytes
-            long freeMem = Runtime.getRuntime().freeMemory();
-            long memWants = (long) (mem * memoryRate);
-            if (freeMem < memWants) {
-                resp = new TileValidateResponse(ErrorCode.INVALID_MEMORY_LIMIT);
-                resp.setMessage("no enough memory( " + bytesToMiB(freeMem) + "<" + bytesToMiB(memWants) + ") to process the image");
-                return resp;
-            }
-            String tips = String.format("image info: %dx%d, wants memory:%s, the app's free memory:%s",
-                    width, height, bytesToMiB(memWants), bytesToMiB(freeMem));
-
-            logger.info(tips);
-            resp = new TileValidateResponse(ErrorCode.SUCCESS);
-            resp.tips = tips;
-            return resp;
-
         } catch (IOException e) {
             logger.error("io exception", e);
             throw new TileRuntimeException(e);
-        } finally {
-            if (mapImage != null) {
-                mapImage.flush();
-            }
         }
+        int width = mapImage.getWidth();
+        int height = mapImage.getHeight();
+        if (width > cfg.imageMaxWidth || height > cfg.imageMaxHeight) {
+            resp = new TileValidateResponse(ErrorCode.INVALID_IMAGE_SIZE);
+            resp.setMessage("image is too large, image size should less than " + cfg.imageMaxWidth + "x" + cfg.imageMaxHeight);
+            return resp;
+        }
+
+        int minSquareSize = (int) Math.pow(2, MIN_ZOOM_LEVEL) * request.tileSize;
+        if (Math.min(width, height) < minSquareSize) {
+            resp = new TileValidateResponse(ErrorCode.INVALID_IMAGE_SIZE);
+            resp.setMessage("image is too small, suggest image size is " + minSquareSize + "x" + minSquareSize);
+            return resp;
+        }
+        // check image format, should be png or jpg
+        String ext = FilenameUtils.getExtension(request.url).toLowerCase();
+        if (ext.isEmpty() || !Arrays.asList(imageTypes).contains(ext)) {
+            return new TileValidateResponse(ErrorCode.INVALID_IMAGE_TYPE);
+        }
+        // calculate runtime free memory and check if there is enough memory
+        long mem = (long) width * height * 4; // rgba 4 bytes
+        long freeMem = Runtime.getRuntime().freeMemory();
+        long memWants = (long) (mem * memoryRate);
+        if (freeMem < memWants) {
+            resp = new TileValidateResponse(ErrorCode.INVALID_MEMORY_LIMIT);
+            resp.setMessage("no enough memory( " + bytesToMiB(freeMem) + "<" + bytesToMiB(memWants) + ") to process the image");
+            return resp;
+        }
+        String tips = String.format("image info: %dx%d, wants memory:%s, the app's free memory:%s",
+                width, height, bytesToMiB(memWants), bytesToMiB(freeMem));
+
+        logger.info(tips);
+        resp = new TileValidateResponse(ErrorCode.SUCCESS);
+        resp.tips = tips;
+        return resp;
     }
 
     private static String bytesToMiB(long bytes) {

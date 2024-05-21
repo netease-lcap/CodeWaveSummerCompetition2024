@@ -44,4 +44,18 @@ public class TileConfig {
     @Value("${ossBucketName}")
     @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = ""))
     public String ossBucketName;
+
+    /**
+     * 图片最大宽度
+     */
+    @Value("${imageMaxWidth}")
+    @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = "4096"))
+    public Integer imageMaxWidth = 4096;
+
+    /**
+     * 图片最大高度
+     */
+    @Value("${imageMaxHeight}")
+    @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = "4096"))
+    public Integer imageMaxHeight = 4096;
 }

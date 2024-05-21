@@ -41,6 +41,8 @@
     * ossAccessKeyId oss访问密钥id
     * ossAccessKeySecret oss访问密钥
     * ossBucketName oss存储桶名称
+    * imageMaxWidth 图片最大宽度
+    * imageMaxHeight 图片最大高度
 3.  逻辑调用示例截图
 
 ![Snipaste_2024-05-14_01-08-16.jpg](Snipaste_2024-05-14_01-08-16.jpg)
