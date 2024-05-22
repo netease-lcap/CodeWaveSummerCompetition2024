@@ -67,7 +67,12 @@ lcap_library_nexus是一个低代码平台依赖库开源仓库，用于存放�
 | ------- | ------- | ------- |---------------------|-----------------------------------------------------------------------------------------------------------------------------------|
 | excel解析 | 后端  | excel-parser   | 自动解析excel文档到IDE数据表格 | https://community.codewave.163.com/CommunityParent/CodeWareMarketLibraryDetail?id=2840513069648896&isLatest=false&isClassics=true |
 | http请求客户端 | 后端   | httpclient   | 扩展平台原有api功能         | 暂无   
-| 音频依赖库 | 前端   | cw_audio_library   | 提供音频播放/录制功能         | 暂无                                                                                                                                |
+| 音频依赖库 | 前端   | cw_audio_library   | 提供音频播放/录制功能         | 暂无
+| 签名板依赖库 | 前端   | cw_signature_view   | 提供组件签名能力        | 暂无 
+| 大文件上传依赖库 | 前端   | cw_large_file_uploader   | 提供分片上传能力        | 暂无
+| markdown依赖库 | 前端   | cw_markdown   | 提供markdown编辑/预览能力        | 暂无   
+| 数据脱敏依赖库 | 前端   | cw_desensitization   | 提供前端数据脱敏能力        | 暂无
+| 全局水印依赖库 | 前端   | cw_watermark   | 提供页面全局水印的能力        | 暂无                                                                                                                                |
 
 ### 贡献指南
 [开发提交作品路径说明](%E5%BC%80%E5%8F%91%E6%8F%90%E4%BA%A4%E4%BD%9C%E5%93%81%E8%B7%AF%E5%BE%84%E8%AF%B4%E6%98%8E.md)
