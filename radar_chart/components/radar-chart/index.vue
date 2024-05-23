@@ -17,7 +17,7 @@ export default {
     //标题水平位置 可以是 'left', 'center', 'right' 或者具体的百分比如 '50%'
     titleHorizontalPosition: {type: String,default: 'center' },
     //标题是否可以跳转
-    titleLink: {type: Boolean,default: true},
+    titleLink: {type: Boolean,default: false},
     //跳转地址
     titleHref: {type: String,default: 'https://sf.163.com'},
     //链接打开方式 父窗口打开 'self' 或 新的窗口打开 'blank'。

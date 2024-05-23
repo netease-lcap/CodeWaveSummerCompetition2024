@@ -5,7 +5,7 @@
     "specVersion": "1.0.0",
     "type": "module",
     "subType": "extension",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "frontends": [
         {
             "concept": "FrontendLibrary",
@@ -194,30 +194,10 @@
                                 {
                                     "value": "polygon",
                                     "title": "多边形(polygon)"
-                                },
-                                {
-                                    "value": "star",
-                                    "title": "星形(star)"
-                                },
-                                {
-                                    "value": "ring",
-                                    "title": "环形(ring)"
-                                },
-                                {
-                                    "value": "sector",
-                                    "title": "扇形(sector)"
-                                },
-                                {
-                                    "value": "cross",
-                                    "title": "十字形(cross)"
-                                },
-                                {
-                                    "value": "rect",
-                                    "title": "矩形(rect)"
                                 }
                             ],
                             "default": "polygon",
-                            "description": "雷达图的轮廓形状，可以是 'circle'（圆形）, 'polygon'（多边形）, 'star'（星形）, 'ring'（环形）, 'sector'（扇形）, 'cross'（十字形）, 'rect'（矩形）"
+                            "description": "雷达图的轮廓形状，可以是 'circle'（圆形）, 'polygon'（多边形"
                         },
                         {
                             "name": "indicators",
@@ -338,7 +318,7 @@
     "summary": {
         "name": "radar_chart",
         "title": "雷达图",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "description": "",
         "frontends": [
             {
