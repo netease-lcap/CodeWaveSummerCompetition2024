@@ -1,0 +1,365 @@
+{
+    "name": "cw_desensitization",
+    "title": "文字脱敏",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "1.0.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "desensitizationFromLength",
+                    "description": "基于首尾长度脱敏",
+                    "category": "cw_desensitization",
+                    "params": [
+                        {
+                            "name": "source",
+                            "concept": "Param",
+                            "description": "需要加密的字符串",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "startCount",
+                            "concept": "Param",
+                            "description": "首部保留的字符数",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number|string",
+                                "typeNamespace": "extensions.cw_desensitization.structures"
+                            }
+                        },
+                        {
+                            "name": "endCount",
+                            "concept": "Param",
+                            "description": "尾部保留的字符数",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number|string",
+                                "typeNamespace": "extensions.cw_desensitization.structures"
+                            }
+                        },
+                        {
+                            "name": "ch",
+                            "concept": "Param",
+                            "description": "替换的字符",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "reverseMode",
+                            "concept": "Param",
+                            "description": "是否将标记替换和保留集合的互换",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "desensitizationFromRegex",
+                    "description": "基于正则表达式脱敏",
+                    "category": "cw_desensitization",
+                    "params": [
+                        {
+                            "name": "source",
+                            "concept": "Param",
+                            "description": "需要加密的字符串",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "regex",
+                            "concept": "Param",
+                            "description": "正则表达式",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.cw_desensitization.structures"
+                            }
+                        },
+                        {
+                            "name": "ch",
+                            "concept": "Param",
+                            "description": "替换的字符",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "reverseMode",
+                            "concept": "Param",
+                            "description": "是否将标记替换和保留集合的互换",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "desensitizationFromLength",
+                    "description": "基于首尾长度脱敏",
+                    "category": "cw_desensitization",
+                    "params": [
+                        {
+                            "name": "source",
+                            "concept": "Param",
+                            "description": "需要加密的字符串",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "startCount",
+                            "concept": "Param",
+                            "description": "首部保留的字符数",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number|string",
+                                "typeNamespace": "extensions.cw_desensitization.structures"
+                            }
+                        },
+                        {
+                            "name": "endCount",
+                            "concept": "Param",
+                            "description": "尾部保留的字符数",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number|string",
+                                "typeNamespace": "extensions.cw_desensitization.structures"
+                            }
+                        },
+                        {
+                            "name": "ch",
+                            "concept": "Param",
+                            "description": "替换的字符",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "reverseMode",
+                            "concept": "Param",
+                            "description": "是否将标记替换和保留集合的互换",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "desensitizationFromRegex",
+                    "description": "基于正则表达式脱敏",
+                    "category": "cw_desensitization",
+                    "params": [
+                        {
+                            "name": "source",
+                            "concept": "Param",
+                            "description": "需要加密的字符串",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "regex",
+                            "concept": "Param",
+                            "description": "正则表达式",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.cw_desensitization.structures"
+                            }
+                        },
+                        {
+                            "name": "ch",
+                            "concept": "Param",
+                            "description": "替换的字符",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "reverseMode",
+                            "concept": "Param",
+                            "description": "是否将标记替换和保留集合的互换",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "Boolean",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "name": "cw_desensitization",
+        "title": "文字脱敏",
+        "version": "1.0.0",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "desensitizationFromLength",
+                        "description": "基于首尾长度脱敏"
+                    },
+                    {
+                        "name": "desensitizationFromRegex",
+                        "description": "基于正则表达式脱敏"
+                    }
+                ]
+            },
+            {
+                "type": "h5",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "desensitizationFromLength",
+                        "description": "基于首尾长度脱敏"
+                    },
+                    {
+                        "name": "desensitizationFromRegex",
+                        "description": "基于正则表达式脱敏"
+                    }
+                ]
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}
