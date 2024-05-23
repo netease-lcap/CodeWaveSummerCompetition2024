@@ -4,7 +4,9 @@ import com.netease.lowcode.core.EnvironmentType;
 import com.netease.lowcode.core.annotation.Environment;
 import com.netease.lowcode.core.annotation.NaslConfiguration;
 import com.netease.lowcode.core.annotation.NaslStructure;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -14,42 +16,58 @@ public class RocketMQConfig {
     /**
      * rocketmq name server
      */
-    @Value("${rocketmq.nameServer}")
+    @Value("${rocketmq.name-server}")
     @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = ""))
     public String nameServer;
 
     /**
-     * rocketmq group
+     * rocketmq producer group
      */
-    @Value("${rocketmq.group}")
+    @Value("${rocketmq.producer.group}")
     @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = "test"))
-    public String group;
+    public String producerGroup;
 
     /**
-     * rocketmq topic
+     * rocketmq accessKey for producer
      */
-    @Value("${rocketmq.topic}")
-    @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = "test"))
-    public String topic;
-
-    /**
-     * rocketmq tag
-     */
-    @Value("${rocketmq.tag}")
-    @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = "test"))
-    public String tag;
-
-    /**
-     * rocketmq accessKey
-     */
-    @Value("${rocketmq.accessKey}")
+    @Value("${rocketmq.producer.access-key}")
     @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = ""))
-    public String accessKey;
+    public String producerAccessKey;
 
     /**
-     * rocketmq secretKey
+     * rocketmq secretKey for producer
      */
-    @Value("${rocketmq.secretKey}")
+    @Value("${rocketmq.producer.secret-key}")
     @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = ""))
-    public String secretKey;
+    public String producerSecretKey;
+
+
+    /**
+     * rocketmq consumer group
+     */
+    @Value("${rocketmq.consumer.group}")
+    @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = "test"))
+    public String consumerGroup;
+
+    /**
+     * rocketmq consumer topic
+     */
+    @Value("${rocketmq.consumer.topic}")
+    @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = "test"))
+    public String consumerTopic;
+
+    /**
+     * rocketmq accessKey for consumer
+     */
+    @Value("${rocketmq.consumer.access-key}")
+    @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = ""))
+    public String consumerAccessKey;
+
+    /**
+     * rocketmq secretKey for consumer
+     */
+    @Value("${rocketmq.consumer.secret-key}")
+    @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = ""))
+    public String consumerSecretKey;
+
 }

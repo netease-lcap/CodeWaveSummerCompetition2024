@@ -14,7 +14,7 @@
     <name>RocketMQUtils</name>
     <description>RocketMQ 收发消息工具</description>
     <artifactId>RocketMQ</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.7</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
