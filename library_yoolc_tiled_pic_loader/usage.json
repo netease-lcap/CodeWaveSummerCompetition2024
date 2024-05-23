@@ -1,0 +1,278 @@
+{
+    "name": "library_yoolc_tiled_pic_loader",
+    "title": "大图瓦片加载",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "1.0.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "tiled-pic-loader",
+                    "title": "大图瓦片加载器",
+                    "category": "library_yoolc_tiled_pic_loader(大图瓦片加载)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<tiled-pic-loader></tiled-pic-loader>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "pictureURL",
+                            "type": "string",
+                            "default": "https://example.com/pic_test/{z}-{x}-{y}.png",
+                            "description": "大图瓦片加载地址"
+                        },
+                        {
+                            "name": "tileSize",
+                            "type": "number",
+                            "default": 512,
+                            "description": "瓦片大小"
+                        },
+                        {
+                            "name": "maxZoom",
+                            "type": "number",
+                            "default": 3,
+                            "description": "最大缩放级别"
+                        },
+                        {
+                            "name": "attribution",
+                            "type": "string",
+                            "default": "大图瓦片加载",
+                            "description": "版权信息"
+                        }
+                    ]
+                }
+            ],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "tiledPicSlicer",
+                    "description": "大图瓦片切片器",
+                    "category": "library_yoolc_tiled_pic_loader",
+                    "params": [
+                        {
+                            "name": "uploadPic",
+                            "concept": "Param",
+                            "description": "上传图片",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "File",
+                                "typeNamespace": "extensions.library_yoolc_tiled_pic_loader.structures"
+                            }
+                        },
+                        {
+                            "name": "ossEndpoint",
+                            "concept": "Param",
+                            "description": "OSS 服务器上传地址",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "ossRegion",
+                            "concept": "Param",
+                            "description": "OSS 服务器上传 Region",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "ossAccessKeyId",
+                            "concept": "Param",
+                            "description": "OSS 服务器上传 AccessKeyId",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "ossAccessKeySecret",
+                            "concept": "Param",
+                            "description": "OSS 服务器上传 AccessKeySecret",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "ossBucket",
+                            "concept": "Param",
+                            "description": "OSS 服务器上传 Bucket",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "maxZoomLevel",
+                            "concept": "Param",
+                            "description": "最大缩放级别",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_yoolc_tiled_pic_loader.structures"
+                            }
+                        },
+                        {
+                            "name": "tileSize",
+                            "concept": "Param",
+                            "description": "瓦片大小",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_yoolc_tiled_pic_loader.structures"
+                            }
+                        },
+                        {
+                            "name": "compressionQuality",
+                            "concept": "Param",
+                            "description": "压缩质量",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_yoolc_tiled_pic_loader.structures"
+                            }
+                        },
+                        {
+                            "name": "maxWidth",
+                            "concept": "Param",
+                            "description": "最大宽度",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_yoolc_tiled_pic_loader.structures"
+                            }
+                        },
+                        {
+                            "name": "maxHeight",
+                            "concept": "Param",
+                            "description": "最大高度",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_yoolc_tiled_pic_loader.structures"
+                            }
+                        },
+                        {
+                            "name": "minWidth",
+                            "concept": "Param",
+                            "description": "最小宽度",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_yoolc_tiled_pic_loader.structures"
+                            }
+                        },
+                        {
+                            "name": "minHeight",
+                            "concept": "Param",
+                            "description": "最小高度",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_yoolc_tiled_pic_loader.structures"
+                            }
+                        },
+                        {
+                            "name": "maxSize",
+                            "concept": "Param",
+                            "description": "最大尺寸",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "reference",
+                                "typeName": "Number",
+                                "typeNamespace": "extensions.library_yoolc_tiled_pic_loader.structures"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "annotations": [],
+    "summary": {
+        "name": "library_yoolc_tiled_pic_loader",
+        "title": "大图瓦片加载",
+        "version": "1.0.0",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "tiled-pic-loader",
+                        "title": "大图瓦片加载器"
+                    }
+                ],
+                "logics": [
+                    {
+                        "name": "tiledPicSlicer",
+                        "description": "大图瓦片切片器"
+                    }
+                ]
+            }
+        ],
+        "annotations": []
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

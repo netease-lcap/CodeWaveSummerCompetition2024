@@ -1,0 +1,22 @@
+- name: tiled-pic-loader
+  title: 大图瓦片加载器
+  type: pc
+  belong: component
+  labels: [Runtime]
+  attrs:
+    - name: pictureURL
+      type: string
+      default: "https://example.com/pic_test/{z}-{x}-{y}.png"
+      description: 大图瓦片加载地址
+    - name: tileSize
+      type: number
+      default: 512
+      description: 瓦片大小
+    - name: maxZoom
+      type: number
+      default: 3
+      description: 最大缩放级别
+    - name: attribution
+      type: string
+      default: "大图瓦片加载"
+      description: 版权信息

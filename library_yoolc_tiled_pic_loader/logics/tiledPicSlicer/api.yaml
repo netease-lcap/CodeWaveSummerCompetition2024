@@ -1,0 +1,5 @@
+- name: tiledPicSlicer
+  description: 大图瓦片切片器
+  type: pc
+  belong: logic
+  labels: [Runtime]
