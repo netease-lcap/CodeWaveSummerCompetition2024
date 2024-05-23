@@ -8,7 +8,7 @@
       type: string
       default: 侧边栏
       description: 侧边栏项文本
-    - name: url
+    - name: linkAddress
       type: string
       default:
       description: 链接地址

@@ -1,8 +1,8 @@
 <template>
 <!--  <div>{{value}}</div>-->
   <div class="icon-sidebar-item">
-    <img v-show="iconUrl" :src="iconUrl" style="width: 15px;height: 15px;border-radius: 50%">
-    <a class="a-item" :href="url||'#'">{{text}}</a>
+    <img v-show="iconUrl" :src="iconUrl" style="width: 15px;height: 15px;border-radius: 50%;">
+    <a class="a-item" :href="linkAddress||'#'">{{text}}</a>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
         type:String,
         default:"侧边栏文本"
       },
-      url:{
+      linkAddress:{
         type: String,
         default: ""
       },
@@ -25,7 +25,7 @@ export default {
         type:String,
         default:""
       }
-    }
+    },
 }
 </script>
 
