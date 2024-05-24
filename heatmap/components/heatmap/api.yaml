@@ -1,0 +1,10 @@
+- name: heatmap
+  title: 热力图
+  type: pc
+  belong: component
+  labels: [Runtime]
+  attrs:
+    - name: options
+      type: Array
+      default: 数值
+      description: 需要传入的值

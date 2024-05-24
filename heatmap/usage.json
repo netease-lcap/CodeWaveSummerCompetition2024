@@ -1,0 +1,64 @@
+{
+    "name": "heatmap",
+    "title": "热力图生成",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.8.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "heatmap",
+                    "title": "热力图",
+                    "category": "heatmap(热力图生成)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<heatmap></heatmap>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "options",
+                            "type": "Array",
+                            "default": "数值",
+                            "description": "需要传入的值"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "heatmap",
+        "title": "热力图生成",
+        "version": "0.8.0",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "heatmap",
+                        "title": "热力图"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}
