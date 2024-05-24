@@ -1,5 +1,6 @@
-# CodeWaveAssetCompetition2024
-网易低代码开发者活动-资产大赛2024 
+# 网易低代码平台依赖库开源仓库
+## CodeWaveAssetCompetition2024
+网易低代码开发者活动-资产大赛2024
 ![image](https://github.com/netease-lcap/CodeWaveAssetCompetition2024/assets/158463965/ea58284c-5be6-4b2d-956b-7b300499ee1e)
 
 欢迎开发者们参加2024网易低代码资产共建大赛，活动官网介绍：https://sf.163.com/2024lcapassetcompetition
@@ -54,5 +55,43 @@
 
 严选平台优质商品推荐：https://docs.popo.netease.com/lingxi/65c7da790e5d40baaf7ee15e62e843e5
 
+## README
+### 项目名称
+lcap_library_nexus是一个低代码平台依赖库开源仓库，用于存放低代码平台前端依赖库和服务端依赖库。
+* 服务端扩展依赖库是指开发者使用Java编写的平台扩展能力库，用于满足服务端定制化需求和功能扩展。
+* 前端依赖库主要提供扩展组件和前端自定义逻辑编写能力，满足前端定制化需求和功能扩展。
 
- 
+#### 官方依赖库
+
+| 依赖库名称 | 依赖库类型 | 文件夹名称 | 描述                  | 资产市场地址                                                                                                                            |
+| ------- | ------- | ------- |---------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| excel解析 | 后端  | excel-parser   | 自动解析excel文档到IDE数据表格 | https://community.codewave.163.com/CommunityParent/CodeWareMarketLibraryDetail?id=2840513069648896&isLatest=false&isClassics=true |
+| http请求客户端 | 后端   | httpclient   | 扩展平台原有api功能         | 暂无   
+| 音频依赖库 | 前端   | cw_audio_library   | 提供音频播放/录制功能         | 暂无
+| 签名板依赖库 | 前端   | cw_signature_view   | 提供组件签名能力        | 暂无 
+| 大文件上传依赖库 | 前端   | cw_large_file_uploader   | 提供分片上传能力        | 暂无
+| markdown依赖库 | 前端   | cw_markdown   | 提供markdown编辑/预览能力        | 暂无   
+| 数据脱敏依赖库 | 前端   | cw_desensitization   | 提供前端数据脱敏能力        | 暂无
+| 全局水印依赖库 | 前端   | cw_watermark   | 提供页面全局水印的能力        | 暂无                                                                                                                                |
+
+### 贡献指南
+[开发提交作品路径说明](%E5%BC%80%E5%8F%91%E6%8F%90%E4%BA%A4%E4%BD%9C%E5%93%81%E8%B7%AF%E5%BE%84%E8%AF%B4%E6%98%8E.md)
+
+### 依赖库开发规范指导
+[依赖库开发规范指导](%E4%BE%9D%E8%B5%96%E5%BA%93%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83%E6%8C%87%E5%AF%BC.md)
+
+### 版本管理
+项目初始版本是 1.0.0。
+项目进行 Bug 修正时，最后一位加 1，比如 1.0.1。
+项目有新特性发布时，中间一位数加 1，同时最后一位复位为 0，比如 1.1.0。
+项目有重大特性发布，同时结构可能不向下兼容时，第一位数字加 1，其他位数复位为0，比如2.0.0。
+依赖库做任何代码修改时，都需要更新版本号。
+
+### 测试用例
+建议测试用例覆盖率达到70%以上。
+
+### 许可证
+本项目遵循网易贡献许可协议 - 有关详细信息，请参阅 [LICENSE](./LICENSE) 文件。
+
+
+
