@@ -204,7 +204,7 @@ public class EasyExcelTools {
 
                     @Override
                     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
-                        System.out.println("读取表头数据");
+                        log.info("读取表头数据");
 
                         ReadHolder readHolder = context.currentReadHolder();
 
@@ -278,7 +278,7 @@ public class EasyExcelTools {
 
                     @Override
                     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-                        System.out.println("所有数据解析完成");
+                        log.info("所有数据解析完成");
                     }
                 })
                 // 指定表头有几行
@@ -772,24 +772,32 @@ public class EasyExcelTools {
         if (CollectionUtils.isEmpty(excelData.sheetList)) {
             throw new RuntimeException("sheet个数0");
         }
-        SimpleRowHeightStyleStrategy rowHeightStyleStrategy = new SimpleRowHeightStyleStrategy(null, (short) 60); // 设置行高为30
+        SimpleRowHeightStyleStrategy rowHeightStyleStrategy = new SimpleRowHeightStyleStrategy(null, (short) 30); // 设置行高为30
         SimpleColumnWidthStyleStrategy columnWidthStyleStrategy = new SimpleColumnWidthStyleStrategy(10); // 设置列宽为20
         excelWriterBuilder.registerWriteHandler(rowHeightStyleStrategy);
         excelWriterBuilder.registerWriteHandler(columnWidthStyleStrategy);
         excelWriterBuilder.registerConverter(new ShowImageConverter());
-        for (CustomSheetData customSheetData : excelData.sheetList) {
-            createSheet(customSheetData.sheetName, excelWriterBuilder, customSheetData.head, customSheetData.data);
+
+        ExcelWriter writer = excelWriterBuilder.build();
+
+        for (int i = 0; i < excelData.sheetList.size(); i++) {
+            CustomSheetData customSheetData = excelData.sheetList.get(i);
+            createSheet(i,customSheetData.sheetName, writer, customSheetData.head, customSheetData.data);
         }
+        writer.finish();
         return path + excelData.fileName;
     }
 
-    private static void createSheet(String sheetName, ExcelWriterBuilder excelWriterBuilder, List<String> head, List<List<String>> data) {
+    private static void createSheet(Integer sheetNo,String sheetName, ExcelWriter excelWriter, List<String> head, List<List<String>> data) {
+
+        WriteSheet sheet = EasyExcel.writerSheet(sheetNo, sheetName).build();
+
         if (!CollectionUtils.isEmpty(head)) {
             List<List<String>> list = ListUtils.newArrayList();
             head.forEach(item -> list.add(ListUtils.newArrayList(item)));
-            excelWriterBuilder.head(list);
+            sheet.setHead(list);
         }
-        excelWriterBuilder.sheet(sheetName).doWrite(data);
+        excelWriter.write(data,sheet);
 
     }
 
