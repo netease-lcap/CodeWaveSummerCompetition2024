@@ -49,7 +49,6 @@ public class FileUtils {
         Object fileStorageClient = getFileSystemSpi.invoke(clientManager, sinkType);
 
         Method upload = fileStorageClient.getClass().getMethod("upload", InputStream.class, String.class, Map.class);
-        // http://dev.exporttest.defaulttenant.lcap.codewave-dev.163yun.com/upload/app/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA%E6%B5%8B%E8%AF%95_20240106093632186.xlsx
 
         // 只要拼接 sinkPath+fileName+时间+后缀即可。
         String curTime = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
