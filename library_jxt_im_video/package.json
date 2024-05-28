@@ -1,58 +1,62 @@
 {
-    "name": "library_jxt_im_video",
-    "title": "音视频通话",
-    "description": "网易云信 音视频通话2.0 封装",
-    "version": "0.1.49",
-    "main": "./index.js",
-    "author": "",
-    "repository": "",
-    "homepage": "",
-    "license": "MIT",
-    "keywords": [
-        "lcap",
-        "material",
-        "component"
-    ],
-    "scripts": {
-        "dev": "vue-cli-service doc --port 9090",
-        "build:theme": "vue-cli-service library-build --dest dist-theme",
-        "build:doc": "vue-cli-service doc-build",
-        "build": "npm run build:theme",
-        "usage": "lcap usage",
-        "deploy": "lcap deploy dist-theme",
-        "prepublishOnly": "lcap publish",
-        "release": "lcap publish",
-        "release:version": "npm run change:version & npm run release",
-        "change:version": "node ./scripts/change-version.js"
-    },
-    "vuePlugins": {},
-    "babel": {},
-    "vusion": {
-        "ui": "cloud-ui.vusion"
-    },
-    "lcapVersion": "0.3.0",
-    "devDependencies": {
-        "@vue/cli-service": "^4.4.1",
-        "cloud-ui.vusion": "^0.11.20",
-        "core-js": "^3.6.5",
-        "crypto": "^1.0.1",
-        "vue": "^2.6.12",
-        "vue-cli-plugin-vusion": "0.14.2-beta",
-        "vue-loader": "15.9.8",
-        "zlib": "^1.0.5"
-    },
-    "peerDependencies": {
-        "cloud-ui.vusion": "^0.11.20",
-        "vue": "^2.6.12"
-    },
-    "vetur": {
-        "tags": "./vetur/tags.json",
-        "attributes": "./vetur/attributes.json"
-    },
-    "template": {
-        "inited": true
-    },
-    "dependencies": {
-        "nertc-web-sdk": "^5.6.0"
-    }
+  "name": "library_jxt_im_video",
+  "title": "音视频通话",
+  "description": "网易云信 音视频通话2.0 封装",
+  "version": "0.1.49",
+  "main": "./index.js",
+  "author": "",
+  "repository": "",
+  "homepage": "",
+  "license": "MIT",
+  "keywords": [
+    "lcap",
+    "material",
+    "component"
+  ],
+  "scripts": {
+    "dev": "vue-cli-service doc --port 9090",
+    "build:theme": "vue-cli-service library-build --dest dist-theme",
+    "build:doc": "vue-cli-service doc-build",
+    "build": "npm run build:theme",
+    "usage": "lcap usage",
+    "deploy": "lcap deploy dist-theme",
+    "prepublishOnly": "lcap publish",
+    "release": "lcap publish",
+    "release:version": "npm run change:version & npm run release",
+    "change:version": "node ./scripts/change-version.js"
+  },
+  "vuePlugins": {},
+  "babel": {},
+  "vusion": {
+    "ui": "cloud-ui.vusion"
+  },
+  "lcapVersion": "0.3.0",
+  "devDependencies": {
+    "@vue/cli-service": "^4.4.1",
+    "cloud-ui.vusion": "^0.11.20",
+    "core-js": "^3.6.5",
+    "crypto": "^1.0.1",
+    "vue": "^2.6.12",
+    "vue-cli-plugin-vusion": "0.14.2-beta",
+    "vue-loader": "15.9.8",
+    "zlib": "^1.0.5"
+  },
+  "peerDependencies": {
+    "cloud-ui.vusion": "^0.11.20",
+    "vue": "^2.6.12"
+  },
+  "vetur": {
+    "tags": "./vetur/tags.json",
+    "attributes": "./vetur/attributes.json"
+  },
+  "template": {
+    "inited": true
+  },
+  "dependencies": {
+    "nertc-web-sdk": "^5.6.0"
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "58eb35d42cfae2b962fd5db732fa62e3"
 }
