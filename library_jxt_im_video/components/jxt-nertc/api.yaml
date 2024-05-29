@@ -1,0 +1,273 @@
+- name: jxt-nertc
+  title: 音视频通话
+  type: both
+  belong: component
+  labels: [Runtime]
+  attrs:
+      - name: appKey
+        title: 应用的 AppKey
+        description: 设置应用的 AppKey
+        type: string
+        group: 应用配置
+
+      - name: debug
+        title: 是否开启 debug 模式
+        description: 设置是否开启 debug 模式
+        type: boolean
+        default: true
+        group: 应用配置
+
+      - name: channelName
+        title: 房间名称
+        description: 房间名称
+        type: string
+        group: 音视频通话配置
+
+      - name: autoUid
+        title: 是否自动生成 uid
+        description: 设置是否自动生成 uid
+        type: boolean
+        default: true
+        group: 音视频通话配置
+
+      - name: uid
+        title: 当前用户 id
+        description: 设置当前用户 id
+        type: string
+        group: 音视频通话配置
+        dependency:
+            - autoUid: false
+
+      - name: authenticationType
+        title: 鉴权类型
+        description: 设置鉴权类型
+        type: string
+        default: debug
+        options:
+            - value: debug
+              title: 调试模式（无需 token 鉴权）
+            - value: safe
+              title: 安全模式（基础 token 鉴权）
+            - value: safe-high
+              title: 安全模式（高级 token 鉴权）
+        group: 音视频通话配置
+
+      - name: token
+        title: token值
+        description: 设置 token 值
+        type: string
+        group: 音视频通话配置
+        dependency:
+            - authenticationType: safe
+
+      - name: token
+        title: token值
+        description: 设置 token 值
+        type: string
+        group: 音视频通话配置
+        dependency:
+            - authenticationType: safe-high
+
+      - name: permKey
+        title: permKey值
+        description: 设置高级权限token值
+        type: string
+        group: 音视频通话配置
+        dependency:
+            - authenticationType: safe-high
+
+      - name: audio
+        title: 是否启动音频
+        description: 设置是否启动音频
+        type: boolean
+        default: true
+        group: 音视频通话配置
+
+      - name: audioProfile
+        title: 音频质量
+        description: 设置音频质量
+        type: string
+        default: speech_low_quality
+        options:
+            - value: speech_low_quality
+              title: 16 kHz 采样率，单声道，编码码率约 24 Kbps
+            - value: speech_standard
+              title: 32 kHz 采样率，单声道，编码码率约 24 Kbps
+            - value: music_standard
+              title: 48 kHz 采样率，单声道，编码码率约 40 Kbps
+            - value: standard_stereo
+              title: 48 kHz 采样率，双声道，编码码率约 64 Kbps
+            - value: high_quality
+              title: 48 kHz 采样率，单声道， 编码码率约 128 Kbps
+            - value: high_quality_stereo
+              title: 48 kHz 采样率，双声道，编码码率约 192 Kbps
+        group: 音视频通话配置
+        dependency:
+            - video: true
+
+      - name: video
+        title: 是否启动视频
+        description: 设置是否启动视频
+        type: boolean
+        default: true
+        group: 音视频通话配置
+
+      - name: videoQuality
+        title: 视频分辨率
+        description: 设置视频分辨率
+        type: string
+        default: 720P
+        options:
+            - value: 180P
+              title: 180P
+            - value: 480P
+              title: 480P
+            - value: 720P
+              title: 720P
+            - value: 1080P
+              title: 1080P
+        group: 音视频通话配置
+        dependency:
+            - video: true
+
+      - name: frameRate
+        title: 视频通话帧率
+        description: 设置视频通话帧率
+        type: string
+        default: default
+        options:
+            - value: default
+              title: 默认值(最大取每秒15帧)
+            - value: 5f
+              title: 最大取每秒5帧
+            - value: 10f
+              title: 最大取每秒10帧
+            - value: 15f
+              title: 最大取每秒15帧
+            - value: 20f
+              title: 最大取每秒20帧
+            - value: 25f
+              title: 最大取每秒25帧
+            - value: 30f
+              title: 最大取每秒30帧
+        group: 音视频通话配置
+        dependency:
+            - video: true
+
+      - name: subWidth
+        title: 窗口宽度
+        description: 设置右上角视频窗口宽度
+        type: string
+        default: 165px
+        group: 右上角视频窗口配置
+
+      - name: subHeight
+        title: 窗口高度
+        description: 设置右上角视频窗口高度
+        type: string
+        default: 95px
+        group: 右上角视频窗口配置
+
+      - name: subZIndex
+        title: 展示层级(z-index)
+        description: 设置右上角视频窗口展示层级
+        type: number
+        default: 9
+        group: 右上角视频窗口配置
+
+      - name: subTop
+        title: 距离容器顶部的距离
+        description: 设置右上角视频窗口距离容器顶部的距离
+        type: string
+        default: 16px
+        group: 右上角视频窗口配置
+
+      - name: subRight
+        title: 距离容器右边的距离
+        description: 设置右上角视频窗口距离容器右边的距离
+        type: string
+        default: 16px
+        group: 右上角视频窗口配置
+
+      - name: borderColor
+        title: 边框颜色
+        description: 设置右上角视频窗口边框颜色
+        type: string
+        default: '#ffffff'
+        group: 右上角视频窗口配置
+
+  events:
+      - name: afterJoinRoom
+        title: 本地用户加入房间之后
+        description: 本地用户加入房间之后触发
+        params:
+            - name: client
+              type: object
+              description: 本地客户端实例
+            - name: uid
+              type: stirng
+              description: 本地用户uid
+
+      - name: afterLoadLocalSteam
+        title: 本地音视频流加载完成之后
+        description: 本地音视频流加载完成之后触发
+        params:
+            - name: client
+              type: object
+              description: 本地客户端实例
+            - name: uid
+              type: stirng
+              description: 本地用户uid
+            - name: stream
+              type: object
+              description: 本地音视频流对象
+
+      - name: roomOver
+        title: 房间用户超出时
+        description: 加入房间用户超出时触发
+
+      - name: peerOnline
+        title: 远端用户加入房间时
+        description: 远端用户加入房间时触发
+
+      - name: peerLeave
+        title: 远端用户离开房间时
+        description: 远端用户离开房间时触发
+
+      - name: permkeyWillExpire
+        title: permkey即将过期时
+        description: permkey还有30s就要过期时触发
+        params:
+            - name: client
+              type: object
+              description: 本地客户端实例
+
+      - name: permkeyTimeout
+        title: permkey过期时
+        description: permkey过期时触发
+        params:
+            - name: client
+              type: object
+              description: 本地客户端实例
+
+      - name: toggleAudio
+        title: 本地音频开关切换时
+        description: 本地音频开关切换时触发
+
+      - name: toggleVideo
+        title: 本地视频开关切换时
+        description: 本地视频开关切换时触发
+
+      - name: overVideo
+        title: 结束视频通话时
+        description: 结束视频通话时触发
+
+  methods:
+      - name: updatePermKey
+        description: 更新 PermKey
+        params:
+            - name: newPermKey
+              type: string
+              description: 新的 PermKey
+      - name: reload
+        description: 重新进入房间
