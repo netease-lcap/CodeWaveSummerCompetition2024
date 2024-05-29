@@ -72,7 +72,7 @@ jobs:
       - name: Setup Nodejs
         uses: actions/setup-node@v3
         with:
-          cache: "npm"
+          cache: 'npm'
           node-version: 16
 
       - name: Install Dep
@@ -97,8 +97,8 @@ jobs:
         if: ${{fromJson(env.DIFF_STATE).needJAVA}}
         uses: actions/setup-java@v4
         with:
-          java-version: "8"
-          distribution: "temurin"
+          java-version: '8'
+          distribution: 'temurin'
 
       - name: Install JDK Dependency
         if: ${{fromJson(env.DIFF_STATE).needJAVA}}
@@ -127,8 +127,11 @@ jobs:
           PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
           HEAD_BRANCH_NAME: ${{github.head_ref}}
           HEAD_REPOSITORY: ${{github.event.pull_request.head.repo.full_name}}
+          BASE_REPOSITORY: ${{github.event.pull_request.base.repo.full_name}}
           GITHUB_REPOSITORY: ${{github.repository}}
           ACTION_ID: ${{github.run_id}}
+          PR_EVENT_ACTION: ${{github.event.action}}
+          NOTIFY_CONFIG_JSON: ${{secrets.NOTIFY_CONFIG_JSON}}
 
       - name: Upload PR Result Error
         if: ${{fromJson(env.CHECK_RESULT).hasError}}
@@ -160,6 +163,7 @@ jobs:
           PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
           HEAD_BRANCH_NAME: ${{github.head_ref}}
           HEAD_REPOSITORY: ${{github.event.pull_request.head.repo.full_name}}
+          BASE_REPOSITORY: ${{github.event.pull_request.base.repo.full_name}}
           GITHUB_REPOSITORY: ${{github.repository}}
           ACTION_ID: ${{github.run_id}}
 
