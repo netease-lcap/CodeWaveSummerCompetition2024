@@ -1,0 +1,12 @@
+Plugin-Version: 1.0.0
+Library-Type: Frontend
+Metadata-File: usage.json
+packages/extension/cw_markdown@1.0.0/dist-theme/chunk-2d0c4639.1bf91f28.js: dist-theme/chunk-2d0c4639.1bf91f28.js
+packages/extension/cw_markdown@1.0.0/dist-theme/chunk-2d0c4639.1bf91f28.js.map: dist-theme/chunk-2d0c4639.1bf91f28.js.map
+packages/extension/cw_markdown@1.0.0/dist-theme/chunk-2d20e7a3.83182184.js: dist-theme/chunk-2d20e7a3.83182184.js
+packages/extension/cw_markdown@1.0.0/dist-theme/chunk-2d20e7a3.83182184.js.map: dist-theme/chunk-2d20e7a3.83182184.js.map
+packages/extension/cw_markdown@1.0.0/dist-theme/chunk-e09be454.053b1e97.js: dist-theme/chunk-e09be454.053b1e97.js
+packages/extension/cw_markdown@1.0.0/dist-theme/chunk-e09be454.053b1e97.js.map: dist-theme/chunk-e09be454.053b1e97.js.map
+packages/extension/cw_markdown@1.0.0/dist-theme/demo.html: dist-theme/demo.html
+packages/extension/cw_markdown@1.0.0/dist-theme/index.js: dist-theme/index.js
+packages/extension/cw_markdown@1.0.0/dist-theme/index.js.map: dist-theme/index.js.map

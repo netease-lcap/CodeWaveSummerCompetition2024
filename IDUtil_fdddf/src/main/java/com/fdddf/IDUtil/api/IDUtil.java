@@ -7,7 +7,6 @@ import com.fdddf.IDUtil.SnowflakeOptions;
 import com.github.yitter.contract.IdGeneratorOptions;
 import com.github.yitter.idgen.YitIdHelper;
 import com.netease.lowcode.core.annotation.NaslLogic;
-import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -19,7 +18,6 @@ import java.text.SimpleDateFormat;
 /**
  * 生成ID的工具类。
  */
-@Component
 public class IDUtil {
 
     /**

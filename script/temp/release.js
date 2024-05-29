@@ -3,6 +3,9 @@ const {
   COMPlIE_WITH_PARALLEL,
   DEPLOY_WITH_PARALLEL,
   TEMP_FILE,
+  AMC_URL,
+  AMU_URL,
+  AMC_BODY,
 } = require('./env');
 const crypto = require('crypto');
 const { complie, deploy } = require('./lifecycle');
@@ -11,6 +14,7 @@ const detect = require('./detect');
 const { execCommands, execCommand } = require('./utils/execCommand');
 const path = require('path');
 const { glob } = require('glob');
+const fetch = require('node-fetch');
 
 const processPackageWithParallelFlag = (fn, packages, isParallel) => {
   if (isParallel) {
@@ -76,8 +80,7 @@ const main = async () => {
   await processPackagesErrors(getErroredPackages());
 
   await processPackageWithParallelFlag(
-    async ({ cwd, packageInfo, nextVersion, type }) => {
-      if (type !== 'f') return;
+    async ({ cwd, packageInfo, nextVersion, packageName, type }) => {
       const [zipFile] = await glob(['target/*.zip', '*.zip'], { cwd });
       let md5 = '';
       if (zipFile) {
@@ -86,21 +89,26 @@ const main = async () => {
         hash.update(fileContent);
         md5 = hash.digest('hex');
       }
-      await fsp.writeFile(
-        path.resolve(cwd, 'package.json'),
-        JSON.stringify(
-          Object.assign(
-            {
-              ...packageInfo,
-              version: nextVersion,
-            },
-            md5 && { lastRelease: md5 },
+      if (type === 'f') {
+        await fsp.writeFile(
+          path.resolve(cwd, 'package.json'),
+          JSON.stringify(
+            Object.assign(
+              {
+                ...packageInfo,
+                version: nextVersion,
+              },
+              md5 && { lastRelease: md5 },
+            ),
+            null,
+            2,
           ),
-          null,
-          2,
-        ),
-      );
-      await execCommand(`git tag ${packageInfo.name}@${nextVersion}`);
+          'utf-8',
+        );
+      } else {
+        await fsp.writeFile(path.resolve(cwd, '.lastRelease'), md5, 'utf-8');
+      }
+      await execCommand(`git tag ${packageName}@${nextVersion}`);
     },
     getValidPackages(),
     true,
@@ -114,9 +122,33 @@ const main = async () => {
     ]);
   }
   await fsp.mkdir('dist');
+  let uploadFn = () => Promise.resolve(null);
+  if (AMC_URL && AMU_URL && AMC_BODY) {
+    // todo: 上传到资产市场，当前为测试参数，请调整为正常接口参数。
+    const { token } = await fetch(AMC_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: AMC_BODY,
+    }).then((v) => v.json());
+
+    uploadFn = async (form) => {
+      await fetch(AMU_URL, {
+        method: 'POST',
+        body: form,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ...form.getHeaders(),
+        },
+      });
+      return 'ok';
+    };
+  }
   // deploy
   await processPackageWithParallelFlag(
-    deploy,
+    (info) => deploy(info, uploadFn),
     getValidPackages(),
     DEPLOY_WITH_PARALLEL === 'true',
   );

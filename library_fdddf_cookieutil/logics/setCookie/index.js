@@ -15,7 +15,7 @@ export default (name, value, path, domain, expires, secure, sameSite)=>{
     const options = {
         path: path || "/",
         domain: domain || undefined,
-        expires: expires || undefined,
+        expires: Number(expires) || undefined,
         secure: secure || undefined,
         sameSite: sameSite || undefined
     }
