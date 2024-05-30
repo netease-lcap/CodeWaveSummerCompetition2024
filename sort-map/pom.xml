@@ -26,8 +26,10 @@
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
             <groupId>com.netease.lowcode</groupId>
-            <version>0.8.0</version>
-            <scope>provided</scope>
+            <version>0.7.0</version>
+            <optional>true</optional>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jar/nasl-metadata-collector-0.7.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
