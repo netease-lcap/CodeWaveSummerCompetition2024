@@ -51,5 +51,9 @@
   "dependencies": {
     "echarts": "^5.5.0",
     "element-resize-detector": "^1.2.4"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "97364d163ba3c6a96764f81f26179f33"
 }
