@@ -1,0 +1,39 @@
+- name: mapviewer
+  title: tilemapviewer
+  type: both
+  belong: component
+  labels: [Runtime]
+  attrs:
+    - name: value
+      type: string
+      default: http://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}
+      description: XYZ瓦片地址
+      sync: true
+      model: true
+    - name: zoomLevel
+      type: number
+      default: 3
+      description: 默认缩放等级
+      sync: true
+    - name: maxZoom
+      type: number
+      default: 18
+      description: 最大缩放等级
+    - name: minZoom
+      type: number
+      default: 3
+      description: 最小缩放等级
+    - name: tileSize
+      type: number
+      default: 256
+      description: 瓦片大小
+    - name: width
+      type: number
+      default: 0
+      description: 地图宽度, 0为100%
+    - name: height
+      type: number
+      default: 400
+      description: 地图高度, 默认400
+
+
