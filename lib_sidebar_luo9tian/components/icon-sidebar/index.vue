@@ -2,11 +2,11 @@
   <!--  <div>{{value}}</div>-->
   <div class="sidebar">
     <div class="icon-sidebar">
-      <img src="" style="width: 30px;height: 30px">
+      <img :src="iconUrl" style="width: 30px;height: 30px">
       <!--      <ul id="it">-->
       <!--      </ul>-->
       <div id="item" >
-        <icon-sidebar-item v-for="(tempitem,index) in items" :key="index" :text="tempitem.text" :url="tempitem.url" :value="index"></icon-sidebar-item>
+        <icon-sidebar-item v-for="(tempitem,index) in items" :key="index" :text="tempitem.text" :link-address="tempitem.linkAddress" :value="`${index}`"></icon-sidebar-item>
       </div>
     </div>
   </div>
@@ -27,23 +27,30 @@ export default {
       type: String,
       default: "https://img.zcool.cn/community/01e4315542ab990000019ae99f4ef0.jpg@1280w_1l_2o_100sh.jpg"
     }
+    ,items:{
+      type: Array,
+      default: () => [
+        {text: "侧边栏1",value: 0,linkAddress: "#"},{text: "侧边栏2",value: 1,linkAddress: "#"},{text: "侧边栏3",value: 2,linkAddress: "#"}
+      ]
+    }
   },
   data() {
-    return {
-      items: [
-        {
-          text: '侧边栏1',
-          url: '#'
-        },
-        {
-          text: '侧边栏2',
-          url: '#'
-        },
-        {
-          text: '侧边栏3',
-          url: '#'
-        }]
-    };
+    // return {
+    //   items: [
+    //     {
+    //       text: '侧边栏1',
+    //       linkAddress: '#'
+    //     },
+    //     {
+    //       text: '侧边栏2',
+    //       linkAddress: '#'
+    //     },
+    //     {
+    //       text: '侧边栏3',
+    //       linkAddress: '#'
+    //     }]
+    // };
+
   },
   mounted() {
     this.run();
@@ -57,6 +64,11 @@ export default {
     },
     iconUrl() {
       if (this.iconUrl.length > 0) {
+        this.run();
+      }
+    },
+    items(){
+      if(this.items){
         this.run();
       }
     }
@@ -142,7 +154,7 @@ export default {
         let img = document.getElementsByTagName('img')[0];
         img.style.width = "30px";
         img.style.height = "30px";
-        img.src = this.iconUrl;
+        // img.src = this.iconUrl;
         img.style.visibility = 'visible';
         let sidebar = document.getElementById("sidebar");
         img.addEventListener("click", () => {

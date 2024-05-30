@@ -12,3 +12,9 @@
       type: string
       default: https://img.zcool.cn/community/01e4315542ab990000019ae99f4ef0.jpg@1280w_1l_2o_100sh.jpg
       description: 选择侧边栏的图标地址
+    - name : items
+      title: 数据
+      type: Array
+      default: [{text: "侧边栏1",value: 0,linkAddress: "#"},{text: "侧边栏2",value: 1,linkAddress: "#"},{text: "侧边栏3",value: 2,linkAddress: "#"}]
+      description: "侧边栏数据源如：[{ text: '侧边栏', value: ‘1' }]"
+      sync: true
