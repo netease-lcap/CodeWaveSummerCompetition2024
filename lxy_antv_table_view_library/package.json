@@ -50,5 +50,9 @@
   },
   "dependencies": {
     "@antv/s2": "^1.55.5"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "a82f774db9c4a5cfbcfda0bb455d9392"
 }
