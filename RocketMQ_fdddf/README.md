@@ -81,6 +81,98 @@ RocketMQ依赖库，提供发送消息方法和订阅消费消息方法，支持
 * boolean
 
 
+### sendTopicMessage
+
+发送普通消息
+
+入参：
+* topic String 主题
+* msg String 消息体
+* group String 组
+
+出参：
+* boolean
+
+### syncSendTopicMessage
+
+发送同步消息
+
+入参：
+* topic String 主题
+* msg String 消息体
+* group String 组
+
+出参：
+* boolean
+
+### asyncSendTopicMessage
+
+发送异步消息
+
+入参：
+* topic String 主题
+* msg String 消息体
+* callback Function<Boolean, Boolean> 回调函数
+* group String 组
+
+出参：
+* boolean
+
+### sendOneWayTopicMessage
+
+发送单向消息
+
+入参：
+* topic String 主题
+* msg String 消息体
+* group String 组
+
+出参：
+* boolean
+
+### syncSendTopicMessageWithTag
+
+发送携带 tag 的消息（过滤消息）
+
+入参：
+* topic String 主题
+* tag String 标签
+* msg String 消息体
+* group String 组
+
+出参：
+* boolean
+
+### syncSendTopicDelay
+
+同步发送延时消息
+
+入参：
+* topic String 主题
+* msg String 消息体
+* timeout Long 超时时间
+* delayLevel Integer 延时等级（1-18）
+* group String 组
+
+出参：
+* boolean
+
+### asyncSendTopicDelay
+
+异步发送延时消息
+
+入参：
+* topic String 主题
+* msg String 消息体
+* timeout Long 超时时间
+* delayLevel Integer 延时等级（1-18）
+* callback Function<Boolean, Boolean> 回调函数
+* group String 组
+
+出参：
+* boolean
+
+
 ## 使用步骤说明
 
 1.  应用引用依赖库
