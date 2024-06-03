@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LoggingAspect {
 
     public static final String CONTROLLER = "Controller";
-    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     //true开启打印日志、false关闭打印日志
     @Value("${loggingEnabled}")

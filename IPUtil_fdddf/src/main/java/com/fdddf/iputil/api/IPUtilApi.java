@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class IPUtilApi {
 
-    private static final Logger logger = LoggerFactory.getLogger(IPUtilApi.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     /**
      * 获取当前主机的名称

@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
  **/
 @NaslConnector(connectorKind = "iot-ali-conn")
 public class IotAliConnector {
-    private static final Logger log = LoggerFactory.getLogger(IotAliConnector.class);
+    private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     private String accessKey;
     private String accessKeySecret;
     private String instanceId;
