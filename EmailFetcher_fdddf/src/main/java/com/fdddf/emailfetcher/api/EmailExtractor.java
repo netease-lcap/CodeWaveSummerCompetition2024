@@ -25,7 +25,7 @@ public class EmailExtractor {
      */
     @Resource
     private EmailConfig cfg;
-    private static final Logger logger = LoggerFactory.getLogger(EmailExtractor.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public void setCfg(EmailConfig cfg) {

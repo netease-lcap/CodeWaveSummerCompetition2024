@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 public class JsonUtilApi {
 
-    private static final Logger logger = LoggerFactory.getLogger(JsonUtilApi.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     /**
      * 将XML格式的字符串转换为JSON格式的字符串
