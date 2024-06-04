@@ -52,5 +52,9 @@
   },
   "dependencies": {
     "vue-lottie": "^0.2.1"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "917fe813f46754c0b39e0f36c33e7b1b"
 }

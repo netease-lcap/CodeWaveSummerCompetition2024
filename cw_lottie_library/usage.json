@@ -5,7 +5,7 @@
     "specVersion": "1.0.0",
     "type": "module",
     "subType": "extension",
-    "version": "1.0.9",
+    "version": "1.0.8",
     "frontends": [
         {
             "concept": "FrontendLibrary",
@@ -236,7 +236,7 @@
     "summary": {
         "name": "cw_lottie_library",
         "title": "特效组件库",
-        "version": "1.0.9",
+        "version": "1.0.8",
         "description": "",
         "frontends": [
             {
