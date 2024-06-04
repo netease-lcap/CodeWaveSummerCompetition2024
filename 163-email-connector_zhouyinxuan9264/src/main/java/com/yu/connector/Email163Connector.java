@@ -93,32 +93,27 @@ public class Email163Connector {
 
     public static void main(String[] args) throws MessagingException {
 
-        String account = "18379459130@163.com";
-        String authCode = "RGZULRBIEEETFCOP";
-        String smtpHost = null, imapHost = null;
+        String account = "your_email@163.com";
+        String authCode = "your_auth_code";
+         String smtpHost = "smtphz.qiye.163.com";
+         String imapHost = "imaphz.qiye.163.com";
 
-        //String account = "weiqing.yu@yeexun.com.cn";
-        //String authCode = "72cVbwCZpEdzUJNC";
-        //String smtpHost = "smtphz.qiye.163.com";
-        //String imapHost = "imaphz.qiye.163.com";
 
         Email163Connector emailConnector = new Email163Connector().init(account, authCode, smtpHost, smtpHost);
 
         Boolean isConnect = emailConnector.connectTest(account, authCode, smtpHost, imapHost);
         System.out.println("是否连接成功：" + isConnect);
         if (isConnect) {
-            Boolean isSuccess = emailConnector.sendEmail("1915493246@qq.com", "低代码", "我是低代码发送的邮件正文", null);
-            Boolean isSuccess2 = emailConnector.sendEmailWithFile("1915493246@qq.com","低代码", "我是低代码发送的邮件正文", null, new ArrayList<String>() {{
-                add("https://dev-mqttconn-ywq.app.codewave.163.com:443/upload/app/苟在妖武乱世修仙_20240419190143690.jpg");
-                add("https://dev-mqttconn-ywq.app.codewave.163.com:443/upload/app/ttt_20240419192341370.jpg");
+            Boolean isSuccess = emailConnector.sendEmail("recipient@example.com", "Subject", "This is the email body sent via low code", null);
+            Boolean isSuccess2 = emailConnector.sendEmailWithFile("recipient@example.com","Subject", "This is the email body sent via low code", null, new ArrayList<String>() {{
+                add("https://example.com/image1.jpg");
+                add("https://example.com/image2.jpg");
             }});
             //System.out.println("是否发送成功：" + isSuccess);
             for (MailBody mailBody : emailConnector.getEmail(3)) {
                 System.out.println(mailBody);
             }
         }
-
-
     }
 
     /**
@@ -150,6 +145,7 @@ public class Email163Connector {
             IMAPStore store = (IMAPStore) this.session.getStore("imap");
             HashMap<String, String> clientParams = new HashMap<>();
             //带上IMAP ID信息，由key和value组成，例如name，version，vendor，support-email等。
+            // 这个value的值随便写就行，否则报错会报一个如下的异常：A3 NO SELECT Unsafe Login. Please contact kefu@188.com for help异常处理
             clientParams.put("name", "myname");
             clientParams.put("version", "2.0.0");
             clientParams.put("vendor", "myclient");

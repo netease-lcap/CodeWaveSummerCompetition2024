@@ -87,15 +87,15 @@ public class QQEmailConnector {
 
     public static void main(String[] args) {
 
-        String account = "2794279985@qq.com";
-        String authCode = "nmceguvovjxzdgaf";
+        String account = "your_qq_email@qq.com";
+        String authCode = "your_auth_code";
         QQEmailConnector emailConnector = new QQEmailConnector().init(account, authCode);
         System.out.println(emailConnector.connectTest(account, authCode));
-        emailConnector.sendEmailWithFile("1915493246@qq.com", "网易低代码测试QQ邮箱发送", "傻得得", null, new ArrayList<String>() {{
-            add("https://dev-mqttconn-ywq.app.codewave.163.com:443/upload/app/苟在妖武乱世修仙_20240419190143690.jpg");
-            add("https://dev-mqttconn-ywq.app.codewave.163.com:443/upload/app/ttt_20240419192341370.jpg");
+        emailConnector.sendEmailWithFile("recipient@qq.com", "Subject", "Email body", null, new ArrayList<String>() {{
+            add("https://example.com/image1.jpg");
+            add("https://example.com/image2.jpg");
         }});
-        emailConnector.sendEmail("1915493246@qq.com", "网易低代码测试QQ邮箱发送", "傻得得", null);
+        emailConnector.sendEmail("recipient@qq.com", "Subject", "Email body", null);
         for (MailBody mailBody : emailConnector.getEmail(5)) {
             System.out.println(mailBody);
         }
