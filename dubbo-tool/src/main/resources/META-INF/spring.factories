@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.netease.lowcode.dubbo.spring.DubboStarterSpringEnvironmentConfiguration
+org.springframework.boot.env.EnvironmentPostProcessor=\
+        com.netease.lowcode.dubbo.dubbo.DubboStarterEnvironmentMapperPostProcessor
