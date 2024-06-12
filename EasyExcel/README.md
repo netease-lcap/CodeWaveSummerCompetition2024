@@ -199,6 +199,6 @@
 | trace    | String  | 异常信息    |
 | filePath | String  | 相对下载路径  |
 | url      | String  | 绝对下载路径  |
-| cost     | Double  | 处理耗时,s  |
+| cost     | Double  | 处理耗时,s  |  
 | size     | Double  | 文件大小,字节 |
 | total    | Long    | 处理条数    |
