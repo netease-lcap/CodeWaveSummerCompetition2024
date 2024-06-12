@@ -19,9 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 打包时需要注释掉Test的注解
- */
 @SpringBootTest(classes = DubboStarterSpringEnvironmentConfiguration.class)
 @RunWith(SpringRunner.class)
 public class CheckTest1 {
