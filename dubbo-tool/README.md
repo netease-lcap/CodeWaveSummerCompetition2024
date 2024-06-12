@@ -15,8 +15,8 @@ IDE右上角应用配置中的dubbo信息是由本依赖库spring-boot-starter-d
 1. 在pom中引入主数据dubbo share包和相关的工具包
 2. @DubboReference引入dubbo服务接口
 3. 调用dubbo方法
-示例代码git仓库：https://github.com/netease-lcap/libraryDemo
-二次开发指导文档：https://docs.popo.netease.com/team/pc/0u6nqau4/pageDetail/cf78bb11a5c94c769bbc196ec640889b
+
+二次开发指导文档：https://community.codewave.163.com/CommunityParent/fileIndex?filePath=40.%E6%89%A9%E5%B1%95%E4%B8%8E%E9%9B%86%E6%88%90%2F10.%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F%2F30.%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%2F10.%E4%BE%9D%E8%B5%96%E5%BA%93%E5%BC%80%E5%8F%91%2F30.%E4%BE%9D%E8%B5%96%E5%BA%93%E5%BC%80%E5%8F%91%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B-Dubbo%E4%B8%9A%E5%8A%A1%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91%E6%A1%88%E4%BE%8B.md
 
 ### 泛化调用
 直接在IDE中调用本依赖库的com.netease.lowcode.dubbo.dubbo.generic.DubboGenericUtil.invoke逻辑。

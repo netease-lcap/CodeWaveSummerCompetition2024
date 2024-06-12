@@ -18,7 +18,7 @@ import java.util.List;
 
 @Component
 public class DubboGenericUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DubboGenericUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     @Resource
     private List<ApplicationConfig> applicationConfigs;
