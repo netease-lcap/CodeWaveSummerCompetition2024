@@ -1,0 +1,8 @@
+extensions:
+  redis_template_tool:
+    custom:
+      redisHost: 127.0.0.1
+      redisPort: 8379
+      redisPassword: xxx
+      redisDatabase: 1
+
