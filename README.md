@@ -75,6 +75,9 @@ lcap_library_nexus是一个低代码平台依赖库开源仓库，用于存放�
 | 全局水印依赖库 | 前端   | cw_watermark   | 提供页面全局水印的能力        | 暂无                                                                                                                                |
 | redis依赖库 | 后端   | redis-template-tool   |支持各种模式的redis集群         | https://community.codewave.163.com/CommunityParent/CodeWareMarketLibraryDetail?id=2849760328948736&isLatest=false&isClassics=false
 | dubbo依赖库 | 后端   | dubbo-tool   | 用于dubbo服务发现         | https://community.codewave.163.com/CommunityParent/CodeWareMarketLibraryDetail?id=2811501029676800&isLatest=false&isClassics=false
+|EasyExcel导出数据依赖库| 后端   |  EasyExcel |支持各种模式的redis集群         | 暂无
+|map有序化依赖库 | 后端   | sort-map |1. CodeWave当前支持的map都是无序的hashmap，这导致有些业务场景无法满足。所以这里提供了一个转为有序map的依赖库。2. 当前支持的Json都是无序的，这里提供了一个调整json顺序的方法，满足调用第三方客户接口的json顺序要求。         | https://community.codewave.163.com/CommunityParent/CodeWareMarketLibraryDetail?id=2849760328948736&isLatest=false&isClassics=false
+|Freemaker依赖库| 后端   |  freemarker-tool |支持模板引擎         | https://community.codewave.163.com/CommunityParent/CodeWareMarketLibraryDetail?id=2884580661931520&isLatest=false&isClassics=false
 
 
 
