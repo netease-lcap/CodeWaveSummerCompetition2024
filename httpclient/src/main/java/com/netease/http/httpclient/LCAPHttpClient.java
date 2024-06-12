@@ -1,10 +1,7 @@
 package com.netease.http.httpclient;
 
 import com.alibaba.fastjson.JSONObject;
-import com.netease.http.dto.DtoConvert;
-import com.netease.http.dto.RequestParam;
-import com.netease.http.dto.RequestParamAllBodyType;
-import com.netease.http.dto.RequestParamAllBodyTypeInner;
+import com.netease.http.dto.*;
 import com.netease.http.util.NosUtil;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.core.annotation.Required;
@@ -22,6 +19,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -41,16 +39,17 @@ import java.util.Map;
 @EnableRetry
 public class LCAPHttpClient {
     private static final Logger logger = LoggerFactory.getLogger(LCAPHttpClient.class);
- 
+
     @Autowired
     private HttpClientService httpClientService;
     @Autowired
     @Qualifier("restTemplatePrimary")
     private RestTemplate restTemplatePrimary;
-    
+
     @Autowired
     @Qualifier("restTemplateIgnoreCrt")
     private RestTemplate restTemplateIgnoreCrt;
+
     /**
      * http/https调用（非form使用）
      *
@@ -62,20 +61,60 @@ public class LCAPHttpClient {
      * @throws URISyntaxException
      */
     @NaslLogic
+    @Deprecated
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchange(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) {
-        RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
-        requestParam.setBody(body);
-        //填充requestParam参数
-        requestParam.setUrl(url);
-        requestParam.setHttpMethod(httpMethod);
-        requestParam.setHeader(header);
-        ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplatePrimary, String.class);
-        if (exchange.getStatusCode() == HttpStatus.OK) {
+    public String exchange(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) throws IllegalArgumentException {
+        try {
+            RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
+            requestParam.setBody(body);
+            //填充requestParam参数
+            requestParam.setUrl(url);
+            requestParam.setHttpMethod(httpMethod);
+            requestParam.setHeader(header);
+            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplatePrimary, String.class);
+            if (exchange.getStatusCode() == HttpStatus.OK) {
+                return exchange.getBody();
+            } else {
+                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+            }
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getResponseBodyAsString());
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+
+    /**
+     * http/https调用（非form使用，异常时返回http错误码）
+     *
+     * @param url
+     * @param httpMethod
+     * @param header
+     * @param body
+     * @return
+     * @throws URISyntaxException
+     */
+    @NaslLogic
+    @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
+    public String exchangeV2(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) throws IllegalArgumentException {
+        try {
+            RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
+            requestParam.setBody(body);
+            //填充requestParam参数
+            requestParam.setUrl(url);
+            requestParam.setHttpMethod(httpMethod);
+            requestParam.setHeader(header);
+            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplatePrimary, String.class);
             return exchange.getBody();
-        } else {
-            logger.error("请求http失败,返回：{}", JSONObject.toJSONString(exchange));
-            return null;
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            return e.getResponseBodyAsString();
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -89,16 +128,28 @@ public class LCAPHttpClient {
      * @return
      */
     @NaslLogic
-    public String downloadFileUploadNos(String fileUrl, String fileName, Map<String, String> header) {
-        RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
-        requestParam.setUrl(fileUrl);
-        requestParam.setHeader(header);
-        requestParam.setHttpMethod(HttpMethod.GET.name());
-        File file = httpClientService.downloadFile(requestParam, restTemplatePrimary, fileName);
-        String key = "/extension_" + file.getName();
-        NosUtil.put(key, file);
-        file.delete();
-        return NosUtil.generateUrl(key);
+    public String downloadFileUploadNos(String fileUrl, String fileName, Map<String, String> header) throws IllegalArgumentException {
+        File file = null;
+        try {
+            RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
+            requestParam.setUrl(fileUrl);
+            requestParam.setHeader(header);
+            requestParam.setHttpMethod(HttpMethod.GET.name());
+            file = httpClientService.downloadFile(requestParam, restTemplatePrimary, fileName);
+            String key = "/extension_" + file.getName();
+            NosUtil.put(key, file);
+            return NosUtil.generateUrl(key);
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getResponseBodyAsString());
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getMessage());
+        } finally {
+            if (file != null && file.exists()) {
+                file.delete();
+            }
+        }
     }
 
     /**
@@ -110,34 +161,63 @@ public class LCAPHttpClient {
      * @return
      */
     @NaslLogic
-    public String uploadNosExchange(String fileUrl, String requestUrl, RequestParam requestParam) {
-        RequestParamAllBodyTypeInner requestParamGetFile = new RequestParamAllBodyTypeInner();
-        URL url = null;
+    public String uploadNosExchange(String fileUrl, String requestUrl, RequestParam requestParam) throws IllegalArgumentException {
+        File file = null;
         try {
-            url = new URL(requestUrl);
-        } catch (MalformedURLException e) {
-            logger.error("requestUrl必须是一个url", e);
-        }
-        requestParamGetFile.setUrl(url.getProtocol() + "://" + url.getHost() + fileUrl);
-        requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
-        File file = httpClientService.downloadFile(requestParamGetFile, restTemplatePrimary, null);
-        RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        requestParam.getBody().forEach(body::add);
-        body.add("file", new FileSystemResource(file));
-        requestParamInner.setBody(body);
-        requestParamInner.setHttpMethod(requestParam.getHttpMethod());
-        requestParamInner.setUrl(requestParam.getUrl());
-        requestParamInner.setHeader(requestParam.getHeader());
-        ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParamInner, restTemplatePrimary, String.class);
-        if (exchange.getStatusCode() == HttpStatus.OK) {
-            return exchange.getBody();
-        } else {
-            logger.error("请求http失败,返回：{}", JSONObject.toJSONString(exchange));
-            return null;
+            RequestParamAllBodyTypeInner requestParamGetFile = new RequestParamAllBodyTypeInner();
+            URL url = null;
+            try {
+                url = new URL(requestUrl);
+            } catch (MalformedURLException e) {
+                logger.error("requestUrl必须是一个url", e);
+            }
+            requestParamGetFile.setUrl(url.getProtocol() + "://" + url.getHost() + fileUrl);
+            requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
+            file = httpClientService.downloadFile(requestParamGetFile, restTemplatePrimary, null);
+            RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            requestParam.getBody().forEach(body::add);
+            body.add("file", new FileSystemResource(file));
+            requestParamInner.setBody(body);
+            requestParamInner.setHttpMethod(requestParam.getHttpMethod());
+            requestParamInner.setUrl(requestParam.getUrl());
+            requestParamInner.setHeader(requestParam.getHeader());
+            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParamInner, restTemplatePrimary, String.class);
+            file.delete();
+            if (exchange.getStatusCode() == HttpStatus.OK) {
+                return exchange.getBody();
+            } else {
+                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+            }
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getResponseBodyAsString());
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getMessage());
+        } finally {
+            if (file != null && file.exists()) {
+                file.delete();
+            }
         }
     }
 
+    // TODO: 2024/5/17 该方式平台不支持，已反馈平台，待平台支持后调整
+//    @NaslLogic
+    public String test(Integer a) throws HttpClientRuntimeException {
+        if (a == 1) {
+            throw new HttpClientRuntimeException("test errorKey1");
+        } else if (a == 2) {
+            throw new HttpClientRuntimeException(203, "test errorKey2");
+        } else if (a == 3) {
+            throw new HttpClientRuntimeException(203, "test errorKey3", new Throwable("test Throwable3"));
+        } else if (a == 4) {
+            throw new HttpClientRuntimeException("test errorKey4", new Throwable("test Throwable4"));
+        } else if (a == 5) {
+            throw new HttpClientRuntimeException(203, new Throwable("test Throwable5"));
+        }
+        return "test";
+    }
 
     /**
      * 证书校验https请求（非form使用）
@@ -147,25 +227,32 @@ public class LCAPHttpClient {
      */
     @NaslLogic(enhance = false)
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchangeCrt(RequestParam requestParam) {
-        RestTemplate restTemplateFinal = restTemplatePrimary;
+    public String exchangeCrt(RequestParam requestParam) throws IllegalArgumentException {
         try {
-            if (requestParam.getIsIgnoreCrt() == null) {
-                requestParam.setIsIgnoreCrt(false);
+            RestTemplate restTemplateFinal = restTemplatePrimary;
+            try {
+                if (requestParam.getIsIgnoreCrt() == null) {
+                    requestParam.setIsIgnoreCrt(false);
+                }
+                if (requestParam.getIsIgnoreCrt()) {
+                    restTemplateFinal = restTemplateIgnoreCrt;
+                }
+            } catch (Exception e) {
+                logger.error("", e);
             }
-            if (requestParam.getIsIgnoreCrt()) {
-                restTemplateFinal = restTemplateIgnoreCrt;
+            ResponseEntity<String> exchange = httpClientService
+                    .exchangeInner(DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam), restTemplateFinal, String.class);
+            if (exchange.getStatusCode() == HttpStatus.OK) {
+                return exchange.getBody();
+            } else {
+                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
             }
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
-        }
-        ResponseEntity<String> exchange = httpClientService
-                .exchangeInner(DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam), restTemplateFinal, String.class);
-        if (exchange.getStatusCode() == HttpStatus.OK) {
-            return exchange.getBody();
-        } else {
-            logger.error("请求http失败,返回：{}", JSONObject.toJSONString(exchange));
-            return null;
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -178,25 +265,32 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchangeAllBodyType(RequestParamAllBodyType requestParam) {
-        RestTemplate restTemplateFinal = restTemplatePrimary;
+    public String exchangeAllBodyType(RequestParamAllBodyType requestParam) throws IllegalArgumentException {
         try {
-            if (requestParam.getIsIgnoreCrt() == null) {
-                requestParam.setIsIgnoreCrt(false);
+            RestTemplate restTemplateFinal = restTemplatePrimary;
+            try {
+                if (requestParam.getIsIgnoreCrt() == null) {
+                    requestParam.setIsIgnoreCrt(false);
+                }
+                if (requestParam.getIsIgnoreCrt()) {
+                    restTemplateFinal = restTemplateIgnoreCrt;
+                }
+            } catch (Exception e) {
+                logger.info("", e);
             }
-            if (requestParam.getIsIgnoreCrt()) {
-                restTemplateFinal = restTemplateIgnoreCrt;
+            ResponseEntity<String> exchange = httpClientService
+                    .exchangeInner(DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam), restTemplateFinal, String.class);
+            if (exchange.getStatusCode() == HttpStatus.OK) {
+                return exchange.getBody();
+            } else {
+                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
             }
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
-        }
-        ResponseEntity<String> exchange = httpClientService
-                .exchangeInner(DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam), restTemplateFinal, String.class);
-        if (exchange.getStatusCode() == HttpStatus.OK) {
-            return exchange.getBody();
-        } else {
-            logger.error("请求http失败,返回：{}", JSONObject.toJSONString(exchange));
-            return null;
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -212,19 +306,26 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchangeWithoutUriEncode(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) {
-        RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
-        requestParam.setBody(body);
-        //填充requestParam参数
-        requestParam.setUrl(url);
-        requestParam.setHttpMethod(httpMethod);
-        requestParam.setHeader(header);
-        ResponseEntity<String> exchange = httpClientService.exchangeWithoutUriEncode(requestParam, restTemplatePrimary, String.class);
-        if (exchange.getStatusCode() == HttpStatus.OK) {
-            return exchange.getBody();
-        } else {
-            logger.error("请求http失败,返回：{}", JSONObject.toJSONString(exchange));
-            return null;
+    public String exchangeWithoutUriEncode(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) throws IllegalArgumentException {
+        try {
+            RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
+            requestParam.setBody(body);
+            //填充requestParam参数
+            requestParam.setUrl(url);
+            requestParam.setHttpMethod(httpMethod);
+            requestParam.setHeader(header);
+            ResponseEntity<String> exchange = httpClientService.exchangeWithoutUriEncode(requestParam, restTemplatePrimary, String.class);
+            if (exchange.getStatusCode() == HttpStatus.OK) {
+                return exchange.getBody();
+            } else {
+                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+            }
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getResponseBodyAsString());
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 }
