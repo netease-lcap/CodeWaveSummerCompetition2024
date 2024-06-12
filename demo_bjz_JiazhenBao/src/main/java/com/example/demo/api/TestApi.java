@@ -10,16 +10,13 @@ public class TestApi {
 
     /**
      * 示例逻辑：相加
-     *
      * @param a
      * @param b
      * @return
      */
     @NaslLogic
-    public static Integer add(Integer a, Integer b) {
-        String pwd = "HOGAAIUNNWHAHJJWUQYR";
-        Sting aa="AKIAYVP4CIPPERUVIFXG";
-        return a + b;
+    public  static  Integer add(Integer a,Integer b) {
+        return a+b;
     }
 
 }
