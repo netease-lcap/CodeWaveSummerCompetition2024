@@ -3,10 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.9.RELEASE</version><!--与当前制品应用默认版本统一-->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
     <groupId>com.codewave</groupId>
     <artifactId>jsonUtil2</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -39,24 +45,13 @@
             <version>1.7.30</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.19.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.19.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -65,9 +60,11 @@
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.3.0</version>
+                <version>1.4.1</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
+                    <rewrittenGroupId>com.netease.lib</rewrittenGroupId>
+                    <rewriteVersion>false</rewriteVersion>
                 </configuration>
                 <executions>
                     <execution>

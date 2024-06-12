@@ -1,12 +1,15 @@
 package com.codewave.jsons.api;
 
-import com.alibaba.fastjson.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONPath;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import org.json.XML;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class JsonUtilApi {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(JsonUtilApi.class);
+    private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
 
     /**
@@ -62,7 +65,8 @@ public class JsonUtilApi {
         }
         try {
             JSON.parseObject(content);
-        } catch (Exception e){
+        } catch (Exception e) {
+            log.error("The current incoming JSON content does not conform to JSON format,json:{}", content);
             return false;
         }
         return true;

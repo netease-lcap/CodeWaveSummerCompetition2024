@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>com.wjm</groupId>
+    <artifactId>lunar-convert</artifactId>
+    <version>0.0.4</version>
+    <name>阴历日历依赖库</name>
+    <description>提供了一系列阴历阳历转换的方法</description>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <nasl.ide.version>3.3</nasl.ide.version>
+    </properties>
+    <dependencies>
+        <!--本案例是本地系统引入nasl-metadata-collector-0.8.0.jar的方式。
+        若把nasl-metadata-collector-0.8.0.jar安装到自己的maven仓库，
+        注意修改artifactId和groupId的情况下，不要使用<scope>system</scope>，会在发布时造成依赖中断。
+        不修改artifactId和groupId的情况下，nasl-metadata-maven-plugin会做特殊处理-->
+        <dependency>
+            <artifactId>nasl-metadata-collector</artifactId>
+            <groupId>com.netease.lowcode</groupId>
+            <version>0.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+<!--            <scope>provided</scope>-->
+             <version>1.7.30</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.7.18</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.6tail</groupId>
+            <artifactId>lunar</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.netease.lowcode</groupId>
+                <artifactId>nasl-metadata-maven-plugin</artifactId>
+                <version>1.4.1</version>
+                <configuration>
+                    <jarWithDependencies>false</jarWithDependencies>
+                    <rewrittenGroupId>com.netease.lib</rewrittenGroupId>
+                    <rewriteVersion>false</rewriteVersion>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>archive</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

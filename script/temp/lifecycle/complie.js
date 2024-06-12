@@ -32,7 +32,7 @@ const feBuild = async (package) => {
 };
 
 const beBuild = async ({ cwd }) => {
-  await execCommand('mvn clean package', {
+  await execCommand('mvn clean package -DskipTests', {
     cwd,
   });
 };

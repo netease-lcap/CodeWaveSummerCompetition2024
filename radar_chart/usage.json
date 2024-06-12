@@ -1,0 +1,342 @@
+{
+    "name": "radar_chart",
+    "title": "雷达图",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "1.0.2",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "radar-chart",
+                    "title": "雷达图",
+                    "category": "radar_chart(雷达图)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<radar-chart></radar-chart>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "titleText",
+                            "title": "雷达图标题内容",
+                            "type": "string",
+                            "default": "Basic Radar Chart",
+                            "description": "雷达图标题内容"
+                        },
+                        {
+                            "name": "titleShow",
+                            "title": "标题是否显示",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "标题是否显示"
+                        },
+                        {
+                            "name": "titleVerticalPosition",
+                            "type": "string",
+                            "title": "标题垂直位置",
+                            "options": [
+                                {
+                                    "value": "top",
+                                    "title": "标题垂直位置位于图表内容的顶部(top)"
+                                },
+                                {
+                                    "value": "middle",
+                                    "title": "标题垂直位置位于图表内容的垂直中心(middle)"
+                                },
+                                {
+                                    "value": "bottom",
+                                    "title": "标题垂直位置位于图表内容的底部(bottom)"
+                                }
+                            ],
+                            "default": "top",
+                            "description": "标题垂直位置，可以是'top', 'middle', 'bottom' 或者具体的像素值如 '50px'"
+                        },
+                        {
+                            "name": "titleFontSize",
+                            "title": "标题字体大小",
+                            "type": "number",
+                            "default": 16,
+                            "description": "标题字体大小"
+                        },
+                        {
+                            "name": "titleFontColor",
+                            "title": "标题字体颜色",
+                            "type": "string",
+                            "default": "#333",
+                            "description": "标题字体颜色,例如：#333"
+                        },
+                        {
+                            "name": "titleHorizontalPosition",
+                            "type": "string",
+                            "title": "标题水平位置",
+                            "options": [
+                                {
+                                    "value": "left",
+                                    "title": "标题水平位置位于图表内容左边(left)"
+                                },
+                                {
+                                    "value": "center",
+                                    "title": "标题水平位置位于图表内容中间(center)"
+                                },
+                                {
+                                    "value": "right",
+                                    "title": "标题水平位置位于图表右边(right)"
+                                }
+                            ],
+                            "default": "left",
+                            "description": "标题水平位置，可以是 'left', 'center', 'right' 或者具体的百分比如 '50%'"
+                        },
+                        {
+                            "name": "titleLink",
+                            "title": "标题是否可以跳转",
+                            "type": "boolean",
+                            "default": false,
+                            "description": "点击标题跳转指定链接"
+                        },
+                        {
+                            "name": "titleHref",
+                            "title": "跳转地址",
+                            "type": "string",
+                            "default": "https://sf.163.com",
+                            "description": "点击标题后的跳转地址"
+                        },
+                        {
+                            "name": "titletarget",
+                            "title": "标题是否显示",
+                            "options": [
+                                {
+                                    "value": "self",
+                                    "title": "父窗口打开(self)"
+                                },
+                                {
+                                    "value": "blank",
+                                    "title": "新的窗口打开(blank)"
+                                }
+                            ],
+                            "type": "string",
+                            "default": "blank",
+                            "description": "链接打开方式 父窗口打开 'self' 或 新的窗口打开 'blank'。"
+                        },
+                        {
+                            "name": "tooltipShow",
+                            "title": "提示框是否显示",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "提示框是否显示"
+                        },
+                        {
+                            "name": "legendShow",
+                            "title": "图例是否显示",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "图例是否显示"
+                        },
+                        {
+                            "name": "legendTop",
+                            "type": "string",
+                            "title": "图例垂直位置",
+                            "options": [
+                                {
+                                    "value": "top",
+                                    "title": "图例垂直位置位于图表内容的顶部(top)"
+                                },
+                                {
+                                    "value": "middle",
+                                    "title": "图例垂直位置位于图表内容的垂直中心(middle)"
+                                },
+                                {
+                                    "value": "bottom",
+                                    "title": "图例垂直位置位于图表内容的底部(bottom)"
+                                }
+                            ],
+                            "default": "bottom",
+                            "description": "图例垂直位置，可以是'top', 'middle', 'bottom' 或者具体的像素值如 '50px'"
+                        },
+                        {
+                            "name": "titleHorizontalPosition",
+                            "type": "string",
+                            "title": "图例水平位置",
+                            "options": [
+                                {
+                                    "value": "left",
+                                    "title": "图例水平位置位于图表内容左边(left)"
+                                },
+                                {
+                                    "value": "center",
+                                    "title": "图例水平位置位于图表内容中间(center)"
+                                },
+                                {
+                                    "value": "right",
+                                    "title": "图例水平位置位于图表右边(right)"
+                                }
+                            ],
+                            "default": "center",
+                            "description": "图例水平位置，可以是 'left', 'center', 'right' 或者具体的百分比如 '50%'"
+                        },
+                        {
+                            "name": "radarShape",
+                            "type": "string",
+                            "title": "雷达图轮廓形状",
+                            "options": [
+                                {
+                                    "value": "circle",
+                                    "title": "圆形(circle)"
+                                },
+                                {
+                                    "value": "polygon",
+                                    "title": "多边形(polygon)"
+                                }
+                            ],
+                            "default": "polygon",
+                            "description": "雷达图的轮廓形状，可以是 'circle'（圆形）, 'polygon'（多边形"
+                        },
+                        {
+                            "name": "indicators",
+                            "title": "雷达图指标列表",
+                            "type": "array",
+                            "default": [
+                                {
+                                    "name": "Sales",
+                                    "max": 6500
+                                },
+                                {
+                                    "name": "Administration",
+                                    "max": 16000
+                                },
+                                {
+                                    "name": "Information Technology",
+                                    "max": 30000
+                                },
+                                {
+                                    "name": "Customer Support",
+                                    "max": 38000
+                                },
+                                {
+                                    "name": "Development",
+                                    "max": 52000
+                                },
+                                {
+                                    "name": "Marketing",
+                                    "max": 25000
+                                }
+                            ],
+                            "description": "雷达图指标列表，用于定义雷达图中的各个指标。每个指标由一个对象表示，对象包含两个属性： name: 指标的名称，用于标识雷达图上的一个轴。 max`: 该指标的最大值，用于确定雷达图上该轴的尺度。"
+                        },
+                        {
+                            "name": "seriesSymbol",
+                            "type": "string",
+                            "title": "系列拐点图形",
+                            "options": [
+                                {
+                                    "value": "circle",
+                                    "title": "圆形(circle)"
+                                },
+                                {
+                                    "value": "rect",
+                                    "title": "矩形(rect)"
+                                },
+                                {
+                                    "value": "roundRect",
+                                    "title": "圆角矩形(roundRect)"
+                                },
+                                {
+                                    "value": "triangle",
+                                    "title": "三角形(triangle)"
+                                },
+                                {
+                                    "value": "diamond",
+                                    "title": "菱形(diamond)"
+                                },
+                                {
+                                    "value": "pin",
+                                    "title": "指针形状(pin)"
+                                },
+                                {
+                                    "value": "arrow",
+                                    "title": "箭头形状(arrow)"
+                                },
+                                {
+                                    "value": "none",
+                                    "title": "无图形(none)"
+                                }
+                            ],
+                            "default": "circle",
+                            "description": "系列配置中，用于设置系列拐点的图形，可选项包括圆形、矩形、圆角矩形、三角形、菱形、指针形状、箭头形状和无图形。"
+                        },
+                        {
+                            "name": "seriesSymbolSize",
+                            "title": "系列拐点的大小",
+                            "type": "number",
+                            "default": 16,
+                            "description": "系列拐点的大小"
+                        },
+                        {
+                            "name": "dataSeries",
+                            "title": "雷达图系列列表",
+                            "type": "array",
+                            "default": [
+                                {
+                                    "name": "Allocated Budget",
+                                    "value": [
+                                        4200,
+                                        3000,
+                                        20000,
+                                        35000,
+                                        50000,
+                                        18000
+                                    ]
+                                },
+                                {
+                                    "name": "Actual Spending",
+                                    "value": [
+                                        5000,
+                                        14000,
+                                        28000,
+                                        26000,
+                                        42000,
+                                        21000
+                                    ]
+                                }
+                            ],
+                            "description": "雷达图系列列表，其中每个系列由一个对象表示，对象包含两个属性： name: 系列的名称，用于标识不同的数据系列。  value: 一个数组，包含该系列在雷达图上各个轴上的具体数值。数组中的每个元素对应雷达图上的一个轴，元素的顺序应与雷达图的指标轴顺序一致。"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "radar_chart",
+        "title": "雷达图",
+        "version": "1.0.2",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "radar-chart",
+                        "title": "雷达图"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

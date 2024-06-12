@@ -6,7 +6,7 @@
 
     <groupId>com.wgx</groupId>
     <artifactId>record-operation</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <name>操作记录依赖库</name>
     <description>打印每次请求日志：全类名+方法名、请求ip，请求url，入参、出参；出现异常时打印error日志：异常信息、异常方法、异常栈、请求参数、请求IP</description>
 
@@ -70,7 +70,12 @@
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.3.0</version>
+                <version>1.4.1</version>
+                <configuration>
+                    <jarWithDependencies>false</jarWithDependencies>
+                    <rewrittenGroupId>com.netease.lib</rewrittenGroupId>
+                    <rewriteVersion>false</rewriteVersion>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
