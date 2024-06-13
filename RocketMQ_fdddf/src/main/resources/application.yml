@@ -1,0 +1,12 @@
+# application.yml
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: my-producer-group
+    access-key: ak
+    secret-key: sk
+  consumer:
+    group: my-consumer-group
+    topic: my-topic
+    access-key: ak
+    secret-key: sk

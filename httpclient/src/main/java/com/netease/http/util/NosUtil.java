@@ -23,7 +23,7 @@ public class NosUtil {
 
     private static final String S3_TYPE = "s3";
     public static NosConfig nosConfig;
-    private static AmazonS3 s3Client;
+    private static volatile AmazonS3 s3Client;
 
     public static List<Bucket> listBuckets() {
         return s3Client.listBuckets();

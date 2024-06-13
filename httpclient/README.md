@@ -1,9 +1,20 @@
 # httpclient
 
-简单http调用客户端
+简单http调用客户端。
+接口异常时，返回的IllegalArgumentException类型。ide中可在服务端逻辑中，根据返回类型是否是IllegalArgumentException判断接口是否执行成功。
 
 # 接口详情
 ## LCAPHttpClient.exchange 数据格式为非form
+@Deprecated
+入参：
+- url: 请求地址
+- httpMethod: 请求方法
+- header: 请求头
+- body: 请求体（Map<String,String>格式，不支持form）
+
+出参：第三方返回完整信息的String格式
+
+## LCAPHttpClient.exchangeV2 数据格式为非form，异常时返回http错误码
 入参：
 - url: 请求地址
 - httpMethod: 请求方法
