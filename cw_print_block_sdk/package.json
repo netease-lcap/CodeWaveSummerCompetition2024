@@ -52,5 +52,9 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "print-js": "^1.6.0"
-    }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "b259c6c127bf16e3d97baf62aa72597b"
 }

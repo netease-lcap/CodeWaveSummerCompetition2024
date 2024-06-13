@@ -1,11 +1,11 @@
 {
-    "name": "print_block_sdk",
+    "name": "cw_print_block_sdk",
     "title": "打印模块SDK",
     "description": "",
     "specVersion": "1.0.0",
     "type": "module",
     "subType": "extension",
-    "version": "1.3.1",
+    "version": "1.3.0",
     "frontends": [
         {
             "concept": "FrontendLibrary",
@@ -16,7 +16,7 @@
                     "concept": "ViewComponent",
                     "name": "cw-print-designer",
                     "title": "分页打印组件",
-                    "category": "print_block_sdk(打印模块SDK)",
+                    "category": "cw_print_block_sdk(打印模块SDK)",
                     "blocks": [
                         {
                             "title": "基本用法",
@@ -208,7 +208,7 @@
                     "concept": "ViewComponent",
                     "name": "cw-print-view",
                     "title": "打印组件",
-                    "category": "print_block_sdk(打印模块SDK)",
+                    "category": "cw_print_block_sdk(打印模块SDK)",
                     "blocks": [
                         {
                             "title": "基本用法",
@@ -245,7 +245,7 @@
                     "concept": "ViewComponent",
                     "name": "cw-print-designer",
                     "title": "分页打印组件",
-                    "category": "print_block_sdk(打印模块SDK)",
+                    "category": "cw_print_block_sdk(打印模块SDK)",
                     "blocks": [
                         {
                             "title": "基本用法",
@@ -438,9 +438,9 @@
         }
     ],
     "summary": {
-        "name": "print_block_sdk",
+        "name": "cw_print_block_sdk",
         "title": "打印模块SDK",
-        "version": "1.3.1",
+        "version": "1.3.0",
         "description": "",
         "frontends": [
             {
