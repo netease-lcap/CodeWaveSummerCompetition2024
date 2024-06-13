@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class HttpSpringConfiguration {
     @Bean
+    @ConditionalOnMissingBean(RestTemplate.class)
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
@@ -22,7 +23,6 @@ public class HttpSpringConfiguration {
      * @return
      */
     @Bean("restTemplatePrimary")
-    @ConditionalOnMissingBean(RestTemplate.class)
     public RestTemplate restTemplatePrimary() {
         HttpComponentsClientHttpRequestFactory requestFactory = RestTemplateUtil.createRequestFactory();
         requestFactory.setHttpClient(HttpClients.custom().setRedirectStrategy(new LaxRedirectStrategy()).build());

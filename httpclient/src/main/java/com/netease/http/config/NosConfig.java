@@ -1,25 +1,19 @@
 package com.netease.http.config;
 
-import com.netease.lowcode.core.annotation.NaslConfiguration;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class NosConfig {
 
-    @NaslConfiguration
-    @Value("${nosBucket}")
+    @Value("${lcp.upload.s3Bucket}")
     public String nosBucket;
-    @NaslConfiguration
-    @Value("${nosAccessKey}")
+    @Value("${lcp.upload.s3AccessKey}")
     public String nosAccessKey;
-    @NaslConfiguration
-    @Value("${nosSecretKey}")
+    @Value("${lcp.upload.s3SecretKey}")
     public String nosSecretKey;
-    @NaslConfiguration
-    @Value("${nosAddress}")
+    @Value("${lcp.upload.s3Address}")
     public String nosAddress;
-    @NaslConfiguration
-    @Value("${sinkType}")
+    @Value("${lcp.upload.sinkType}")
     public String sinkType;
 }
