@@ -1,14 +1,17 @@
 package com.netease.http.httpclient;
 
 import com.alibaba.fastjson.JSONObject;
-import com.netease.http.dto.*;
+import com.netease.http.dto.DtoConvert;
+import com.netease.http.dto.RequestParam;
+import com.netease.http.dto.RequestParamAllBodyType;
+import com.netease.http.dto.RequestParamAllBodyTypeInner;
 import com.netease.http.util.NosUtil;
+import com.netease.http.util.SSLUtil;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.core.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -43,12 +46,7 @@ public class LCAPHttpClient {
     @Autowired
     private HttpClientService httpClientService;
     @Autowired
-    @Qualifier("restTemplatePrimary")
-    private RestTemplate restTemplatePrimary;
-
-    @Autowired
-    @Qualifier("restTemplateIgnoreCrt")
-    private RestTemplate restTemplateIgnoreCrt;
+    private RestTemplate restTemplate;
 
     /**
      * http/https调用（非form使用）
@@ -71,7 +69,7 @@ public class LCAPHttpClient {
             requestParam.setUrl(url);
             requestParam.setHttpMethod(httpMethod);
             requestParam.setHeader(header);
-            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplatePrimary, String.class);
+            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplate, String.class);
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
@@ -107,7 +105,7 @@ public class LCAPHttpClient {
             requestParam.setUrl(url);
             requestParam.setHttpMethod(httpMethod);
             requestParam.setHeader(header);
-            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplatePrimary, String.class);
+            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplate, String.class);
             return exchange.getBody();
         } catch (HttpClientErrorException e) {
             logger.error("", e);
@@ -135,7 +133,7 @@ public class LCAPHttpClient {
             requestParam.setUrl(fileUrl);
             requestParam.setHeader(header);
             requestParam.setHttpMethod(HttpMethod.GET.name());
-            file = httpClientService.downloadFile(requestParam, restTemplatePrimary, fileName);
+            file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
             String key = "/extension_" + file.getName();
             NosUtil.put(key, file);
             return NosUtil.generateUrl(key);
@@ -173,7 +171,7 @@ public class LCAPHttpClient {
             }
             requestParamGetFile.setUrl(url.getProtocol() + "://" + url.getHost() + fileUrl);
             requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
-            file = httpClientService.downloadFile(requestParamGetFile, restTemplatePrimary, null);
+            file = httpClientService.downloadFile(requestParamGetFile, restTemplate, null);
             RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             requestParam.getBody().forEach(body::add);
@@ -182,7 +180,7 @@ public class LCAPHttpClient {
             requestParamInner.setHttpMethod(requestParam.getHttpMethod());
             requestParamInner.setUrl(requestParam.getUrl());
             requestParamInner.setHeader(requestParam.getHeader());
-            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParamInner, restTemplatePrimary, String.class);
+            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParamInner, restTemplate, String.class);
             file.delete();
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
@@ -212,19 +210,14 @@ public class LCAPHttpClient {
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
     public String exchangeCrt(RequestParam requestParam) throws IllegalArgumentException {
         try {
-            RestTemplate restTemplateFinal = restTemplatePrimary;
-            try {
-                if (requestParam.getIsIgnoreCrt() == null) {
-                    requestParam.setIsIgnoreCrt(false);
-                }
-                if (requestParam.getIsIgnoreCrt()) {
-                    restTemplateFinal = restTemplateIgnoreCrt;
-                }
-            } catch (Exception e) {
-                logger.error("", e);
+            if (requestParam.getIsIgnoreCrt() == null) {
+                requestParam.setIsIgnoreCrt(false);
+            }
+            if (requestParam.getIsIgnoreCrt()) {
+                SSLUtil.turnOffCertificateValidation();
             }
             ResponseEntity<String> exchange = httpClientService
-                    .exchangeInner(DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam), restTemplateFinal, String.class);
+                    .exchangeInner(DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam), restTemplate, String.class);
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
@@ -250,19 +243,15 @@ public class LCAPHttpClient {
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
     public String exchangeAllBodyType(RequestParamAllBodyType requestParam) throws IllegalArgumentException {
         try {
-            RestTemplate restTemplateFinal = restTemplatePrimary;
-            try {
-                if (requestParam.getIsIgnoreCrt() == null) {
-                    requestParam.setIsIgnoreCrt(false);
-                }
-                if (requestParam.getIsIgnoreCrt()) {
-                    restTemplateFinal = restTemplateIgnoreCrt;
-                }
-            } catch (Exception e) {
-                logger.info("", e);
+            if (requestParam.getIsIgnoreCrt() == null) {
+                requestParam.setIsIgnoreCrt(false);
             }
+            if (requestParam.getIsIgnoreCrt()) {
+                SSLUtil.turnOffCertificateValidation();
+            }
+
             ResponseEntity<String> exchange = httpClientService
-                    .exchangeInner(DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam), restTemplateFinal, String.class);
+                    .exchangeInner(DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam), restTemplate, String.class);
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
@@ -297,7 +286,7 @@ public class LCAPHttpClient {
             requestParam.setUrl(url);
             requestParam.setHttpMethod(httpMethod);
             requestParam.setHeader(header);
-            ResponseEntity<String> exchange = httpClientService.exchangeWithoutUriEncode(requestParam, restTemplatePrimary, String.class);
+            ResponseEntity<String> exchange = httpClientService.exchangeWithoutUriEncode(requestParam, restTemplate, String.class);
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
