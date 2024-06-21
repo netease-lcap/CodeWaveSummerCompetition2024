@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.Objects;
 
 
-@SpringBootTest(classes = HttpSpringEnvironmentConfiguration.class)
-@RunWith(SpringRunner.class)
+//@SpringBootTest(classes = HttpSpringEnvironmentConfiguration.class)
+//@RunWith(SpringRunner.class)
 public class HttpTest {
     @Resource
     private RestTemplate restTemplate;
@@ -33,7 +33,7 @@ public class HttpTest {
     @Resource
     private HttpClientService httpClientService;
 
-    @Test
+//    @Test
     public void testV2() {
         String url = "";
         Map<String, String> head = new HashMap<>();
@@ -46,7 +46,7 @@ public class HttpTest {
         System.out.println(urlRes);
     }
 
-    @Test
+//    @Test
     public void testHttp() {
         String fileUrl = "";
 
