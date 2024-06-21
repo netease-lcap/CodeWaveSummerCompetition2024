@@ -32,18 +32,27 @@
 
 出参：第三方返回完整信息的String格式
 
-## LCAPHttpClient.exchangeAllBodyType 数据格式为form。支持证书校验忽略
+## LCAPHttpClient.exchangeAllBodyType 数据格式为String（包括json序列化）。支持证书校验忽略
 入参：
 - RequestParamAllBodyType：
   - url: 请求地址
   - httpMethod: 请求方法
   - header: 请求头
-  - body: 请求体（String格式，支持form，不支持文件。示例：a=1&b=cc&d=aasd1231）
+  - body: 请求体（String格式，不支持文件。示例：a=1&b=cc&d=aasd1231）
   - isIgnoreCrt:是否忽略证书校验
 
 出参：第三方返回完整信息的String格式
 
-## LCAPHttpClient.exchangeCrt 数据格式为非form。支持证书校验忽略
+## LCAPHttpClient.exchangeCrtForm https请求忽略证书，form表单专用body为MultiValueMap
+入参：
+- requestParam：
+  - url: 请求地址
+  - httpMethod: 请求方法
+  - header: 请求头
+  - body: 请求体（Map<String,String>格式）
+  - isIgnoreCrt:是否忽略证书校验
+
+## LCAPHttpClient.exchangeCrt 数据格式为Map。支持证书校验忽略
 入参：
 - requestParam：
   - url: 请求地址

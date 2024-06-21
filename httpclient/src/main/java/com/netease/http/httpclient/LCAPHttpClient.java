@@ -234,7 +234,7 @@ public class LCAPHttpClient {
 
 
     /**
-     * https请求，body支持String类型（form使用）
+     * https请求，body支持String类型
      *
      * @param requestParam
      * @return
@@ -252,6 +252,43 @@ public class LCAPHttpClient {
 
             ResponseEntity<String> exchange = httpClientService
                     .exchangeInner(DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam), restTemplate, String.class);
+            if (exchange.getStatusCode() == HttpStatus.OK) {
+                return exchange.getBody();
+            } else {
+                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+            }
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getResponseBodyAsString());
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+    /**
+     * https请求忽略证书，form表单专用body为MultiValueMap
+     *
+     * @param requestParam
+     * @return
+     */
+    @NaslLogic
+    @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
+    public String exchangeCrtForm(RequestParam requestParam) throws IllegalArgumentException {
+        try {
+            if (requestParam.getIsIgnoreCrt() == null) {
+                requestParam.setIsIgnoreCrt(false);
+            }
+            if (requestParam.getIsIgnoreCrt()) {
+                SSLUtil.turnOffCertificateValidation();
+            }
+            RequestParamAllBodyTypeInner requestParamAllBodyTypeInner = DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam);
+            MultiValueMap multiValueMap = new LinkedMultiValueMap();
+            //map 转MultiValueMap
+            requestParam.getBody().forEach(multiValueMap::add);
+            requestParamAllBodyTypeInner.setBody(multiValueMap);
+            ResponseEntity<String> exchange = httpClientService
+                    .exchangeInner(requestParamAllBodyTypeInner, restTemplate, String.class);
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
