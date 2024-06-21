@@ -202,23 +202,6 @@ public class LCAPHttpClient {
         }
     }
 
-    // TODO: 2024/5/17 该方式平台不支持，已反馈平台，待平台支持后调整
-//    @NaslLogic
-    public String test(Integer a) throws HttpClientRuntimeException {
-        if (a == 1) {
-            throw new HttpClientRuntimeException("test errorKey1");
-        } else if (a == 2) {
-            throw new HttpClientRuntimeException(203, "test errorKey2");
-        } else if (a == 3) {
-            throw new HttpClientRuntimeException(203, "test errorKey3", new Throwable("test Throwable3"));
-        } else if (a == 4) {
-            throw new HttpClientRuntimeException("test errorKey4", new Throwable("test Throwable4"));
-        } else if (a == 5) {
-            throw new HttpClientRuntimeException(203, new Throwable("test Throwable5"));
-        }
-        return "test";
-    }
-
     /**
      * 证书校验https请求（非form使用）
      *

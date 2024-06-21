@@ -35,23 +35,23 @@
 ## LCAPHttpClient.exchangeAllBodyType 数据格式为form。支持证书校验忽略
 入参：
 - RequestParamAllBodyType：
-    - url: 请求地址
-    - httpMethod: 请求方法
-    - header: 请求头
-    - body: 请求体（String格式，支持form，不支持文件。示例：a=1&b=cc&d=aasd1231）
-    - isIgnoreCrt:是否忽略证书校验
-    -
+  - url: 请求地址
+  - httpMethod: 请求方法
+  - header: 请求头
+  - body: 请求体（String格式，支持form，不支持文件。示例：a=1&b=cc&d=aasd1231）
+  - isIgnoreCrt:是否忽略证书校验
+
 出参：第三方返回完整信息的String格式
 
 ## LCAPHttpClient.exchangeCrt 数据格式为非form。支持证书校验忽略
 入参：
 - requestParam：
-    - url: 请求地址
-    - httpMethod: 请求方法
-    - header: 请求头
-    - body: 请求体（Map<String,String>格式，不支持form）
-    - isIgnoreCrt:是否忽略证书校验
-    - 
+  - url: 请求地址
+  - httpMethod: 请求方法
+  - header: 请求头
+  - body: 请求体（Map<String,String>格式，不支持form）
+  - isIgnoreCrt:是否忽略证书校验
+
 出参：第三方返回完整信息的String格式
 
 ## LCAPHttpClient.downloadFileUploadNos 下载文件，并上传到nos
