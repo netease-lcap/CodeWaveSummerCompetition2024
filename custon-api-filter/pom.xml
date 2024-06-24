@@ -27,7 +27,7 @@
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
             <groupId>com.netease.lowcode</groupId>
-            <version>0.7.0</version>
+            <version>0.8.0</version>
         </dependency>
         <!--制品应用使用Springboot框架，父应用引用了的包，为了防止版本冲突，scope可设置为provided-->
         <dependency>
