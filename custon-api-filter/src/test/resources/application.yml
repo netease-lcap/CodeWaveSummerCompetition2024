@@ -1,0 +1,139 @@
+logging:
+  file:
+    path: ${user.home}
+  path: ${logging.file.path}
+spring:
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations[0]: classpath:/static/
+    static-locations[1]: classpath:/static/assets/
+    static-locations[2]: classpath:/static/packages/
+  main:
+    lazy-initialization: false
+  application:
+    name: test
+    id: 60f69c6c-e354-4b60-9267-e57b2f8119d5
+  liquibase:
+    enabled: false
+  quartz:
+    enabled: false
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://59.111.105.64:3306/baohuahua-dev-test-665C0v?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true&zeroDateTimeBehavior=CONVERT_TO_NULL
+    username: baohu_61GMD_user
+    password: ''
+    connection-timeout: 3000
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  messages:
+    basename: i18n/messages
+  profiles:
+    include: auth
+mybatis:
+  mapper-locations: classpath:mappings/**/*Mapper.xml
+  type-handlers-package: com.baohuahua.test.repository.handler
+  configuration:
+    database-id: mysql
+    default-enum-type-handler: com.baohuahua.test.repository.handler.AutoEnumTypeHandler
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
+    min-response-size: 1024
+lcp:
+  snowflakeNodeId: null
+  authCenter:
+    enable: true
+    address: http://nuims.low-code:8081/nuims
+    host: nuims.low-code
+  flowUrl: http://api.gateway.lowcode/gateway/bpms
+  gatewayUrl: ''
+  audit:
+    enable: true
+    address: http://platform-audit.service.163.org
+  uiResourceAddress: /client.js
+  gatewayType: light
+  upload:
+    sinkType: nos
+    sinkPath: /app
+    s3Address: nos-eastchina1.126.net
+    s3AccessKey: ''
+    s3SecretKey: ''
+    s3Bucket: lcap-static-saas
+    access: public
+    ttl: -1.0
+    cdnAddress: ''
+  logResponse: false
+  logRequest: true
+  quartzTables: {}
+  report:
+    host: ''
+    tokenKey: ''
+    reportIdMap: {}
+    componentIdMap: {}
+  nuims: http://nuims.low-code:8081
+  frontends:
+    pc:
+      name: pc
+      path: /
+      title: PC端
+      type: pc
+upload:
+  base-path: app
+file:
+  types: text/plain;text/html;text/css;application/javascript
+hasAuth: 'true'
+hasUserCenter: 'true'
+auth:
+  pass:
+    salt: $2a!@#$%^&*()_+
+  token:
+    secret: 2bb91314dbd0a01
+    expire: 86400
+  types: Normal
+  plugin:
+    list:
+      Normal:
+        category: main
+  Normal: '{"category":"main"}'
+limit:
+  lock:
+    milliseconds: 900000
+  failure:
+    times: 5
+logicAuthFlag: true
+gw:
+  app:
+    addr:
+      lowcode: http://lcap.low-code:22988
+      nuims: http://nuims.low-code:8081
+lcp.private: ''
+custom:
+  api:
+    context-path: /
+  system:
+    time-zone: user
+extensions.custon_api_filter.custom:
+  redisHost: 120.27.230.133
+  redisPort: 8379
+  redisPassword: lowcode
+  redisDatabase: 2
