@@ -79,7 +79,7 @@ lcap_library_nexus是一个低代码平台依赖库开源仓库，用于存放�
 |map有序化依赖库 | 后端   | sort-map |1. CodeWave当前支持的map都是无序的hashmap，这导致有些业务场景无法满足。所以这里提供了一个转为有序map的依赖库。2. 当前支持的Json都是无序的，这里提供了一个调整json顺序的方法，满足调用第三方客户接口的json顺序要求。         | https://community.codewave.163.com/CommunityParent/CodeWareMarketLibraryDetail?id=2849760328948736&isLatest=false&isClassics=false
 |Freemaker依赖库| 后端   |  freemarker-tool |支持模板引擎         | https://community.codewave.163.com/CommunityParent/CodeWareMarketLibraryDetail?id=2884580661931520&isLatest=false&isClassics=false|
 |防重放依赖库|后端|custon-api-filter|支持配置自定义uri的接口的防重放功能|https://community.codewave.163.com/CommunityParent/CodeWareMarketLibraryDetail?id=2890986475426048&isLatest=false&isClassics=true|
-|runtime_tasks运行时定时任务依赖库|后端|runtime_tasks|支持运行时定时任务配置||
+|runtime_tasks运行时定时任务依赖库|后端|runtime_tasks_ext|支持运行时定时任务配置||
 
 
 ### 贡献指南
