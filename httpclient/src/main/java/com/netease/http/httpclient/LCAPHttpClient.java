@@ -283,10 +283,12 @@ public class LCAPHttpClient {
                 SSLUtil.turnOffCertificateValidation();
             }
             RequestParamAllBodyTypeInner requestParamAllBodyTypeInner = DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam);
-            MultiValueMap multiValueMap = new LinkedMultiValueMap();
-            //map 转MultiValueMap
-            requestParam.getBody().forEach(multiValueMap::add);
-            requestParamAllBodyTypeInner.setBody(multiValueMap);
+            if (requestParam.getBody() != null) {
+                MultiValueMap multiValueMap = new LinkedMultiValueMap();
+                //map 转MultiValueMap
+                requestParam.getBody().forEach(multiValueMap::add);
+                requestParamAllBodyTypeInner.setBody(multiValueMap);
+            }
             ResponseEntity<String> exchange = httpClientService
                     .exchangeInner(requestParamAllBodyTypeInner, restTemplate, String.class);
             if (exchange.getStatusCode() == HttpStatus.OK) {
