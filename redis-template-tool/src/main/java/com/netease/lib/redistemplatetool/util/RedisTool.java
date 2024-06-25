@@ -48,7 +48,7 @@ public class RedisTool {
      * @return
      */
     @NaslLogic
-    public Long removesFromSet(String key, Set<String> values) {
+    public Long removesFromSet(String key, List<String> values) {
         SetOperations<String, String> setOperations = redisTemplate.opsForSet();
         return setOperations.remove(key, values.toArray());
     }
