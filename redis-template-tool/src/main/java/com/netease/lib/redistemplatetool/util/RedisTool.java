@@ -2,16 +2,10 @@ package com.netease.lib.redistemplatetool.util;
 
 import com.netease.lowcode.core.annotation.NaslLogic;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -22,10 +16,76 @@ public class RedisTool {
     public RedisTemplate<String, String> redisTemplate;
 
     /**
+     * 设置 Redis 中指定 key 的过期时间
+     *
+     * @param key
+     * @param timeout
+     * @return
+     */
+    @NaslLogic
+    public Boolean setExpire(String key, Long timeout) {
+        return redisTemplate.expire(key, timeout, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 从集合中删除指定元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    @NaslLogic
+    public Long removeFromSet(String key, String value) {
+        SetOperations<String, String> setOperations = redisTemplate.opsForSet();
+        return setOperations.remove(key, value);
+    }
+
+    /**
+     * 从集合中删除多个指定元素
+     *
+     * @param key
+     * @param values
+     * @return
+     */
+    @NaslLogic
+    public Long removesFromSet(String key, Set<String> values) {
+        SetOperations<String, String> setOperations = redisTemplate.opsForSet();
+        return setOperations.remove(key, values.toArray());
+    }
+
+    /**
+     * 向集合中添加元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    @NaslLogic
+    public Long addToSet(String key, String value) {
+        SetOperations<String, String> setOperations = redisTemplate.opsForSet();
+        return setOperations.add(key, value);
+    }
+
+    /**
+     * 根据key获取集合中的所有元素
+     *
+     * @param key
+     * @return
+     */
+    @NaslLogic
+    public List<String> getSetMembers(String key) {
+        SetOperations<String, String> setOperations = redisTemplate.opsForSet();
+        //set转list
+        return new ArrayList<>(Objects.requireNonNull(setOperations.members(key)));
+    }
+
+    /**
      * 设置 Redis 中指定 key 的值为指定字符串
      *
-     * @param key   Redis 中的键
-     * @param value Redis 中的值
+     * @param key
+     * @param value
+     * @param timeout
+     * @return
      */
     @NaslLogic
     public String setValueTimeOut(String key, String value, Long timeout) {
