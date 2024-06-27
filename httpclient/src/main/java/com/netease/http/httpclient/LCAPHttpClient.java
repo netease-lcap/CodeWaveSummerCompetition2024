@@ -206,7 +206,7 @@ public class LCAPHttpClient {
      * @param requestParam
      * @return
      */
-    @NaslLogic(enhance = false)
+    @NaslLogic
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
     public String exchangeCrt(RequestParam requestParam) throws IllegalArgumentException {
         try {
