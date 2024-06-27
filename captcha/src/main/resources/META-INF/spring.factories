@@ -1,0 +1,4 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  com.captcha.utils.LibCaptchaEnvironmentMapperPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.captcha.spring.LibCaptchaSpringEnvironmentConfiguration
