@@ -8,5 +8,5 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackageClasses = LibraryAutoScan.class)
-public class Ip-filter-aopBasicSpringEnvironmentConfiguration {
+public class IpFilterAopBasicSpringEnvironmentConfiguration {
 }

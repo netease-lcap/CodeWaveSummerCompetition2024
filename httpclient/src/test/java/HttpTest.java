@@ -1,4 +1,3 @@
-import com.alibaba.fastjson.JSONObject;
 import com.netease.http.config.NosConfig;
 import com.netease.http.dto.RequestParam;
 import com.netease.http.httpclient.HttpClientService;
@@ -9,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,19 +31,12 @@ public class HttpTest {
     @Resource
     private HttpClientService httpClientService;
 
-    //    @Test
+    @Test
     public void testV2() {
-        String url = "";
-        Map<String, String> head = new HashMap<>();
-        head.put("Content-Type", "application/json");
-        head.put("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
-        Map<String, String> body = new HashMap<>();
-        body.put("userName", "222");
-        body.put("password", "11");
-        String urlRes = lcapHttpClient.exchangeV2(url, HttpMethod.POST.name(), head, body);
-        System.out.println(urlRes);
+        String url = lcapHttpClient.downloadFileUploadNos("http://110.41.154.113:6068/file/download?yearNum=yearNum&jiduNum=jiduNum",
+                null, null);
+        System.out.println(url);
     }
-
 
 
     //    @Test
