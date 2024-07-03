@@ -52,7 +52,7 @@ public class EncryptSQLAnnotationHandler implements LCAPSQLAnnotationHandler<Enc
                     String[] prevSelectExpr = buildSelectExprArgs.getPrevSelectExpr().split(" ");
                     String md5Expr = null;
                     if (prevSelectExpr.length == 1) {
-                        md5Expr = "md5(" + buildSelectExprArgs.getPrevSelectExpr() + ")";
+                        md5Expr = "md5(" + buildSelectExprArgs.getPrevSelectExpr() + ") " + encryptField;
                     } else if (prevSelectExpr.length == 2) {
                         md5Expr = " md5(" + prevSelectExpr[0] + ") " + prevSelectExpr[1];
                     }
