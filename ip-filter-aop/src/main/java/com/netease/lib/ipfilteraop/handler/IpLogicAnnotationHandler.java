@@ -1,5 +1,7 @@
 package com.netease.lib.ipfilteraop.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lib.ipfilteraop.annotation.IpLogicAnnotation;
 import com.netease.lib.ipfilteraop.config.LogicIpFilterConfiguration;
 import com.netease.lib.ipfilteraop.util.IpUtils;
@@ -41,7 +43,7 @@ public class IpLogicAnnotationHandler implements LCAPLogicAnnotationHandler<IpLo
      */
     @Override
     public LCAPAnnotationHandlerAdvise[] advises() {
-        return new LCAPAnnotationHandlerAdvise[]{LCAPAnnotationHandlerAdvise.AFTER}; // 这是一个拦截类注解的案例，所以时机是BEFORE
+        return new LCAPAnnotationHandlerAdvise[]{LCAPAnnotationHandlerAdvise.BEFORE}; // 这是一个拦截类注解的案例，所以时机是BEFORE
     }
 
     /**
