@@ -1,6 +1,6 @@
+import com.alibaba.fastjson.JSONObject;
 import com.netease.http.config.NosConfig;
 import com.netease.http.dto.RequestParam;
-import com.netease.http.dto.RequestParamAllBodyType;
 import com.netease.http.httpclient.HttpClientService;
 import com.netease.http.httpclient.LCAPHttpClient;
 import com.netease.http.spring.HttpSpringEnvironmentConfiguration;
@@ -33,7 +33,7 @@ public class HttpTest {
     @Resource
     private HttpClientService httpClientService;
 
-    @Test
+    //    @Test
     public void testV2() {
         String url = "";
         Map<String, String> head = new HashMap<>();
@@ -46,18 +46,7 @@ public class HttpTest {
         System.out.println(urlRes);
     }
 
-    @Test
-    public void testHttp() {
-        String fileUrl = "";
 
-        RequestParamAllBodyType requestParam = new RequestParamAllBodyType();
-        requestParam.setUrl(fileUrl);
-        requestParam.setHttpMethod("get");
-        requestParam.setIsIgnoreCrt(false);
-        String url = lcapHttpClient.exchangeAllBodyType(requestParam);
-        System.out.println(url);
-        requestParam.setIsIgnoreCrt(true);
-    }
 
     //    @Test
     public void testHttpBody() throws URISyntaxException {
