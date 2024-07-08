@@ -4,19 +4,25 @@ import com.alibaba.fastjson.JSON;
 import com.netease.lowcode.core.EnvironmentType;
 import com.netease.lowcode.core.annotation.Environment;
 import com.netease.lowcode.core.annotation.NaslConfiguration;
+import com.wgx.logics.DataWriter;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.text.MessageFormat;
 
 
 @Aspect
@@ -52,6 +58,9 @@ public class LoggingAspect {
     })
     private String loggingClassNames;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     //切点匹配类上有@Controller、@RestController注解的类下的所有方法
     @Pointcut("within(@org.springframework.stereotype.Controller *) || within(@org.springframework.web.bind.annotation.RestController *)")
     public void controller() {}
@@ -60,6 +69,15 @@ public class LoggingAspect {
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         if (!Boolean.TRUE.equals(loggingEnabled) || shouldLog(joinPoint)) {
             return joinPoint.proceed();
+        }
+
+        Object recordService = null;
+        Method saveLog = null;
+        try {
+            recordService = applicationContext.getBean("saveLogOverriddenRecord_operationCustomizeService");
+            saveLog = recordService.getClass().getMethod("saveLogOverriddenRecord_operation", String.class);
+        } catch (NoSuchBeanDefinitionException e) {
+            // do nothing
         }
 
         long startTime = System.currentTimeMillis();
@@ -80,6 +98,13 @@ public class LoggingAspect {
         } catch (Throwable ex) {
             exceptionThrown = true;
             if ("error".equals(loggingFormat)) {
+                String msg = MessageFormat.format("Error in {0}#{1} - IP: {2} - URL: {3} - Args: {4} - Exception: {5}",
+                        joinPoint.getSignature().getDeclaringTypeName(),
+                        joinPoint.getSignature().getName(),
+                        requestIP,
+                        requestURL,
+                        serializeObject(args),
+                        ex.toString());
                 logger.error("Error in {}#{} - IP: {} - URL: {} - Args: {} - Exception: {}",
                         joinPoint.getSignature().getDeclaringTypeName(),
                         joinPoint.getSignature().getName(),
@@ -88,19 +113,35 @@ public class LoggingAspect {
                         serializeObject(args),
                         ex.toString());
                 logger.error("Exception stack trace:", ex);
+                DataWriter.invoke(recordService, saveLog, msg);
             }
             throw ex; // rethrow the exception
         } finally {
             long executionTime = System.currentTimeMillis() - startTime;
             if (!exceptionThrown) {
                 if ("simple".equals(loggingFormat)) {
+                    String msg = MessageFormat.format("Completed {0}#{} - IP: {1} - URL: {2} - Duration: {3} ms",
+                            joinPoint.getSignature().getDeclaringTypeName(),
+                            joinPoint.getSignature().getName(),
+                            requestIP,
+                            requestURL,
+                            executionTime);
                     logger.info("Completed {}#{} - IP: {} - URL: {} - Duration: {} ms",
                             joinPoint.getSignature().getDeclaringTypeName(),
                             joinPoint.getSignature().getName(),
                             requestIP,
                             requestURL,
                             executionTime);
+                    DataWriter.invoke(recordService, saveLog, msg);
                 }else if ("detailed".equals(loggingFormat)) {
+                    String msg = MessageFormat.format("Completed {0}#{1} - IP: {2} - URL: {3} - Args: {4} - Result: {5} - Duration: {6} ms",
+                            joinPoint.getSignature().getDeclaringTypeName(),
+                            joinPoint.getSignature().getName(),
+                            requestIP,
+                            requestURL,
+                            serializeObject(args),
+                            serializeObject(result),
+                            executionTime);
                     logger.info("Completed {}#{} - IP: {} - URL: {} - Args: {} - Result: {} - Duration: {} ms",
                             joinPoint.getSignature().getDeclaringTypeName(),
                             joinPoint.getSignature().getName(),
@@ -109,6 +150,7 @@ public class LoggingAspect {
                             serializeObject(args),
                             serializeObject(result),
                             executionTime);
+                    DataWriter.invoke(recordService, saveLog, msg);
                 }
             }
         }
