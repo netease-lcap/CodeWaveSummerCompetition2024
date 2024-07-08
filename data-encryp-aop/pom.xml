@@ -12,7 +12,7 @@
 
     <groupId>com.netease.lowcode.lib</groupId>
     <artifactId>data-encryp-aop</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
