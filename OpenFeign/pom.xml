@@ -22,11 +22,6 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>-->
-<!--            <version>${spring.boot.version}</version>-->
-<!--        </dependency>-->
 
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>

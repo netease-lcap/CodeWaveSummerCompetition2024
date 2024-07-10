@@ -14,6 +14,7 @@ public class UserService {
 
     /**
      * 普通接口调用
+     * 当服务不可用时直接异常
      *
      * @return
      */
@@ -24,6 +25,7 @@ public class UserService {
 
     /**
      * 开启熔断器的接口调用
+     * 当调用服务不可用时将触发熔断降级
      *
      * @return
      */
