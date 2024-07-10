@@ -6,21 +6,27 @@
 
     <groupId>com.netease.lowcode.extension</groupId>
     <artifactId>OpenFeign</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.8</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 与应用保持一致 -->
+        <spring.boot.version>2.2.9.RELEASE</spring.boot.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <!-- 与应用保持一致 -->
-            <version>2.2.9.RELEASE</version>
+            <version>${spring.boot.version}</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>-->
+<!--            <version>${spring.boot.version}</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
