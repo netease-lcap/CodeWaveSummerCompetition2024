@@ -6,7 +6,7 @@
 
     <groupId>com.netease.lowcode.extension</groupId>
     <artifactId>OpenFeign</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.15</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -17,6 +17,7 @@
     </properties>
 
     <dependencies>
+        <!-- 导出源码启动时将此依赖手动添加到pom -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
