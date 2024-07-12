@@ -1,4 +1,3 @@
-import com.alibaba.fastjson.JSONObject;
 import com.netease.http.config.NosConfig;
 import com.netease.http.dto.RequestParam;
 import com.netease.http.httpclient.HttpClientService;
@@ -33,7 +32,7 @@ public class HttpTest {
     @Resource
     private HttpClientService httpClientService;
 
-    //    @Test
+    @Test
     public void testV2() {
         String url = "";
         Map<String, String> head = new HashMap<>();
@@ -45,7 +44,6 @@ public class HttpTest {
         String urlRes = lcapHttpClient.exchangeV2(url, HttpMethod.POST.name(), head, body);
         System.out.println(urlRes);
     }
-
 
 
     //    @Test

@@ -10,9 +10,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.netease.lib</groupId>
-    <artifactId>ip-filter-aop</artifactId>
-    <version>1.1.1</version>
+    <groupId>com.netease.lowcode.lib</groupId>
+    <artifactId>data-encryp-aop</artifactId>
+    <version>1.0.3</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -64,12 +64,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.10.5</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
