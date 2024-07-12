@@ -47,9 +47,9 @@ public class HttpClientService {
 
     /**
      * 下载文件
-     *
      * @param requestParam
      * @param restTemplateFinal
+     * @param fileName 仅取后缀名
      * @return
      */
     public File downloadFile(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, String fileName) {
