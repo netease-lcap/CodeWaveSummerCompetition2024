@@ -2,7 +2,7 @@
   "name": "cw_office_sdk",
   "title": "文档SDK",
   "description": "",
-  "version": "1.2.1",
+  "version": "1.2.5",
   "main": "./index.js",
   "author": "",
   "repository": "",
@@ -54,5 +54,9 @@
     "docx-preview": "0.1.20",
     "downloadjs": "^1.4.7",
     "pdfjs-dist": "^2.5.0"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "2de1e048c35d80087a3fcbb1d72506dc"
 }
