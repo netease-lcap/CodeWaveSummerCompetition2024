@@ -5,7 +5,7 @@
     "specVersion": "1.0.0",
     "type": "module",
     "subType": "extension",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "frontends": [
         {
             "concept": "FrontendLibrary",
@@ -29,7 +29,7 @@
                             "name": "isShowPrint",
                             "title": "是否展示打印区域",
                             "type": "boolean",
-                            "default": false,
+                            "default": true,
                             "description": "是否显示打印区域"
                         },
                         {
@@ -258,7 +258,7 @@
                             "name": "isShowPrint",
                             "title": "是否展示打印区域",
                             "type": "boolean",
-                            "default": false,
+                            "default": true,
                             "description": "是否显示打印区域"
                         },
                         {
@@ -440,7 +440,7 @@
     "summary": {
         "name": "cw_print_block_sdk",
         "title": "打印模块SDK",
-        "version": "1.3.0",
+        "version": "1.3.1",
         "description": "",
         "frontends": [
             {
