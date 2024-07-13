@@ -80,6 +80,9 @@ public class HttpClientService {
                     fileExt = fileName.substring(i);
                     fileName = fileName.substring(0, i);
                 }
+                if (fileName.length() < 3) {
+                    fileName = fileName + "-" + System.currentTimeMillis();
+                }
                 file = File.createTempFile(fileName, fileExt);
                 try (FileOutputStream outputStream = new FileOutputStream(file)) {
                     assert fileData != null;
