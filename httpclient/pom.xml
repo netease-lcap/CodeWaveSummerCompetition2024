@@ -15,7 +15,7 @@
     <artifactId>httpclient</artifactId>
     <name>httpclient</name>
     <description>httpclient</description>
-    <version>0.14.2</version>
+    <version>0.14.5</version>
 
     <dependencies>
         <dependency>

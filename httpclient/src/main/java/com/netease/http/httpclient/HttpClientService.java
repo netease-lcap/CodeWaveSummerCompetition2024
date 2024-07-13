@@ -16,13 +16,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 @Component
 public class HttpClientService {
-    private static final Logger logger = LoggerFactory.getLogger(HttpClientService.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     public <T> ResponseEntity<T> exchangeInner(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, Class<T> responseType) {
         if (Objects.isNull(requestParam.getHeader())) {
@@ -47,9 +48,10 @@ public class HttpClientService {
 
     /**
      * 下载文件
+     *
      * @param requestParam
      * @param restTemplateFinal
-     * @param fileName 仅取后缀名
+     * @param fileName          仅取后缀名
      * @return
      */
     public File downloadFile(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, String fileName) {
@@ -64,7 +66,7 @@ public class HttpClientService {
                         if (resHeader.startsWith("filename") || resHeader.startsWith("attachment")) {
                             String fileNameTmp = resHeader.split("filename=")[1].replace("\"", "");
                             if (FileNameValidator.isValidFileName(fileNameTmp)) {
-                                fileName = fileNameTmp;
+                                fileName = URLDecoder.decode(fileNameTmp);
                             }
                         }
                     }
@@ -72,7 +74,13 @@ public class HttpClientService {
             }
             File file = null;
             try {
-                file = File.createTempFile(String.valueOf(System.currentTimeMillis()), "." + fileName.split("\\.")[1]);
+                String fileExt = "";
+                if (fileName.contains(".")) {
+                    int i = fileName.lastIndexOf(".");
+                    fileExt = fileName.substring(i);
+                    fileName = fileName.substring(0, i);
+                }
+                file = File.createTempFile(fileName, fileExt);
                 try (FileOutputStream outputStream = new FileOutputStream(file)) {
                     assert fileData != null;
                     outputStream.write(fileData);

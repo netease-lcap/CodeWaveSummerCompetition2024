@@ -1,10 +1,7 @@
-import com.alibaba.fastjson.JSONObject;
-import com.netease.http.config.NosConfig;
 import com.netease.http.dto.RequestParam;
 import com.netease.http.httpclient.HttpClientService;
 import com.netease.http.httpclient.LCAPHttpClient;
 import com.netease.http.spring.HttpSpringEnvironmentConfiguration;
-import com.netease.http.util.NosUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,8 +20,8 @@ import java.util.Map;
 import java.util.Objects;
 
 
-@SpringBootTest(classes = HttpSpringEnvironmentConfiguration.class)
-@RunWith(SpringRunner.class)
+//@SpringBootTest(classes = HttpSpringEnvironmentConfiguration.class)
+//@RunWith(SpringRunner.class)
 public class HttpTest {
     @Resource
     private RestTemplate restTemplate;
@@ -45,7 +42,6 @@ public class HttpTest {
         String urlRes = lcapHttpClient.exchangeV2(url, HttpMethod.POST.name(), head, body);
         System.out.println(urlRes);
     }
-
 
 
     //    @Test
@@ -72,10 +68,10 @@ public class HttpTest {
 //        System.out.println(url);
     }
 
-    //    @Test
+//        @Test
     public void testDownload() {
         URI uri = UriComponentsBuilder
-                .fromUriString(" ")
+                .fromUriString("http://www.baidu.com")
                 .queryParam("uid", "3213131")
                 .encode()
                 .build()
@@ -91,12 +87,6 @@ public class HttpTest {
         header.put("appid", Objects.requireNonNull(authHeader.get(OpenApiTokens.AUTH_HEADER_APP_ID)).get(0));
         header.put("timestamp", Objects.requireNonNull(authHeader.get(OpenApiTokens.AUTH_HEADER_TIMESTAMP)).get(0));
         header.put("signature", Objects.requireNonNull(authHeader.get(OpenApiTokens.AUTH_HEADER_SIGNATURE)).get(0));
-        NosUtil.nosConfig = new NosConfig();
-        NosUtil.nosConfig.nosAccessKey = "11";
-        NosUtil.nosConfig.nosSecretKey = "11";
-        NosUtil.nosConfig.nosAddress = "11";
-        NosUtil.nosConfig.nosBucket = "11";
-        NosUtil.nosConfig.sinkType = "11";
         String url = lcapHttpClient.downloadFileUploadNos(uri.toString(), null, header);
         System.out.println(url);
     }
