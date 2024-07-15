@@ -21,8 +21,14 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Aspect
@@ -103,14 +109,14 @@ public class LoggingAspect {
                         joinPoint.getSignature().getName(),
                         requestIP,
                         requestURL,
-                        serializeObject(args),
+                        serializeArgs(args),
                         ex.toString());
                 logger.error("Error in {}#{} - IP: {} - URL: {} - Args: {} - Exception: {}",
                         joinPoint.getSignature().getDeclaringTypeName(),
                         joinPoint.getSignature().getName(),
                         requestIP,
                         requestURL,
-                        serializeObject(args),
+                        serializeArgs(args),
                         ex.toString());
                 logger.error("Exception stack trace:", ex);
                 DataWriter.invoke(recordService, saveLog, msg);
@@ -139,7 +145,7 @@ public class LoggingAspect {
                             joinPoint.getSignature().getName(),
                             requestIP,
                             requestURL,
-                            serializeObject(args),
+                            serializeArgs(args),
                             serializeObject(result),
                             executionTime);
                     logger.info("Completed {}#{} - IP: {} - URL: {} - Args: {} - Result: {} - Duration: {} ms",
@@ -147,7 +153,7 @@ public class LoggingAspect {
                             joinPoint.getSignature().getName(),
                             requestIP,
                             requestURL,
-                            serializeObject(args),
+                            serializeArgs(args),
                             serializeObject(result),
                             executionTime);
                     DataWriter.invoke(recordService, saveLog, msg);
@@ -181,6 +187,20 @@ public class LoggingAspect {
             }
         }
         return true;
+    }
+
+    private String serializeArgs(Object[] args) {
+        if (Objects.nonNull(args)) {
+            List<Object> objList = new ArrayList<>();
+            Arrays.asList(args).forEach(obj -> {
+                if (!(obj instanceof HttpServletRequest || obj instanceof HttpServletResponse)) {
+                    objList.add(obj);
+                }
+            });
+
+            return JSON.toJSONString(objList.toArray());
+        }
+        return JSON.toJSONString(args);
     }
 
     private String serializeObject(Object obj) {
