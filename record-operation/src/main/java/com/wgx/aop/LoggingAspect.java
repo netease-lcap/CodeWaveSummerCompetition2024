@@ -19,6 +19,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -193,9 +194,16 @@ public class LoggingAspect {
         if (Objects.nonNull(args)) {
             List<Object> objList = new ArrayList<>();
             Arrays.asList(args).forEach(obj -> {
-                if (!(obj instanceof HttpServletRequest || obj instanceof HttpServletResponse)) {
-                    objList.add(obj);
+                if (obj instanceof HttpServletRequest || obj instanceof HttpServletResponse) {
+                    return;
                 }
+                if (obj instanceof List) {
+                    List<?> argsObjList = (List<?>) obj;
+                    if (Objects.nonNull(argsObjList) && !argsObjList.isEmpty() && argsObjList.get(0) instanceof MultipartFile) {
+                        return;
+                    }
+                }
+                objList.add(obj);
             });
 
             return JSON.toJSONString(objList.toArray());
