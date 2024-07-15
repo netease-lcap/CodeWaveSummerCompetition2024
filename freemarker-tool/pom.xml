@@ -7,7 +7,7 @@
     <groupId>com.netease.lowcode</groupId>
     <artifactId>freemarker-tool</artifactId>
     <!-- We currently do not support snapshots. Please use a testing version number like 0.x.x, e.g. 0.1.12 -->
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -74,6 +74,18 @@
             <artifactId>okhttp</artifactId>
             <version>4.9.3</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/e-iceblue/spire.xls -->
+        <dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.xls</artifactId>
+            <version>14.5.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.3.0</version>
+        </dependency>
 
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
@@ -92,10 +104,35 @@
 
     <build>
         <plugins>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-shade-plugin</artifactId>-->
+<!--                <version>3.2.2</version>-->
+<!--                <configuration>-->
+<!--                    <relocations>-->
+<!--                        <relocation>-->
+<!--                            <pattern>com.spire</pattern>-->
+<!--                            <shadedPattern>shade.extension.freemarker.com.spire</shadedPattern>-->
+<!--                        </relocation>-->
+<!--                    </relocations>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>shade</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
                 <version>1.4.0</version>
+                <configuration>
+                    <jarWithDependencies>false</jarWithDependencies>
+                    <rewriteVersion>false</rewriteVersion>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
