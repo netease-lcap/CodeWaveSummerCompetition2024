@@ -168,7 +168,16 @@ public class LCAPHttpClient {
             } catch (MalformedURLException e) {
                 logger.error("requestUrl必须是一个url", e);
             }
-            requestParamGetFile.setUrl(url.getProtocol() + "://" + url.getHost() + fileUrl);
+            String protocol = url.getProtocol();
+            int port = url.getPort();
+            if (port == -1) {
+                if ("http".equalsIgnoreCase(protocol)) {
+                    port = 80;
+                } else if ("https".equalsIgnoreCase(protocol)) {
+                    port = 443;
+                }
+            }
+            requestParamGetFile.setUrl(protocol + "://" + url.getHost() + ":" + port + fileUrl);
             requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
             file = httpClientService.downloadFile(requestParamGetFile, restTemplate, null);
             RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();

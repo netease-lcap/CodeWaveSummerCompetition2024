@@ -26,24 +26,29 @@ public class HttpClientService {
     private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     public <T> ResponseEntity<T> exchangeInner(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, Class<T> responseType) {
-        if (Objects.isNull(requestParam.getHeader())) {
-            requestParam.setHeader(new HashMap<>());
+        try {
+            if (Objects.isNull(requestParam.getHeader())) {
+                requestParam.setHeader(new HashMap<>());
+            }
+            if (Objects.isNull(requestParam.getHttpMethod())) {
+                requestParam.setHttpMethod("");
+            }
+            if (Objects.isNull(requestParam.getUrl())) {
+                requestParam.setUrl("");
+            }
+            URI uri = UriComponentsBuilder.fromUriString(requestParam.getUrl()).build().encode().toUri();
+            HttpMethod requestMethod = HttpMethod.resolve(requestParam.getHttpMethod().toUpperCase());
+            HttpHeaders httpHeaders = new HttpHeaders();
+            requestParam.getHeader().forEach((headerName, headerValue) -> httpHeaders.add((String) headerName, (String) headerValue));
+            HttpEntity<T> httpEntity = new HttpEntity<>(DtoConvert.convertToGeneric(requestParam.getBody()), httpHeaders);
+            if (requestParam.getBody() == null) {
+                httpEntity = new HttpEntity<>(httpHeaders);
+            }
+            return restTemplateFinal.exchange(uri, Objects.requireNonNull(requestMethod), httpEntity, responseType);
+        } catch (Exception e) {
+            logger.error("请求http失败", e);
+            throw e;
         }
-        if (Objects.isNull(requestParam.getHttpMethod())) {
-            requestParam.setHttpMethod("");
-        }
-        if (Objects.isNull(requestParam.getUrl())) {
-            requestParam.setUrl("");
-        }
-        URI uri = UriComponentsBuilder.fromUriString(requestParam.getUrl()).build().encode().toUri();
-        HttpMethod requestMethod = HttpMethod.resolve(requestParam.getHttpMethod().toUpperCase());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        requestParam.getHeader().forEach((headerName, headerValue) -> httpHeaders.add((String) headerName, (String) headerValue));
-        HttpEntity<T> httpEntity = new HttpEntity<>(DtoConvert.convertToGeneric(requestParam.getBody()), httpHeaders);
-        if (requestParam.getBody() == null) {
-            httpEntity = new HttpEntity<>(httpHeaders);
-        }
-        return restTemplateFinal.exchange(uri, Objects.requireNonNull(requestMethod), httpEntity, responseType);
     }
 
     /**
