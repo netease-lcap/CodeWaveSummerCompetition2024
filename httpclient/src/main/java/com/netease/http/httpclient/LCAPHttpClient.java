@@ -1,11 +1,8 @@
 package com.netease.http.httpclient;
 
 import com.alibaba.fastjson.JSONObject;
-import com.netease.http.dto.DtoConvert;
-import com.netease.http.dto.RequestParam;
-import com.netease.http.dto.RequestParamAllBodyType;
-import com.netease.http.dto.RequestParamAllBodyTypeInner;
-import com.netease.http.util.NosUtil;
+import com.netease.http.dto.*;
+import com.netease.http.util.FileUtil;
 import com.netease.http.util.SSLUtil;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.core.annotation.Required;
@@ -29,6 +26,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Map;
 
 /**
@@ -41,12 +39,14 @@ import java.util.Map;
 @Component
 @EnableRetry
 public class LCAPHttpClient {
-    private static final Logger logger = LoggerFactory.getLogger(LCAPHttpClient.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     @Autowired
     private HttpClientService httpClientService;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private FileUtil fileUtil;
 
     /**
      * http/https调用（非form使用）
@@ -121,7 +121,7 @@ public class LCAPHttpClient {
      * 下载文件并上传到nos（默认格式xlsx）
      *
      * @param fileUrl
-     * @param fileName 文件名，可空
+     * @param fileName 文件名，可空，用于fileUrl无法获取文件名时，指定文件后缀
      * @param header
      * @return
      */
@@ -134,9 +134,8 @@ public class LCAPHttpClient {
             requestParam.setHeader(header);
             requestParam.setHttpMethod(HttpMethod.GET.name());
             file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
-            String key = "/extension_" + file.getName();
-            NosUtil.put(key, file);
-            return NosUtil.generateUrl(key);
+            UploadResponseDTO uploadResponseDTO = fileUtil.uploadStream(Files.newInputStream(file.toPath()), file.getName());
+            return uploadResponseDTO.result;
         } catch (HttpClientErrorException e) {
             logger.error("", e);
             throw new IllegalArgumentException(e.getResponseBodyAsString());
@@ -169,7 +168,16 @@ public class LCAPHttpClient {
             } catch (MalformedURLException e) {
                 logger.error("requestUrl必须是一个url", e);
             }
-            requestParamGetFile.setUrl(url.getProtocol() + "://" + url.getHost() + fileUrl);
+            String protocol = url.getProtocol();
+            int port = url.getPort();
+            if (port == -1) {
+                if ("http".equalsIgnoreCase(protocol)) {
+                    port = 80;
+                } else if ("https".equalsIgnoreCase(protocol)) {
+                    port = 443;
+                }
+            }
+            requestParamGetFile.setUrl(protocol + "://" + url.getHost() + ":" + port + fileUrl);
             requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
             file = httpClientService.downloadFile(requestParamGetFile, restTemplate, null);
             RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();

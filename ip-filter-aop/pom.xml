@@ -37,6 +37,7 @@
             <artifactId>lcap-annotation</artifactId>
             <groupId>com.netease.lowcode</groupId>
             <version>1.0.4</version>
+            <!--            须安装到maven仓库，不可使用systemPath的方式-->
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

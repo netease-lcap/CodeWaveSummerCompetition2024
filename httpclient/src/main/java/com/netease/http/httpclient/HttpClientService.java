@@ -16,40 +16,47 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 @Component
 public class HttpClientService {
-    private static final Logger logger = LoggerFactory.getLogger(HttpClientService.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     public <T> ResponseEntity<T> exchangeInner(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, Class<T> responseType) {
-        if (Objects.isNull(requestParam.getHeader())) {
-            requestParam.setHeader(new HashMap<>());
+        try {
+            if (Objects.isNull(requestParam.getHeader())) {
+                requestParam.setHeader(new HashMap<>());
+            }
+            if (Objects.isNull(requestParam.getHttpMethod())) {
+                requestParam.setHttpMethod("");
+            }
+            if (Objects.isNull(requestParam.getUrl())) {
+                requestParam.setUrl("");
+            }
+            URI uri = UriComponentsBuilder.fromUriString(requestParam.getUrl()).build().encode().toUri();
+            HttpMethod requestMethod = HttpMethod.resolve(requestParam.getHttpMethod().toUpperCase());
+            HttpHeaders httpHeaders = new HttpHeaders();
+            requestParam.getHeader().forEach((headerName, headerValue) -> httpHeaders.add((String) headerName, (String) headerValue));
+            HttpEntity<T> httpEntity = new HttpEntity<>(DtoConvert.convertToGeneric(requestParam.getBody()), httpHeaders);
+            if (requestParam.getBody() == null) {
+                httpEntity = new HttpEntity<>(httpHeaders);
+            }
+            return restTemplateFinal.exchange(uri, Objects.requireNonNull(requestMethod), httpEntity, responseType);
+        } catch (Exception e) {
+            logger.error("请求http失败", e);
+            throw e;
         }
-        if (Objects.isNull(requestParam.getHttpMethod())) {
-            requestParam.setHttpMethod("");
-        }
-        if (Objects.isNull(requestParam.getUrl())) {
-            requestParam.setUrl("");
-        }
-        URI uri = UriComponentsBuilder.fromUriString(requestParam.getUrl()).build().encode().toUri();
-        HttpMethod requestMethod = HttpMethod.resolve(requestParam.getHttpMethod().toUpperCase());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        requestParam.getHeader().forEach((headerName, headerValue) -> httpHeaders.add((String) headerName, (String) headerValue));
-        HttpEntity<T> httpEntity = new HttpEntity<>(DtoConvert.convertToGeneric(requestParam.getBody()), httpHeaders);
-        if (requestParam.getBody() == null) {
-            httpEntity = new HttpEntity<>(httpHeaders);
-        }
-        return restTemplateFinal.exchange(uri, Objects.requireNonNull(requestMethod), httpEntity, responseType);
     }
 
     /**
      * 下载文件
+     *
      * @param requestParam
      * @param restTemplateFinal
-     * @param fileName 仅取后缀名
+     * @param fileName          仅取后缀名
      * @return
      */
     public File downloadFile(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, String fileName) {
@@ -64,7 +71,7 @@ public class HttpClientService {
                         if (resHeader.startsWith("filename") || resHeader.startsWith("attachment")) {
                             String fileNameTmp = resHeader.split("filename=")[1].replace("\"", "");
                             if (FileNameValidator.isValidFileName(fileNameTmp)) {
-                                fileName = fileNameTmp;
+                                fileName = URLDecoder.decode(fileNameTmp);
                             }
                         }
                     }
@@ -72,7 +79,16 @@ public class HttpClientService {
             }
             File file = null;
             try {
-                file = File.createTempFile(String.valueOf(System.currentTimeMillis()), "." + fileName.split("\\.")[1]);
+                String fileExt = "";
+                if (fileName.contains(".")) {
+                    int i = fileName.lastIndexOf(".");
+                    fileExt = fileName.substring(i);
+                    fileName = fileName.substring(0, i);
+                }
+                if (fileName.length() < 3) {
+                    fileName = fileName + "-" + System.currentTimeMillis();
+                }
+                file = File.createTempFile(fileName, fileExt);
                 try (FileOutputStream outputStream = new FileOutputStream(file)) {
                     assert fileData != null;
                     outputStream.write(fileData);
