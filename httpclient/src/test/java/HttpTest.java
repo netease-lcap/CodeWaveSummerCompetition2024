@@ -1,3 +1,4 @@
+import com.netease.http.config.NosConfig;
 import com.netease.http.dto.RequestParam;
 import com.netease.http.httpclient.HttpClientService;
 import com.netease.http.httpclient.LCAPHttpClient;
@@ -30,7 +31,7 @@ public class HttpTest {
     @Resource
     private HttpClientService httpClientService;
 
-    //    @Test
+//    @Test
     public void testV2() {
         String url = "";
         Map<String, String> head = new HashMap<>();
