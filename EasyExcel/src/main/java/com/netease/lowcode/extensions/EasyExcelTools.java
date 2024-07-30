@@ -16,7 +16,8 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.alibaba.excel.write.style.column.SimpleColumnWidthStyleStrategy;
 import com.alibaba.excel.write.style.row.SimpleRowHeightStyleStrategy;
-import com.alibaba.fastjson2.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.extensions.extensions.ShowImageConverter;
 import com.netease.lowcode.extensions.listeners.LibraryReadListener;
@@ -88,6 +89,7 @@ public class EasyExcelTools {
         try (InputStream inputStream = openUrlStream(url)) {
             return parseExcelBySheetName(inputStream, sheetNames, headRow);
         } catch (IOException e) {
+            log.error("下载excel文件发生异常", e);
             throw new RuntimeException("下载excel文件发生异常", e);
         }
     }
@@ -125,6 +127,7 @@ public class EasyExcelTools {
             result.setSuccess(false);
             return result;
         } catch (IOException e) {
+            log.error("下载excel文件发生异常", e);
             throw new RuntimeException("下载excel文件发生异常", e);
         }
     }
@@ -140,6 +143,7 @@ public class EasyExcelTools {
 
             return response.body().byteStream();
         } catch (IOException e) {
+            log.error("下载文件发生异常", e);
             throw new RuntimeException("下载文件发生异常", e);
         }
     }
@@ -341,6 +345,7 @@ public class EasyExcelTools {
 
             return ExcelResponse.OK(uploadResponseDTO.getResult());
         } catch (Throwable throwable) {
+            log.error("生成excel文件失败", throwable);
             return ExcelResponse.FAIL(throwable.toString(), Arrays.toString(throwable.getStackTrace()));
         }
     }
@@ -365,6 +370,7 @@ public class EasyExcelTools {
         try {
             clazz = Class.forName(request.getFullClassName());
         } catch (ClassNotFoundException e) {
+            log.error("加载类失败", e);
             return ParseBigDataResponse.FAIL(String.format("加载类[%s]失败！", request.getFullClassName()), e.getMessage() + Arrays.toString(e.getStackTrace()));
         }
 
@@ -372,8 +378,10 @@ public class EasyExcelTools {
         try (InputStream inputStream = openUrlStream(request.getUrl())) {
             EasyExcel.read(inputStream, clazz, readListener).sheet().doRead();
         } catch (RuntimeException e) {
+            log.error("excel解析失败", e);
             return ParseBigDataResponse.FAIL("excel解析失败！", e.getMessage() + Arrays.toString(e.getStackTrace()));
         } catch (IOException e) {
+            log.error("文件下载失败", e);
             return ParseBigDataResponse.FAIL("文件下载失败", e.getMessage() + Arrays.toString(e.getStackTrace()));
         }
         return ParseBigDataResponse.OK(readListener.getTotal());
@@ -412,6 +420,7 @@ public class EasyExcelTools {
         try {
             clazz = Class.forName(condition.getFullClassName());
         } catch (ClassNotFoundException e) {
+            log.error("加载类失败", e);
             return ExportBigDataResponse.FAIL(String.format("加载类[%s]失败！", condition.getFullClassName()), Arrays.toString(e.getStackTrace()));
         }
 
@@ -430,6 +439,7 @@ public class EasyExcelTools {
 
                 return ExportBigDataResponse.OK("已提交异步执行，请稍后在回调逻辑中处理结果");
             } catch (Throwable throwable) {
+                log.error("提交异步执行出错", throwable);
                 return ExportBigDataResponse.FAIL("提交异步执行出错," + throwable.getMessage(), Arrays.toString(throwable.getStackTrace()));
             }
 
@@ -499,7 +509,16 @@ public class EasyExcelTools {
                 }
 
                 // 将json序列化的结果转为对象
-                List<Object> data = dataStr.stream().map((item) -> JSON.parseObject(item, clazz)).collect(Collectors.toList());
+//                List<Object> data = dataStr.stream().map((item) -> JSON.parseObject(item, clazz)).collect(Collectors.toList());
+                ObjectMapper objectMapper = new ObjectMapper();
+                List<Object> data = dataStr.stream().map((item) -> {
+                    try {
+                        return objectMapper.readValue(item, clazz);
+                    } catch (JsonProcessingException e) {
+                        log.error("json转换失败", e);
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList());
                 total += data.size();
 
                 // 可直接写入当前sheet
@@ -551,6 +570,7 @@ public class EasyExcelTools {
             return ExportBigDataResponse.OK(uploadResponseDTO.getFilePath(), uploadResponseDTO.getResult(), (double) (System.currentTimeMillis() - start) / 1000, (double) exportFile.length())
                     .total(total);
         } catch (Throwable throwable) {
+            log.error("创建excel出错", throwable);
             return ExportBigDataResponse.FAIL("创建excel出错," + throwable.getMessage(), Arrays.toString(throwable.getStackTrace()));
         } finally {
             // 删除文件
@@ -604,6 +624,7 @@ public class EasyExcelTools {
 
                 return ExportBigDataResponse.OK("已提交异步执行，请稍后在回调逻辑中处理结果");
             } catch (Throwable throwable) {
+                log.error("提交异步执行出错", throwable);
                 return ExportBigDataResponse.FAIL("提交异步执行出错," + throwable.getMessage(), Arrays.toString(throwable.getStackTrace()));
             }
         } else {
@@ -718,6 +739,7 @@ public class EasyExcelTools {
 
             return ExportBigDataResponse.OK(uploadResponseDTO.getFilePath(), uploadResponseDTO.getResult(), (double) (System.currentTimeMillis() - start) / 1000, (double) exportFile.length());
         } catch (Throwable throwable) {
+            log.error("创建excel出错", throwable);
             return ExportBigDataResponse.FAIL("创建excel出错," + throwable.getMessage(), Arrays.toString(throwable.getStackTrace()));
         } finally {
             // 删除文件
@@ -782,13 +804,13 @@ public class EasyExcelTools {
 
         for (int i = 0; i < excelData.sheetList.size(); i++) {
             CustomSheetData customSheetData = excelData.sheetList.get(i);
-            createSheet(i,customSheetData.sheetName, writer, customSheetData.head, customSheetData.data);
+            createSheet(i, customSheetData.sheetName, writer, customSheetData.head, customSheetData.data);
         }
         writer.finish();
         return path + excelData.fileName;
     }
 
-    private static void createSheet(Integer sheetNo,String sheetName, ExcelWriter excelWriter, List<String> head, List<List<String>> data) {
+    private static void createSheet(Integer sheetNo, String sheetName, ExcelWriter excelWriter, List<String> head, List<List<String>> data) {
 
         WriteSheet sheet = EasyExcel.writerSheet(sheetNo, sheetName).build();
 
@@ -797,7 +819,7 @@ public class EasyExcelTools {
             head.forEach(item -> list.add(ListUtils.newArrayList(item)));
             sheet.setHead(list);
         }
-        excelWriter.write(data,sheet);
+        excelWriter.write(data, sheet);
 
     }
 
