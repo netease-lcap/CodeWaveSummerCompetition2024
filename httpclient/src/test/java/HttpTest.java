@@ -1,4 +1,3 @@
-import com.netease.http.config.NosConfig;
 import com.netease.http.dto.RequestParam;
 import com.netease.http.httpclient.HttpClientService;
 import com.netease.http.httpclient.LCAPHttpClient;
@@ -33,14 +32,46 @@ public class HttpTest {
 
 //    @Test
     public void testV2() {
-        String url = "";
+        String url = "http://127.0.0.1:8090/expand/transfer/get_result?key=1";
         Map<String, String> head = new HashMap<>();
         head.put("Content-Type", "application/json");
         head.put("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
         Map<String, String> body = new HashMap<>();
         body.put("userName", "222");
         body.put("password", "11");
+        String urlRes = lcapHttpClient.exchangeV2(url, HttpMethod.GET.name(), head, body);
+        System.out.println(urlRes);
+    }
+
+//    @Test
+    public void testV22() {
+        String url = "http://127.0.0.1:8090/api/office_to_pdf/pptToPdf";
+        Map<String, String> head = new HashMap<>();
+        head.put("Content-Type", "application/json");
+        head.put("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
+        Map<String, String> body = new HashMap<>();
+        body.put("fileUrl", "http://dev.bjztest.neteasepmo.lcap.163yun.com/upload/app/06889c61-5b85-4b8a-9eac-8d14f9159f8a/aaaa-50%E9%A1%B5_20240730105501059.pptx");
+        body.put("type", "1");
         String urlRes = lcapHttpClient.exchangeV2(url, HttpMethod.POST.name(), head, body);
+        System.out.println(urlRes);
+    }
+
+//    @Test
+    public void testExchangeCrtForm() {
+        RequestParam requestParam = new RequestParam();
+        String url = "https://test.sovell.com/single-demeter/merger/api/operator/login";
+        Map<String, String> head = new HashMap<>();
+        head.put("Content-Type", "multipart/form-data");
+        Map<String, String> body = new HashMap<>();
+        body.put("username", "18888888888");
+        body.put("password", "zMEidaK9kEra6Ub1ptl2Sw==");
+        body.put("platform", "single_demeter");
+
+        requestParam.setUrl(url);
+        requestParam.setHttpMethod("get");
+//        requestParam.setHeader(head);
+        requestParam.setBody(body);
+        String urlRes = lcapHttpClient.exchangeCrtForm(requestParam);
         System.out.println(urlRes);
     }
 
@@ -69,7 +100,7 @@ public class HttpTest {
 //        System.out.println(url);
     }
 
-//        @Test
+    //        @Test
     public void testDownload() {
         URI uri = UriComponentsBuilder
                 .fromUriString("http://www.baidu.com")
