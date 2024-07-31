@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.netease.lowcode.extensions</groupId>
   <artifactId>EasyExcel</artifactId>
-  <version>2.1.27</version>
+  <version>2.1.24</version>
   <build>
     <plugins>
       <plugin>
