@@ -57,5 +57,9 @@
     "pdfjs-dist": "2.4.456",
     "vue-panzoom": "^1.1.6",
     "vue-pdf-embed": "1"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "421a8cd6a19cf4d58fe24f9f3c2a14e0"
 }
