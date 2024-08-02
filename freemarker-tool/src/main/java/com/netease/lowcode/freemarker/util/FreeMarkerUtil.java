@@ -7,10 +7,13 @@ import com.netease.lowcode.freemarker.dto.DownloadResponseDTO;
 import com.netease.lowcode.freemarker.dto.UploadResponseDTO;
 import com.netease.lowcode.freemarker.validators.CreateDocxRequestValidator;
 import com.netease.lowcode.freemarker.validators.CreateRequestValidator;
+import com.spire.xls.FileFormat;
+import com.spire.xls.Workbook;
 import freemarker.cache.URLTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -45,6 +48,49 @@ public class FreeMarkerUtil {
 
             //3. 上传文件
             UploadResponseDTO outUrl = FileUtil.uploadStream(byteArrayInputStream, request.outFileName);
+
+            if (Objects.nonNull(outUrl)) {
+
+                return DownloadResponseDTO.OK(outUrl.getResult(), outUrl.getFilePath());
+            } else {
+
+                return DownloadResponseDTO.FAIL("文件上传失败","");
+            }
+
+        } catch (Throwable e) {
+
+            return DownloadResponseDTO.FAIL("执行异常:"+e.getMessage(), Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    /**
+     * 根据模板创建excel
+     *
+     * @param request
+     * @return
+     */
+    @NaslLogic
+    public static DownloadResponseDTO createNewXlsx(CreateRequest request) {
+        try {
+            CreateRequestValidator.validate(request);
+
+            //2. 模板替换
+            ByteArrayInputStream byteArrayInputStream = getFreemarkerContentInputStreamV2(request.jsonData, FileUtil.getTrueUrl(request.templateUrl));
+
+            //3. 上传文件
+            //4. xml to excel
+            Workbook workbook = new Workbook();
+            workbook.loadFromXml(byteArrayInputStream);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            workbook.saveToStream(outputStream, FileFormat.Version2016);
+
+            //
+            org.apache.poi.ss.usermodel.Workbook poiWorkbook = WorkbookFactory.create(new ByteArrayInputStream(outputStream.toByteArray()));
+            poiWorkbook.removeSheetAt(poiWorkbook.getSheetIndex("Evaluation Warning"));
+            ByteArrayOutputStream tmpOutputStream = new ByteArrayOutputStream();
+            poiWorkbook.write(tmpOutputStream);
+
+            UploadResponseDTO outUrl = FileUtil.uploadStream(new ByteArrayInputStream(tmpOutputStream.toByteArray()), request.outFileName);
 
             if (Objects.nonNull(outUrl)) {
 
