@@ -2,6 +2,7 @@ package com.netease.http.httpclient;
 
 import com.alibaba.fastjson.JSONObject;
 import com.netease.http.dto.*;
+import com.netease.http.exception.TransferCommonException;
 import com.netease.http.util.FileUtil;
 import com.netease.http.util.SSLUtil;
 import com.netease.lowcode.core.annotation.NaslLogic;
@@ -61,7 +62,7 @@ public class LCAPHttpClient {
     @NaslLogic
     @Deprecated
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchange(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) throws IllegalArgumentException {
+    public String exchange(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) throws TransferCommonException {
         try {
             RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
             requestParam.setBody(body);
@@ -73,14 +74,14 @@ public class LCAPHttpClient {
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
-                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+                throw new TransferCommonException(exchange.getStatusCodeValue(), JSONObject.toJSONString(exchange));
             }
         } catch (HttpClientErrorException e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getResponseBodyAsString());
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getMessage());
+            throw new TransferCommonException(e.getMessage(), e);
         }
     }
 
@@ -97,7 +98,7 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchangeV2(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) throws IllegalArgumentException {
+    public String exchangeV2(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) throws TransferCommonException {
         try {
             RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
             requestParam.setBody(body);
@@ -112,7 +113,7 @@ public class LCAPHttpClient {
             return e.getResponseBodyAsString();
         } catch (Exception e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getMessage());
+            throw new TransferCommonException(e.getMessage(), e);
         }
     }
 
@@ -126,7 +127,7 @@ public class LCAPHttpClient {
      * @return
      */
     @NaslLogic
-    public String downloadFileUploadNos(String fileUrl, String fileName, Map<String, String> header) throws IllegalArgumentException {
+    public String downloadFileUploadNos(String fileUrl, String fileName, Map<String, String> header) throws TransferCommonException {
         File file = null;
         try {
             RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
@@ -138,10 +139,10 @@ public class LCAPHttpClient {
             return uploadResponseDTO.result;
         } catch (HttpClientErrorException e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getResponseBodyAsString());
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getMessage());
+            throw new TransferCommonException(e.getMessage(), e);
         } finally {
             if (file != null && file.exists()) {
                 file.delete();
@@ -158,7 +159,7 @@ public class LCAPHttpClient {
      * @return
      */
     @NaslLogic
-    public String uploadNosExchange(String fileUrl, String requestUrl, RequestParam requestParam) throws IllegalArgumentException {
+    public String uploadNosExchange(String fileUrl, String requestUrl, RequestParam requestParam) throws TransferCommonException {
         File file = null;
         try {
             RequestParamAllBodyTypeInner requestParamGetFile = new RequestParamAllBodyTypeInner();
@@ -193,14 +194,14 @@ public class LCAPHttpClient {
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
-                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+                throw new TransferCommonException(exchange.getStatusCodeValue(), JSONObject.toJSONString(exchange));
             }
         } catch (HttpClientErrorException e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getResponseBodyAsString());
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getMessage());
+            throw new TransferCommonException(e.getMessage(), e);
         } finally {
             if (file != null && file.exists()) {
                 file.delete();
@@ -216,7 +217,7 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchangeCrt(RequestParam requestParam) throws IllegalArgumentException {
+    public String exchangeCrt(RequestParam requestParam) throws TransferCommonException {
         try {
             if (requestParam.getIsIgnoreCrt() == null) {
                 requestParam.setIsIgnoreCrt(false);
@@ -229,14 +230,14 @@ public class LCAPHttpClient {
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
-                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+                throw new TransferCommonException(exchange.getStatusCodeValue(), JSONObject.toJSONString(exchange));
             }
         } catch (HttpClientErrorException e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getResponseBodyAsString());
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getMessage());
+            throw new TransferCommonException(e.getMessage(), e);
         }
     }
 
@@ -249,7 +250,7 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchangeAllBodyType(RequestParamAllBodyType requestParam) throws IllegalArgumentException {
+    public String exchangeAllBodyType(RequestParamAllBodyType requestParam) throws TransferCommonException {
         try {
             if (requestParam.getIsIgnoreCrt() == null) {
                 requestParam.setIsIgnoreCrt(false);
@@ -263,14 +264,14 @@ public class LCAPHttpClient {
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
-                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+                throw new TransferCommonException(exchange.getStatusCodeValue(), JSONObject.toJSONString(exchange));
             }
         } catch (HttpClientErrorException e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getResponseBodyAsString());
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getMessage());
+            throw new TransferCommonException(e.getMessage(), e);
         }
     }
 
@@ -282,7 +283,7 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchangeCrtForm(RequestParam requestParam) throws IllegalArgumentException {
+    public String exchangeCrtForm(RequestParam requestParam) throws TransferCommonException {
         try {
             if (requestParam.getIsIgnoreCrt() == null) {
                 requestParam.setIsIgnoreCrt(false);
@@ -302,14 +303,14 @@ public class LCAPHttpClient {
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
-                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+                throw new TransferCommonException(exchange.getStatusCode().value(), JSONObject.toJSONString(exchange));
             }
         } catch (HttpClientErrorException e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getResponseBodyAsString());
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getMessage());
+            throw new TransferCommonException(e.getMessage(), e);
         }
     }
 
@@ -325,7 +326,7 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
-    public String exchangeWithoutUriEncode(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) throws IllegalArgumentException {
+    public String exchangeWithoutUriEncode(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required Map<String, String> body) throws TransferCommonException {
         try {
             RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
             requestParam.setBody(body);
@@ -337,14 +338,14 @@ public class LCAPHttpClient {
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
-                throw new IllegalArgumentException("请求http失败,返回：" + JSONObject.toJSONString(exchange));
+                throw new TransferCommonException(exchange.getStatusCodeValue(), JSONObject.toJSONString(exchange));
             }
         } catch (HttpClientErrorException e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getResponseBodyAsString());
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
-            throw new IllegalArgumentException(e.getMessage());
+            throw new TransferCommonException(e.getMessage(), e);
         }
     }
 }
