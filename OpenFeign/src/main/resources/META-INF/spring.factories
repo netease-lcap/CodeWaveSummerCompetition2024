@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.netease.lowcode.extension.OpenFeignConfig,\
+    com.netease.lowcode.extension.OpenFeignAutoScan
+org.springframework.boot.env.EnvironmentPostProcessor=\
+    com.netease.lowcode.extension.OpenFeignEnvironmentPostProcessor

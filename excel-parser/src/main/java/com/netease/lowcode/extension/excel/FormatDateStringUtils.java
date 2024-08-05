@@ -1,5 +1,9 @@
 package com.netease.lowcode.extension.excel;
 
+import org.apache.commons.lang3.time.DateUtils;
+
+import java.util.Date;
+
 public class FormatDateStringUtils {
 
     /**
@@ -9,6 +13,14 @@ public class FormatDateStringUtils {
      * @return
      */
     public static String format(String origin){
+
+        try{
+            int i = Integer.parseInt(origin);
+            Date date = DateUtils.addDays(new Date(-2209017943000L),i-1);
+            return com.alibaba.excel.util.DateUtils.format(date,"yyyy-MM-dd");
+        } catch (NumberFormatException e){
+            // do nothing
+        }
 
         if (origin == null || origin.length() < 8) {
             // 这里交给上级抛异常
