@@ -15,7 +15,7 @@ TransferCommonException中errorMsg包含了http状态码和返回信息。格式
 
 出参：第三方返回完整信息的String格式 || TransferCommonException异常
 
-## LCAPHttpClient.exchangeV2 数据格式为非form，异常时返回http错误码
+## LCAPHttpClient.exchangeV2 数据格式为非form，异常时返回http错误信息
 入参：
 - url: 请求地址
 - httpMethod: 请求方法
