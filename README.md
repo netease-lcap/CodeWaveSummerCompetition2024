@@ -1,29 +1,11 @@
 # 网易低代码平台依赖库开源仓库
-## CodeWaveAssetCompetition2024
-网易低代码开发者活动-资产大赛2024
-![image](https://github.com/netease-lcap/CodeWaveAssetCompetition2024/assets/158463965/ea58284c-5be6-4b2d-956b-7b300499ee1e)
+## CodeWaveSummerCompetition2024
+网易低代码开发者活动-低代码大赛2024
+![WechatIMG1229](https://github.com/user-attachments/assets/db3920be-9574-4db1-ad26-2491f3a5fd88)
 
-欢迎开发者们参加2024网易低代码资产共建大赛，活动官网介绍：https://sf.163.com/2024lcapassetcompetition
+欢迎开发者们参加2024网易低代码大赛，活动官网介绍：https://lcapcompetition.codewave.163.com/CodeWaveCompetition/schedule
 
-参赛指引：
-![image](https://github.com/netease-lcap/CodeWaveAssetCompetition2024/assets/158463965/8f658d1c-0f81-4062-b794-a3d0e0ec900a)
-
-
-—大赛介绍
-
-1、资产共建大赛简介：
-
-基于平台现有扩展集成能力，和开发者一起构建CodeWave平台资产市场，包括连接器、依赖库，打造丰富的开发场景资产，降低开发成本提升效率。活动结束后资产将会在平台的【资产中心】上架开放，提供企业&开发者后续使用。
-
-2、资产共建大赛特色
-
-  1）赛道自由选择，大赛提供了三个赛道方向可供参赛开发者选择，包括命题组的连接器需求、依赖库需求和非命题组（开发者自由提供优质资产)；
-
-  2）赛事赋能保障，配套赋能直播课程和参赛交流社群，保障大家的学习、交流和问题咨询；
-
-  3）多劳多得，上不封顶，活动鼓励开发者可多次参与提供多个资产，验收通过后均可获得激励；
-
-  4）礼品随心选，活动以严选卡的形式发放激励，开发者可以根据自己的爱好前往严选平台购买心怡礼品
+参赛命题:
 
 
 —赛事规则
@@ -43,17 +25,13 @@
 
 3、赛事激励：
 
-激励内容：严选卡
+激励内容：购物卡
+![WechatIMG1230](https://github.com/user-attachments/assets/27acff07-0f7f-4557-a05d-fc3a9807d6fd)
 
-说明：本次活动的激励因为资产价值恒量的不确定性，不再通过具体实物进行奖励，而是发放等同价值的严选卡。开发者获得严选卡激励后，可以前往严选平台绑定卡片自行进行商品挑选。 
 
-激励形式：
+严选平台优质商品推荐：https://docs.popo.netease.com/lingxi/d493efea289d4cafbf38ebde626d06f6
 
-  1）平台发布资产需求会提供对应的单个命题需求的激励额度池，开发者交付资产验收后符合规则即可获得一定的激励额度；
 
-  2）开发者自己向平台主动提供的资产，平台会验收评审资产的价值，给到对应的激励额度；
-
-严选平台优质商品推荐：https://docs.popo.netease.com/lingxi/65c7da790e5d40baaf7ee15e62e843e5
 
 ## README
 ### 项目名称
