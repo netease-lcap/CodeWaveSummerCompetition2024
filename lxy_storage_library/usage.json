@@ -1,0 +1,245 @@
+{
+    "name": "lxy_storage_library",
+    "title": "本地存储",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "getLocalStorage",
+                    "description": "获取本地存储",
+                    "category": "lxy_storage_library",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "获取本地存储的值",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "removeLocalStorage",
+                    "description": "删除本地存储",
+                    "category": "lxy_storage_library",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "需要清除的key",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "setLocalStorage",
+                    "description": "设置本地存储",
+                    "category": "lxy_storage_library",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "本地存储的key",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "value",
+                            "concept": "Param",
+                            "description": "本地存储的value",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "getLocalStorage",
+                    "description": "获取本地存储",
+                    "category": "lxy_storage_library",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "获取本地存储的值",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "removeLocalStorage",
+                    "description": "删除本地存储",
+                    "category": "lxy_storage_library",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "需要清除的key",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "concept": "Logic",
+                    "name": "setLocalStorage",
+                    "description": "设置本地存储",
+                    "category": "lxy_storage_library",
+                    "params": [
+                        {
+                            "name": "key",
+                            "concept": "Param",
+                            "description": "本地存储的key",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "value",
+                            "concept": "Param",
+                            "description": "本地存储的value",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "name": "lxy_storage_library",
+        "title": "本地存储",
+        "version": "0.1.0",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "getLocalStorage",
+                        "description": "获取本地存储"
+                    },
+                    {
+                        "name": "removeLocalStorage",
+                        "description": "删除本地存储"
+                    },
+                    {
+                        "name": "setLocalStorage",
+                        "description": "设置本地存储"
+                    }
+                ]
+            },
+            {
+                "type": "h5",
+                "viewComponents": [],
+                "logics": [
+                    {
+                        "name": "getLocalStorage",
+                        "description": "获取本地存储"
+                    },
+                    {
+                        "name": "removeLocalStorage",
+                        "description": "删除本地存储"
+                    },
+                    {
+                        "name": "setLocalStorage",
+                        "description": "设置本地存储"
+                    }
+                ]
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

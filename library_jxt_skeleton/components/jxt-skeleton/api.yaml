@@ -1,0 +1,97 @@
+- name: jxt-skeleton
+  title: 骨架屏
+  type: both
+  belong: component
+  labels: [Runtime]
+  attrs:
+      - name: active
+        title: 动画效果
+        description: 是否展示动画效果
+        type: boolean
+        default: false
+        group: 骨架屏配置
+
+      - name: loading
+        title: 内容是否加载中
+        description: 设置内容是否正在加载中
+        type: boolean
+        default: true
+        group: 骨架屏配置
+
+      - name: avatar
+        title: 是否显示头像占位图
+        description: 设置是否显示头像占位图
+        type: boolean
+        default: false
+        group: 头像配置
+
+      - name: avatarSize
+        title: 头像占位图的大小
+        description: 设置像占位图的大小
+        type: string
+        default: default
+        options:
+            - value: small
+              title: 小
+            - value: default
+              title: 正常
+            - value: large
+              title: 大
+        group: 头像配置
+        dependency:
+            - avatar: true
+
+      - name: avatarShape
+        title: 头像的形状
+        description: 设置头像的形状
+        type: string
+        default: circle
+        options:
+            - value: circle
+              title: 圆形
+            - value: square
+              title: 方形
+        group: 头像配置
+        dependency:
+            - avatar: true
+
+      - name: title
+        title: 是否显示标题占位图
+        description: 设置是否显示标题占位图
+        type: boolean
+        default: true
+        group: 标题配置
+
+      - name: titleWidth
+        title: 标题占位图的宽度
+        type: string
+        group: 标题配置
+        dependency:
+            - title: true
+
+      - name: paragraph
+        title: 是否显示段落占位图
+        description: 设置是否显示段落占位图
+        type: boolean
+        default: true
+        group: 段落配置
+
+      - name: paragraphRows
+        title: 段落占位图的行数
+        description: 设置段落占位图的行数
+        type: number
+        default: 3
+        group: 段落配置
+        dependency:
+            - paragraph: true
+
+      - name: paragraphWidth
+        title: 段落最后一行占位图的宽度
+        description: 设置段落最后一行的占位图的宽度
+        type: string
+        group: 段落配置
+        dependency:
+            - paragraph: true
+  lots:
+      - name: default
+        description: 插入组件

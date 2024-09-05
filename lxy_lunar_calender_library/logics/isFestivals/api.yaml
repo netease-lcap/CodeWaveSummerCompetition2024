@@ -1,0 +1,5 @@
+- name: isFestivals
+  description: 获取节日
+  type: both
+  belong: logic
+  labels: [Runtime]

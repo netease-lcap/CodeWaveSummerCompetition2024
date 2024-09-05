@@ -1,0 +1,283 @@
+{
+    "name": "library_fdddf_carousel",
+    "title": "轮播图",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.5",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "carousel",
+                    "title": "轮播图",
+                    "category": "library_fdddf_carousel(轮播图)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<carousel></carousel>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "images",
+                            "type": "Array",
+                            "default": [],
+                            "description": "轮播图列表",
+                            "sync": true,
+                            "model": true
+                        },
+                        {
+                            "name": "titles",
+                            "type": "Array",
+                            "default": [],
+                            "description": "轮播图标题列表",
+                            "sync": true,
+                            "model": true
+                        },
+                        {
+                            "name": "width",
+                            "type": "number",
+                            "default": 360,
+                            "description": "宽度"
+                        },
+                        {
+                            "name": "height",
+                            "type": "number",
+                            "default": 270,
+                            "description": "高度"
+                        },
+                        {
+                            "name": "autoPlay",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "是否自动播放"
+                        },
+                        {
+                            "name": "disable3d",
+                            "type": "boolean",
+                            "default": false,
+                            "description": "是否禁用3D效果"
+                        },
+                        {
+                            "name": "controlsVisible",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "是否显示控制按钮"
+                        },
+                        {
+                            "name": "clickable",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "是否可点击切换"
+                        },
+                        {
+                            "name": "autoplayTimeout",
+                            "type": "number",
+                            "default": 5000,
+                            "description": "自动播放间隔时间"
+                        },
+                        {
+                            "name": "display",
+                            "type": "string",
+                            "default": 3,
+                            "description": "显示数量"
+                        },
+                        {
+                            "name": "perspective",
+                            "type": "number",
+                            "default": 30,
+                            "description": "3D效果的透视距离"
+                        }
+                    ],
+                    "events": [
+                        {
+                            "name": "afterSlideChange",
+                            "title": "afterSlideChange",
+                            "description": "当轮播图切换时触发",
+                            "params": [
+                                {
+                                    "name": "index",
+                                    "type": "number",
+                                    "description": "当前轮播图的索引"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "beforeSlideChange",
+                            "title": "beforeSlideChange",
+                            "description": "当轮播图即将切换时触发",
+                            "params": [
+                                {
+                                    "name": "index",
+                                    "type": "number",
+                                    "description": "当前轮播图的索引"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "carousel",
+                    "title": "轮播图",
+                    "category": "library_fdddf_carousel(轮播图)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<carousel></carousel>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "images",
+                            "type": "Array",
+                            "default": [],
+                            "description": "轮播图列表",
+                            "sync": true,
+                            "model": true
+                        },
+                        {
+                            "name": "titles",
+                            "type": "Array",
+                            "default": [],
+                            "description": "轮播图标题列表",
+                            "sync": true,
+                            "model": true
+                        },
+                        {
+                            "name": "width",
+                            "type": "number",
+                            "default": 360,
+                            "description": "宽度"
+                        },
+                        {
+                            "name": "height",
+                            "type": "number",
+                            "default": 270,
+                            "description": "高度"
+                        },
+                        {
+                            "name": "autoPlay",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "是否自动播放"
+                        },
+                        {
+                            "name": "disable3d",
+                            "type": "boolean",
+                            "default": false,
+                            "description": "是否禁用3D效果"
+                        },
+                        {
+                            "name": "controlsVisible",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "是否显示控制按钮"
+                        },
+                        {
+                            "name": "clickable",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "是否可点击切换"
+                        },
+                        {
+                            "name": "autoplayTimeout",
+                            "type": "number",
+                            "default": 5000,
+                            "description": "自动播放间隔时间"
+                        },
+                        {
+                            "name": "display",
+                            "type": "string",
+                            "default": 3,
+                            "description": "显示数量"
+                        },
+                        {
+                            "name": "perspective",
+                            "type": "number",
+                            "default": 30,
+                            "description": "3D效果的透视距离"
+                        }
+                    ],
+                    "events": [
+                        {
+                            "name": "afterSlideChange",
+                            "title": "afterSlideChange",
+                            "description": "当轮播图切换时触发",
+                            "params": [
+                                {
+                                    "name": "index",
+                                    "type": "number",
+                                    "description": "当前轮播图的索引"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "beforeSlideChange",
+                            "title": "beforeSlideChange",
+                            "description": "当轮播图即将切换时触发",
+                            "params": [
+                                {
+                                    "name": "index",
+                                    "type": "number",
+                                    "description": "当前轮播图的索引"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "library_fdddf_carousel",
+        "title": "轮播图",
+        "version": "0.1.5",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "carousel",
+                        "title": "轮播图"
+                    }
+                ],
+                "logics": []
+            },
+            {
+                "type": "h5",
+                "viewComponents": [
+                    {
+                        "name": "carousel",
+                        "title": "轮播图"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}
