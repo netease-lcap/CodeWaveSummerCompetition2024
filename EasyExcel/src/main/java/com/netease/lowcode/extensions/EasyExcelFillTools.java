@@ -13,12 +13,13 @@ import com.netease.lowcode.extensions.response.ExportBigDataResponse;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.*;
@@ -27,6 +28,7 @@ import static com.netease.lowcode.extensions.EasyExcelTools.openUrlStream;
 
 @Component("libraryEasyExcelFillTools")
 public class EasyExcelFillTools {
+    private static final Logger log = LoggerFactory.getLogger(EasyExcelFillTools.class);
 
     private static FileUtils fileUtils;
 
@@ -41,7 +43,7 @@ public class EasyExcelFillTools {
         if (Objects.isNull(request)) {
             return ExportBigDataResponse.FAIL("请求参数为空");
         }
-        if(StringUtils.isBlank(request.templateUrl)){
+        if (StringUtils.isBlank(request.templateUrl)) {
             return ExportBigDataResponse.FAIL("模板url不能为空");
         }
         File exportFile = null;
@@ -72,7 +74,7 @@ public class EasyExcelFillTools {
             }
             // 填充列表数据
             HashMap<String, List<String>> listJsonData = new HashMap<String, List<String>>();
-            listJsonData.put("",request.listJsonData);
+            listJsonData.put("", request.listJsonData);
             fillListData(listJsonData, WriteDirectionEnum.VERTICAL, excelWriter, writeSheet);
 
             excelWriter.close();
@@ -84,6 +86,7 @@ public class EasyExcelFillTools {
 
             return ExportBigDataResponse.OK(uploadResponseDTO.getFilePath(), uploadResponseDTO.getResult(), (double) (System.currentTimeMillis() - start) / 1000, (double) exportFile.length());
         } catch (Throwable throwable) {
+            log.error("数据填充失败", throwable);
             return ExportBigDataResponse.FAIL(String.format("数据填充失败,msg=%s", throwable.getMessage()), Arrays.toString(throwable.getStackTrace()));
         } finally {
             // 删除文件

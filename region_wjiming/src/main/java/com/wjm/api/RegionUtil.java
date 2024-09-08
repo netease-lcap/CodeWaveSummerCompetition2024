@@ -24,7 +24,7 @@ import java.util.List;
  **/
 @Component
 public class RegionUtil {
-  private static final Logger log = LoggerFactory.getLogger(RegionUtil.class);
+  private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
   /**
    * 自定义的行政区json文件
    */

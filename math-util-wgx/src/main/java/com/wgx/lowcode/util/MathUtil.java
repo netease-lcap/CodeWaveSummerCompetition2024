@@ -14,7 +14,7 @@ import java.math.RoundingMode;
  */
 public class MathUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(MathUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     private static final long negativeZeroDoubleBits = Double.doubleToRawLongBits(-0.0d);
 

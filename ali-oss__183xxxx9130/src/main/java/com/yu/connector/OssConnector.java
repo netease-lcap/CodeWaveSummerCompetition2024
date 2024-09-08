@@ -37,7 +37,7 @@ import java.util.Optional;
  **/
 @NaslConnector(connectorKind = "oss-connector")
 public class OssConnector {
-    private static final Logger log = LoggerFactory.getLogger(OssConnector.class);
+    private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     private static final Long FILE_SIZE_THRESHOLD = 5L * 1024L * 1024L;
     private static final String S3_TYPE = "s3";
     private static final String NOS_TYPE = "nos";

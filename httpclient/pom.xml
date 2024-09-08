@@ -5,6 +5,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <nasl.ide.version>3.3</nasl.ide.version>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -12,10 +13,10 @@
         <version>2.2.9.RELEASE</version>
     </parent>
     <groupId>com.netease.lowcode</groupId>
-    <artifactId>httpclient_opensource</artifactId>
+    <artifactId>httpclient</artifactId>
     <name>httpclient</name>
     <description>httpclient</description>
-    <version>0.12.18</version>
+    <version>0.15.0</version>
 
     <dependencies>
         <dependency>
@@ -31,7 +32,7 @@
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
             <groupId>com.netease.lowcode</groupId>
-            <version>0.7.0</version>
+            <version>0.8.0</version>
             <optional>true</optional>
         </dependency>
         <dependency>

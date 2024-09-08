@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @date 2024/3/16 9:59
  **/
 public class IPUtil {
-    private static final Logger log = LoggerFactory.getLogger(IPUtil.class);
+    private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     private static final String IPV4_REGEX =
             "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
     private static final Pattern IPV4_PATTERN = Pattern.compile(IPV4_REGEX);
