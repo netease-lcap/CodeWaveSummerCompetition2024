@@ -96,8 +96,6 @@ public class JvmCacheUtil {
 
     /**
      * 清除所有缓存
-     *
-     * @param key 键
      */
     @NaslLogic
     public Boolean invalidateAll() {
