@@ -1,50 +1,65 @@
-# Lcap Frontend Library Demo
+# 文本对比组件库
 
-## 安装
+**依赖库设计**
 
-```
-npm install
-```
+这个依赖库旨在提供一套用于低代码开发的文本对比工具库
 
-## 开发
+**主要特性**
 
-```
-npm start
-```
+- **组件一：** 提供文本对比组件
 
-或
+## diff-viewer
 
-```
-npm run dev
-```
 
-## 添加组件
+**特性 1：** 支持行、字符，单词对比
 
-```
-lcap create component
-```
+**特性 2：** 支持自定义新增、删除字体，背景色
 
-## 添加逻辑
 
-```
-lcap create logic
-```
+- **逻辑一：** 提供文本行对比逻辑
 
-## 构建 & 发布
+返回结果参考 https://github.com/kpdecker/jsdiff
 
-```
-npm run build
-```
+## getDiffLines
 
-构建完成后，将 `[packageName]@[packageVersion].zip` 文件上传到平台即可
+**特性 1：** 返回行级对比结果
 
-## 修改构建配置
+## getDiffChars
 
-在根目录下创建 `vite.config.js` 文件即可，[配置文档](https://cn.vitejs.dev/config/)
+**特性 1：** 返回字符级对比结果
 
-## 相关资源
+## getDiffWords
 
-* 开发构建工具 [vite](https://vitejs.dev/)
-* 单元测试工具 [vitest](https://cn.vitest.dev/guide/)
-* UI demo 调试 [storybook](https://storybook.js.org/docs/get-started/install)
+**特性 1：** 返回单词级对比结果
+
+
+## 使用说明
+
+### 组件（diff-viewer）
+
+- **attrs**
+  - one: String 左侧文本
+  - other: String 右侧文本
+  - diffType: String 对比类型，可选值：line、char、word
+  - delBackgroundColor: String 删除字体颜色
+  - delColor: String 删除背景颜色
+  - insBackgroundColor: String 新增字体颜色
+  - insColor: String 新增背景颜色
+
+- **methods**
+n/a
+
+- **events**
+n/a
+
+### 逻辑（逻辑名）
+
+- **methodName(params):** 
+n/a
+
+## 应用演示链接
+
+[示例演示链接](https://dev-testdiff-qa.app.codewave.163.com/dashboard/difftest)
+
+![img](Snipaste_2024-09-08_02-26-43.jpg)
 
