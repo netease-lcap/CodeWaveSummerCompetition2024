@@ -64,6 +64,7 @@
                 <version>1.4.1</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
+                    <rewriteVersion>false</rewriteVersion>
                 </configuration>
                 <executions>
                     <execution>
