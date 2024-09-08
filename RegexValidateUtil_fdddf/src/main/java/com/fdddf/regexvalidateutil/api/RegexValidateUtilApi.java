@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class RegexValidateUtilApi {
 
-    private static final Logger logger = LoggerFactory.getLogger(RegexValidateUtilApi.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     /**
      * 检查提供的字符串是否是有效的电子邮件地址。

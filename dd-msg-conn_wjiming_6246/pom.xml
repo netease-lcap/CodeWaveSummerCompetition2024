@@ -6,7 +6,7 @@
 
     <groupId>com.wjm</groupId>
     <artifactId>dd-msg-conn</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>钉钉消息通知连接器</name>
     <description>支持发送工作通知[文本消息]，发送工作通知[图片消息]，发送工作通知[OA消息]，获取工作通知消息的发送进度，撤回工作通知消息</description>
 
@@ -88,9 +88,11 @@
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.3.0</version>
+                <version>1.4.1</version>
                 <configuration>
                     <jarWithDependencies>true</jarWithDependencies>
+                    <rewrittenGroupId>com.netease.lib</rewrittenGroupId>
+                    <rewriteVersion>false</rewriteVersion>
                 </configuration>
                 <executions>
                     <execution>

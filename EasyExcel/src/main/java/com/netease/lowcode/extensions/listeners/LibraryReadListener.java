@@ -19,9 +19,14 @@ import com.netease.lowcode.extensions.jackson.serializers.LocalTimeSerializer;
 import com.netease.lowcode.extensions.jackson.serializers.ZonedDateTimeSerializer;
 import com.netease.lowcode.extensions.model.ParseRequest;
 import org.apache.poi.ss.usermodel.PictureData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
@@ -36,33 +41,15 @@ import java.util.stream.Collectors;
 
 import static com.netease.lowcode.extensions.EasyExcelTools.openUrlStream;
 
+
 public class LibraryReadListener<T> implements ReadListener<T> {
+    private static final Logger log = LoggerFactory.getLogger(LibraryReadListener.class);
 
     /**
      * 每读取100条数据进行一次处理,防止oom
      */
     private static final int BATCH_COUNT = 100;
-
-    /**
-     * 缓存读取的数据
-     */
-    private List<T> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
-
-    private Map<Integer,Map<String, PictureData>> excelPictureMap = new HashMap<>();
-
-    private Class<T> type;
-    private ParseRequest request;
-
-    private Function<List<String>,String> handle;
-
-    private FileUtils fileUtils;
-
     private static ObjectMapper objectMapper;
-
-    /**
-     * 统计导入数量
-     */
-    private Long total = 0L;
 
     static {
         Jackson2ObjectMapperBuilder builder = Jackson2ObjectMapperBuilder
@@ -70,13 +57,27 @@ public class LibraryReadListener<T> implements ReadListener<T> {
                 .indentOutput(false)
                 .failOnEmptyBeans(false)
                 .failOnUnknownProperties(false)
-                .serializerByType(LocalTime.class,new LocalTimeSerializer())
-                .serializerByType(ZonedDateTime.class,new ZonedDateTimeSerializer())
-                .serializerByType(LocalDate.class,new LocalDateSerializer());
+                .serializerByType(LocalTime.class, new LocalTimeSerializer())
+                .serializerByType(ZonedDateTime.class, new ZonedDateTimeSerializer())
+                .serializerByType(LocalDate.class, new LocalDateSerializer());
         objectMapper = builder.build();
     }
 
-    public LibraryReadListener(Function<List<String>, String> handle, Class<T> type, ParseRequest request,FileUtils fileUtils) {
+    /**
+     * 缓存读取的数据
+     */
+    private List<T> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
+    private Map<Integer, Map<String, PictureData>> excelPictureMap = new HashMap<>();
+    private Class<T> type;
+    private ParseRequest request;
+    private Function<List<String>, String> handle;
+    private FileUtils fileUtils;
+    /**
+     * 统计导入数量
+     */
+    private Long total = 0L;
+
+    public LibraryReadListener(Function<List<String>, String> handle, Class<T> type, ParseRequest request, FileUtils fileUtils) {
         this.handle = handle;
         this.type = type;
         this.request = request;
@@ -92,6 +93,7 @@ public class LibraryReadListener<T> implements ReadListener<T> {
             try {
                 return objectMapper.writeValueAsString(item);
             } catch (JsonProcessingException e) {
+                log.error("json序列化失败", e);
                 throw new RuntimeException(e);
             }
         }).collect(Collectors.toList());
@@ -107,12 +109,12 @@ public class LibraryReadListener<T> implements ReadListener<T> {
             field.setAccessible(true);
             try {
                 Object o = field.get(data);
-                if(Objects.nonNull(o)){
+                if (Objects.nonNull(o)) {
                     blankRow = false;
                     break;
                 }
             } catch (IllegalAccessException e) {
-                // do nothing
+                log.error("读取数据失败", e);
             }
             field.setAccessible(false);
         }
@@ -140,6 +142,7 @@ public class LibraryReadListener<T> implements ReadListener<T> {
      * 解析excel中的图片，填充到对象中
      * TODO: wps插入图片时可以选择“浮动图片”和“嵌入式图片”，目前暂不支持wps的嵌入式图片，使用Poi无法读取
      * 如需支持，可参考：https://blog.csdn.net/maudboy/article/details/133145278
+     *
      * @param data
      * @param context
      */
@@ -179,7 +182,7 @@ public class LibraryReadListener<T> implements ReadListener<T> {
                 String key = StrUtil.format("{}_{}", rowIndex, columnIndex);
                 PictureData pictureData = picMap.get(key);
                 // 判断一下图片是否为null
-                if(Objects.isNull(pictureData)) {
+                if (Objects.isNull(pictureData)) {
                     continue;
                 }
 
@@ -201,8 +204,10 @@ public class LibraryReadListener<T> implements ReadListener<T> {
                 field.set(data, uploadResponseDTO.getResult());
                 return;
             } catch (IllegalAccessException e) {
+                log.error("IllegalAccessException:", e);
                 // do nothing
             } catch (InvocationTargetException | NoSuchMethodException | IOException e) {
+                log.error("InvocationTargetException | NoSuchMethodException | IOException e:", e);
                 throw new RuntimeException(e);
             }
             field.setAccessible(false);

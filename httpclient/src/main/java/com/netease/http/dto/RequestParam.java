@@ -1,7 +1,5 @@
 package com.netease.http.dto;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.netease.lowcode.core.annotation.NaslStructure;
 import com.netease.lowcode.core.annotation.Required;
 

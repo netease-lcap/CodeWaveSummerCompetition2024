@@ -1,0 +1,278 @@
+{
+    "name": "cw_lottie_library",
+    "title": "特效组件库",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "1.0.8",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "animated-composition",
+                    "title": "动画合成",
+                    "category": "cw_lottie_library(特效组件库)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<animated-composition></animated-composition>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "animationData",
+                            "title": "动画参数",
+                            "type": "object",
+                            "default": "",
+                            "description": "动画参数，一般由设计师提供"
+                        },
+                        {
+                            "name": "autoplay",
+                            "title": "是否自动播放",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "是否自动播放"
+                        }
+                    ],
+                    "events": [
+                        {
+                            "name": "handleAnimationComplete",
+                            "description": "动画播放结束",
+                            "title": "动画播放结束"
+                        },
+                        {
+                            "name": "lottiePlay",
+                            "description": "手动开始动画",
+                            "title": "手动开始动画"
+                        },
+                        {
+                            "name": "lottieStop",
+                            "description": "手动结束动画",
+                            "title": "手动结束动画"
+                        },
+                        {
+                            "name": "lottiePause",
+                            "description": "手动暂停动画",
+                            "title": "手动暂停动画"
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "mouse",
+                    "title": "鼠标特效",
+                    "category": "cw_lottie_library(特效组件库)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<mouse></mouse>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "color1",
+                            "type": "string",
+                            "default": "#9884f7",
+                            "description": "色团渐变左上角背景色"
+                        },
+                        {
+                            "name": "color2",
+                            "type": "string",
+                            "default": "8cd9ff",
+                            "description": "色团渐变右下角背景色"
+                        },
+                        {
+                            "name": "filter",
+                            "type": "number",
+                            "default": 100,
+                            "description": "色团模糊度"
+                        },
+                        {
+                            "name": "transition",
+                            "type": "number",
+                            "default": 5,
+                            "description": "色团跟随移动速度"
+                        }
+                    ],
+                    "slots": [
+                        {
+                            "concept": "Slot",
+                            "name": "default",
+                            "description": "自定义选项的结构和样式"
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "sprite-animation",
+                    "title": "雪碧图动画",
+                    "category": "cw_lottie_library(特效组件库)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<sprite-animation></sprite-animation>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "imageWidth",
+                            "type": "number",
+                            "default": 100,
+                            "description": "视窗宽度"
+                        },
+                        {
+                            "name": "frameHeight",
+                            "type": "number",
+                            "default": 100,
+                            "description": "视窗高度"
+                        },
+                        {
+                            "name": "imageUrl",
+                            "type": "string",
+                            "description": "图片链接"
+                        },
+                        {
+                            "name": "totalFrames",
+                            "type": "number",
+                            "default": 30,
+                            "description": "总帧数"
+                        },
+                        {
+                            "name": "animationSpeed",
+                            "type": "number",
+                            "default": 20,
+                            "description": "动画速度"
+                        }
+                    ],
+                    "methods": [
+                        {
+                            "name": "startAnimation",
+                            "description": "开始动画",
+                            "params": []
+                        },
+                        {
+                            "name": "resetAnimationState",
+                            "description": "结束动画",
+                            "params": []
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "sprite-animation",
+                    "title": "雪碧图动画",
+                    "category": "cw_lottie_library(特效组件库)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<sprite-animation></sprite-animation>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "imageWidth",
+                            "type": "number",
+                            "default": 100,
+                            "description": "视窗宽度"
+                        },
+                        {
+                            "name": "frameHeight",
+                            "type": "number",
+                            "default": 100,
+                            "description": "视窗高度"
+                        },
+                        {
+                            "name": "imageUrl",
+                            "type": "string",
+                            "description": "图片链接"
+                        },
+                        {
+                            "name": "totalFrames",
+                            "type": "number",
+                            "default": 30,
+                            "description": "总帧数"
+                        },
+                        {
+                            "name": "animationSpeed",
+                            "type": "number",
+                            "default": 20,
+                            "description": "动画速度"
+                        }
+                    ],
+                    "methods": [
+                        {
+                            "name": "startAnimation",
+                            "description": "开始动画",
+                            "params": []
+                        },
+                        {
+                            "name": "resetAnimationState",
+                            "description": "结束动画",
+                            "params": []
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "cw_lottie_library",
+        "title": "特效组件库",
+        "version": "1.0.8",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "animated-composition",
+                        "title": "动画合成"
+                    },
+                    {
+                        "name": "mouse",
+                        "title": "鼠标特效"
+                    },
+                    {
+                        "name": "sprite-animation",
+                        "title": "雪碧图动画"
+                    }
+                ],
+                "logics": []
+            },
+            {
+                "type": "h5",
+                "viewComponents": [
+                    {
+                        "name": "sprite-animation",
+                        "title": "雪碧图动画"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

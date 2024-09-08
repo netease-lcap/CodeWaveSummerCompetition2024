@@ -27,7 +27,7 @@ public class ImageTiler {
 
     @Resource
     private TileConfig cfg;
-    private static final Logger logger = LoggerFactory.getLogger(ImageTiler.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     private final ExecutorService executor = Executors.newFixedThreadPool(5);
 

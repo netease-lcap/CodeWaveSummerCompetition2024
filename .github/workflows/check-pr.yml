@@ -104,6 +104,8 @@ jobs:
         if: ${{fromJson(env.DIFF_STATE).needJAVA}}
         run: |
           mvn install:install-file -Dfile="demo_bjz_JiazhenBao/jar/nasl-metadata-maven-plugin-1.3.0/nasl-metadata-maven-plugin-1.3.0.jar" -DpomFile="demo_bjz_JiazhenBao/jar/nasl-metadata-maven-plugin-1.3.0/pom.xml"
+          mvn install:install-file -Dfile="demo_bjz_JiazhenBao/jar/nasl-metadata-maven-plugin-1.4.1/nasl-metadata-maven-plugin-1.4.1.jar" -DpomFile="demo_bjz_JiazhenBao/jar/nasl-metadata-maven-plugin-1.4.1/pom.xml"
+          mvn install:install-file -Dfile="demo_bjz_JiazhenBao/jar/nasl-metadata-maven-plugin-1.4.0/nasl-metadata-maven-plugin-1.4.0.jar" -DpomFile="demo_bjz_JiazhenBao/jar/nasl-metadata-maven-plugin-1.4.0/pom.xml"
           mvn install:install-file -DgroupId=com.netease.lowcode -DartifactId=nasl-metadata-collector -Dversion=0.8.0 -Dpackaging=jar -Dfile="demo_bjz_JiazhenBao/jar/nasl-metadata-collector-0.8.0.jar"
 
       - name: Install LCAP
