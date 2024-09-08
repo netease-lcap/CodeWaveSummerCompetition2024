@@ -12,7 +12,7 @@ export {};
  * @desc 行差异
  * @param one 第一个文本
  * @param other 第二个文本
- * @returns 返回结果 { value: string, added: bool, removed: bool, count: number }
+ * @returns 返回结果 [{ value: string, added: bool, removed: bool, count: number }]
  */
 export function getDiffLines(one: nasl.core.String, other: nasl.core.String): nasl.collection.List<nasl.collection.Map<nasl.core.String, nasl.core.String>> {
     if (one === other) {
@@ -30,7 +30,7 @@ export function getDiffLines(one: nasl.core.String, other: nasl.core.String): na
  * @desc 字符差异
  * @param one 第一个文本
  * @param other 第二个文本
- * @returns 返回结果 { value: string, added: bool, removed: bool, count: number }
+ * @returns 返回结果 [{ value: string, added: bool, removed: bool, count: number }]
  */
 export function getDiffChars(one: nasl.core.String, other: nasl.core.String): nasl.collection.List<nasl.collection.Map<nasl.core.String, nasl.core.String>> {
     if (one === other) {
@@ -48,7 +48,7 @@ export function getDiffChars(one: nasl.core.String, other: nasl.core.String): na
  * @desc 词差异
  * @param one 第一个文本
  * @param other 第二个文本
- * @returns 返回结果 { value: string, added: bool, removed: bool, count: number }
+ * @returns 返回结果 [{ value: string, added: bool, removed: bool, count: number }]
  */
 export function getDiffWords(one: nasl.core.String, other: nasl.core.String): nasl.collection.List<nasl.collection.Map<nasl.core.String, nasl.core.String>> {
     if (one === other) {

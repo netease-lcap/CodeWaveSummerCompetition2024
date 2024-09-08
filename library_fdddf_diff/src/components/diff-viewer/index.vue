@@ -119,8 +119,6 @@ export default {
 };
 </script>
 <style module>
-@import './theme/vars.css';
-
 .root {
   font-family: monospace;
   display: block;
@@ -129,14 +127,14 @@ export default {
 
 ins {
   text-decoration: none;
-  background-color: var(--diff-viewer-ins-background-color);
-  color: var(--diff-viewer-ins-color);
+  background-color: #d4fcbc;
+  color: #333;
 }
 
 del {
   text-decoration: none;
-  background-color: var(--diff-viewer-del-background-color);
-  color: var(--diff-viewer-del-color);
+  background-color: #fbcaca;
+  color: #333;
 }
 
 pre {

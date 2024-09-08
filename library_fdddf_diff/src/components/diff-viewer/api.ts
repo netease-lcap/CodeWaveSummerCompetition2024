@@ -47,5 +47,41 @@ namespace extensions.library_fdddf_diff.viewComponents {
     })
     diffType: 'line' | 'char' | 'word' = 'line';
 
+    @Prop({
+      title: '删除文本背景色',
+      description: '删除文本背景色',
+      setter: {
+        concept: 'InputSetter'
+      }
+    })
+    delBackgroundColor: nasl.core.String = '#fbcaca';
+
+    @Prop({
+      title: '删除文本字体色',
+      description: '删除文本字体色',
+      setter: {
+        concept: 'InputSetter'
+      }
+    })
+    delColor: nasl.core.String = '#333';
+
+    @Prop({
+      title: '添加文本背景色',
+      description: '添加文本背景色',
+      setter: {
+        concept: 'InputSetter'
+      }
+    })
+    insBackgroundColor: nasl.core.String = '#d4fcbc';
+
+    @Prop({
+      title: '添加文本字体色',
+      description: '添加文本字体色',
+      setter: {
+        concept: 'InputSetter'
+      }
+    })
+    insColor: nasl.core.String = '#333';
+
   }
 }
