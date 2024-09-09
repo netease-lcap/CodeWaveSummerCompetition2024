@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=com.netease.lib.redistemplatetool.util.RedisToolEnvironmentMapperPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.netease.lib.redistemplatetool.spring.RedisSpringEnvironmentConfiguration

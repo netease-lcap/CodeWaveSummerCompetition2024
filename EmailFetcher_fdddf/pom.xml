@@ -13,7 +13,7 @@
     <artifactId>EmailFetcher</artifactId>
     <name>EmailFetcher</name>
     <description>邮件拉取工具，支持IMAP/POP3协议；支持邮件附件保存到OSS</description>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -80,9 +80,11 @@
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.3.0</version>
+                <version>1.4.1</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
+                    <rewrittenGroupId>com.netease.lib</rewrittenGroupId>
+                    <rewriteVersion>false</rewriteVersion>
                 </configuration>
                 <executions>
                     <execution>
@@ -91,7 +93,15 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>8</source><target>8</target></configuration></plugin>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

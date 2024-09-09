@@ -193,6 +193,10 @@ public class ReflectionUtils {
                 // BigDecimal类型
                 return (T) new BigDecimal(value);
             } else if (LocalDate.class.isAssignableFrom(tClass)) {
+
+                // 将日期转换为标准格式 yyyy/MM/dd 不足位补0
+                value = FormatDateStringUtils.format(value);
+
                 // LocalDate类型
                 if (value.indexOf("/") >= 0) {
                     return (T) LocalDate.parse(value, dateFormatter2);

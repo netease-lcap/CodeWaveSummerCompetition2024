@@ -1,0 +1,3 @@
+dubboApplicationName: xxx
+dubboRegistryAddress: zookeeper://xxx
+

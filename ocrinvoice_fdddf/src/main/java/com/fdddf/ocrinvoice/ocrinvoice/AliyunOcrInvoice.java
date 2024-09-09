@@ -39,7 +39,11 @@ public class AliyunOcrInvoice {
             System.out.println(response.toString());
 
             String bodyString = EntityUtils.toString(response.getEntity());
-            return JSONObject.toJavaObject(JSON.parseObject(bodyString), OcrInvoiceResponse.class);
+            OcrInvoiceResponse ocrInvoiceResponse = JSONObject.toJavaObject(JSON.parseObject(bodyString), OcrInvoiceResponse.class);
+            if (ocrInvoiceResponse == null) {
+                log.error("ocrInvoiceResponse is null,response:{}", response);
+            }
+            return ocrInvoiceResponse;
         } catch (Exception e) {
             log.error("request error", e);
             throw new RuntimeException(e);
