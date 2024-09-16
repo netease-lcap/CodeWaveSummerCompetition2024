@@ -8,7 +8,7 @@
 1. `threadSleep(Integer millisecond)`：
   - 作用：使当前线程暂停执行指定的毫秒数。
   - 参数：`millisecond`，表示要暂停的时间（以毫秒为单位）。
-  - 返回值：如果线程成功暂停，返回`true`；如果暂停失败（例如，由于中断），则记录错误日志并返回`false`。
+  - 返回值：线程成功暂停后，返回`true`；如果暂停失败（例如，由于中断），则记录错误日志并返回`false`。
   - 异常处理：如果线程在睡眠期间被中断，会捕获`InterruptedException`异常，记录错误日志，并重新设置中断状态。
 
 2. `waitThread(String lock)`：
