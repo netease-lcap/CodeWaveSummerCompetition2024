@@ -14,7 +14,7 @@
 2. `waitThread(String lock)`：
   - 作用：使当前线程在指定的锁对象上等待，直到被唤醒或线程被中断。
   - 参数：`lock`，一个字符串对象，用作同步锁。
-  - 返回值：如果线程成功被唤醒，返回`true`；如果等待过程中发生中断，记录错误日志并返回`false`。
+  - 返回值：线程成功被唤醒，返回`true`；如果等待过程中发生中断，记录错误日志并返回`false`。
   - 注意：使用`String.intern()`确保不同的字符串实例指向同一个锁对象。
 
 3. `waitThreadWithTimeout(String lock, Long timeout)`：
