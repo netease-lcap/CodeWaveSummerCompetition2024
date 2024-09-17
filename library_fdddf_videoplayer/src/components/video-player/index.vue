@@ -6,7 +6,6 @@
 <script>
 
 import ArtPlayerComponent from './ArtPlayer.vue';
-import artplayerPluginVttThumbnail from 'artplayer-plugin-vtt-thumbnail';
 import artplayerPluginChapter from 'artplayer-plugin-chapter';
 
 
@@ -23,10 +22,6 @@ export default {
     poster: {
       type: String,
       default: 'https://artplayer.org/assets/sample/poster.jpg'
-    },
-    vtt: {
-      type: String,
-      default: 'https://artplayer.org/assets/sample/bbb-thumbnails.vtt',
     },
     theme: {
       type: String,
@@ -64,6 +59,22 @@ export default {
       type: String,
       default: '100vh',
     },
+    thumbnails_url: {
+      type: String,
+      default: 'https://artplayer.org/assets/sample/thumbnails.png'
+    },
+    thumbnails_number: {
+      type: Number,
+      default: 45
+    },
+    thumbnails_column: {
+      type: Number,
+      default: 10
+    },
+    subtitle_url: {
+      type: String,
+      default: 'https://artplayer.org/assets/sample/subtitle.srt',
+    }
   },
   emits: ['pause', 'play', 'seek', 'muted', 'fullscreen', 'fullscreenWeb', 'pip'],
   data() {
@@ -72,6 +83,7 @@ export default {
       defaultPlayerOptions: {
         url: 'https://artplayer.org/assets/sample/video.mp4',
         poster: 'https://artplayer.org/assets/sample/poster.jpg',
+        subtitle: {},
         volume: 0.5,
         isLive: false,
         muted: false,
@@ -95,6 +107,9 @@ export default {
         playsInline: true,
         autoPlayback: true,
         airplay: true,
+        moreVideoAttr: {
+          crossOrigin: 'anonymous',
+        },
         theme: '#23ade5',
         lang: navigator.language.toLowerCase(),
         plugins: [],
@@ -116,14 +131,6 @@ export default {
     poster(newPoster, oldPoster) {
       console.log(`Poster changed from ${oldPoster} to ${newPoster}`);
       this.updatePlayerPoster(newPoster);
-    },
-    vtt(newVtt, oldVtt) {
-      console.log(`VTT changed from ${oldVtt} to ${newVtt}`);
-      this.updatePlayerVtt(newVtt);
-    },
-    chapters(newChapters, oldChapters) {
-      console.log('Chapters changed:', oldChapters, '->', newChapters);
-      this.updatePlayerChapters(newChapters);
     },
     highlight(newHighlight, oldHighlight) {
       console.log('Highlight changed:', oldHighlight, '->', newHighlight);
@@ -151,10 +158,12 @@ export default {
         autoplay: this.autoplay,
         theme: this.theme,
         highlight:  this.highlight,
+        thumbnails: {
+            url: this.thumbnails_url,
+            number: this.thumbnails_number,
+            column: this.thumbnails_column,
+        },
         plugins: [
-          artplayerPluginVttThumbnail({
-            vtt: this.vtt,
-          }),
           artplayerPluginChapter({
             chapters: this.chapters
           }),
@@ -207,26 +216,6 @@ export default {
         this.playerInstance.poster = newPoster;
       }
     },
-    /**
-     * 设置字幕
-     * @param newVtt vtt字幕地址
-     */
-    updatePlayerVtt(newVtt) {
-      if (this.playerInstance) {
-        // Update the VTT plugin or reload subtitles
-        this.playerInstance.plugins.vtt = newVtt; // Assuming the plugin is managed this way
-      }
-    },
-    /**
-     * 设置章节
-     * @param newChapters 
-     */
-    updatePlayerChapters(newChapters) {
-      if (this.playerInstance) {
-        // Update chapters plugin or reload chapters
-        this.playerInstance.plugins.chapters = newChapters; // Assuming the plugin is managed this way
-      }
-    },
     updatePlayerHighlight(newHighlight) {
       if (this.playerInstance) {
         this.playerInstance.highlight = newHighlight;
@@ -241,45 +230,59 @@ export default {
         this.playerInstance.theme = newTheme; // Update player theme dynamically
       }
     },
-
+    updatePlayerSubtitle(newSubtitleUrl) {
+      if (this.playerInstance) {
+        this.playerInstance.subtitle.url = newSubtitleUrl;
+      }
+    },
+    updatePlayerThumbnails(newThumbnailsUrl, newThumbnailsNumber, newThumbnailsColumn) {
+      if (this.playerInstance) {
+        this.playerInstance.thumbnails.url = newThumbnailsUrl;
+        this.playerInstance.thumbnails.number = newThumbnailsNumber;
+        this.playerInstance.thumbnails.column = newThumbnailsColumn;
+      }
+    },
     getInstance(art) {
-      console.log(art)
       this.playerInstance = art;
 
       art.on('pause', () => {
-          console.info('pause');
-          this.$emit('pause');
+        console.info('pause');
+        this.$emit('pause');
       });
 
       art.on('play', () => {
-          console.info('play');
-          this.$emit('play');
+        console.info('play');
+        this.$emit('play');
       });
 
       art.on('seek', (currentTime) => {
-          console.info('seek', currentTime);
-          this.$emit('seek', currentTime);
+        console.info('seek', currentTime);
+        this.$emit('seek', currentTime);
       });
 
       art.on('muted', (state) => {
-          console.log(state);
-          this.$emit('muted', state);
+        console.log(state);
+        this.$emit('muted', state);
       });
 
       art.on('fullscreen', (state) => {
-          console.info('fullscreen', state);
-          this.$emit('fullscreen', state);
+        console.info('fullscreen', state);
+        this.$emit('fullscreen', state);
       });
 
       art.on('fullscreenWeb', (state) => {
-          console.info('fullscreenWeb', state);
-          this.$emit('fullscreenWeb', state);
+        console.info('fullscreenWeb', state);
+        this.$emit('fullscreenWeb', state);
       });
 
       art.on('pip', (state) => {
-          console.info('pip', state);
-          this.$emit('pip', state);
+        console.info('pip', state);
+        this.$emit('pip', state);
       });
+
+      art.on('reday', () => {
+        art.subtitle.url = this.subtitle_url;
+      })
     },
   },
   mounted() {
@@ -290,8 +293,8 @@ export default {
 .root {
   display: flex;
   overflow: hidden;
-  /* width: 100vh; */
-  /* height: 100vh; */
+  width: 100vh;
+  height: 100vh;
   justify-content: center;
   flex-direction: column;
   margin: 0 auto 0;
