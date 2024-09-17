@@ -72,6 +72,47 @@ namespace extensions.library_fdddf_videoplayer.viewComponents {
       })
       newPoster: nasl.core.String
     ): void {}
+
+    @Method({
+      title: '设置高亮',
+      description: '设置进度条高亮数据'
+    })
+    updatePlayerHighlight(
+      @Param({
+          title: '高亮数据',
+      })
+      newHighlight: nasl.collection.List<{ time: nasl.core.Decimal, text: nasl.core.String }>
+    ): void {}
+
+    @Method({
+      title: '设置字幕',
+      description: '设置字幕'
+    })
+    updatePlayerSubtitle(
+      @Param({
+          title: '字幕地址',
+      })
+      newSubtitleUrl: nasl.core.String
+    ): void {}
+
+    @Method({
+      title: '设置缩略图地址',
+      description: '设置缩略图地址'
+    })
+    updatePlayerThumbnails(
+      @Param({
+          title: '缩略图地址',
+      })
+      newThumbnailsUrl: nasl.core.String,
+      @Param({
+          title: '缩略图数量',
+      })
+      newThumbnailsNumber: nasl.core.Integer,
+      @Param({
+          title: '缩略图列数',
+      })
+      newThumbnailsColumn: nasl.core.Integer
+    ): void {}
   }
 
   export class VideoPlayerOptions extends ViewComponentOptions {
@@ -96,19 +137,48 @@ namespace extensions.library_fdddf_videoplayer.viewComponents {
     poster: nasl.core.String = '';
 
     @Prop({
-      title: '字幕缩略图地址',
-      description: '视频字幕地址, vtt格式',
+      title: '缩略图地址',
+      description: '缩略图地址',
       sync: true,
       setter: {
         concept: 'InputSetter'
       }
     })
-    vtt: nasl.core.String = '';
+    thumbnails_url: nasl.core.String = '';
+
+    @Prop({
+      title: '缩略图数量',
+      description: '缩略图数量',
+      sync: true,
+      setter: {
+        concept: 'NumberInputSetter',
+      }
+    })
+    thumbnails_number: nasl.core.Integer;
+
+    @Prop({
+      title: '缩略图列数',
+      description: '缩略图列数',
+      sync: true,
+      setter: {
+        concept: 'NumberInputSetter',
+      }
+    })
+    thumbnails_column: nasl.core.Integer = 10;
+
+    @Prop({
+      title: '字幕地址',
+      description: '字幕URL地址',
+      sync: true,
+      setter: {
+        concept: 'InputSetter',
+      }
+    })
+    subtitle_url: nasl.core.String;
 
     @Prop({
       title: '视频章节数据源',
-      description: '数据源 如 [{ start: 0, end: 18, title: \'One more chance\' },],',
-      designerValue: [{ start: 0, end: 18, title: 'One more chance' }],
+      description: '数据源 如 [{ start: 0, end: 18, title: "One more chance" },],',
       sync: true,
       setter: {
         concept: 'InputSetter'
@@ -119,8 +189,7 @@ namespace extensions.library_fdddf_videoplayer.viewComponents {
     @Prop({
       title: '进度条高亮数据',
       sync: true,
-      description: '数据源 如 [{ time: 18, text: \'One more chance\' },]',
-      designerValue: [{ time: 15, text: '今天早上8点，我收到了一条短信。' },{ time: 30, text: '我打开了浏览器，访问了百度。' }],
+      description: '数据源 如 [{ time: 18, text: "One more chance"},]',
       setter: {
         concept: 'InputSetter'
       }
