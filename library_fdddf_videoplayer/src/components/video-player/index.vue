@@ -53,7 +53,7 @@ export default {
     },
     width: {
       type: String,
-      default: '100vh',
+      default: '100vw',
     },
     height: {
       type: String,
@@ -293,7 +293,7 @@ export default {
 .root {
   display: flex;
   overflow: hidden;
-  width: 100vh;
+  width: 100vw;
   height: 100vh;
   justify-content: center;
   flex-direction: column;
