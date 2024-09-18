@@ -40,6 +40,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public String setCache(String key, String value, Long expireAfterWriteSeconds) {
+        assertNotNull(key, value, expireAfterWriteSeconds);
         cache.put(key, value, expireAfterWriteSeconds);
         return value;
     }
@@ -52,6 +53,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public String getCache(String key) {
+        assertNotNull(key);
         return cache.get(key);
     }
 
@@ -59,7 +61,8 @@ public class JvmCacheUtil {
      * 获取缓存，缓存不存在则执行function， 并将查询的值放到缓存中
      */
     @NaslLogic
-    public String getIsNullElseFromDBAndSet(String key, Long expireAfterWriteSeconds, Function<String, String> functionStr) {
+    public String getOrComputeAndSet(String key, Long expireAfterWriteSeconds, Function<String, String> functionStr) {
+        assertNotNull(key, expireAfterWriteSeconds, functionStr);
         String value = getCache(key);
         if (value != null) {
             return value;
@@ -80,6 +83,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean isExpired(String key) {
+        assertNotNull(key);
         return cache.isExpired(key);
     }
 
@@ -90,6 +94,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean invalidate(String key) {
+        assertNotNull(key);
         cache.invalidate(key);
         return true;
     }
@@ -111,5 +116,15 @@ public class JvmCacheUtil {
         return cache.getAllKeys();
     }
 
+    private void assertNotNull(Object object) {
+        if (null == object) {
+            throw new RuntimeException("INPUT_INVALID");
+        }
+    }
 
+    private void assertNotNull(Object... objects){
+        for (Object object : objects) {
+            assertNotNull(object);
+        }
+    }
 }
