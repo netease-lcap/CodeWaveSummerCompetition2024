@@ -1,5 +1,7 @@
+import JxtRate from './jxt-rate';
 // COMPONENT IMPORTS
 
 export {
-  // COMPONENT EXPORTS
+    JxtRate,
+// COMPONENT EXPORTS
 };
