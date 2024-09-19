@@ -1,0 +1,183 @@
+{
+    "name": "library_tilemap",
+    "title": "瓦片图浏览器",
+    "description": "瓦片图渲染",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "1.0.2",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "mapviewer",
+                    "title": "tilemapviewer",
+                    "category": "library_tilemap(瓦片图浏览器)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<mapviewer></mapviewer>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "default": "http://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+                            "description": "XYZ瓦片地址",
+                            "sync": true,
+                            "model": true
+                        },
+                        {
+                            "name": "zoomLevel",
+                            "type": "number",
+                            "default": 3,
+                            "description": "默认缩放等级",
+                            "sync": true
+                        },
+                        {
+                            "name": "maxZoom",
+                            "type": "number",
+                            "default": 18,
+                            "description": "最大缩放等级"
+                        },
+                        {
+                            "name": "minZoom",
+                            "type": "number",
+                            "default": 3,
+                            "description": "最小缩放等级"
+                        },
+                        {
+                            "name": "tileSize",
+                            "type": "number",
+                            "default": 256,
+                            "description": "瓦片大小"
+                        },
+                        {
+                            "name": "width",
+                            "type": "number",
+                            "default": 0,
+                            "description": "地图宽度, 0为100%"
+                        },
+                        {
+                            "name": "height",
+                            "type": "number",
+                            "default": 400,
+                            "description": "地图高度, 默认400"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "mapviewer",
+                    "title": "tilemapviewer",
+                    "category": "library_tilemap(瓦片图浏览器)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<mapviewer></mapviewer>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "default": "http://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+                            "description": "XYZ瓦片地址",
+                            "sync": true,
+                            "model": true
+                        },
+                        {
+                            "name": "zoomLevel",
+                            "type": "number",
+                            "default": 3,
+                            "description": "默认缩放等级",
+                            "sync": true
+                        },
+                        {
+                            "name": "maxZoom",
+                            "type": "number",
+                            "default": 18,
+                            "description": "最大缩放等级"
+                        },
+                        {
+                            "name": "minZoom",
+                            "type": "number",
+                            "default": 3,
+                            "description": "最小缩放等级"
+                        },
+                        {
+                            "name": "tileSize",
+                            "type": "number",
+                            "default": 256,
+                            "description": "瓦片大小"
+                        },
+                        {
+                            "name": "width",
+                            "type": "number",
+                            "default": 0,
+                            "description": "地图宽度, 0为100%"
+                        },
+                        {
+                            "name": "height",
+                            "type": "number",
+                            "default": 400,
+                            "description": "地图高度, 默认400"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "annotations": [],
+    "summary": {
+        "name": "library_tilemap",
+        "title": "瓦片图浏览器",
+        "version": "1.0.2",
+        "description": "瓦片图渲染",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "mapviewer",
+                        "title": "tilemapviewer"
+                    }
+                ],
+                "logics": []
+            },
+            {
+                "type": "h5",
+                "viewComponents": [
+                    {
+                        "name": "mapviewer",
+                        "title": "tilemapviewer"
+                    }
+                ],
+                "logics": []
+            }
+        ],
+        "annotations": []
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

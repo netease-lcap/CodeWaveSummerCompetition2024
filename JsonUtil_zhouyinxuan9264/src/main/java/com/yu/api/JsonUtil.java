@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 public class JsonUtil {
-    private static final Logger log = LoggerFactory.getLogger(JsonUtil.class);
+    private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     /**
      * 将xml 字符串转成json字符串

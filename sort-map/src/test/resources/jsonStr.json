@@ -1,0 +1,66 @@
+{
+  "alipayTradeParams": {
+    "extend_params": {
+      "DYNAMIC_TOKEN_OUT_BIZ_NO": "2024015466881",
+      "pdSubBizScene": "enterprisePay"
+    },
+    "query_options": [
+      "fund_bill_list",
+      "voucher_detail_list",
+      "discount_goods_detail",
+      "enterprise_pay_info"
+    ],
+    "goods_detail": [
+      {
+        "goods_name": "0.01元菜",
+        "quantity": 1,
+        "price": 0.01,
+        "goods_id": "0123214"
+      }
+    ]
+  },
+  "productCode": "FACE_TO_FACE_PAYMENT",
+  "businessParams": "{\"iot_pay_action\":\"online_face_pay\"}",
+  "terminalParams": "{\"terminalType\":\"IOT\",\"signature\":\"ddddddddddddddddddddd\",\"apdidToken\":\"eeeeeeeeeeeeeeeeeeeeee\",\"hardToken\":\"fgssssssssssssssssssssss\",\"time\":\"1716443264\",\"bizCode\":\"11000100020002200021\",\"bizTid\":\"yyyyyyyyyyyyyyyyyyyyyyyyyyy\",\"din\":\"ddddddddddddddddddd\",\"authCode\":\"vvvvvvvvvvvvvvvvvvvvvvvvvvv\",\"totalAmount\":\"0.01\",\"signedKeys\":\"authCode,totalAmount,apdidToken,hardToken,time,bizCode,bizTid,din\"}",
+  "expire": "60s",
+  "pay_code": "abctest",
+  "sign": "abcdsdasdasd",
+  "to": "alipayFace:1",
+  "title": "智盘消费-消费机-支付宝人脸",
+  "seq": "209178646356487",
+  "sovellTradeParams": {
+    "shop_id": 107,
+    "oper": "zyy",
+    "sn": "123",
+    "payMent": [
+      {
+        "accountId": 12,
+        "amount": 12,
+        "payType": "12",
+        "orderId": 12,
+        "accountType": 123456,
+        "id": 1,
+        "status": "123"
+      }
+    ],
+    "term_id": 203,
+    "card_type": 2,
+    "pords": [
+      {
+        "cate": 0,
+        "uid": "",
+        "price": 0.01,
+        "qty": 1,
+        "name": "0.01元菜",
+        "amt": 0.01,
+        "weight": 0,
+        "pid": 0,
+        "window": 0,
+        "type": 0,
+        "pricer": 0
+      }
+    ],
+    "card_id": "20240529",
+    "d2_term_sn": "DA75229U40247"
+  }
+}

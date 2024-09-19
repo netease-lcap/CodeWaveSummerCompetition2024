@@ -9,9 +9,11 @@
         <version>2.2.9.RELEASE</version><!--与当前制品应用默认版本统一-->
     </parent>
 
+    <name>IDUtil</name>
+    <description>ID生成工具包</description>
     <groupId>com.fdddf</groupId>
     <artifactId>IDUtil</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.4</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -33,11 +35,6 @@
             <systemPath>${project.basedir}/jar/nasl-metadata-collector-0.7.0.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>
@@ -47,30 +44,17 @@
             <artifactId>yitter-idgenerator</artifactId>
             <version>1.0.6</version>
         </dependency>
-        <!--制品应用使用Springboot框架，父应用引用了的包，为了防止版本冲突，scope可设置为provided-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.3.0</version>
+                <version>1.4.1</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
+                    <rewrittenGroupId>com.netease.lib</rewrittenGroupId>
+                    <rewriteVersion>false</rewriteVersion>
                 </configuration>
                 <executions>
                     <execution>

@@ -1,0 +1,521 @@
+{
+    "name": "cw_office_sdk",
+    "title": "文档SDK",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "1.2.6",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-doc-preview",
+                    "title": "doc预览",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-doc-preview></cw-doc-preview>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "链接地址",
+                            "type": "string",
+                            "default": "请在这里编写代码",
+                            "description": "需要传入的值"
+                        },
+                        {
+                            "name": "ignoreWidth",
+                            "title": "禁用页面的渲染宽度",
+                            "type": "boolean",
+                            "default": false,
+                            "description": "禁用页面的渲染宽度",
+                            "model": false,
+                            "bindHide": true,
+                            "sync": false
+                        },
+                        {
+                            "name": "ignoreHeight",
+                            "title": "禁用页面的渲染高度",
+                            "type": "boolean",
+                            "default": false,
+                            "description": "禁用页面的渲染高度",
+                            "model": false,
+                            "bindHide": true,
+                            "sync": false
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-pdf-editor",
+                    "title": "pdf编辑器",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-pdf-editor>\n  <u-button flag=\"large-file-uploader-button\" color=\"primary\" icon=\"upload\">选择PDF</u-button>\n</cw-pdf-editor>\n</template>"
+                        }
+                    ],
+                    "slots": [
+                        {
+                            "name": "default",
+                            "concept": "Slot",
+                            "description": "插入文本或 HTML。"
+                        },
+                        {
+                            "name": "pdf",
+                            "concept": "Slot",
+                            "description": "插入上传PDF文件按钮"
+                        },
+                        {
+                            "name": "image",
+                            "concept": "Slot",
+                            "description": "插入上传图片文件按钮"
+                        }
+                    ],
+                    "methods": [
+                        {
+                            "name": "savePDF",
+                            "description": "保存文件",
+                            "params": []
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-pdf-preview",
+                    "title": "pdf预览",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-pdf-preview value=\"http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf\"></cw-pdf-preview>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "链接地址",
+                            "type": "string",
+                            "default": "请在这里编写代码",
+                            "description": "需要传入的值"
+                        },
+                        {
+                            "name": "panZoom",
+                            "title": "是否开启缩放",
+                            "type": "boolean",
+                            "default": false,
+                            "description": "是否开启缩放"
+                        },
+                        {
+                            "name": "maxScale",
+                            "title": "最大缩放比例",
+                            "type": "number",
+                            "default": 3,
+                            "description": "最大缩放比例"
+                        },
+                        {
+                            "name": "minScale",
+                            "title": "最小缩放比例",
+                            "type": "number",
+                            "default": 1,
+                            "description": "最小缩放比例"
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-ppt-preview",
+                    "title": "ppt预览",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-ppt-preview></cw-ppt-preview>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "链接地址",
+                            "type": "string",
+                            "description": "预览的文件"
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-xlsx-preview",
+                    "title": "xlsx预览",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-xlsx-preview></cw-xlsx-preview>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "链接地址",
+                            "type": "string",
+                            "description": "预览的文件，可以是blob｜url｜arraybuffer"
+                        }
+                    ]
+                }
+            ],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "uploadPdfFirstPage",
+                    "description": "上传pdf文件的第一页",
+                    "category": "cw_office_sdk",
+                    "params": [
+                        {
+                            "name": "file",
+                            "concept": "Param",
+                            "description": "上传文件信息",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "uploadUrl",
+                            "concept": "Param",
+                            "description": "上传文件url",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-doc-preview",
+                    "title": "doc预览",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-doc-preview></cw-doc-preview>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "链接地址",
+                            "type": "string",
+                            "default": "请在这里编写代码",
+                            "description": "需要传入的值"
+                        },
+                        {
+                            "name": "ignoreWidth",
+                            "title": "禁用页面的渲染宽度",
+                            "type": "boolean",
+                            "default": false,
+                            "description": "禁用页面的渲染宽度",
+                            "model": false,
+                            "bindHide": true,
+                            "sync": false
+                        },
+                        {
+                            "name": "ignoreHeight",
+                            "title": "禁用页面的渲染高度",
+                            "type": "boolean",
+                            "default": false,
+                            "description": "禁用页面的渲染高度",
+                            "model": false,
+                            "bindHide": true,
+                            "sync": false
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-pdf-editor",
+                    "title": "pdf编辑器",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-pdf-editor>\n  <u-button flag=\"large-file-uploader-button\" color=\"primary\" icon=\"upload\">选择PDF</u-button>\n</cw-pdf-editor>\n</template>"
+                        }
+                    ],
+                    "slots": [
+                        {
+                            "name": "default",
+                            "concept": "Slot",
+                            "description": "插入文本或 HTML。"
+                        },
+                        {
+                            "name": "pdf",
+                            "concept": "Slot",
+                            "description": "插入上传PDF文件按钮"
+                        },
+                        {
+                            "name": "image",
+                            "concept": "Slot",
+                            "description": "插入上传图片文件按钮"
+                        }
+                    ],
+                    "methods": [
+                        {
+                            "name": "savePDF",
+                            "description": "保存文件",
+                            "params": []
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-pdf-preview",
+                    "title": "pdf预览",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-pdf-preview value=\"http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf\"></cw-pdf-preview>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "链接地址",
+                            "type": "string",
+                            "default": "请在这里编写代码",
+                            "description": "需要传入的值"
+                        },
+                        {
+                            "name": "panZoom",
+                            "title": "是否开启缩放",
+                            "type": "boolean",
+                            "default": false,
+                            "description": "是否开启缩放"
+                        },
+                        {
+                            "name": "maxScale",
+                            "title": "最大缩放比例",
+                            "type": "number",
+                            "default": 3,
+                            "description": "最大缩放比例"
+                        },
+                        {
+                            "name": "minScale",
+                            "title": "最小缩放比例",
+                            "type": "number",
+                            "default": 1,
+                            "description": "最小缩放比例"
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-ppt-preview",
+                    "title": "ppt预览",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-ppt-preview></cw-ppt-preview>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "链接地址",
+                            "type": "string",
+                            "description": "预览的文件"
+                        }
+                    ]
+                },
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-xlsx-preview",
+                    "title": "xlsx预览",
+                    "category": "cw_office_sdk(文档SDK)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-xlsx-preview></cw-xlsx-preview>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "value",
+                            "title": "链接地址",
+                            "type": "string",
+                            "description": "预览的文件，可以是blob｜url｜arraybuffer"
+                        }
+                    ]
+                }
+            ],
+            "logics": [
+                {
+                    "concept": "Logic",
+                    "name": "uploadPdfFirstPage",
+                    "description": "上传pdf文件的第一页",
+                    "category": "cw_office_sdk",
+                    "params": [
+                        {
+                            "name": "file",
+                            "concept": "Param",
+                            "description": "上传文件信息",
+                            "required": true,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        },
+                        {
+                            "name": "uploadUrl",
+                            "concept": "Param",
+                            "description": "上传文件url",
+                            "required": false,
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "concept": "Return",
+                            "typeAnnotation": {
+                                "concept": "TypeAnnotation",
+                                "typeKind": "primitive",
+                                "typeName": "String",
+                                "typeNamespace": "nasl.core"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "name": "cw_office_sdk",
+        "title": "文档SDK",
+        "version": "1.2.6",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "cw-doc-preview",
+                        "title": "doc预览"
+                    },
+                    {
+                        "name": "cw-pdf-editor",
+                        "title": "pdf编辑器"
+                    },
+                    {
+                        "name": "cw-pdf-preview",
+                        "title": "pdf预览"
+                    },
+                    {
+                        "name": "cw-ppt-preview",
+                        "title": "ppt预览"
+                    },
+                    {
+                        "name": "cw-xlsx-preview",
+                        "title": "xlsx预览"
+                    }
+                ],
+                "logics": [
+                    {
+                        "name": "uploadPdfFirstPage",
+                        "description": "上传pdf文件的第一页"
+                    }
+                ]
+            },
+            {
+                "type": "h5",
+                "viewComponents": [
+                    {
+                        "name": "cw-doc-preview",
+                        "title": "doc预览"
+                    },
+                    {
+                        "name": "cw-pdf-editor",
+                        "title": "pdf编辑器"
+                    },
+                    {
+                        "name": "cw-pdf-preview",
+                        "title": "pdf预览"
+                    },
+                    {
+                        "name": "cw-ppt-preview",
+                        "title": "ppt预览"
+                    },
+                    {
+                        "name": "cw-xlsx-preview",
+                        "title": "xlsx预览"
+                    }
+                ],
+                "logics": [
+                    {
+                        "name": "uploadPdfFirstPage",
+                        "description": "上传pdf文件的第一页"
+                    }
+                ]
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

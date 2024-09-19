@@ -2,7 +2,7 @@
   "name": "lxy_turning_step_bar_library",
   "title": "转弯步骤条",
   "description": "",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "main": "./index.js",
   "author": "",
   "repository": "",
@@ -48,6 +48,9 @@
   "template": {
     "inited": true
   },
-  "dependencies": {
-  }
+  "dependencies": {},
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "4f3bf7b65046556e94b14ec4dd5df914"
 }

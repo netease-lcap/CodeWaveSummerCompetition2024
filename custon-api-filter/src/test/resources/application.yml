@@ -1,0 +1,6 @@
+
+extensions.custon_api_filter.custom:
+  redisHost: xxx
+  redisPort: xx
+  redisPassword: xx
+  redisDatabase: x

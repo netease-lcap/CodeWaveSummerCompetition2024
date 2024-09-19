@@ -1,0 +1,299 @@
+{
+    "name": "cw_watermark",
+    "title": "水印",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "1.0.0",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "watermark",
+                    "title": "全局图片水印",
+                    "category": "cw_watermark(水印)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<watermark\n  type=\"text\"\n  color=\"red\"\n  text=\"https://pic.php1.cn/cover/small/3cccf/15579/882/94399448c89793a2.png\"\n  :opacity=\"0.1\"\n></watermark>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "type",
+                            "type": "string",
+                            "default": "image",
+                            "title": "水印类型",
+                            "options": [
+                                {
+                                    "value": "image",
+                                    "title": "图片水印"
+                                },
+                                {
+                                    "value": "text",
+                                    "title": "文字水印"
+                                }
+                            ],
+                            "description": "请选择水印类型",
+                            "group": "展示属性"
+                        },
+                        {
+                            "name": "text",
+                            "type": "string",
+                            "default": "",
+                            "title": "文字水印的内容",
+                            "description": "文字水印的内容",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "color",
+                            "type": "string",
+                            "default": "#000",
+                            "title": "文字水印的颜色",
+                            "description": "文字水印的颜色",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "fontSize",
+                            "type": "number",
+                            "default": 16,
+                            "title": "文字水印的字体大小",
+                            "description": "文字水印的字体大小",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cSpace",
+                            "type": "number",
+                            "default": 20,
+                            "title": "文字水印的水平间距",
+                            "description": "文字水印的水平间距",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "vSpace",
+                            "type": "number",
+                            "default": 50,
+                            "title": "文字水印的垂直间距",
+                            "description": "文字水印的垂直间距",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "src",
+                            "type": "image",
+                            "compType": "linkInput",
+                            "default": "",
+                            "title": "水印图片的url",
+                            "description": "水印图片的url",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "image"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "opacity",
+                            "type": "number",
+                            "title": "水印图片的透明度",
+                            "description": "水印图片的透明度",
+                            "group": "展示属性"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "watermark",
+                    "title": "全局图片水印",
+                    "category": "cw_watermark(水印)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<watermark\n  type=\"text\"\n  color=\"red\"\n  text=\"https://pic.php1.cn/cover/small/3cccf/15579/882/94399448c89793a2.png\"\n  :opacity=\"0.1\"\n></watermark>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "type",
+                            "type": "string",
+                            "default": "image",
+                            "title": "水印类型",
+                            "options": [
+                                {
+                                    "value": "image",
+                                    "title": "图片水印"
+                                },
+                                {
+                                    "value": "text",
+                                    "title": "文字水印"
+                                }
+                            ],
+                            "description": "请选择水印类型",
+                            "group": "展示属性"
+                        },
+                        {
+                            "name": "text",
+                            "type": "string",
+                            "default": "",
+                            "title": "文字水印的内容",
+                            "description": "文字水印的内容",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "color",
+                            "type": "string",
+                            "default": "#000",
+                            "title": "文字水印的颜色",
+                            "description": "文字水印的颜色",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "fontSize",
+                            "type": "number",
+                            "default": 16,
+                            "title": "文字水印的字体大小",
+                            "description": "文字水印的字体大小",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cSpace",
+                            "type": "number",
+                            "default": 20,
+                            "title": "文字水印的水平间距",
+                            "description": "文字水印的水平间距",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "vSpace",
+                            "type": "number",
+                            "default": 50,
+                            "title": "文字水印的垂直间距",
+                            "description": "文字水印的垂直间距",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "src",
+                            "type": "image",
+                            "compType": "linkInput",
+                            "default": "",
+                            "title": "水印图片的url",
+                            "description": "水印图片的url",
+                            "group": "展示属性",
+                            "dependency": [
+                                {
+                                    "type": "image"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "opacity",
+                            "type": "number",
+                            "title": "水印图片的透明度",
+                            "description": "水印图片的透明度",
+                            "group": "展示属性"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "cw_watermark",
+        "title": "水印",
+        "version": "1.0.0",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "watermark",
+                        "title": "全局图片水印"
+                    }
+                ],
+                "logics": []
+            },
+            {
+                "type": "h5",
+                "viewComponents": [
+                    {
+                        "name": "watermark",
+                        "title": "全局图片水印"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

@@ -1,0 +1,171 @@
+{
+    "name": "cw_signature_view",
+    "title": "签名板展示组件",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "1.0.1",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-signature-view",
+                    "title": "签名板组件",
+                    "category": "cw_signature_view(签名板展示组件)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-signature-view></cw-signature-view>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "openSmooth",
+                            "title": "是否开启笔锋",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "是否开启笔锋"
+                        },
+                        {
+                            "name": "penColor",
+                            "title": "画笔颜色",
+                            "type": "string",
+                            "default": "black",
+                            "description": "设置画笔颜色"
+                        },
+                        {
+                            "name": "penWidth",
+                            "title": "画笔宽度",
+                            "type": "number",
+                            "default": 2,
+                            "description": "设置画笔宽度"
+                        },
+                        {
+                            "name": "bgColor",
+                            "title": "画布背景颜色",
+                            "type": "string",
+                            "default": "#F8F9FA",
+                            "description": "设置画布背景颜色"
+                        }
+                    ],
+                    "methods": [
+                        {
+                            "name": "getSignature",
+                            "title": "获取签名板生成图片",
+                            "description": "获取签名板生成图片"
+                        },
+                        {
+                            "name": "clearSignature",
+                            "title": "清除签名板生成图片",
+                            "description": "清除签名板生成图片"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        },
+        {
+            "concept": "FrontendLibrary",
+            "name": "h5",
+            "type": "h5",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "cw-signature-view",
+                    "title": "签名板组件",
+                    "category": "cw_signature_view(签名板展示组件)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<cw-signature-view></cw-signature-view>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "openSmooth",
+                            "title": "是否开启笔锋",
+                            "type": "boolean",
+                            "default": true,
+                            "description": "是否开启笔锋"
+                        },
+                        {
+                            "name": "penColor",
+                            "title": "画笔颜色",
+                            "type": "string",
+                            "default": "black",
+                            "description": "设置画笔颜色"
+                        },
+                        {
+                            "name": "penWidth",
+                            "title": "画笔宽度",
+                            "type": "number",
+                            "default": 2,
+                            "description": "设置画笔宽度"
+                        },
+                        {
+                            "name": "bgColor",
+                            "title": "画布背景颜色",
+                            "type": "string",
+                            "default": "#F8F9FA",
+                            "description": "设置画布背景颜色"
+                        }
+                    ],
+                    "methods": [
+                        {
+                            "name": "getSignature",
+                            "title": "获取签名板生成图片",
+                            "description": "获取签名板生成图片"
+                        },
+                        {
+                            "name": "clearSignature",
+                            "title": "清除签名板生成图片",
+                            "description": "清除签名板生成图片"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "cw_signature_view",
+        "title": "签名板展示组件",
+        "version": "1.0.1",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "cw-signature-view",
+                        "title": "签名板组件"
+                    }
+                ],
+                "logics": []
+            },
+            {
+                "type": "h5",
+                "viewComponents": [
+                    {
+                        "name": "cw-signature-view",
+                        "title": "签名板组件"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}

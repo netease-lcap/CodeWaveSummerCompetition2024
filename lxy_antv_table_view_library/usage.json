@@ -1,0 +1,116 @@
+{
+    "name": "lxy_antv_table_view_library",
+    "title": "antv依赖库",
+    "description": "",
+    "specVersion": "1.0.0",
+    "type": "module",
+    "subType": "extension",
+    "version": "0.1.5",
+    "frontends": [
+        {
+            "concept": "FrontendLibrary",
+            "name": "pc",
+            "type": "pc",
+            "viewComponents": [
+                {
+                    "concept": "ViewComponent",
+                    "name": "antv-table-view",
+                    "title": "合并表格组件",
+                    "category": "lxy_antv_table_view_library(antv依赖库)",
+                    "blocks": [
+                        {
+                            "title": "基本用法",
+                            "description": "",
+                            "code": "<template>\n<antv-table-view></antv-table-view>\n</template>"
+                        }
+                    ],
+                    "attrs": [
+                        {
+                            "name": "dataSource",
+                            "title": "数据源",
+                            "type": "object",
+                            "description": "表格需要展示数据"
+                        },
+                        {
+                            "name": "fields",
+                            "title": "表头字段",
+                            "type": "object",
+                            "description": "表头相关设置rows代表行头，columns代表列头，values 代表取的值。 如{rows:['province', 'city'],'columns':['type', 'sub_type'], 'values':['number']}"
+                        },
+                        {
+                            "name": "meta",
+                            "title": "字段映射",
+                            "type": "array",
+                            "description": "字段与label的映射关系,如 [{field:'number',name:'数量'}]"
+                        },
+                        {
+                            "name": "hierarchyType",
+                            "title": "表格类型",
+                            "default": "gird",
+                            "type": "string",
+                            "options": [
+                                {
+                                    "title": "卡片",
+                                    "value": "gird"
+                                },
+                                {
+                                    "title": "树形",
+                                    "value": "tree"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "width",
+                            "title": "宽度",
+                            "type": "number",
+                            "description": "表格宽度"
+                        },
+                        {
+                            "name": "height",
+                            "title": "高度",
+                            "type": "number",
+                            "description": "表格高度"
+                        },
+                        {
+                            "name": "cellWidth",
+                            "title": "单元格宽度",
+                            "type": "number",
+                            "description": "表格宽度"
+                        },
+                        {
+                            "name": "cellHeight",
+                            "title": "单元格高度",
+                            "type": "number",
+                            "description": "表格高度"
+                        }
+                    ]
+                }
+            ],
+            "logics": []
+        }
+    ],
+    "summary": {
+        "name": "lxy_antv_table_view_library",
+        "title": "antv依赖库",
+        "version": "0.1.5",
+        "description": "",
+        "frontends": [
+            {
+                "type": "pc",
+                "viewComponents": [
+                    {
+                        "name": "antv-table-view",
+                        "title": "合并表格组件"
+                    }
+                ],
+                "logics": []
+            }
+        ]
+    },
+    "compilerInfoMap": {
+        "js": {
+            "prefix": "extension"
+        }
+    },
+    "ideVersion": "3.2"
+}
