@@ -19,6 +19,6 @@ export const Example1 = {
     template: '<jxt-rate v-bind="$props"></jxt-rate>',
   }),
   args: {
-    text: 'Hello world',
+    value: 1,
   },
 };

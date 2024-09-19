@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import { createVuePlugin as vue2 } from '@lcap/vite-plugin-vue2';
 import { createGenScopedName, lcapPlugin } from '@lcap/builder';
+import Components from 'unplugin-vue-components/vite';
+import { ElementUiResolver } from 'unplugin-vue-components/resolvers';
 
 // 设置测试运行的时区
 process.env.TZ = 'Asia/Shanghai';
@@ -12,12 +14,12 @@ export default defineConfig(({ command }) => {
   const pkgInfo = require(`${process.cwd()}/package.json`);
   return {
     plugins: [
+      Components({
+        resolvers: [ElementUiResolver()],
+      }),
       vue2({
         jsx: true,
-        jsxInclude: [
-          /.(jsx|tsx)$/,
-          /\.lcap\/.*(js|ts)$/,
-        ],
+        jsxInclude: [/.(jsx|tsx)$/, /\.lcap\/.*(js|ts)$/],
         jsxOptions: {
           vModel: true,
           functional: false,
