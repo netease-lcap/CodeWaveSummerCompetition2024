@@ -19,6 +19,6 @@ export const Example1 = {
     template: '<websocket v-bind="$props"></websocket>',
   }),
   args: {
-    url: 'https://dev-websocket-qa.app.codewave.163.com/gs-guide-websocket',
+    url: 'ws://localhost:9090/ws'
   },
 };

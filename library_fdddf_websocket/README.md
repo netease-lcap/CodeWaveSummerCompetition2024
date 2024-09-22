@@ -1,50 +1,43 @@
-# Lcap Frontend Library Demo
+# Websocket前端使用示例
 
-## 安装
+使用基于websocket的stomp协议，实现前端与后端的交互，后端可发送消息到前端。
 
-```
-npm install
-```
 
-## 开发
+## 逻辑详情
 
-```
-npm start
-```
+### connect
 
-或
+连接stomp服务端    
+入参： 无  
+出参： 无
 
-```
-npm run dev
-```
+### disconnect
 
-## 添加组件
+断开连接
 
-```
-lcap create component
-```
+入参：无  
+出参：无 
 
-## 添加逻辑
+### send
 
-```
-lcap create logic
-```
+发送消息到服务端
 
-## 构建 & 发布
+入参：  
+* body String 消息内容 json字符串 如{"content":"Zhang san","userId":1}
 
-```
-npm run build
-```
+出参：无
 
-构建完成后，将 `[packageName]@[packageVersion].zip` 文件上传到平台即可
 
-## 修改构建配置
+## 使用步骤说明
 
-在根目录下创建 `vite.config.js` 文件即可，[配置文档](https://cn.vitejs.dev/config/)
+1.  应用引用依赖库
+2.  配置应用配置参数 （无需配置）
+3. 逻辑调用示例截图
 
-## 相关资源
+![Snipaste_2024-09-22_20-57-56.jpg](Snipaste_2024-09-22_20-57-56.jpg)
 
-* 开发构建工具 [vite](https://vitejs.dev/)
-* 单元测试工具 [vitest](https://cn.vitest.dev/guide/)
-* UI demo 调试 [storybook](https://storybook.js.org/docs/get-started/install)
+## 应用演示链接
 
+[使用了本依赖库的制品应用链接]
+
+https://dev-websocket-qa.app.codewave.163.com/testwebsocket

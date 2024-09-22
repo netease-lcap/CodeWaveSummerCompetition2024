@@ -13,6 +13,6 @@ export default {
 export const Default = {
   name: '基本用法',
   render: () => ({
-    template: '<websocket url="https://dev-websocket-qa.app.codewave.163.com/gs-guide-websocket"></websocket>',
+    template: '<websocket url="ws://localhost:9090/ws"></websocket>',
   }),
 };

@@ -31,13 +31,13 @@ namespace extensions.library_fdddf_websocket.viewComponents {
 
     @Method({
       title: '发送消息',
-      description: '发送消息',
+      description: '发送消息, json序列化字符串 如{"content":"Zhang san","userId":1}',
     })
     send(
       @Param({
         title: '消息'
       })
-      message: nasl.core.String
+      body: nasl.core.String
     ): void {}
   }
 
