@@ -25,10 +25,19 @@ const feBuild = async (package) => {
   await execCommands(['npm install --force', 'npm run build'], {
     cwd,
   });
-  await execCommand('npm run usage', {
-    throwWhenStderr: false,
-    cwd,
-  });
+
+  // 检查 tsconfig.json 是否存在
+  const tsconfigPath = path.resolve(cwd, 'tsconfig.json');
+  try {
+    await fsp.access(tsconfigPath, fs.constants.F_OK);
+    console.log('tsconfig.json 存在，不执行 "npm run usage" 命令。');
+  } catch (err) {
+    // 如果 tsconfig.json 不存在，则执行 "npm run usage"
+    await execCommand('npm run usage', {
+      throwWhenStderr: false,
+      cwd,
+    });
+  }
 };
 
 const beBuild = async ({ cwd }) => {
