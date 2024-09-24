@@ -1,5 +1,6 @@
 <template>
-  <div id="xmind-container">
+  <div id="xmind-container"  :class="isIDE ? 'ide-style' : ''">
+    <img v-if="showLoading" src="https://assets.xmind.cn/www/assets/images/share/xmind-b6f6b3ca68.svg" class="xmind-logo" >
     <div v-if="showLoading" class="loading"></div>
   </div>
 </template>
@@ -9,7 +10,6 @@ export default {
   props: {
     fileUrl: {
       type: String,
-      //default: 'http://localhost:8008/中心主题.xmind',
     }
   },
   data() {
@@ -18,8 +18,12 @@ export default {
       viewer: null
     }
   },
+  computed: {
+    isIDE() {
+      return this.$env && this.$env.VUE_APP_DESIGNER;
+    },
+  },
   watch: {
-    // 监听 url 属性的变化
     fileUrl: {
       immediate: false,
       handler: 'loadXMind'
@@ -30,14 +34,13 @@ export default {
   },
   methods: {
     async loadXMind() {
-      // 显示加载动画
+     
       this.showLoading = true;
-      // 判断是否在IDE中运行
-      if(process.env.VUE_APP_DESIGNER){
-          this.fileUrl = '';
-      }
+
+      if (this.isIDE) return;
+
+      // 如果实例已存在，仅加载新的文件
       if (this.viewer) {
-        // 如果实例已存在，仅加载新的文件
         try {
           const response = await fetch(this.fileUrl);
           const file = await response.arrayBuffer();
@@ -73,7 +76,7 @@ export default {
     },
     onError(err) {
       this.showLoading = false
-      console.error('加载xmind文件出错！', err)
+      console.error('加载xmind文件出错:', err)
     }
   },
 }
@@ -86,6 +89,12 @@ export default {
   width: 100%;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.ide-style {
+  border: 1px dashed #ccc;
+  height: 300px !important;
 }
 
 .loading {
@@ -130,4 +139,11 @@ export default {
     box-shadow: 0 -20px #000;
   }
 }
+.xmind-logo {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  height: auto;
+}
 </style>
+

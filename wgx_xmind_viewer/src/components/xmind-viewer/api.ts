@@ -22,7 +22,6 @@ namespace extensions.wgx_xmind_viewer.viewComponents {
      @Prop({
       title: 'xmind文件地址',
       description: 'xmind文件地址',
-      //designerValue : 'http://localhost:8008/中心主题.xmind',
       setter: {
         concept: 'InputSetter'
       }
