@@ -19,6 +19,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Redis 连接器，可连接第三方Redis服务并执行操作
+ */
 @NaslConnector(connectorKind = "redis")
 public class RedisConnector {
     private RedisTemplate<String, String> redisTemplate;
@@ -38,6 +41,15 @@ public class RedisConnector {
         return input.replace("\\", "");
     }
 
+    /**
+     * 初始化 Redis 连接
+     *
+     * @param host     redis地址
+     * @param port     redis端口
+     * @param password redis密码
+     * @param database redis数据库
+     * @return
+     */
     @NaslConnector.Creator
     public RedisConnector initRedisTemplate(String host, Integer port, String password, Integer database) {
         RedisConnector redisTool = new RedisConnector();
@@ -62,7 +74,7 @@ public class RedisConnector {
     }
 
     /**
-     * 从redis获取
+     * 获取key对应的字符串值
      *
      * @param key
      * @return
@@ -77,7 +89,7 @@ public class RedisConnector {
     }
 
     /**
-     * 设置key
+     * 指定 key 的值为指定字符串
      *
      * @param key
      * @param value
@@ -90,7 +102,7 @@ public class RedisConnector {
     }
 
     /**
-     * 删除key
+     * 删除指定的key
      *
      * @param key
      */
@@ -102,6 +114,12 @@ public class RedisConnector {
 
     /**
      * 测试链接是否可用，如果可用，则返回 true，否则返回 false
+     *
+     * @param host     redis地址
+     * @param port     redis端口
+     * @param password redis密码
+     * @param database redis数据库
+     * @return
      */
     @NaslConnector.Tester
     public Boolean testConnection(String host, Integer port, String password, Integer database) {
@@ -119,10 +137,10 @@ public class RedisConnector {
     }
 
     /**
-     * 设置 Redis 中指定 key 的值为指定字符串，指定过期时间
+     * 指定 key 的值与过期时间，超期key自动删除（单位为秒）
      *
-     * @param key     Redis 中的键
-     * @param value   Redis 中的值
+     * @param key     要设置的键
+     * @param value   要设置的值
      * @param timeout 过期时间
      */
     @NaslConnector.Logic
@@ -132,12 +150,24 @@ public class RedisConnector {
         return ops.get(key);
     }
 
+    /**
+     * 指定 key 的对应的队列
+     *
+     * @param key
+     * @return
+     */
     @NaslConnector.Logic
     public List<String> getListValue(String key) {
         ListOperations<String, String> ops = redisTemplate.opsForList();
         return ops.range(key, 0, -1);
     }
 
+    /**
+     * 指定 key 的值的队列新增数据
+     *
+     * @param key
+     * @return
+     */
     @NaslConnector.Logic
     public List<String> setListValue(String key, List<String> value) {
         ListOperations<String, String> ops = redisTemplate.opsForList();
@@ -146,10 +176,10 @@ public class RedisConnector {
     }
 
     /**
-     * 如果 Redis 中不存在指定 key，则设置为指定字符串
+     * 若key不存在，则指定key的值
      *
-     * @param key   Redis 中的键
-     * @param value Redis 中的值
+     * @param key   要设置的键
+     * @param value 要设置的值
      * @return 如果设置成功，返回 true，否则返回 false
      */
     @NaslConnector.Logic
@@ -159,10 +189,10 @@ public class RedisConnector {
     }
 
     /**
-     * 如果 Redis 中不存在指定 key，则设置为指定字符串，并设置过期时间
+     * 若key不存在，则指定key的值，并设置过期时间（单位为秒）
      *
-     * @param key     Redis 中的键
-     * @param value   Redis 中的值
+     * @param key     要设置的键
+     * @param value   要设置的值
      * @param timeout 过期时间
      * @return 如果设置成功，返回 true，否则返回 false
      */
@@ -173,10 +203,10 @@ public class RedisConnector {
     }
 
     /**
-     * 如果 Redis 中存在指定 key，则设置为指定字符串，并设置过期时间
+     * 若key存在，则指定key的值，并设置过期时间（单位为秒）
      *
-     * @param key     Redis 中的键
-     * @param value   Redis 中的值
+     * @param key     要设置的键
+     * @param value   要设置的值
      * @param timeout 过期时间
      * @return 如果设置成功，返回 true，否则返回 false
      */
@@ -187,9 +217,9 @@ public class RedisConnector {
     }
 
     /**
-     * 将 Redis 中指定 key 的值增加指定的整数 delta
+     * 指定 key 的值增加指定的整数 delta
      *
-     * @param key   Redis 中的键
+     * @param key   要设置的键
      * @param delta 增加的整数值
      * @return 增加后的结果值
      */
@@ -200,11 +230,11 @@ public class RedisConnector {
     }
 
     /**
-     * 将多个键值对设置到 Redis 哈希表中，并返回更新后的哈希表。
+     * 将多个键值对设置到哈希表中
      *
      * @param hashKey     哈希表的键
      * @param keyValueMap 包含要设置到 Redis 哈希表中的键值对的 Map
-     * @return 表示更新后 Redis 哈希表的 Map
+     * @return 设置后哈希表的 Map
      */
     @NaslConnector.Logic
     public Map<String, String> setHashValues(String hashKey, Map<String, String> keyValueMap) {
@@ -216,7 +246,7 @@ public class RedisConnector {
     }
 
     /**
-     * 获取 Redis 哈希表中指定 key 的所有域和值
+     * 由哈希表中获取指定 key 的所有字段和值
      *
      * @param hashKey 哈希表的 key
      * @return 包含所有域和值的 Map 对象，键为域，值为对应的值
@@ -229,7 +259,7 @@ public class RedisConnector {
     }
 
     /**
-     * 从 Redis 哈希表中获取多个键对应的值，并返回一个包含这些键值对的 Map。
+     * 由哈希表中获取多个键对应的值
      *
      * @param hashKey   哈希表的键
      * @param fieldKeys 包含要获取值的键的列表
@@ -253,7 +283,7 @@ public class RedisConnector {
 
 
     /**
-     * 删除 Redis 哈希表中指定的一个或多个域
+     * 删除哈希表中指定的一个或多个字段
      *
      * @param hashKey 哈希表的 key
      * @param keys    要删除的一个或多个域
@@ -267,7 +297,7 @@ public class RedisConnector {
     }
 
     /**
-     * 检查 Redis 哈希表中是否存在指定的域
+     * 判断哈希表中是否存在指定的字段
      *
      * @param hashKey  哈希表的 key
      * @param fieldKey 要检查的域
@@ -280,7 +310,7 @@ public class RedisConnector {
     }
 
     /**
-     * 将指定的域设置为指定的值，仅当域不存在时才进行设置
+     * 将哈希表中指定的字段设置为指定的值
      *
      * @param hashKey  哈希表的 key
      * @param fieldKey 要设置的域
@@ -294,10 +324,10 @@ public class RedisConnector {
     }
 
     /**
-     * 获取 Redis 哈希表中域的数量
+     * 获取哈希表中字段的数量
      *
      * @param hashKey 哈希表的 key
-     * @return 哈希表中域的数量
+     * @return 哈希表中字段的数量
      */
     @NaslConnector.Logic
     public Long hashSize(String hashKey) {
@@ -319,7 +349,7 @@ public class RedisConnector {
 
 
     /**
-     * 获取 Redis 哈希表中的所有域
+     * 获取哈希表中的所有字段列表
      *
      * @param hashKey 哈希表的 key
      * @return 哈希表中的所有域
@@ -331,7 +361,7 @@ public class RedisConnector {
     }
 
     /**
-     * 将 Redis 哈希表中指定域的值增加指定的增量
+     * 将哈希表中指定字段的值增加指定的增量
      *
      * @param hashKey   哈希表的 key
      * @param fieldKey  要增加值的域
