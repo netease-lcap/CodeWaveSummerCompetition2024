@@ -110,7 +110,7 @@ jobs:
 
       - name: Install LCAP
         run: |
-          npm install -g lcap@0.3.4
+          npm install -g lcap@0.5.2
           lcap config set platform https://defaulttenant.lcap.hadri.163yun.com
           lcap config set username admin
           lcap config set password Admin@123456
