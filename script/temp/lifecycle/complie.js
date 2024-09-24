@@ -1,4 +1,5 @@
 const fsp = require('fs/promises');
+const fs = require('fs');
 const path = require('path');
 const { execCommands, execCommand } = require('../utils/execCommand');
 const { AUTO_ADJUST_RESOLUTION } = require('../env');
