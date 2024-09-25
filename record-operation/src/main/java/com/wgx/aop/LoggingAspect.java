@@ -1,6 +1,7 @@
 package com.wgx.aop;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.EnvironmentType;
 import com.netease.lowcode.core.annotation.Environment;
 import com.netease.lowcode.core.annotation.NaslConfiguration;
@@ -29,30 +30,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 @Aspect
 @Component
 @Order(1)
 public class LoggingAspect {
-
     public static final String CONTROLLER = "Controller";
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     //true开启打印日志、false关闭打印日志
     @Value("${loggingEnabled}")
     @NaslConfiguration(defaultValue = {
-            @Environment(type = EnvironmentType.DEV,value = "true"),
-            @Environment(type = EnvironmentType.ONLINE,value = "false")
+            @Environment(type = EnvironmentType.DEV, value = "true"),
+            @Environment(type = EnvironmentType.ONLINE, value = "false")
     })
     private boolean loggingEnabled;
 
     //simple简易格式、detailed详细格式、error异常格式 注意：null或空字符以及其他字符则不会打印日志
     @Value("${loggingFormat}")
     @NaslConfiguration(defaultValue = {
-            @Environment(type = EnvironmentType.DEV,value = "detailed"),
-            @Environment(type = EnvironmentType.ONLINE,value = "simple")
+            @Environment(type = EnvironmentType.DEV, value = "detailed"),
+            @Environment(type = EnvironmentType.ONLINE, value = "simple")
     })
     private String loggingFormat;
 
@@ -60,8 +60,8 @@ public class LoggingAspect {
     // 若需要拦截特定的控制类格式为 例如：logic1,logic2。注意：需要使用英文逗号为分隔符
     @Value("${loggingClassNames}")
     @NaslConfiguration(defaultValue = {
-            @Environment(type = EnvironmentType.DEV,value = "all"),
-            @Environment(type = EnvironmentType.ONLINE,value = "all")
+            @Environment(type = EnvironmentType.DEV, value = "all"),
+            @Environment(type = EnvironmentType.ONLINE, value = "all")
     })
     private String loggingClassNames;
 
@@ -70,7 +70,8 @@ public class LoggingAspect {
 
     //切点匹配类上有@Controller、@RestController注解的类下的所有方法
     @Pointcut("within(@org.springframework.stereotype.Controller *) || within(@org.springframework.web.bind.annotation.RestController *)")
-    public void controller() {}
+    public void controller() {
+    }
 
     @Around("controller()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -140,7 +141,7 @@ public class LoggingAspect {
                             requestURL,
                             executionTime);
                     DataWriter.invoke(recordService, saveLog, msg);
-                }else if ("detailed".equals(loggingFormat)) {
+                } else if ("detailed".equals(loggingFormat)) {
                     String msg = MessageFormat.format("Completed {0}#{1} - IP: {2} - URL: {3} - Args: {4} - Result: {5} - Duration: {6} ms",
                             joinPoint.getSignature().getDeclaringTypeName(),
                             joinPoint.getSignature().getName(),
@@ -205,15 +206,24 @@ public class LoggingAspect {
                 }
                 objList.add(obj);
             });
-
-            return JSON.toJSONString(objList.toArray());
+            try {
+                return MAPPER.writeValueAsString(objList.toArray());
+            } catch (JsonProcessingException e) {
+                logger.error("Error serializing object to JSON", e);
+                return "Error";
+            }
         }
-        return JSON.toJSONString(args);
+        try {
+            return MAPPER.writeValueAsString(args);
+        } catch (JsonProcessingException e) {
+            logger.error("Error serializing object to JSON", e);
+            return "Error";
+        }
     }
 
     private String serializeObject(Object obj) {
         try {
-            return JSON.toJSONString(obj);
+            return MAPPER.writeValueAsString(obj);
         } catch (Exception e) {
             logger.error("Error serializing object to JSON", e);
             return "Error";
