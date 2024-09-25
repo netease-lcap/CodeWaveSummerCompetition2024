@@ -1,4 +1,5 @@
 const fsp = require('fs/promises');
+const fs = require('fs');
 const path = require('path');
 const { execCommands, execCommand } = require('../utils/execCommand');
 const { AUTO_ADJUST_RESOLUTION } = require('../env');
@@ -32,6 +33,8 @@ const feBuild = async (package) => {
     await fsp.access(tsconfigPath, fs.constants.F_OK);
     console.log('tsconfig.json 存在，不执行 "npm run usage" 命令。');
   } catch (err) {
+    console.log(tsconfigPath);
+    console.log(err);
     // 如果 tsconfig.json 不存在，则执行 "npm run usage"
     await execCommand('npm run usage', {
       throwWhenStderr: false,
