@@ -6,7 +6,7 @@
 
     <groupId>com.wgx</groupId>
     <artifactId>record-operation</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.7</version>
     <name>操作记录依赖库</name>
     <description>打印每次请求日志：全类名+方法名、请求ip，请求url，入参、出参；出现异常时打印error日志：异常信息、异常方法、异常栈、请求参数、请求IP</description>
 
@@ -54,7 +54,6 @@
             <scope>provided</scope>
             <version>1.7.30</version>
         </dependency>
-
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
             <groupId>com.netease.lowcode</groupId>
