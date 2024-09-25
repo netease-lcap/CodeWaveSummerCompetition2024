@@ -303,28 +303,4 @@ public class DelayQueueService {
         return delayQueue.size();
     }
 
-    /**
-     * 返回延迟队列中未过期元素的数量。
-     * @return 未过期元素的数量。
-     */
-    @NaslLogic
-    public Integer sizeUnexpired() {
-        // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
-        int unexpiredCount = 0;
-        if(delayQueue.isEmpty()){
-            return unexpiredCount;
-        }
-        // 使用迭代器来安全地遍历 DelayQueue
-        for (DelayedTask task : delayQueue) {
-            if (task!= null && task.getDelay(TimeUnit.MILLISECONDS) > 0) {
-                unexpiredCount++;
-            }
-        }
-        return unexpiredCount;
-    }
-
 }

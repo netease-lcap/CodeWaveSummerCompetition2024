@@ -11,7 +11,7 @@ public class DelayedTask implements Delayed {
     // 延迟时间
     public Long delay = 0L;
 
-    // 任务开始时间
+    // 任务开始执行时间
     public Long startTime = System.currentTimeMillis();
 
     // 任务ID

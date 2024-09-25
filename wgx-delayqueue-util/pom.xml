@@ -6,7 +6,7 @@
 
     <groupId>com.wgx</groupId>
     <artifactId>wgx-delayqueue-util</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.1</version>
     <name>延迟队列依赖库</name>
     <description>延迟队列依赖库</description>
 
