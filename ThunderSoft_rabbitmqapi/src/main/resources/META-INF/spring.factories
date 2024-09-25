@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.hq.rabbitmq.rabbitmq.RabbitMQConfiguration,\
-  com.hq.rabbitmq.RabbitMQ
