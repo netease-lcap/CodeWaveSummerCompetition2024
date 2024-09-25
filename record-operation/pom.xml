@@ -6,7 +6,7 @@
 
     <groupId>com.wgx</groupId>
     <artifactId>record-operation</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <name>操作记录依赖库</name>
     <description>打印每次请求日志：全类名+方法名、请求ip，请求url，入参、出参；出现异常时打印error日志：异常信息、异常方法、异常栈、请求参数、请求IP</description>
 
@@ -27,13 +27,23 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>5.8.25</version>
+            <version>5.8.22</version>
         </dependency>
-
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.78</version> <!-- 请使用最新的版本号 -->
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hppc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
         <dependency>
