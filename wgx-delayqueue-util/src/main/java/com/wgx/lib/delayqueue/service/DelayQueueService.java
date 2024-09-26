@@ -31,10 +31,7 @@ public class DelayQueueService {
     @NaslLogic
     public Boolean  addTask(DelayedTask task) {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         // 检查任务是否为 null
         if (task == null) {
             logger.error("Attempted to add a null task to the delay queue");
@@ -59,10 +56,7 @@ public class DelayQueueService {
     @NaslLogic
     public Boolean offer(DelayedTask task) {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         // 检查任务是否为 null
         if (task == null) {
             logger.error("Attempted to add a null task to the delay queue");
@@ -84,10 +78,7 @@ public class DelayQueueService {
     @NaslLogic
     public DelayedTask take(){
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         try {
             DelayedTask task = delayQueue.take();
             logger.info("Task taken: {}", task);
@@ -106,10 +97,7 @@ public class DelayQueueService {
     @NaslLogic
     public DelayedTask pollNow() {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         DelayedTask task = delayQueue.poll();
         if (task != null) {
             logger.info("Task polled: {}", task);
@@ -125,10 +113,7 @@ public class DelayQueueService {
     @NaslLogic
     public DelayedTask pollWithTimeout(Long timeout) {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new RuntimeException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         timeout = timeout == null ? 0 : timeout;
         try {
             // 尝试从延迟队列中获取一个元素
@@ -152,10 +137,7 @@ public class DelayQueueService {
     @NaslLogic
     public DelayedTask peek() {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         DelayedTask task = delayQueue.peek();
         if (task != null) {
             logger.info("Task peeked: {}", task);
@@ -170,10 +152,7 @@ public class DelayQueueService {
     @NaslLogic
     public List<DelayedTask> findAllTasks() {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         // 创建一个列表来存储所有任务
         List<DelayedTask> allTasks = new ArrayList<>();
         // 将延迟队列中的所有任务添加到列表中
@@ -192,10 +171,7 @@ public class DelayQueueService {
     @NaslLogic
     public List<DelayedTask> searchTasksByTaskName(String query) {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         if (query == null || query.trim().isEmpty()) {
             return Collections.emptyList();
         }
@@ -220,10 +196,7 @@ public class DelayQueueService {
     @NaslLogic
     public DelayedTask getTaskByTaskId(String taskId) {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         // 确保 delayQueue 不为空
         if (delayQueue.isEmpty()) {
             return null;
@@ -250,10 +223,7 @@ public class DelayQueueService {
     @NaslLogic
     public Boolean clearAllTasks() {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
+        checkDelayQueueInitialized();
         try {
             delayQueue.clear(); // 清除延迟队列中的所有任务
             logger.info("All tasks have been cleared from the delay queue.");
@@ -272,11 +242,7 @@ public class DelayQueueService {
     @NaslLogic
     public Boolean remove(DelayedTask o) {
         // 检查延迟队列是否已初始化
-        if (delayQueue == null) {
-            logger.error("Delay queue is not initialized");
-            throw new IllegalStateException("Delay queue is not initialized");
-        }
-
+        checkDelayQueueInitialized();
         // 确保要删除的任务对象不为空
         if (o == null) {
             logger.warn("Cannot remove null task from the delay queue.");
@@ -296,11 +262,15 @@ public class DelayQueueService {
     @NaslLogic
     public Integer size() {
         // 检查延迟队列是否已初始化
+        checkDelayQueueInitialized();
+        return delayQueue.size();
+    }
+
+    //检查延迟队列是否已初始化
+    private void checkDelayQueueInitialized() {
         if (delayQueue == null) {
             logger.error("Delay queue is not initialized");
             throw new IllegalStateException("Delay queue is not initialized");
         }
-        return delayQueue.size();
     }
-
 }
