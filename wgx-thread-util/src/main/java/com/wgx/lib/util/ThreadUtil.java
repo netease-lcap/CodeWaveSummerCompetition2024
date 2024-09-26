@@ -69,12 +69,12 @@ public class ThreadUtil {
             log.error("锁对象不能为空");
             return false;
         }
+        if (timeout <= 0) {
+            log.error("超时时间必须大于0");
+            return false;
+        }
         synchronized (lock.intern()) {
             try {
-                if (timeout <= 0) {
-                    log.error("超时时间必须大于0");
-                    return false;
-                }
                 lock.intern().wait(timeout);
                 log.info("线程在超时前被成功唤醒");
                 return true;
