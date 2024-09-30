@@ -18,11 +18,20 @@
 
 - **逻辑一：** 提供文本行对比逻辑
 
-返回结果参考 https://github.com/kpdecker/jsdiff
+返回结果
+`[{ value: string, added: bool, removed: bool, count: number }]`
+
+value: 通常作为单个字符串添加、删除或常用的文本  
+added: true 表示该行是添加的行，false 表示该行是删除的行， 实际返回值为字符串 1或0  
+removed: true 表示该行是删除的行，false 表示该行是添加的行， 实际返回值为字符串 1或0  
+count: 更改对象中的值由多少个标记（例如，不同字符的字符，不同行的行）组成  
+
+更多参考官方文档 https://github.com/kpdecker/jsdiff
 
 ## getDiffLines
 
 **特性 1：** 返回行级对比结果
+
 
 ## getDiffChars
 
@@ -40,7 +49,7 @@
 - **attrs**
   - one: String 左侧文本
   - other: String 右侧文本
-  - diffType: String 对比类型，可选值：line、char、word
+  - diffType: String 对比维度类型，可选值：line、char、word
   - delBackgroundColor: String 删除字体颜色
   - delColor: String 删除背景颜色
   - insBackgroundColor: String 新增字体颜色

@@ -38,8 +38,8 @@ namespace extensions.library_fdddf_diff.viewComponents {
     other: nasl.core.String = '';
 
     @Prop({
-      title: '文本对比类型',
-      description: '文本对比类型',
+      title: '文本对比维度类型',
+      description: '文本对比维度类型',
       setter: {
         concept: 'EnumSelectSetter',
         options: [ { "title" : "行对比" }, { "title" : "字符对比" }, { "title" : "单词对比" } ],
@@ -48,8 +48,8 @@ namespace extensions.library_fdddf_diff.viewComponents {
     diffType: 'line' | 'char' | 'word' = 'line';
 
     @Prop({
-      title: '删除文本背景色',
-      description: '删除文本背景色',
+      title: '删除内容背景色',
+      description: '右侧相对左侧删除内容背景色',
       setter: {
         concept: 'InputSetter'
       }
@@ -58,7 +58,7 @@ namespace extensions.library_fdddf_diff.viewComponents {
 
     @Prop({
       title: '删除文本字体色',
-      description: '删除文本字体色',
+      description: '右侧相对左侧删除文本字体色',
       setter: {
         concept: 'InputSetter'
       }
@@ -66,8 +66,8 @@ namespace extensions.library_fdddf_diff.viewComponents {
     delColor: nasl.core.String = '#333';
 
     @Prop({
-      title: '添加文本背景色',
-      description: '添加文本背景色',
+      title: '新增文本背景色',
+      description: '右侧相对左侧新增文本背景色',
       setter: {
         concept: 'InputSetter'
       }
@@ -75,8 +75,8 @@ namespace extensions.library_fdddf_diff.viewComponents {
     insBackgroundColor: nasl.core.String = '#d4fcbc';
 
     @Prop({
-      title: '添加文本字体色',
-      description: '添加文本字体色',
+      title: '新增文本字体色',
+      description: '右侧相对左侧新增文本字体色',
       setter: {
         concept: 'InputSetter'
       }
