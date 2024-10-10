@@ -36,9 +36,8 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public List<String> getAllKeys() {
-        if (!checkCacheInitialized("获取所有缓存键")) {
-            return Collections.emptyList();
-        }
+        checkCacheInitialized("获取所有缓存键");
+
         // 获取缓存中所有键的集合
         Set<String> allKeys = basicCommonCache.asMap().keySet();
         if (allKeys.isEmpty()) {
@@ -56,9 +55,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Map<String, String> getAllCache() {
-        if (!checkCacheInitialized("获取所有缓存")) {
-            return Collections.emptyMap();
-        }
+        checkCacheInitialized("获取所有缓存");
         
         Map<String, CacheDataWrapper> cacheMap = basicCommonCache.asMap();
         if (cacheMap.isEmpty()) {
@@ -87,9 +84,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean exist(final String key) {
-        if (!checkCacheInitialized("检查键是否存在")) {
-            return false;
-        }
+        checkCacheInitialized("检查键是否存在");
 
         if (StringUtils.isBlank(key)) {
             logger.warn("检查键是否存在时, key为空或空白");
@@ -108,9 +103,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean existHash(final String key, final String hashField) {
-        if (!checkCacheInitialized("检查哈希键是否存在")) {
-            return false;
-        }
+        checkCacheInitialized("检查哈希键是否存在");
 
         if (StringUtils.isBlank(key) || StringUtils.isBlank(hashField)) {
             logger.warn("检查哈希键是否存在时,key或hashField为空或空白");
@@ -130,9 +123,8 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean setCache(final String key, final String value) {
-        if (!checkCacheInitialized("设置缓存")) {
-            return false;
-        }
+        checkCacheInitialized("设置缓存");
+
         if (key == null || key.isEmpty()) {
             logger.warn("设置缓存时,key为空或空白");
             return false;
@@ -157,9 +149,8 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean setCacheWithExpire(final String key, final String value, final Long expire) {
-        if (!checkCacheInitialized("设置带过期时间的缓存")) {
-            return false;
-        }
+        checkCacheInitialized("设置带过期时间的缓存");
+        
         if (StringUtils.isBlank(key) || expire == null || expire < 0) {
             logger.warn("设置带过期时间的缓存时,key为空或expire无效: key = {}, expire = {}", key, expire);
             return false;
@@ -184,9 +175,8 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean setHashCache(final String key, final String hashField, final String value) {
-        if (!checkCacheInitialized("设置哈希缓存")) {
-            return false;
-        }
+        checkCacheInitialized("设置哈希缓存");
+        
         if (StringUtils.isBlank(key) || StringUtils.isBlank(hashField)) {
             logger.warn("设置哈希缓存时,key或hashField为空或空白");
             return false;
@@ -212,9 +202,8 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean setHashCacheWithExpire(final String key, final String hashField, final String value, final Long expire) {
-        if (!checkCacheInitialized("设置带过期时间的哈希缓存")) {
-            return false;
-        }
+        checkCacheInitialized("设置带过期时间的哈希缓存");
+        
         if (StringUtils.isBlank(key) || StringUtils.isBlank(hashField) || expire == null || expire < 0) {
             logger.warn("设置带过期时间的哈希缓存时,参数无效: key = {}, hashField = {}, expire = {}", key, hashField, expire);
             return false;
@@ -237,9 +226,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public String getCache(final String key) {
-        if (!checkCacheInitialized("获取缓存")) {
-            return null;
-        }
+        checkCacheInitialized("获取缓存");
         
         if (StringUtils.isBlank(key)) {
             logger.warn("获取缓存失败: key为空或空白");
@@ -271,9 +258,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public String getHashCache(final String key, final String hashField) {
-        if (!checkCacheInitialized("获取哈希缓存")) {
-            return null;
-        }
+        checkCacheInitialized("获取哈希缓存");
         
         if (StringUtils.isBlank(key) || StringUtils.isBlank(hashField)) {
             logger.warn("获取哈希缓存失败: key或hashField为空或空白");
@@ -304,9 +289,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Map<String, String> getMultiCache(List<String> keys) {
-        if (!checkCacheInitialized("批量获取缓存")) {
-            return Collections.emptyMap();
-        }
+        checkCacheInitialized("批量获取缓存");
         
         if (keys == null || keys.isEmpty()) {
             logger.warn("批量获取缓存失败: 键列表为空");
@@ -337,9 +320,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public String getOrComputeAndSet(String key, Long expireAfterWriteMillis, Function<String, String> computeFunction) {
-        if (!checkCacheInitialized("获取或计算并设置缓存")) {
-            return null;
-        }
+        checkCacheInitialized("获取或计算并设置缓存");
         
         if (StringUtils.isBlank(key) || expireAfterWriteMillis == null || expireAfterWriteMillis < 0 || computeFunction == null) {
             logger.warn("获取或计算并设置缓存失败: 参数无效");
@@ -379,9 +360,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean deleteCache(final String key) {
-        if (!checkCacheInitialized("删除缓存")) {
-            return false;
-        }
+        checkCacheInitialized("删除缓存");
         
         if (StringUtils.isBlank(key)) {
             logger.warn("删除缓存失败: key为空或空白");
@@ -406,9 +385,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean deleteHashCache(final String key, final String hashField) {
-        if (!checkCacheInitialized("删除哈希缓存")) {
-            return false;
-        }
+        checkCacheInitialized("删除哈希缓存");
         
         if (StringUtils.isBlank(key) || StringUtils.isBlank(hashField)) {
             logger.warn("删除哈希缓存失败: key或hashField为空或空白");
@@ -431,9 +408,7 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Boolean clearAllCache() {
-        if (!checkCacheInitialized("清空缓存")) {
-            return false;
-        }
+        checkCacheInitialized("清空缓存");
         
         try {
             basicCommonCache.invalidateAll();
@@ -451,25 +426,20 @@ public class JvmCacheUtil {
      */
     @NaslLogic
     public Long getEstimatedSize() {
-        if (!checkCacheInitialized("获取缓存估计大小")) {
-            return null;
-        }
+        checkCacheInitialized("获取缓存估计大小");
         
         long size = basicCommonCache.estimatedSize();
         logger.info("当前缓存估计大小: {}", size);
         return size;
     }
 
-    /**
-     * 检查缓存是否初始化
-     * @param operation 操作名称
-     * @return 如果缓存已初始化返回true，否则返回false
-     */
-    private Boolean checkCacheInitialized(String operation) {
-        if (basicCommonCache == null) {
-            logger.warn("{}失败: 缓存管理器未初始化", operation);
-            return false;
-        }
-        return true;
-    }
+    /* 检查缓存是否初始化
+    * @param operation 操作名称
+    * @throws CacheException 如果缓存管理器未初始化
+    */
+   private void checkCacheInitialized(String operation) {
+       if (basicCommonCache == null) {
+           throw new CacheException(operation + "失败: 缓存管理器未初始化");
+       }
+   }
 }
