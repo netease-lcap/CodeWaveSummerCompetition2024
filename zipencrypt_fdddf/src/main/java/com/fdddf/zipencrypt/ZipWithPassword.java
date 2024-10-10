@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
@@ -41,7 +43,7 @@ public class ZipWithPassword {
         mimeToExtensionMap.put("application/vnd.ms-excel", ".xls");
         mimeToExtensionMap.put("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ".xlsx");
         mimeToExtensionMap.put("application/json", ".json");
-        mimeToExtensionMap.put("text/html", ".html");
+        // mimeToExtensionMap.put("text/html", ".html");
     }
 
     @Resource
@@ -247,17 +249,34 @@ public class ZipWithPassword {
     private static File downloadFileFromUrlIfNeeded(String filePath) throws IOException, NoSuchAlgorithmException {
         // Check if the input is a URL
         if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
-            // Determine the file extension from the URL, if present
+            URL url = new URL(filePath);
+
+            // Get the path part of the URL (the file path without the query)
+            String path = url.getPath();
+
+            // Get the file name from the path
+            String fileName = path.substring(path.lastIndexOf('/') + 1);
+            String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8); // Only encode the file name
+            String encodedPath = path.substring(0, path.lastIndexOf('/') + 1) + encodedFileName; // Rebuild the path with the encoded file name
+
+            // Get the query string without modifying it
+            String query = url.getQuery(); // Query parameters are already encoded, no changes
+
+            // Manually construct the full URL using the original query parameters
+            String fullUrl = url.getProtocol() + "://" + url.getHost() + encodedPath + "?" + query;
+
+            // Determine the file extension from the URL or MIME type
             String fileExtension = getFileExtensionFromMimeType(filePath);
             String hashedFileName = hashString(filePath) + fileExtension;
 
+            // Create the temporary file
             File tempFile = new File(System.getProperty("java.io.tmpdir"), hashedFileName);
-            // check the file if it exists
             if (tempFile.exists()) {
                 return tempFile;
             }
-            // Download the file only if it doesn't exist in the cache
-            try (InputStream in = new URL(filePath).openStream()) {
+
+            // Download the file if it doesn't already exist
+            try (InputStream in = new URL(fullUrl).openStream()) { // Use the manually constructed URL
                 Files.copy(in, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
             return tempFile;
@@ -265,6 +284,7 @@ public class ZipWithPassword {
             return new File(filePath);
         }
     }
+    
 
     private static String getFileExtensionFromMimeType(String fileUrl) {
         try {
