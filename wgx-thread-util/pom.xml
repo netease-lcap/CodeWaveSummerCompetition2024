@@ -6,9 +6,9 @@
 
     <groupId>com.wgx</groupId>
     <artifactId>wgx-thread-util</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>暂停当前线程依赖库</name>
-    <description>开发者应根据具体需求选择合适的方法来控制线程的暂停和恢复。</description>
+    <description>此依赖库用于处理线程的暂停、等待和唤醒操作。</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

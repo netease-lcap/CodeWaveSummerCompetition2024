@@ -32,8 +32,8 @@ public class ThreadUtilLocalTest {
      * @return 是否成功唤醒
      */
     public static Boolean waitThread(String lock) {
-        if (lock == null) {
-            System.out.println("锁对象不能为空");
+        if (lock == null || lock.isEmpty()) {
+            System.out.println("锁对象不能为空或空字符串");
             return false;
         }
         synchronized (lock.intern()) {
@@ -57,8 +57,8 @@ public class ThreadUtilLocalTest {
      * @return 是否成功唤醒
      */
     public static Boolean waitThreadWithTimeout(String lock, Long timeout) {
-        if (lock == null) {
-            System.out.println("锁对象不能为空");
+        if (lock == null || lock.isEmpty()) {
+            System.out.println("锁对象不能为空或空字符串");
             return false;
         }
         synchronized (lock.intern()) {
@@ -85,8 +85,8 @@ public class ThreadUtilLocalTest {
      * @return 是否成功唤醒
      */
     public static Boolean notifyThread(String lock) {
-        if (lock == null) {
-            System.out.println("锁对象不能为空");
+        if (lock == null || lock.isEmpty()) {
+            System.out.println("锁对象不能为空或空字符串");
             return false;
         }
         synchronized (lock.intern()) {
@@ -108,8 +108,8 @@ public class ThreadUtilLocalTest {
      * @return 是否成功唤醒
      */
     public static Boolean notifyAllThreads(String lock) {
-        if (lock == null) {
-            System.out.println("锁对象不能为空");
+        if (lock == null || lock.isEmpty()) {
+            System.out.println("锁对象不能为空或空字符串");
             return false;
         }
         synchronized (lock.intern()) {
