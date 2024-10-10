@@ -256,7 +256,7 @@ public class ZipWithPassword {
 
             // Get the file name from the path
             String fileName = path.substring(path.lastIndexOf('/') + 1);
-            String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8); // Only encode the file name
+            String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString()); // Only encode the file name
             String encodedPath = path.substring(0, path.lastIndexOf('/') + 1) + encodedFileName; // Rebuild the path with the encoded file name
 
             // Get the query string without modifying it
@@ -350,23 +350,4 @@ public class ZipWithPassword {
         return sb.toString();
     }
 
-    public static void main(String[] args) {
-        // Example usage
-        ZipWithPassword zp = new ZipWithPassword();
-        ZipConfig config = new ZipConfig();
-        config.appUrl = "http://localhost:8080";
-        config.defaultPassword = "111111";
-        config.encryptionMethod = 0;
-        zp.setCfg(config);
-
-        List<String> filesToCompress = new ArrayList<>();
-        filesToCompress.add("/Users/xxx/Downloads/fdad6921014a267474df2fd9858edb96.JPG");
-//        filesToCompress.add("/Users/xxx/Downloads/0c09a1e392aa4e452cf219a4ddc7a357860900ba_upscayl_4x_realesrgan-x4fast.png");
-        filesToCompress.add("/Users/xxx/Downloads/AVG人物-1576226974445.rar");
-//        filesToCompress.add("https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2F2024%2F0904%2Fc7caf6eaj00sja59o00abd000p003gxg.jpg&thumbnail=660x2147483647&quality=80&type=jpg");
-//        filesToCompress.add("https://www.zixi.org/assets/uploads/202409/20240904160104-I7rC9Gtg.jpg");
-//        filesToCompress.add("/Users/xxx/Downloads/zipencrypt_fdddf/");
-
-        zp.compressFiles("222222", "compressed.zip", filesToCompress, true);
-    }
 }

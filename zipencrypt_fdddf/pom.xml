@@ -12,7 +12,7 @@
 
     <groupId>fdddf</groupId>
     <artifactId>zipencrypt</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <name>ZipEncrypt</name>
     <description>支持将文件压缩为zip，并可设置压缩包密码，没有设置的时候自动设置</description>
 
@@ -55,6 +55,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

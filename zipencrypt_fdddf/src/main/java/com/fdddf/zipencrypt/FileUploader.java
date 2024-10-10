@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class FileUploader {
 
@@ -23,13 +24,17 @@ public class FileUploader {
         String boundary = "------" + System.currentTimeMillis();
         String contentType = "multipart/form-data; boundary=" + boundary;
         con.setRequestProperty("Content-Type", contentType);
+        con.setRequestProperty("Charset", "UTF-8");
 
         // 写入请求体
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        String header = "Content-Disposition: form-data; name=\"file\"; filename=\"" + new File(filePath).getName() + "\"\r\n"
-                + "Content-Type: application/xml\r\n\r\n";
+
+        // encode the filename to utf8
+        String filename = new File(filePath).getName();
+        String header = "Content-Disposition: form-data; name=\"file\"; filename=\"" + filename + "\"\r\n"
+                + "Content-Type: application/octet-stream\r\n\r\n";
         wr.writeBytes("--" + boundary + "\r\n");
-        wr.writeBytes(header);
+        wr.write(header.getBytes(StandardCharsets.UTF_8));
 
         // 读取文件并写入请求体
         FileInputStream fileInputStream = new FileInputStream(filePath);
