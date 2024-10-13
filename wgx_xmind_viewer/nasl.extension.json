@@ -1,0 +1,98 @@
+{
+  "name": "wgx_xmind_viewer",
+  "title": "在线预览xmind文件",
+  "description": "在线预览xmind文件",
+  "specVersion": "1.0.0",
+  "type": "module",
+  "subType": "extension",
+  "version": "1.1.27",
+  "frontends": [
+    {
+      "concept": "FrontendLibrary",
+      "name": "pc",
+      "type": "pc",
+      "frameworkKind": "vue2",
+      "viewComponents": [
+        {
+          "concept": "ViewComponentDeclaration",
+          "group": "",
+          "name": "XmindViewer",
+          "kebabName": "xmind-viewer",
+          "title": "预览xmind文件",
+          "description": "预览xmind文件",
+          "icon": "",
+          "tsTypeParams": "",
+          "props": [
+            {
+              "concept": "PropDeclaration",
+              "group": "主要属性",
+              "tabKind": "property",
+              "setter": {
+                "concept": "InputSetter"
+              },
+              "name": "fileUrl",
+              "title": "xmind文件地址",
+              "tsType": "nasl.core.String",
+              "description": "xmind文件地址"
+            }
+          ],
+          "readableProps": [],
+          "events": [],
+          "methods": [],
+          "slots": [],
+          "children": [],
+          "blocks": [
+            {
+              "concept": "ViewBlockWithImage",
+              "title": "基本用法",
+              "description": "",
+              "code": "<template><xmind-viewer></xmind-viewer></template>",
+              "screenshot": "",
+              "drawing": ""
+            }
+          ],
+          "themeVariables": [],
+          "type": "pc",
+          "ideusage": {
+            "idetype": "element"
+          }
+        }
+      ],
+      "logics": []
+    }
+  ],
+  "externalDependencyMap": {
+    "npm": [
+      {
+        "name": "vue",
+        "version": "^2.6.0"
+      }
+    ]
+  },
+  "summary": {
+    "name": "wgx_xmind_viewer",
+    "title": "在线预览xmind文件",
+    "version": "1.1.27",
+    "description": "在线预览xmind文件",
+    "frontends": [
+      {
+        "type": "pc",
+        "frameworkKind": "vue2",
+        "viewComponents": [
+          {
+            "name": "XmindViewer",
+            "title": "预览xmind文件"
+          }
+        ],
+        "logics": []
+      }
+    ]
+  },
+  "compilerInfoMap": {
+    "js": {
+      "prefix": "extension"
+    },
+    "manifest": "{\"nasl\":[\"nasl.extension.json\",\"nasl.extension.d.ts\"],\"runtime\":[\"dist-theme/index.js\",\"dist-theme/index.css\"],\"theme\":[],\"package\":[\"source.zip\",\"zip.tgz\"],\"i18n\":[],\"ide\":[]}"
+  },
+  "ideVersion": "3.8"
+}
