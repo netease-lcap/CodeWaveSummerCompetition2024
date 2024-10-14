@@ -1,0 +1,1504 @@
+{
+  "ideVersion": "3.4",
+  "name": "lcap_redis_connector",
+  "title": "Redis连接器",
+  "description": "",
+  "specVersion": "1.1.0",
+  "type": "connector",
+  "subType": "connector",
+  "version": "1.2.2",
+  "externalDependencyMap": {"maven": [{
+    "groupId": "com.netease.cloud",
+    "artifactId": "lcap-redis-connector",
+    "version": "1.2.2"
+  }]},
+  "compilerInfoMap": {
+    "java": [
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "String",
+          "key": "String"
+        },
+        "naslName": "getValue",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "String",
+          "key": "String",
+          "value": "String"
+        },
+        "naslName": "setValue",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Boolean",
+          "key": "String"
+        },
+        "naslName": "deleteKey",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "String",
+          "key": "String",
+          "value": "String",
+          "timeout": "Long"
+        },
+        "naslName": "setValueTimeOut",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "List<String>",
+          "key": "String"
+        },
+        "naslName": "getListValue",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "List<String>",
+          "key": "String",
+          "value": "List<String>"
+        },
+        "naslName": "setListValue",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Boolean",
+          "key": "String",
+          "value": "String"
+        },
+        "naslName": "setIfAbsent",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Boolean",
+          "key": "String",
+          "value": "String",
+          "timeout": "Long"
+        },
+        "naslName": "setIfAbsentWithExpire",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Boolean",
+          "key": "String",
+          "value": "String",
+          "timeout": "Long"
+        },
+        "naslName": "setIfPresentWithExpire",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Long",
+          "key": "String",
+          "delta": "Long"
+        },
+        "naslName": "incrementLong",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Map<String, String>",
+          "hashKey": "String",
+          "keyValueMap": "Map<String, String>"
+        },
+        "naslName": "setHashValues",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Map<String, String>",
+          "hashKey": "String"
+        },
+        "naslName": "getHashValuesWithNoKey",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Map<String, String>",
+          "hashKey": "String",
+          "fieldKeys": "List<String>"
+        },
+        "naslName": "getHashValues",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Long",
+          "hashKey": "String",
+          "keys": "List<String>"
+        },
+        "naslName": "deleteHashfieldKeys",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Boolean",
+          "hashKey": "String",
+          "fieldKey": "String"
+        },
+        "naslName": "hashfieldKeyExists",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Boolean",
+          "hashKey": "String",
+          "fieldKey": "String",
+          "value": "String"
+        },
+        "naslName": "hashSetIfNotExists",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Long",
+          "hashKey": "String"
+        },
+        "naslName": "hashSize",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "List<String>",
+          "key": "String"
+        },
+        "naslName": "keys",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "List<String>",
+          "hashKey": "String"
+        },
+        "naslName": "hashKeys",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "com.netease.cloud.RedisConnector",
+          "host": "String",
+          "port": "Integer",
+          "password": "String",
+          "database": "Integer"
+        },
+        "naslName": "initRedisTemplate",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      },
+      {
+        "type": "logic",
+        "javaTypes": {
+          "": "Boolean",
+          "host": "String",
+          "port": "Integer",
+          "password": "String",
+          "database": "Integer"
+        },
+        "naslName": "testConnection",
+        "className": "RedisConnector",
+        "packageName": "com.netease.cloud"
+      }
+    ],
+    "connectorJar": {
+      "groupId": "com.netease.cloud",
+      "artifactId": "lcap-redis-connector",
+      "version": "1.2.2"
+    },
+    "beanCreator": {
+      "mainClass": "com.netease.cloud.RedisConnector",
+      "method": "initRedisTemplate",
+      "params": [
+        {
+          "javaClass": "java.lang.String",
+          "javaParamName": "host"
+        },
+        {
+          "javaClass": "java.lang.Integer",
+          "javaParamName": "port"
+        },
+        {
+          "javaClass": "java.lang.String",
+          "javaParamName": "password"
+        },
+        {
+          "javaClass": "java.lang.Integer",
+          "javaParamName": "database"
+        }
+      ],
+      "returnClass": {
+        "packageName": "com.netease.cloud",
+        "javaClassName": "RedisConnector"
+      }
+    },
+    "beanTester": {
+      "mainClass": "com.netease.cloud.RedisConnector",
+      "method": "testConnection",
+      "params": [
+        {
+          "javaClass": "java.lang.String",
+          "javaParamName": "host"
+        },
+        {
+          "javaClass": "java.lang.Integer",
+          "javaParamName": "port"
+        },
+        {
+          "javaClass": "java.lang.String",
+          "javaParamName": "password"
+        },
+        {
+          "javaClass": "java.lang.Integer",
+          "javaParamName": "database"
+        }
+      ],
+      "returnClass": {
+        "packageName": "java.lang",
+        "javaClassName": "Boolean"
+      }
+    }
+  },
+  "connectorKind": "redis",
+  "logics": [
+    {
+      "concept": "Logic",
+      "name": "getValue",
+      "description": "获取key对应的字符串值",
+      "overridable": false,
+      "params": [{
+        "concept": "Param",
+        "name": "key",
+        "description": "",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "primitive",
+          "typeNamespace": "nasl.core",
+          "typeName": "String"
+        },
+        "required": false
+      }],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "String"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "setValue",
+      "description": "指定 key 的值为指定字符串",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "key",
+          "description": "",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "value",
+          "description": "",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "String"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "deleteKey",
+      "description": "删除指定的key",
+      "overridable": false,
+      "params": [{
+        "concept": "Param",
+        "name": "key",
+        "description": "",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "primitive",
+          "typeNamespace": "nasl.core",
+          "typeName": "String"
+        },
+        "required": false
+      }],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "Boolean"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "setValueTimeOut",
+      "description": "指定 key 的值与过期时间，超期key自动删除（单位为秒）",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "key",
+          "description": "要设置的键",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "value",
+          "description": "要设置的值",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "timeout",
+          "description": "过期时间",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "Long"
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "String"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "getListValue",
+      "description": "指定 key 的对应的队列",
+      "overridable": false,
+      "params": [{
+        "concept": "Param",
+        "name": "key",
+        "description": "",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "primitive",
+          "typeNamespace": "nasl.core",
+          "typeName": "String"
+        },
+        "required": false
+      }],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "generic",
+              "typeNamespace": "nasl.collection",
+              "typeName": "List",
+              "typeArguments": [{
+                "concept": "TypeAnnotation",
+                "typeKind": "primitive",
+                "typeNamespace": "nasl.core",
+                "typeName": "String"
+              }]
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "setListValue",
+      "description": "指定 key 的值的队列新增数据",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "key",
+          "description": "",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "value",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "generic",
+            "typeNamespace": "nasl.collection",
+            "typeName": "List",
+            "typeArguments": [{
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "String"
+            }]
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "generic",
+              "typeNamespace": "nasl.collection",
+              "typeName": "List",
+              "typeArguments": [{
+                "concept": "TypeAnnotation",
+                "typeKind": "primitive",
+                "typeNamespace": "nasl.core",
+                "typeName": "String"
+              }]
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "setIfAbsent",
+      "description": "若key不存在，则指定key的值",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "key",
+          "description": "要设置的键",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "value",
+          "description": "要设置的值",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "如果设置成功，返回 true，否则返回 false",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "Boolean"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "setIfAbsentWithExpire",
+      "description": "若key不存在，则指定key的值，并设置过期时间（单位为秒）",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "key",
+          "description": "要设置的键",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "value",
+          "description": "要设置的值",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "timeout",
+          "description": "过期时间",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "Long"
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "如果设置成功，返回 true，否则返回 false",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "Boolean"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "setIfPresentWithExpire",
+      "description": "若key存在，则指定key的值，并设置过期时间（单位为秒）",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "key",
+          "description": "要设置的键",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "value",
+          "description": "要设置的值",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "timeout",
+          "description": "过期时间",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "Long"
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "如果设置成功，返回 true，否则返回 false",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "Boolean"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "incrementLong",
+      "description": "指定 key 的值增加指定的整数 delta",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "key",
+          "description": "要设置的键",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "delta",
+          "description": "增加的整数值",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "Long"
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "增加后的结果值",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "Long"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "setHashValues",
+      "description": "将多个键值对设置到哈希表中",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "hashKey",
+          "description": "哈希表的键",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "keyValueMap",
+          "description": "包含要设置到 Redis 哈希表中的键值对的 Map",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "generic",
+            "typeNamespace": "nasl.collection",
+            "typeName": "Map",
+            "typeArguments": [
+              {
+                "concept": "TypeAnnotation",
+                "typeKind": "primitive",
+                "typeNamespace": "nasl.core",
+                "typeName": "String"
+              },
+              {
+                "concept": "TypeAnnotation",
+                "typeKind": "primitive",
+                "typeNamespace": "nasl.core",
+                "typeName": "String"
+              }
+            ]
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "设置后哈希表的 Map",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "generic",
+              "typeNamespace": "nasl.collection",
+              "typeName": "Map",
+              "typeArguments": [
+                {
+                  "concept": "TypeAnnotation",
+                  "typeKind": "primitive",
+                  "typeNamespace": "nasl.core",
+                  "typeName": "String"
+                },
+                {
+                  "concept": "TypeAnnotation",
+                  "typeKind": "primitive",
+                  "typeNamespace": "nasl.core",
+                  "typeName": "String"
+                }
+              ]
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "getHashValuesWithNoKey",
+      "description": "由哈希表中获取指定 key 的所有字段和值",
+      "overridable": false,
+      "params": [{
+        "concept": "Param",
+        "name": "hashKey",
+        "description": "哈希表的 key",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "primitive",
+          "typeNamespace": "nasl.core",
+          "typeName": "String"
+        },
+        "required": false
+      }],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "包含所有域和值的 Map 对象，键为域，值为对应的值",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "generic",
+              "typeNamespace": "nasl.collection",
+              "typeName": "Map",
+              "typeArguments": [
+                {
+                  "concept": "TypeAnnotation",
+                  "typeKind": "primitive",
+                  "typeNamespace": "nasl.core",
+                  "typeName": "String"
+                },
+                {
+                  "concept": "TypeAnnotation",
+                  "typeKind": "primitive",
+                  "typeNamespace": "nasl.core",
+                  "typeName": "String"
+                }
+              ]
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "getHashValues",
+      "description": "由哈希表中获取多个键对应的值",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "hashKey",
+          "description": "哈希表的键",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "fieldKeys",
+          "description": "包含要获取值的键的列表",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "generic",
+            "typeNamespace": "nasl.collection",
+            "typeName": "List",
+            "typeArguments": [{
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "String"
+            }]
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "一个包含指定键值对的 Map",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "generic",
+              "typeNamespace": "nasl.collection",
+              "typeName": "Map",
+              "typeArguments": [
+                {
+                  "concept": "TypeAnnotation",
+                  "typeKind": "primitive",
+                  "typeNamespace": "nasl.core",
+                  "typeName": "String"
+                },
+                {
+                  "concept": "TypeAnnotation",
+                  "typeKind": "primitive",
+                  "typeNamespace": "nasl.core",
+                  "typeName": "String"
+                }
+              ]
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "deleteHashfieldKeys",
+      "description": "删除哈希表中指定的一个或多个字段",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "hashKey",
+          "description": "哈希表的 key",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "keys",
+          "description": "要删除的一个或多个域",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "generic",
+            "typeNamespace": "nasl.collection",
+            "typeName": "List",
+            "typeArguments": [{
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "String"
+            }]
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "被删除的域的数量",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "Long"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "hashfieldKeyExists",
+      "description": "判断哈希表中是否存在指定的字段",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "hashKey",
+          "description": "哈希表的 key",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "fieldKey",
+          "description": "要检查的域",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "如果存在，返回 true；否则，返回 false",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "Boolean"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "hashSetIfNotExists",
+      "description": "将哈希表中指定的字段设置为指定的值",
+      "overridable": false,
+      "params": [
+        {
+          "concept": "Param",
+          "name": "hashKey",
+          "description": "哈希表的 key",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "fieldKey",
+          "description": "要设置的域",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        },
+        {
+          "concept": "Param",
+          "name": "value",
+          "description": "要设置的值",
+          "typeAnnotation": {
+            "concept": "TypeAnnotation",
+            "typeKind": "primitive",
+            "typeNamespace": "nasl.core",
+            "typeName": "String"
+          },
+          "required": false
+        }
+      ],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "如果设置成功，返回 true；如果域已存在，不进行设置，返回 false",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "Boolean"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "hashSize",
+      "description": "获取哈希表中字段的数量",
+      "overridable": false,
+      "params": [{
+        "concept": "Param",
+        "name": "hashKey",
+        "description": "哈希表的 key",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "primitive",
+          "typeNamespace": "nasl.core",
+          "typeName": "String"
+        },
+        "required": false
+      }],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "哈希表中字段的数量",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "primitive",
+              "typeNamespace": "nasl.core",
+              "typeName": "Long"
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "keys",
+      "description": "获取 Redis string 的keys",
+      "overridable": false,
+      "params": [{
+        "concept": "Param",
+        "name": "key",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "primitive",
+          "typeNamespace": "nasl.core",
+          "typeName": "String"
+        },
+        "required": false
+      }],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "generic",
+              "typeNamespace": "nasl.collection",
+              "typeName": "List",
+              "typeArguments": [{
+                "concept": "TypeAnnotation",
+                "typeKind": "primitive",
+                "typeNamespace": "nasl.core",
+                "typeName": "String"
+              }]
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    },
+    {
+      "concept": "Logic",
+      "name": "hashKeys",
+      "description": "获取哈希表中的所有字段列表",
+      "overridable": false,
+      "params": [{
+        "concept": "Param",
+        "name": "hashKey",
+        "description": "哈希表的 key",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "primitive",
+          "typeNamespace": "nasl.core",
+          "typeName": "String"
+        },
+        "required": false
+      }],
+      "returns": [{
+        "concept": "Return",
+        "name": "result",
+        "description": "哈希表中的所有域",
+        "typeAnnotation": {
+          "concept": "TypeAnnotation",
+          "typeKind": "union",
+          "typeNamespace": "nasl.core",
+          "typeName": "Union",
+          "typeArguments": [
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "generic",
+              "typeNamespace": "nasl.collection",
+              "typeName": "List",
+              "typeArguments": [{
+                "concept": "TypeAnnotation",
+                "typeKind": "primitive",
+                "typeNamespace": "nasl.core",
+                "typeName": "String"
+              }]
+            },
+            {
+              "concept": "TypeAnnotation",
+              "typeKind": "reference",
+              "typeNamespace": "nasl.ui",
+              "typeName": "Error"
+            }
+          ]
+        }
+      }]
+    }
+  ],
+  "properties": [
+    {
+      "concept": "Param",
+      "name": "host",
+      "description": "redis地址",
+      "typeAnnotation": {
+        "concept": "TypeAnnotation",
+        "name": "",
+        "typeKind": "primitive",
+        "typeNamespace": "nasl.core",
+        "typeName": "String",
+        "typeArguments": null,
+        "returnType": null,
+        "properties": null
+      },
+      "defaultValue": null
+    },
+    {
+      "concept": "Param",
+      "name": "port",
+      "description": "redis端口",
+      "typeAnnotation": {
+        "concept": "TypeAnnotation",
+        "name": "",
+        "typeKind": "primitive",
+        "typeNamespace": "nasl.core",
+        "typeName": "Integer",
+        "typeArguments": null,
+        "returnType": null,
+        "properties": null
+      },
+      "defaultValue": null
+    },
+    {
+      "concept": "Param",
+      "name": "password",
+      "description": "redis密码",
+      "typeAnnotation": {
+        "concept": "TypeAnnotation",
+        "name": "",
+        "typeKind": "primitive",
+        "typeNamespace": "nasl.core",
+        "typeName": "String",
+        "typeArguments": null,
+        "returnType": null,
+        "properties": null
+      },
+      "defaultValue": null
+    },
+    {
+      "concept": "Param",
+      "name": "database",
+      "description": "redis数据库",
+      "typeAnnotation": {
+        "concept": "TypeAnnotation",
+        "name": "",
+        "typeKind": "primitive",
+        "typeNamespace": "nasl.core",
+        "typeName": "Integer",
+        "typeArguments": null,
+        "returnType": null,
+        "properties": null
+      },
+      "defaultValue": null
+    }
+  ],
+  "triggers": []
+}
