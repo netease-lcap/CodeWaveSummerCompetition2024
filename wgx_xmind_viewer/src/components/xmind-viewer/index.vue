@@ -20,6 +20,7 @@ export default {
       isComponentVisible: true,
       showLoading: true,
       viewer: null,
+      isInitialized: true 
     }
   },
   computed: {
@@ -43,6 +44,13 @@ export default {
       this.isComponentVisible = true;
 
       if (this.isIDE) return;
+
+      if (this.isInitialized){
+        this.isInitialized = false;
+        if (!this.fileUrl) {
+          return;
+        }
+      }
 
       if (!this.fileUrl || this.fileUrl.trim() === '' || !this.fileUrl.endsWith('.xmind')) {
         this.onError(new Error(`fileUrl'${this.fileUrl} '无效参数,原因：为空或null，或者只包含空格，或者文件后缀不是xmind`));
