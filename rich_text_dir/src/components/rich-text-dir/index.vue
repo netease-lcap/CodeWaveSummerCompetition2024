@@ -5,7 +5,9 @@
       <h2>目录</h2>
       <!-- 空数据 -->
       <div v-if="!summary.length" class="detail-dir-empty">
-        <slot name="empty-category"><div>暂无数据</div></slot>
+        <!-- <slot name="empty-category"> -->
+        <div>暂无数据</div>
+        <!-- </slot> -->
       </div>
       <div v-else class="dir-body">
         <div
@@ -25,7 +27,9 @@
     <div class="detail-dir-right">
       <!-- 空数据 -->
       <div v-if="!content" class="detail-dir-empty">
-        <slot name="empty-content"><div>暂无数据</div></slot>
+        <!-- <slot name="empty-content"> -->
+        <div>暂无数据</div>
+        <!-- </slot> -->
       </div>
       <div v-else class="detail-dir-content" v-html="content"></div>
     </div>
@@ -56,7 +60,7 @@ export default {
     // 详情富文本内容
     content: {
       type: String,
-      default: '',
+      default: '暂无数据',
     },
   },
   data() {
