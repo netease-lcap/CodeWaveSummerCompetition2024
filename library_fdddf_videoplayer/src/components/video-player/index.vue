@@ -148,6 +148,16 @@ export default {
       console.log(`Theme changed from ${oldTheme} to ${newTheme}`);
       this.updatePlayerTheme(newTheme);
     },
+    subtitle_url(newSubtitleUrl, oldSubtitleUrl) {
+      console.log(`Subtitle URL changed from ${oldSubtitleUrl} to ${newSubtitleUrl}`);
+      this.updatePlayerSubtitle(newSubtitleUrl);
+    },
+    thumbnails_url(newThumbnailsUrl, oldThumbnailsUrl) {
+      console.log(`Thumbnails URL changed from ${oldThumbnailsUrl} to ${newThumbnailsUrl}`);
+      if (this.playerInstance) {
+        this.playerInstance.thumbnails.url = newThumbnailsUrl;
+      }
+    },
   },
   computed: {
     mergedPlayerOptions() {
@@ -237,9 +247,11 @@ export default {
     },
     updatePlayerThumbnails(newThumbnailsUrl, newThumbnailsNumber, newThumbnailsColumn) {
       if (this.playerInstance) {
-        this.playerInstance.thumbnails.url = newThumbnailsUrl;
-        this.playerInstance.thumbnails.number = newThumbnailsNumber;
-        this.playerInstance.thumbnails.column = newThumbnailsColumn;
+        this.playerInstance.thumbnails = {
+          url: newThumbnailsUrl,
+          number: newThumbnailsNumber,
+          column: newThumbnailsColumn
+        }
       }
     },
     getInstance(art) {
@@ -280,8 +292,14 @@ export default {
         this.$emit('pip', state);
       });
 
-      art.on('reday', () => {
-        art.subtitle.url = this.subtitle_url;
+      art.on('ready', () => {
+        this.playerInstance.subtitle.url = this.subtitle_url;
+        this.playerInstance.thumbnails = {
+          url: this.thumbnails_url,
+          number: this.thumbnails_number,
+          column: this.thumbnails_column
+        }
+        console.log(this.subtitle_url, this.thumbnails_url)
       })
     },
   },
