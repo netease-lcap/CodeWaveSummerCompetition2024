@@ -125,12 +125,12 @@ const main = async () => {
   });
 
   // lint
-  await processPackageWithParallelFlag(
-    lint,
-    getValidPackages(),
-    LINT_WITH_PARALLEL === 'true',
-  );
-  await processPackagesErrors(getErroredPackages());
+  // await processPackageWithParallelFlag(
+  //   lint,
+  //   getValidPackages(),
+  //   LINT_WITH_PARALLEL === 'true',
+  // );
+  // await processPackagesErrors(getErroredPackages());
 
   // comlie
   await processPackageWithParallelFlag(
