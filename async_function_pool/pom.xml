@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.9.RELEASE</version><!--与当前制品应用默认版本统一-->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.netease</groupId>
+    <artifactId>async_function_pool</artifactId>
+    <version>1.0.2</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <nasl.ide.version>3.3</nasl.ide.version>
+    </properties>
+    <dependencies>
+        <!--本案例是本地系统引入nasl-metadata-collector-0.8.0.jar的方式。
+        若把nasl-metadata-collector-0.8.0.jar安装到自己的maven仓库，
+        注意修改artifactId和groupId的情况下，不要使用<scope>system</scope>，会在发布时造成依赖中断。
+        不修改artifactId和groupId的情况下，nasl-metadata-maven-plugin会做特殊处理-->
+        <dependency>
+            <artifactId>nasl-metadata-collector</artifactId>
+            <groupId>com.netease.lowcode</groupId>
+            <version>0.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.83</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+        <!--制品应用使用Springboot框架，父应用引用了的包，为了防止版本冲突，scope可设置为provided-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.netease.lowcode</groupId>
+                <artifactId>nasl-metadata-maven-plugin</artifactId>
+                <version>1.4.2</version>
+                <configuration>
+                    <jarWithDependencies>false</jarWithDependencies>
+                    <rewriteVersion>false</rewriteVersion>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>archive</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
