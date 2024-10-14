@@ -37,7 +37,7 @@ export default {
   },
   watch: {
     value(value, oldValue) {
-      this.currentValue = Number(value);
+      this.currentValue = Number(value) > this.currentMax ? this.currentMax : Number(value);
     },
     currentValue(value, oldValue) {
       this.$emit(
@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     currentMax() {
-      return this.max > 10000 ? 10000 : this.max;
+      return this.max;
     },
     previewTxt() {
       if (this.showText) {
