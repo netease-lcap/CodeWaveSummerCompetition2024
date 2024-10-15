@@ -114,6 +114,7 @@ export default {
     }
   },
   mounted() {
+    this.myDiffType = this.diffType;
     this.changed();
   }
 };

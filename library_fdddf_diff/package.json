@@ -1,7 +1,7 @@
 {
   "name": "library_fdddf_diff",
   "private": "true",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "lcapIdeVersion": "3.8",
   "title": "文本对比器",
   "description": "文本对比器",
