@@ -6,7 +6,7 @@
 
     <groupId>com.netease.cloud</groupId>
     <artifactId>lcap-redis-connector</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.3</version>
     <packaging>jar</packaging>
 
     <name>lcap-redis-connector</name>
@@ -26,8 +26,8 @@
             <version>2.2.9.RELEASE</version>
             <exclusions>
                 <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
