@@ -10,9 +10,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.netease.lowcode</groupId>
-    <artifactId>extensions-font</artifactId>
-    <version>1.1.0</version>
+    <groupId>com.netease</groupId>
+    <artifactId>async_function_pool</artifactId>
+    <version>1.0.2</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -28,11 +28,28 @@
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
             <groupId>com.netease.lowcode</groupId>
-            <version>0.8.0</version>
+            <version>0.10.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.83</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+        <!--制品应用使用Springboot框架，父应用引用了的包，为了防止版本冲突，scope可设置为provided-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -43,7 +60,7 @@
                 <version>1.4.2</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
-                    <rewriteVersion>true</rewriteVersion>
+                    <rewriteVersion>false</rewriteVersion>
                 </configuration>
                 <executions>
                     <execution>

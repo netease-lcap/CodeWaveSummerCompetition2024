@@ -1,13 +1,18 @@
 package com.netease.lowcode.font.api;
 
 
+import com.netease.lowcode.core.EnvironmentType;
+import com.netease.lowcode.core.annotation.Environment;
+import com.netease.lowcode.core.annotation.NaslConfiguration;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -17,13 +22,20 @@ import java.nio.file.StandardCopyOption;
 @Component
 public class FontInitService {
     private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
+    @Value("${fontFileDir}")
+    @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "/usr/share/fonts/truetype/dejavu"),
+            @Environment(type = EnvironmentType.ONLINE, value = "/usr/share/fonts/truetype/dejavu")})
+    public String fontFileDir;
 
-    static {
+    @NaslLogic
+    public static Boolean test() {
+        return true;
+    }
+
+    @PostConstruct
+    public void init() {
         try {
-            //线上使用
-            File targetDir = new File("/usr/share/fonts/truetype/dejavu");
-            //本地测试专用
-//            File targetDir = new File("./a");
+            File targetDir = new File(fontFileDir);
             if (!targetDir.exists()) {
                 // 初始化时创建字体文件夹目录，读取resources目录下的字体文件
                 targetDir.mkdirs();
@@ -45,10 +57,5 @@ public class FontInitService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @NaslLogic
-    public static Boolean test() {
-        return true;
     }
 }

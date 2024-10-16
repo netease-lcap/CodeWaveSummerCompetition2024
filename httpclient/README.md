@@ -2,7 +2,7 @@
 
 简单http调用客户端。
 接口异常时，返回的TransferCommonException类型。ide中可在服务端逻辑中，根据返回类型是否是TransferCommonException判断接口是否执行成功。
-TransferCommonException中errorMsg包含了http状态码和返回信息。格式为："httpStatus:" + httpStatus + ",responseBody:" + responseBody
+TransferCommonException中errorMsg包含了http状态码和返回信息。格式为："httpStatus:" + httpStatus + ",responseBody:" + responseBody（除exchangeV2）
 
 # 接口详情
 ## LCAPHttpClient.exchange 数据格式为非form
@@ -15,7 +15,7 @@ TransferCommonException中errorMsg包含了http状态码和返回信息。格式
 
 出参：第三方返回完整信息的String格式 || TransferCommonException异常
 
-## LCAPHttpClient.exchangeV2 数据格式为非form，异常时返回http错误码
+## LCAPHttpClient.exchangeV2 数据格式为非form，异常时返回http错误信息
 入参：
 - url: 请求地址
 - httpMethod: 请求方法
