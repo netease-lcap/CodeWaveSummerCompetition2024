@@ -321,9 +321,19 @@ public class JvmCacheUtil {
     @NaslLogic
     public String getOrComputeAndSet(String key, Long expireAfterWriteMillis, Function<String, String> computeFunction) {
         checkCacheInitialized("获取或计算并设置缓存");
-        
-        if (StringUtils.isBlank(key) || expireAfterWriteMillis == null || expireAfterWriteMillis < 0 || computeFunction == null) {
-            logger.warn("获取或计算并设置缓存失败: 参数无效");
+
+        if (StringUtils.isBlank(key)) {
+            logger.warn("获取或计算并设置缓存失败: key（缓存键） 为空");
+            return null;
+        }
+
+        if (expireAfterWriteMillis == null || expireAfterWriteMillis < 0) {
+            logger.warn("获取或计算并设置缓存失败: expireAfterWriteMillis（写入后过期时间（毫秒）） 无效");
+            return null;
+        }
+
+        if (computeFunction == null) {
+            logger.warn("获取或计算并设置缓存失败: computeFunction（如果缓存不存在时，用于计算值的函数）为空");
             return null;
         }
         
