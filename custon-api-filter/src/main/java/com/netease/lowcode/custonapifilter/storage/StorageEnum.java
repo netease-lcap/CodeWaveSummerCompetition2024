@@ -2,6 +2,7 @@ package com.netease.lowcode.custonapifilter.storage;
 
 public enum StorageEnum {
     REDIS("redis"),
+    LOCAL("local"),
     ;
     public final String type;
 

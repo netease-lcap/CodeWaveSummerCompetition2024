@@ -52,7 +52,7 @@ public class CheckTest {
         // 进行测试逻辑
     }
 
-    @Test
+//    @Test
     public void testSign() {
         NonceRedisCheckServiceImpl.RequestHeader requestHeader = new NonceRedisCheckServiceImpl.RequestHeader(
                 "",

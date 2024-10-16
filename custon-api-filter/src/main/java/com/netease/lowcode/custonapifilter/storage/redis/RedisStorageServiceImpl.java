@@ -18,18 +18,15 @@ public class RedisStorageServiceImpl implements StorageService {
     @Resource
     private RedisConnector redisConnector;
 
-    @Resource
-    private SignNaslConfiguration signNaslConfiguration;
-
     @Override
     public boolean checkAndAddIfAbsent(String key, Long timeout) {
         try {
             String nonceExist = redisConnector.getValue(key);
             if (nonceExist != null) {
-                logger.info("key:{} 已存在", key);
+                logger.info("redis key:{} 已存在", key);
                 return false;
             } else {
-                redisConnector.setValueTimeOut(key, key, Long.parseLong(signNaslConfiguration.signMaxTime));
+                redisConnector.setValueTimeOut(key, key, timeout);
             }
         } catch (Exception e) {
             logger.error("redis连接失败", e);

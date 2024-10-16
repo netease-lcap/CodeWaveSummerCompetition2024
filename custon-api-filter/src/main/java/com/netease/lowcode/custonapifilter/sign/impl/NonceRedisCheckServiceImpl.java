@@ -1,9 +1,9 @@
 package com.netease.lowcode.custonapifilter.sign.impl;
 
 import com.netease.lowcode.custonapifilter.config.Constants;
-import com.netease.lowcode.custonapifilter.storage.StorageService;
 import com.netease.lowcode.custonapifilter.sign.CheckService;
 import com.netease.lowcode.custonapifilter.storage.StorageNaslConfiguration;
+import com.netease.lowcode.custonapifilter.storage.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,6 +42,13 @@ public class NonceRedisCheckServiceImpl implements CheckService {
         if (requestHeader.getTimestamp() == null || requestHeader.getSign() == null || requestHeader.getNonce() == null) {
             logger.info("无timestamp、nonce、sign信息");
             return false;
+        }
+        if ("1".equals(signNaslConfiguration.isCheckTimeStamp)) {
+            //        判断当前时间和timestamp的关系。
+            if (System.currentTimeMillis() - Long.parseLong(requestHeader.getTimestamp()) > Long.parseLong(signNaslConfiguration.signMaxTime)) {
+                logger.error("checkSign error，时间超出范围");
+                return false;
+            }
         }
 //        校验timestamp、nonce和sign的关系。
         if (!checkSign(requestHeader)) {

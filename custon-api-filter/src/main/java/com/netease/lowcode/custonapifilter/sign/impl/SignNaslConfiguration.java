@@ -15,12 +15,19 @@ import org.springframework.stereotype.Component;
 @NaslStructure
 public class SignNaslConfiguration {
     /**
-     * 与前端配套使用的公钥
+     * 公钥（服务端使用）
      */
     @Value("${secretKey}")
     @NaslConfiguration
     @Required
     public String secretKey;
+    /**
+     * 私钥（客户端使用）
+     */
+    @Value("${privateSecretKey}")
+    @NaslConfiguration
+    @Required
+    public String privateSecretKey;
     /**
      * 防重放最大有效时间，单位ms
      */
@@ -29,4 +36,11 @@ public class SignNaslConfiguration {
     @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "60000"), @Environment(type = EnvironmentType.ONLINE, value = "60000")})
     public String signMaxTime;
 
+    /**
+     * 是否开启时间戳校验 0-不开启 1-开启
+     */
+    @Value("${isCheckTimeStamp}")
+    @Required
+    @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "0"), @Environment(type = EnvironmentType.ONLINE, value = "0")})
+    public String isCheckTimeStamp;
 }
