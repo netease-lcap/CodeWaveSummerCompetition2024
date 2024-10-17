@@ -23,7 +23,7 @@ import java.util.Map;
 public class NonceRedisCheckServiceImpl implements CheckService {
 
     Map<String, StorageService> storageServiceMap = new LinkedHashMap<>();
-    private Logger logger = LoggerFactory.getLogger(NonceRedisCheckServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     @Resource
     private SignNaslConfiguration signNaslConfiguration;
     @Resource
@@ -40,36 +40,36 @@ public class NonceRedisCheckServiceImpl implements CheckService {
     public boolean check(HttpServletRequest request) {
         RequestHeader requestHeader = new RequestHeader(request.getHeader(Constants.LIB_SIGN_HEADER_NAME), request.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME), request.getHeader(Constants.LIB_NONCE_HEADER_NAME));
         if (requestHeader.getTimestamp() == null || requestHeader.getSign() == null || requestHeader.getNonce() == null) {
-            logger.info("无timestamp、nonce、sign信息");
+            log.info("无timestamp、nonce、sign信息");
             return false;
         }
         if ("1".equals(signNaslConfiguration.isCheckTimeStamp)) {
             //        判断当前时间和timestamp的关系。
             if (System.currentTimeMillis() - Long.parseLong(requestHeader.getTimestamp()) > Long.parseLong(signNaslConfiguration.signMaxTime)) {
-                logger.error("checkSign error，时间超出范围");
+                log.error("checkSign error，时间超出范围");
                 return false;
             }
         }
 //        校验timestamp、nonce和sign的关系。
         if (!checkSign(requestHeader)) {
-            logger.warn("checkSign error，签名校验失败");
+            log.warn("checkSign error，签名校验失败");
             return false;
         }
         if (storageNaslConfiguration.storageStrategy == null) {
-            logger.error("storageStrategy error，配置信息异常");
+            log.error("storageStrategy error，配置信息异常");
             return false;
         }
 //        查询redis看60s内是否存在
         StorageService storageService = storageServiceMap.get(storageNaslConfiguration.storageStrategy);
         if (storageService == null) {
-            logger.error("storageStrategy error，配置信息异常");
+            log.error("storageStrategy error，配置信息异常");
             return false;
         }
         Long timestamp;
         try {
             timestamp = Long.parseLong(signNaslConfiguration.signMaxTime);
         } catch (NumberFormatException e) {
-            logger.error("checkSign error，配置信息-时间格式异常", e);
+            log.error("checkSign error，配置信息-时间格式异常", e);
             return false;
         }
         return storageService.checkAndAddIfAbsent(requestHeader.getNonce() + requestHeader.getTimestamp(), timestamp);
@@ -86,7 +86,7 @@ public class NonceRedisCheckServiceImpl implements CheckService {
             keyFactory = KeyFactory.getInstance("RSA");
             verifier = Signature.getInstance("SHA256withRSA");
         } catch (NoSuchAlgorithmException e) {
-            logger.error("checkSign error，加密算法或环境异常", e);
+            log.error("checkSign error，加密算法或环境异常", e);
             return false;
         }
         try {
@@ -95,7 +95,7 @@ public class NonceRedisCheckServiceImpl implements CheckService {
             verifier.update((requestHeader.getTimestamp() + requestHeader.getNonce()).getBytes());
             return verifier.verify(Base64.getDecoder().decode(requestHeader.getSign()));
         } catch (SignatureException | InvalidKeySpecException | InvalidKeyException e) {
-            logger.warn("checkSign error，验证签名失败", e);
+            log.warn("checkSign error，验证签名失败", e);
             return false;
         }
     }

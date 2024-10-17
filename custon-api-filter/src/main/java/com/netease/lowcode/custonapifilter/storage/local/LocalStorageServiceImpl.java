@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class LocalStorageServiceImpl implements StorageService {
-    private static final Logger logger = LoggerFactory.getLogger(LocalStorageServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
 
@@ -30,7 +30,7 @@ public class LocalStorageServiceImpl implements StorageService {
     }
 
     private void evict(String key) {
-        logger.info("local key:{} 过期", key);
+        log.info("local key:{} 过期", key);
         map.remove(key);
     }
 
@@ -38,7 +38,7 @@ public class LocalStorageServiceImpl implements StorageService {
     public boolean checkAndAddIfAbsent(String key, Long timeout) {
         boolean nonceExist = containsKey(key);
         if (nonceExist) {
-            logger.info("local key:{} 已存在", key);
+            log.info("local key:{} 已存在", key);
             return false;
         } else {
             put(key, timeout);

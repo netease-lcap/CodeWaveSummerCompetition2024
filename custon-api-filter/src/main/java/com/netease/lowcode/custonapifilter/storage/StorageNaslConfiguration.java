@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class StorageNaslConfiguration {
 
     /**
-     * 数据存储策略。redis/local
+     * 数据存储策略。redis/local/db
      */
     @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "redis"),
             @Environment(type = EnvironmentType.ONLINE, value = "redis")})

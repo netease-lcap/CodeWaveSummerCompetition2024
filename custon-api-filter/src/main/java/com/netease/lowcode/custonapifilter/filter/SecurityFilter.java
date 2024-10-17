@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 @Component
 public class SecurityFilter extends CommonsRequestLoggingFilter {
     public static final String LOGIC_IDENTIFIER_SEPARATOR = ":";
-    private Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
+    private final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     @Autowired
     private CheckService checkService;
     @Autowired
@@ -37,7 +37,7 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             try {
                 otherApis = Arrays.asList(filterConfig.filterUrlList.split(","));
             } catch (Exception e) {
-                logger.warn("filterUrlList配置错误,{}", filterConfig.filterUrlList);
+                log.warn("filterUrlList配置错误,{}", filterConfig.filterUrlList);
             }
         }
         return Stream.concat(defaultApis.stream(), otherApis.stream()).collect(Collectors.toList());
@@ -60,7 +60,7 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        logger.info("请求地址,{}", logicIdentifier);
+        log.info("请求地址,{}", logicIdentifier);
         if (!checkService.check(request)) {
             response.setContentType("application/json");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -68,7 +68,7 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             response.getWriter().write(checkService + "校验请求拦截");
             return;
         }
-        logger.info("SecurityFilter check success");
+        log.info("SecurityFilter check success");
         filterChain.doFilter(request, response);
     }
 }
