@@ -2,6 +2,8 @@ package com.netease.lowcode.extensions.response;
 
 import com.netease.lowcode.core.annotation.NaslStructure;
 
+import java.util.Map;
+
 @NaslStructure
 public class ExportBigDataResponse {
 
@@ -14,6 +16,7 @@ public class ExportBigDataResponse {
     public Double cost;// 处理耗时,单位 s
     public Double size;// 文件大小,单位字节
     public Long total;
+    public Map<String,String> extensionParams;
 
     public static ExportBigDataResponse FAIL(String msg) {
         return FAIL(msg, null);
@@ -24,6 +27,18 @@ public class ExportBigDataResponse {
         fail.setSuccess(false);
         fail.setMsg(msg);
         fail.setTrace(trace);
+        return fail;
+    }
+
+    public static ExportBigDataResponse FAIL2(String msg, Map<String, String> extensionParams) {
+        ExportBigDataResponse fail = FAIL(msg, null);
+        fail.setExtensionParams(extensionParams);
+        return fail;
+    }
+
+    public static ExportBigDataResponse FAIL(String msg, String trace, Map<String, String> extensionParams) {
+        ExportBigDataResponse fail = FAIL(msg, trace);
+        fail.setExtensionParams(extensionParams);
         return fail;
     }
 
@@ -41,6 +56,12 @@ public class ExportBigDataResponse {
         callSuccess.setCost(cost);
         callSuccess.setSize(size);
         return callSuccess;
+    }
+
+    public static ExportBigDataResponse OK(String path, String url, Double cost, Double size, Map<String, String> extensionParams) {
+        ExportBigDataResponse ok = OK(path, url, cost, size);
+        ok.setExtensionParams(extensionParams);
+        return ok;
     }
 
     public static ExportBigDataResponse OK(String path,String url,String msg) {
@@ -119,6 +140,14 @@ public class ExportBigDataResponse {
 
     public void setTotal(Long total) {
         this.total = total;
+    }
+
+    public Map<String, String> getExtensionParams() {
+        return extensionParams;
+    }
+
+    public void setExtensionParams(Map<String, String> extensionParams) {
+        this.extensionParams = extensionParams;
     }
 }
 
