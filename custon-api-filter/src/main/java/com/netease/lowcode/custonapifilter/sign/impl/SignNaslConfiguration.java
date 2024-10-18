@@ -22,13 +22,6 @@ public class SignNaslConfiguration {
     @Required
     public String secretKey;
     /**
-     * 私钥（客户端使用）
-     */
-    @Value("${privateSecretKey}")
-    @NaslConfiguration
-    @Required
-    public String privateSecretKey;
-    /**
      * 防重放最大有效时间，单位ms
      */
     @Value("${signMaxTime}")
