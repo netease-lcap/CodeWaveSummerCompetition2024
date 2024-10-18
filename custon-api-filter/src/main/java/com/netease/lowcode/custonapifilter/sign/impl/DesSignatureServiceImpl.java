@@ -10,6 +10,8 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
@@ -23,13 +25,9 @@ public class DesSignatureServiceImpl implements SignatureService {
         try {
             // 将Base64编码的密钥解码
             byte[] decodedKey = Base64.getDecoder().decode(key);
+            Key secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "DES");
 
-            // 创建DESKeySpec
-            KeySpec desKeySpec = new DESKeySpec(decodedKey);
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-            SecretKey secretKey = keyFactory.generateSecret(desKeySpec);
-
-            // 创建DES的Cipher实例
+            // 创建AES的Cipher实例
             Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
@@ -38,11 +36,11 @@ public class DesSignatureServiceImpl implements SignatureService {
 
             // 将加密后的数据以Base64编码
             String encryptedDataString = Base64.getEncoder().encodeToString(encryptedData);
-            log.info("生成的签名：" + encryptedDataString);
+            log.info("des生成的签名：" + encryptedDataString);
             // 比较生成的签名与提供的签名
             return encryptedDataString.equals(sign);
         } catch (Exception e) {
-            log.warn("des signature error，验证签名失败", e);
+            log.info("des signature error", e);
             // 适当处理异常
             return false;
         }
@@ -73,7 +71,7 @@ public class DesSignatureServiceImpl implements SignatureService {
 
             return new String(decryptedData, "UTF-8");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("des解密异常", e);
             // 适当处理异常
             return null;
         }

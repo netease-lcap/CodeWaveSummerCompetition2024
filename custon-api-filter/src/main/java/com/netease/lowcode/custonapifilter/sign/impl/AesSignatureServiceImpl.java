@@ -1,13 +1,21 @@
 package com.netease.lowcode.custonapifilter.sign.impl;
 
+import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.custonapifilter.sign.SignatureService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Base64;
 
+
+@Component
 public class AesSignatureServiceImpl implements SignatureService {
+    private final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
+
     @Override
     public Boolean signature(String data, String key, String sign) {
         try {
@@ -28,11 +36,12 @@ public class AesSignatureServiceImpl implements SignatureService {
             // 比较生成的签名与提供的签名
             return encryptedDataString.equals(sign);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("aes signature error", e);
             // 适当处理异常
             return false;
         }
     }
+
     /**
      * AES解密
      *
@@ -40,7 +49,8 @@ public class AesSignatureServiceImpl implements SignatureService {
      * @param key
      * @return
      */
-    public  String decryptAES(String encryptedDataString, String key) {
+    @NaslLogic
+    public String decryptAES(String encryptedDataString, String key) {
         try {
             byte[] decodedKey = Base64.getDecoder().decode(key);
             Key secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
