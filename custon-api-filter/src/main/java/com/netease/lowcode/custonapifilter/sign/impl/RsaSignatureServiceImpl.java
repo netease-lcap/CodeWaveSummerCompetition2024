@@ -35,7 +35,7 @@ public class RsaSignatureServiceImpl implements SignatureService {
             verifier.update(data.getBytes());
             return verifier.verify(Base64.getDecoder().decode(sign));
         } catch (SignatureException | InvalidKeySpecException | InvalidKeyException e) {
-            log.warn("checkSign error，验证签名失败", e);
+            log.warn("rsa signature error，验证签名失败", e);
             return false;
         }
     }

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class NonceRedisCheckServiceImpl implements CheckService {
+public class NonceCheckServiceImpl implements CheckService {
 
     private final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     Map<String, StorageService> storageServiceMap = new LinkedHashMap<>();
@@ -27,11 +27,14 @@ public class NonceRedisCheckServiceImpl implements CheckService {
     @Resource
     private List<StorageService> storageServices;
     @Resource
+    private List<SignatureService> signatureServices;
+    @Resource
     private StorageNaslConfiguration storageNaslConfiguration;
 
     @PostConstruct
     public void init() {
         storageServices.forEach(storageService -> storageServiceMap.put(storageService.type(), storageService));
+        signatureServices.forEach(signatureService -> signatureServiceMap.put(signatureService.type(), signatureService));
     }
 
     @Override
