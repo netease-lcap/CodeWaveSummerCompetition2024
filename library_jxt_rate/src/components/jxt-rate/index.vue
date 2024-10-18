@@ -2,7 +2,7 @@
   <el-rate
     v-if="!preview"
     v-model="currentValue"
-    :max="currentMax"
+    :max="max"
     :showText="showText"
     :texts="texts"
     :allow-half="allowHalf"
@@ -36,30 +36,29 @@ export default {
     };
   },
   watch: {
-    value(value, oldValue) {
-      this.currentValue = Number(value) > this.currentMax ? this.currentMax : Number(value);
+    value() {
+      this.currentValue = this.adjustedValue;
     },
     currentValue(value, oldValue) {
-      this.$emit(
-        'change',
-        {
-          value,
-          oldValue,
-        },
-        this
-      );
+      this.$emit('change', { value, oldValue });
+    },
+    max(newMax) {
+      if (this.currentValue > newMax) {
+        this.currentValue = newMax;
+        this.prevValue = newMax;
+      }
     },
   },
   computed: {
-    currentMax() {
-      return this.max;
-    },
     previewTxt() {
       if (this.showText) {
         return this.texts[Number(this.currentValue) - 1] || '--';
       } else {
         return String(this.currentValue) || '--';
       }
+    },
+    adjustedValue() {
+      return Math.min(Number(this.value), this.max);
     },
   },
   methods: {
@@ -77,7 +76,7 @@ export default {
       } else {
         this.prevValue = value;
       }
-      this.$emit('update:value', this.currentValue, this);
+      this.$emit('update:value', this.currentValue);
     },
   },
 };
