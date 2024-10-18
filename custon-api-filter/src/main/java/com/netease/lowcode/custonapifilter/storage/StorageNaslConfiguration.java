@@ -22,4 +22,13 @@ public class StorageNaslConfiguration {
     @Value("${storageStrategy}")
     public String storageStrategy;
 
+    /**
+     * 算法策略。rsa/des/aes
+     */
+    @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "rsa"),
+            @Environment(type = EnvironmentType.ONLINE, value = "rsa")})
+    @Value("${signatureStrategy}")
+    public String signatureStrategy;
+
+
 }
