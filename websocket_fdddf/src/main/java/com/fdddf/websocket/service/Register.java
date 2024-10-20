@@ -9,6 +9,11 @@ import java.util.function.Function;
 public class Register {
     private static Function<CommonRequestMessage, CommonReplyMessage> messageHandler;
 
+    /**
+     * 注册消息处理函数
+     * @param messageHandler 消息处理函数
+     * @return 是否注册成功
+     */
     @NaslLogic
     public Boolean registerMessageHandler(Function<CommonRequestMessage, CommonReplyMessage> messageHandler)
     {

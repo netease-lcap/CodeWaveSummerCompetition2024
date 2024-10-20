@@ -14,7 +14,7 @@
     <artifactId>websocket</artifactId>
     <name>websocket</name>
     <description>websocket依赖库，支持STOMP协议</description>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

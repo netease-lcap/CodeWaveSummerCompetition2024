@@ -17,10 +17,6 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer  {
 
-//    @NaslConfiguration(defaultValue = @Environment(type = EnvironmentType.DEV, value = "9090"))
-//    @Value("${server.port}")
-//    public Integer serverPort;
-
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
@@ -32,11 +28,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer  {
         registry.addEndpoint("/ws")
                 .setAllowedOrigins("*");
     }
-
-//    @Bean
-//    public ServerEndpointExporter serverEndpointExporter()
-//    {
-//        return new ServerEndpointExporter();
-//    }
 
 }

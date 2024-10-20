@@ -22,7 +22,7 @@ public class MessageController {
         if (handler == null) {
             return new CommonReplyMessage("No handler found to process message: "+ message.content, message.userId);
         }
-        return Register.getMessageHandler().apply(message);
+        return handler.apply(message);
     }
 
     @Autowired
