@@ -1,7 +1,7 @@
 {
   "name": "library_fdddf_websocket",
   "private": "true",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "lcapIdeVersion": "3.8",
   "title": "WebSocket前端依赖库",
   "description": "WebSocket前端依赖库",

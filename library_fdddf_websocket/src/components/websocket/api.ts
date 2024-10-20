@@ -67,25 +67,20 @@ namespace extensions.library_fdddf_websocket.viewComponents {
       title: '收到消息',
       description: '收到消息时',
     })
-    onMessageReceived: (event: nasl.core.String) => void
+    onMessage: (event: nasl.core.String) => void
 
     @Event({
       title: '发出消息',
       description: '发出消息时',
     })
-    onMessageSent: (event: nasl.core.String) => void
+    onSent: (event: nasl.core.String) => void
 
     @Event({
       title: 'websocket连接失败',
       description: 'websocket连接失败',
     })
-    onWebSocketError: (event: Event) => void
-    
-    @Event({
-      title: 'stomp连接失败',
-      description: 'stomp连接失败',
-    })
-    onStompError: (event: nasl.core.String) => void
+    onError: (event: Event) => void
+  
     
   }
 }

@@ -30,6 +30,7 @@
         required: true,
       }
     },
+    emits: ['connected', 'disconnected', 'message', 'sent', 'error'],
     data() {
       return {
         stompClient: null,
@@ -53,7 +54,7 @@
                 console.log(`Received: ${message.body}`)
                 const parsedMessage = JSON.parse(message.body).content;
                 this.receivedMessages.push(parsedMessage);
-                this.$emit('messageReceived', parsedMessage);  // Emitting 'messageReceived' event
+                this.$emit('message', parsedMessage);  // Emitting 'messageReceived' event
               }
             });
             this.isConnected = true;
@@ -81,7 +82,7 @@
         if (this.message.trim()) {
           const body = JSON.stringify({ content: this.message, userId: 1 });
           this.stompClient.publish({destination: "/app/common", body: body});
-          this.$emit('messageSent', this.message);  // Emitting 'messageSent' event
+          this.$emit('sent', this.message);  // Emitting 'messageSent' event
           this.message = '';
         }
       },
