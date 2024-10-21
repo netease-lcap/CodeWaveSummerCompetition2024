@@ -87,7 +87,6 @@ public class NonceCheckServiceImpl implements CheckService {
         }
         String key = signNaslConfiguration.secretKey;
         String data = requestHeader.getTimestamp() + requestHeader.getNonce() + requestHeader.getBody();
-        log.info("加密前data:{}", data);
         String sign = requestHeader.getSign();
         return signatureService.signature(data, key, sign);
     }

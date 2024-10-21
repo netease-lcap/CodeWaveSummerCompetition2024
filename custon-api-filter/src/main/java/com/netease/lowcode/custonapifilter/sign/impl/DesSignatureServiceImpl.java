@@ -36,7 +36,6 @@ public class DesSignatureServiceImpl implements SignatureService {
 
             // 将加密后的数据以Base64编码
             String encryptedDataString = Base64.getEncoder().encodeToString(encryptedData);
-            log.info("des生成的签名：" + encryptedDataString);
             // 比较生成的签名与提供的签名
             return encryptedDataString.equals(sign);
         } catch (Exception e) {

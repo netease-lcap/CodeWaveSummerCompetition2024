@@ -63,10 +63,8 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        log.info("请求地址,{}", logicIdentifier);
         ReReadableHttpServletRequestWrapper requestWrapper = new ReReadableHttpServletRequestWrapper(request);
         String body = requestWrapper.getBody();
-        log.info("请求体,{}", body);
         RequestHeader requestHeader = new RequestHeader(requestWrapper.getHeader(Constants.LIB_SIGN_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME),
                 requestWrapper.getHeader(Constants.LIB_NONCE_HEADER_NAME), body);
         if (!checkService.check(requestHeader)) {
