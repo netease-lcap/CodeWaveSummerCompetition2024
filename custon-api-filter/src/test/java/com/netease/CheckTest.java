@@ -1,7 +1,7 @@
 package com.netease;
 
 import com.netease.lowcode.custonapifilter.sign.CheckService;
-import com.netease.lowcode.custonapifilter.sign.impl.NonceCheckServiceImpl;
+import com.netease.lowcode.custonapifilter.sign.dto.RequestHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -51,17 +51,17 @@ public class CheckTest {
         // 进行测试逻辑
     }
 
-//    @Test
+    //    @Test
     public void testSign() {
-        NonceCheckServiceImpl.RequestHeader requestHeader = new NonceCheckServiceImpl.RequestHeader(
+        RequestHeader requestHeader = new RequestHeader(
                 "",
                 "1704682887427",
-                ""
+                "", null
         );
         System.out.println(checkSign(requestHeader));
     }
 
-    private boolean checkSign(NonceCheckServiceImpl.RequestHeader requestHeader) {
+    private boolean checkSign(RequestHeader requestHeader) {
         byte[] publicKeyBytes = Base64.getDecoder().decode("");
         // 转换公钥字节数组为PublicKey对象
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);

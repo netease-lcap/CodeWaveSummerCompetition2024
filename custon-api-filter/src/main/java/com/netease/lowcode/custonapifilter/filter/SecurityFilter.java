@@ -1,6 +1,9 @@
 package com.netease.lowcode.custonapifilter.filter;
 
+import com.netease.lowcode.custonapifilter.config.Constants;
 import com.netease.lowcode.custonapifilter.sign.CheckService;
+import com.netease.lowcode.custonapifilter.sign.dto.ReReadableHttpServletRequestWrapper;
+import com.netease.lowcode.custonapifilter.sign.dto.RequestHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +64,12 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             return;
         }
         log.info("请求地址,{}", logicIdentifier);
-        if (!checkService.check(request)) {
+        ReReadableHttpServletRequestWrapper requestWrapper = new ReReadableHttpServletRequestWrapper(request);
+        String body = requestWrapper.getBody();
+        log.info("请求体,{}", body);
+        RequestHeader requestHeader = new RequestHeader(requestWrapper.getHeader(Constants.LIB_SIGN_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME),
+                requestWrapper.getHeader(Constants.LIB_NONCE_HEADER_NAME), body);
+        if (!checkService.check(requestHeader)) {
             response.setContentType("application/json");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setCharacterEncoding("UTF-8");
@@ -69,6 +77,6 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             return;
         }
         log.info("SecurityFilter check success");
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(requestWrapper, response);
     }
 }

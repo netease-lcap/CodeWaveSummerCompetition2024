@@ -1,8 +1,8 @@
 package com.netease.lowcode.custonapifilter.sign.impl;
 
-import com.netease.lowcode.custonapifilter.config.Constants;
 import com.netease.lowcode.custonapifilter.sign.CheckService;
 import com.netease.lowcode.custonapifilter.sign.SignatureService;
+import com.netease.lowcode.custonapifilter.sign.dto.RequestHeader;
 import com.netease.lowcode.custonapifilter.storage.StorageNaslConfiguration;
 import com.netease.lowcode.custonapifilter.storage.StorageService;
 import org.slf4j.Logger;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +37,7 @@ public class NonceCheckServiceImpl implements CheckService {
     }
 
     @Override
-    public boolean check(HttpServletRequest request) {
-        RequestHeader requestHeader = new RequestHeader(request.getHeader(Constants.LIB_SIGN_HEADER_NAME), request.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME), request.getHeader(Constants.LIB_NONCE_HEADER_NAME));
+    public boolean check(RequestHeader requestHeader) {
         if (requestHeader.getTimestamp() == null || requestHeader.getSign() == null || requestHeader.getNonce() == null) {
             log.info("无timestamp、nonce、sign信息");
             return false;
@@ -51,7 +49,7 @@ public class NonceCheckServiceImpl implements CheckService {
                 return false;
             }
         }
-//        校验timestamp、nonce和sign的关系。
+//        校验timestamp、nonce和sign的关系。新增body
         if (!checkSign(requestHeader)) {
             log.warn("checkSign error，签名校验失败");
             return false;
@@ -88,44 +86,9 @@ public class NonceCheckServiceImpl implements CheckService {
             return false;
         }
         String key = signNaslConfiguration.secretKey;
-        String data = requestHeader.getTimestamp() + requestHeader.getNonce();
+        String data = requestHeader.getTimestamp() + requestHeader.getNonce() + requestHeader.getBody();
+        log.info("加密前data:{}", data);
         String sign = requestHeader.getSign();
         return signatureService.signature(data, key, sign);
-    }
-
-    public static class RequestHeader {
-        private String sign;
-        private String timestamp;
-        private String nonce;
-
-        public RequestHeader(String sign, String timestamp, String nonce) {
-            this.sign = sign;
-            this.timestamp = timestamp;
-            this.nonce = nonce;
-        }
-
-        public String getSign() {
-            return sign;
-        }
-
-        public void setSign(String sign) {
-            this.sign = sign;
-        }
-
-        public String getTimestamp() {
-            return timestamp;
-        }
-
-        public void setTimestamp(String timestamp) {
-            this.timestamp = timestamp;
-        }
-
-        public String getNonce() {
-            return nonce;
-        }
-
-        public void setNonce(String nonce) {
-            this.nonce = nonce;
-        }
     }
 }
