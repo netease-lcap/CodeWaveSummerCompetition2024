@@ -47,7 +47,7 @@ public class LCAPHttpClient {
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
-    private FileUtil fileUtil;
+    private FileUtil httpClientFileUtils;
 
     /**
      * http/https调用（非form使用）
@@ -135,7 +135,7 @@ public class LCAPHttpClient {
             requestParam.setHeader(header);
             requestParam.setHttpMethod(HttpMethod.GET.name());
             file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
-            UploadResponseDTO uploadResponseDTO = fileUtil.uploadStream(Files.newInputStream(file.toPath()), file.getName());
+            UploadResponseDTO uploadResponseDTO = httpClientFileUtils.uploadStream(Files.newInputStream(file.toPath()), file.getName());
             return uploadResponseDTO.result;
         } catch (HttpClientErrorException e) {
             logger.error("", e);

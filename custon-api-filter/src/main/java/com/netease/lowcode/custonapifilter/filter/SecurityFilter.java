@@ -1,6 +1,9 @@
 package com.netease.lowcode.custonapifilter.filter;
 
+import com.netease.lowcode.custonapifilter.config.Constants;
 import com.netease.lowcode.custonapifilter.sign.CheckService;
+import com.netease.lowcode.custonapifilter.sign.dto.ReReadableHttpServletRequestWrapper;
+import com.netease.lowcode.custonapifilter.sign.dto.RequestHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,7 @@ import java.util.stream.Stream;
 @Component
 public class SecurityFilter extends CommonsRequestLoggingFilter {
     public static final String LOGIC_IDENTIFIER_SEPARATOR = ":";
-    private Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
+    private final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     @Autowired
     private CheckService checkService;
     @Autowired
@@ -37,7 +40,7 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             try {
                 otherApis = Arrays.asList(filterConfig.filterUrlList.split(","));
             } catch (Exception e) {
-                logger.warn("filterUrlList配置错误,{}", filterConfig.filterUrlList);
+                log.warn("filterUrlList配置错误,{}", filterConfig.filterUrlList);
             }
         }
         return Stream.concat(defaultApis.stream(), otherApis.stream()).collect(Collectors.toList());
@@ -60,15 +63,18 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        logger.info("请求地址,{}", logicIdentifier);
-        if (!checkService.check(request)) {
+        ReReadableHttpServletRequestWrapper requestWrapper = new ReReadableHttpServletRequestWrapper(request);
+        String body = requestWrapper.getBody();
+        RequestHeader requestHeader = new RequestHeader(requestWrapper.getHeader(Constants.LIB_SIGN_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME),
+                requestWrapper.getHeader(Constants.LIB_NONCE_HEADER_NAME), body);
+        if (!checkService.check(requestHeader)) {
             response.setContentType("application/json");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(checkService + "校验请求拦截");
             return;
         }
-        logger.info("SecurityFilter check success");
-        filterChain.doFilter(request, response);
+        log.info("SecurityFilter check success");
+        filterChain.doFilter(requestWrapper, response);
     }
 }

@@ -1,6 +1,5 @@
 package com.netease.lowcode.custonapifilter.storage.redis;
 
-import com.netease.lowcode.custonapifilter.sign.impl.SignNaslConfiguration;
 import com.netease.lowcode.custonapifilter.storage.StorageEnum;
 import com.netease.lowcode.custonapifilter.storage.StorageService;
 import org.slf4j.Logger;
@@ -14,25 +13,22 @@ import javax.annotation.Resource;
  */
 @Component
 public class RedisStorageServiceImpl implements StorageService {
-    private static final Logger logger = LoggerFactory.getLogger(RedisStorageServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     @Resource
     private RedisConnector redisConnector;
-
-    @Resource
-    private SignNaslConfiguration signNaslConfiguration;
 
     @Override
     public boolean checkAndAddIfAbsent(String key, Long timeout) {
         try {
             String nonceExist = redisConnector.getValue(key);
             if (nonceExist != null) {
-                logger.info("key:{} 已存在", key);
+                log.info("redis key:{} 已存在", key);
                 return false;
             } else {
-                redisConnector.setValueTimeOut(key, key, Long.parseLong(signNaslConfiguration.signMaxTime));
+                redisConnector.setValueTimeOut(key, key, timeout);
             }
         } catch (Exception e) {
-            logger.error("redis连接失败", e);
+            log.error("redis连接失败", e);
         }
         return true;
     }

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FilterConfig {
     /**
-     * 防重放过滤地址列表，多个地址用逗号分隔。地址为右模糊匹配
+     * 防重放过滤扩展地址列表，基础：/api/lcplogics。多个地址用逗号分隔。地址为右模糊匹配
      */
     @NaslConfiguration
     @Value("${filterUrlList}")
