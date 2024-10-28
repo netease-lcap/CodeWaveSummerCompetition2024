@@ -22,7 +22,6 @@ public class RedisStorageServiceImpl implements StorageService {
         try {
             String nonceExist = redisConnector.getValue(key);
             if (nonceExist != null) {
-                log.info("redis key:{} 已存在", key);
                 return false;
             } else {
                 redisConnector.setValueTimeOut(key, key, timeout);

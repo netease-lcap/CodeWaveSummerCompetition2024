@@ -11,7 +11,7 @@
     <groupId>com.netease</groupId>
     <artifactId>custon-api-filter</artifactId>
     <!--平台上传过的包，在代码修改后版本号必须升级。因为平台中的包无法彻底删除。-->
-    <version>1.2.10</version>
+    <version>1.2.11</version>
     <name>custon-api-filter</name>
 
     <properties>

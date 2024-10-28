@@ -48,33 +48,41 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String requestURI = request.getRequestURI();
-        String method = request.getMethod();
-        String logicIdentifier = requestURI + LOGIC_IDENTIFIER_SEPARATOR + method;
-        //过滤黑名单
-        boolean isFilter = false;
-        for (String api : apiBlackList()) {
-            if (logicIdentifier.startsWith(api)) {
-                isFilter = true;
-                break;
+
+        try {
+            String requestURI = request.getRequestURI();
+            String method = request.getMethod();
+            String logicIdentifier = requestURI + LOGIC_IDENTIFIER_SEPARATOR + method;
+            //过滤黑名单
+            boolean isFilter = false;
+            for (String api : apiBlackList()) {
+                if (logicIdentifier.startsWith(api)) {
+                    isFilter = true;
+                    break;
+                }
             }
-        }
-        if (!isFilter) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        ReReadableHttpServletRequestWrapper requestWrapper = new ReReadableHttpServletRequestWrapper(request);
-        String body = requestWrapper.getBody();
-        RequestHeader requestHeader = new RequestHeader(requestWrapper.getHeader(Constants.LIB_SIGN_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME),
-                requestWrapper.getHeader(Constants.LIB_NONCE_HEADER_NAME), body);
-        if (!checkService.check(requestHeader)) {
+            if (!isFilter) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+            ReReadableHttpServletRequestWrapper requestWrapper = new ReReadableHttpServletRequestWrapper(request);
+            String body = requestWrapper.getBody();
+            RequestHeader requestHeader = new RequestHeader(requestWrapper.getHeader(Constants.LIB_SIGN_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME),
+                    requestWrapper.getHeader(Constants.LIB_NONCE_HEADER_NAME), body);
+            if (!checkService.check(requestHeader)) {
+                response.setContentType("application/json");
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(checkService + "校验请求拦截");
+                return;
+            }
+            filterChain.doFilter(requestWrapper, response);
+        } catch (Exception e) {
+            log.error("SecurityFilter error", e);
             response.setContentType("application/json");
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(checkService + "校验请求拦截");
-            return;
+            response.getWriter().write("SecurityFilter error. 校验请求拦截");
         }
-        log.info("SecurityFilter check success");
-        filterChain.doFilter(requestWrapper, response);
     }
 }

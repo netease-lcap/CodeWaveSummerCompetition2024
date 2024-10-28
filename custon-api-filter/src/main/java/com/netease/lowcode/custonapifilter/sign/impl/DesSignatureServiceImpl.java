@@ -39,7 +39,7 @@ public class DesSignatureServiceImpl implements SignatureService {
             // 比较生成的签名与提供的签名
             return encryptedDataString.equals(sign);
         } catch (Exception e) {
-            log.info("des signature error", e);
+            log.warn("des signature error", e);
             // 适当处理异常
             return false;
         }
