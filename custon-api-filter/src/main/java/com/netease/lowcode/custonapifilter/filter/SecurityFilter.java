@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class SecurityFilter extends CommonsRequestLoggingFilter {
@@ -34,7 +32,6 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
 
     private List<String> apiBlackList() {
         //后端依赖库逻辑
-        List<String> defaultApis = Arrays.asList("/api/lcplogics");
         List<String> otherApis = new ArrayList<>();
         if (!StringUtils.isEmpty(filterConfig.filterUrlList)) {
             try {
@@ -43,7 +40,7 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
                 log.warn("filterUrlList配置错误,{}", filterConfig.filterUrlList);
             }
         }
-        return Stream.concat(defaultApis.stream(), otherApis.stream()).collect(Collectors.toList());
+        return otherApis;
     }
 
     @Override
@@ -55,10 +52,20 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             String logicIdentifier = requestURI + LOGIC_IDENTIFIER_SEPARATOR + method;
             //过滤黑名单
             boolean isFilter = false;
-            for (String api : apiBlackList()) {
-                if (logicIdentifier.startsWith(api)) {
-                    isFilter = true;
-                    break;
+            if("black".equals(filterConfig.filterType)) {
+                for (String api : apiBlackList()) {
+                    if (logicIdentifier.startsWith(api)) {
+                        isFilter = true;
+                        break;
+                    }
+                }
+            }else if("white".equals(filterConfig.filterType)){
+                isFilter = true;
+                for (String api : apiBlackList()) {
+                    if (logicIdentifier.startsWith(api)) {
+                        isFilter = false;
+                        break;
+                    }
                 }
             }
             if (!isFilter) {
@@ -67,8 +74,7 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             }
             ReReadableHttpServletRequestWrapper requestWrapper = new ReReadableHttpServletRequestWrapper(request);
             String body = requestWrapper.getBody();
-            RequestHeader requestHeader = new RequestHeader(requestWrapper.getHeader(Constants.LIB_SIGN_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME),
-                    requestWrapper.getHeader(Constants.LIB_NONCE_HEADER_NAME), body);
+            RequestHeader requestHeader = new RequestHeader(requestWrapper.getHeader(Constants.LIB_SIGN_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_NONCE_HEADER_NAME), body);
             if (!checkService.check(requestHeader)) {
                 response.setContentType("application/json");
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
