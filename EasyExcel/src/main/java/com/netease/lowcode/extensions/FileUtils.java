@@ -1,5 +1,6 @@
 package com.netease.lowcode.extensions;
 
+import com.netease.lowcode.extensions.util.FileConnectorUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +10,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -26,9 +30,20 @@ public class FileUtils {
     private String sinkPath;
     @Value("${lcp.upload.access}")
     private String access;
-
+    @Autowired
+    private FileConnectorUtils fileConnectorUtils;
     @Autowired
     private ApplicationContext applicationContext;
+
+    public static void delete(File file) {
+        if (file.isFile()) {
+            file.delete();
+            return;
+        }
+        for (File listFile : file.listFiles()) {
+            delete(listFile);
+        }
+    }
 
     /**
      * 文件上传
@@ -43,16 +58,6 @@ public class FileUtils {
     public UploadResponseDTO uploadFileV2(File file) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, FileNotFoundException {
 
         FileInputStream fis = new FileInputStream(file);
-
-        Object clientManager = applicationContext.getBean("fileStorageClientManager");
-        Method getFileSystemSpi = clientManager.getClass().getMethod("getFileSystemSpi", String.class);
-        Object fileStorageClient = getFileSystemSpi.invoke(clientManager, sinkType);
-
-        Method upload = fileStorageClient.getClass().getMethod("upload", InputStream.class, String.class, Map.class);
-
-        // 只要拼接 sinkPath+fileName+时间+后缀即可。
-        String curTime = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
-
         String fileName = file.getName();
         String fileExt = "";
         if (fileName.contains(".")) {
@@ -60,6 +65,21 @@ public class FileUtils {
             fileExt = fileName.substring(i);
             fileName = fileName.substring(0, i);
         }
+        // 只要拼接 sinkPath+fileName+时间+后缀即可。
+        String curTime = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
+
+        boolean containsBean = applicationContext.containsBean("fileStorageClientManager");
+        if (!containsBean) {
+            fileName = fileName + "_" + curTime + fileExt;//防止文件被覆盖，可按需选择
+            return fileConnectorUtils.Base64FileUploadV2(fis, fileName, new HashMap<>());
+        }
+
+        Object clientManager = applicationContext.getBean("fileStorageClientManager");
+        Method getFileSystemSpi = clientManager.getClass().getMethod("getFileSystemSpi", String.class);
+        Object fileStorageClient = getFileSystemSpi.invoke(clientManager, sinkType);
+
+        Method upload = fileStorageClient.getClass().getMethod("upload", InputStream.class, String.class, Map.class);
+
 
         String savePath = String.join("/", sinkPath, fileName + "_" + curTime + fileExt);
         String filePath = (String) upload.invoke(fileStorageClient, fis, savePath, new HashMap<>());
@@ -79,16 +99,6 @@ public class FileUtils {
         }
 
         return responseDTO;
-    }
-
-    public static void delete(File file) {
-        if(file.isFile()){
-            file.delete();
-            return;
-        }
-        for (File listFile : file.listFiles()) {
-            delete(listFile);
-        }
     }
 }
 
