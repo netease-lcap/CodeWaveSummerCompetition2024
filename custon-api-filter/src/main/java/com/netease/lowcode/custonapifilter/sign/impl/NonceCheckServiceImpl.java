@@ -39,7 +39,7 @@ public class NonceCheckServiceImpl implements CheckService {
     @Override
     public boolean check(RequestHeader requestHeader) {
         if (requestHeader.getTimestamp() == null || requestHeader.getSign() == null || requestHeader.getNonce() == null) {
-            log.info("无timestamp、nonce、sign信息");
+            log.warn("无timestamp、nonce、sign信息");
             return false;
         }
         if ("1".equals(signNaslConfiguration.isCheckTimeStamp)) {

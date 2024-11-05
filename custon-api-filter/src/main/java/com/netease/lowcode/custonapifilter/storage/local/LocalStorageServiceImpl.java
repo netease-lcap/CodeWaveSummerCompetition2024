@@ -30,7 +30,6 @@ public class LocalStorageServiceImpl implements StorageService {
     }
 
     private void evict(String key) {
-        log.info("local key:{} 过期", key);
         map.remove(key);
     }
 
@@ -38,7 +37,6 @@ public class LocalStorageServiceImpl implements StorageService {
     public boolean checkAndAddIfAbsent(String key, Long timeout) {
         boolean nonceExist = containsKey(key);
         if (nonceExist) {
-            log.info("local key:{} 已存在", key);
             return false;
         } else {
             put(key, timeout);
