@@ -62,7 +62,7 @@ public class FileConnectorUtils {
      * @param fileUrl 符合文件连接器规范的文件url
      * @return base64String
      */
-    @NaslLogic
+//    @NaslLogic
     public String Base64FileDownload(String fileUrl) {
         if (StringUtils.isEmpty(fileUrl)) {
             log.error("参数不能为空");
