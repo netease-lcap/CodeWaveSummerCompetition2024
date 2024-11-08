@@ -31,7 +31,7 @@ public class FileUtils {
     @Value("${lcp.upload.access}")
     private String access;
     @Autowired
-    private FileConnectorUtils fileConnectorUtils;
+    private FileConnectorUtils easyExcelFileConnectorUtils;
     @Autowired
     private ApplicationContext applicationContext;
 
@@ -71,7 +71,7 @@ public class FileUtils {
         boolean containsBean = applicationContext.containsBean("fileStorageClientManager");
         if (!containsBean) {
             fileName = fileName + "_" + curTime + fileExt;//防止文件被覆盖，可按需选择
-            return fileConnectorUtils.Base64FileUploadV2(fis, fileName, new HashMap<>());
+            return easyExcelFileConnectorUtils.Base64FileUploadV2(fis, fileName, new HashMap<>());
         }
 
         Object clientManager = applicationContext.getBean("fileStorageClientManager");
