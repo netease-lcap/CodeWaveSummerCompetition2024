@@ -2,4 +2,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.netease.lowcode.extensions.FileUtils,\
   com.netease.lowcode.extensions.EasyExcelTools,\
   com.netease.lowcode.extensions.EasyExcelFillTools,\
-  com.netease.lowcode.extensions.easyexcel.poi.CommonHandler
+  com.netease.lowcode.extensions.easyexcel.poi.CommonHandler,\
+  com.netease.lowcode.extensions.util.FileConnectorUtils
