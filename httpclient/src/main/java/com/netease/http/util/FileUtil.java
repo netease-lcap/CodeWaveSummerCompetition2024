@@ -28,20 +28,14 @@ public class FileUtil {
     // 注入应用的存储路径信息，默认 /app
     @Value("${lcp.upload.sinkPath}")
     private String sinkPath;
+    @Autowired
+    private FileConnectorUtils fileConnectorUtils;
     // 注入spring上下文，用于获取bean示例信息
     @Autowired
     private ApplicationContext applicationContext;
 
     public UploadResponseDTO uploadStream(InputStream fis, String fileName)
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        // 获取实例com.defaulttenant.exporttest.filestorage.FileStorageClientManager
-        Object clientManager = applicationContext.getBean("fileStorageClientManager");
-        // 获取文件系统spi方法，取决于sinkType，目前有local/s3两种实现
-        Method getFileSystemSpi = clientManager.getClass().getMethod("getFileSystemSpi", String.class);
-        // 调用文件系统spi，获取真正的文件系统实例
-        Object fileStorageClient = getFileSystemSpi.invoke(clientManager, sinkType);
-        // 获取文件实例的upload方法
-        Method upload = fileStorageClient.getClass().getMethod("upload", InputStream.class, String.class, Map.class);
         // 只要拼接 sinkPath+fileName+时间+后缀即可。本案例中fileName就是时间戳，因此不需要拼接时间。
         String fileExt = "";
         if (fileName.contains(".")) {
@@ -50,8 +44,23 @@ public class FileUtil {
             fileName = fileName.substring(0, i);
         }
 
+        boolean containsBean = applicationContext.containsBean("fileStorageClientManager");
+        fileName = fileName + "_" + System.currentTimeMillis() + fileExt;
+        if (!containsBean) {
+            return fileConnectorUtils.Base64FileUploadV2(fis, fileName, new HashMap<>());
+        }
+        // 获取实例com.defaulttenant.exporttest.filestorage.FileStorageClientManager
+        Object clientManager = applicationContext.getBean("fileStorageClientManager");
+        // 获取文件系统spi方法，取决于sinkType，目前有local/s3两种实现
+        Method getFileSystemSpi = clientManager.getClass().getMethod("getFileSystemSpi", String.class);
+        // 调用文件系统spi，获取真正的文件系统实例
+        Object fileStorageClient = getFileSystemSpi.invoke(clientManager, sinkType);
+        // 获取文件实例的upload方法
+        Method upload = fileStorageClient.getClass().getMethod("upload", InputStream.class, String.class, Map.class);
+
+
         // 组装文件上传位置
-        String savePath = String.join("/", sinkPath, fileName + fileExt);
+        String savePath = String.join("/", sinkPath, fileName);
         // 调用upload实现文件上传，返回保存文件的相对地址 /app/xxx
         String filePath = (String) upload.invoke(fileStorageClient, fis, savePath, new HashMap<>());
         // 组装链接
