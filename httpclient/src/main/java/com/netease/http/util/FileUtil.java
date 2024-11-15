@@ -47,7 +47,7 @@ public class FileUtil {
         boolean containsBean = applicationContext.containsBean("fileStorageClientManager");
         fileName = fileName + "_" + System.currentTimeMillis() + fileExt;
         if (!containsBean) {
-            return fileConnectorUtils.Base64FileUploadV2(fis, fileName, new HashMap<>());
+            return fileConnectorUtils.fileUploadV2(fis, fileName, new HashMap<>());
         }
         // 获取实例com.defaulttenant.exporttest.filestorage.FileStorageClientManager
         Object clientManager = applicationContext.getBean("fileStorageClientManager");
