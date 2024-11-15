@@ -27,7 +27,7 @@ public class FileConnectorUtils {
      * @param fileName 文件名称，包含文件后缀，不能为空
      * @return success true时上传成功，false时上传失败
      */
-    public UploadResponseDTO Base64FileUploadV2(InputStream fis, String fileName, Map<String, String> payloads) {
+    public UploadResponseDTO fileUploadV2(InputStream fis, String fileName, Map<String, String> payloads) {
         UploadResponseDTO responseDTO = new UploadResponseDTO();
         // 获取文件连接器
         AbstractFileConnector defaultConnector = FileConnectionManager.getDefaultFileConnector();
@@ -37,7 +37,8 @@ public class FileConnectorUtils {
         //调用制品配置的文件连接器的上传方法
         CodeWaveFileUrl result = defaultConnector.upload(fis, fileUrl, payloads);
         //处理文件url
-        responseDTO.setFilePath("/upload" + result.toUrl());
+        String filePath = ((result.toUrl().startsWith("/")) ? result.toUrl() : "/" + result.toUrl());
+        responseDTO.setFilePath("/upload" + filePath);
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (Objects.nonNull(requestAttributes)) {
             HttpServletRequest request = requestAttributes.getRequest();
