@@ -41,7 +41,7 @@ public class FileConnectorUtils {
         //调用制品配置的文件连接器的上传方法
         CodeWaveFileUrl result = defaultConnector.upload(fis, fileUrl, payloads);
         //处理文件url
-        responseDTO.setFilePath("/upload" + result.toUrl());
+        responseDTO.setFilePath("/upload/" + result.toUrl());
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (Objects.nonNull(requestAttributes)) {
             HttpServletRequest request = requestAttributes.getRequest();
