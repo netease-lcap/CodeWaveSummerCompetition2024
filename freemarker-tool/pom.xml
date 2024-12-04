@@ -7,7 +7,7 @@
     <groupId>com.netease.lowcode</groupId>
     <artifactId>freemarker-tool</artifactId>
     <!-- We currently do not support snapshots. Please use a testing version number like 0.x.x, e.g. 0.1.12 -->
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -113,6 +113,10 @@
 <!--                        <relocation>-->
 <!--                            <pattern>com.spire</pattern>-->
 <!--                            <shadedPattern>shade.extension.freemarker.com.spire</shadedPattern>-->
+<!--                        </relocation>-->
+<!--                        <relocation>-->
+<!--                            <pattern>okhttp3</pattern>-->
+<!--                            <shadedPattern>shade.extension.freemarker.okhttp3</shadedPattern>-->
 <!--                        </relocation>-->
 <!--                    </relocations>-->
 <!--                </configuration>-->
