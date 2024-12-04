@@ -3,6 +3,9 @@ package com.netease.lowcode.extensions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netease.lowcode.extensions.jackson.deserializers.LocalDateDeserializer;
+import com.netease.lowcode.extensions.jackson.deserializers.LocalTimeDeserializer;
+import com.netease.lowcode.extensions.jackson.deserializers.ZonedDateTimeDeserializer;
 import com.netease.lowcode.extensions.jackson.serializers.LocalDateSerializer;
 import com.netease.lowcode.extensions.jackson.serializers.LocalTimeSerializer;
 import com.netease.lowcode.extensions.jackson.serializers.ZonedDateTimeSerializer;
@@ -20,7 +23,11 @@ public class JsonUtil {
             .failOnUnknownProperties(false)
             .serializerByType(LocalTime.class, new LocalTimeSerializer())
             .serializerByType(ZonedDateTime.class, new ZonedDateTimeSerializer())
-            .serializerByType(LocalDate.class, new LocalDateSerializer()).build();
+            .serializerByType(LocalDate.class, new LocalDateSerializer())
+//            .deserializerByType(LocalTime.class, new LocalTimeDeserializer())
+            .deserializerByType(ZonedDateTime.class,new ZonedDateTimeDeserializer())
+//            .deserializerByType(LocalDate.class,new LocalDateDeserializer())
+            .build();
 
     public static <T> T fromJson(String json, Class<T> valueType) throws JsonProcessingException {
         return MAPPER.readValue(json, valueType);
