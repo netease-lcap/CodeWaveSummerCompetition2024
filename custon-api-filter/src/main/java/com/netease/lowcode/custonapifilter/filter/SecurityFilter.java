@@ -7,6 +7,7 @@ import com.netease.lowcode.custonapifilter.sign.dto.RequestHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -22,22 +23,23 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
+@Order(-200)
 public class SecurityFilter extends CommonsRequestLoggingFilter {
     public static final String LOGIC_IDENTIFIER_SEPARATOR = ":";
     private final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     @Autowired
     private CheckService checkService;
     @Autowired
-    private FilterConfig filterConfig;
+    private CustomFilterConfig customFilterConfig;
 
     private List<String> apiBlackList() {
         //后端依赖库逻辑
         List<String> otherApis = new ArrayList<>();
-        if (!StringUtils.isEmpty(filterConfig.filterUrlList)) {
+        if (!StringUtils.isEmpty(customFilterConfig.getFilterUrlList())) {
             try {
-                otherApis = Arrays.asList(filterConfig.filterUrlList.split(","));
+                otherApis = Arrays.asList(customFilterConfig.getFilterUrlList().split(","));
             } catch (Exception e) {
-                log.warn("filterUrlList配置错误,{}", filterConfig.filterUrlList);
+                log.warn("filterUrlList配置错误,{}", customFilterConfig.getFilterUrlList());
             }
         }
         return otherApis;
@@ -52,14 +54,14 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
             String logicIdentifier = requestURI + LOGIC_IDENTIFIER_SEPARATOR + method;
             //过滤黑名单
             boolean isFilter = false;
-            if("black".equals(filterConfig.filterType)) {
+            if ("black".equals(customFilterConfig.getFilterType())) {
                 for (String api : apiBlackList()) {
                     if (logicIdentifier.startsWith(api)) {
                         isFilter = true;
                         break;
                     }
                 }
-            }else if("white".equals(filterConfig.filterType)){
+            } else if ("white".equals(customFilterConfig.getFilterType())) {
                 isFilter = true;
                 for (String api : apiBlackList()) {
                     if (logicIdentifier.startsWith(api)) {

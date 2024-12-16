@@ -30,5 +30,19 @@ public class StorageNaslConfiguration {
     @Value("${signatureStrategy}")
     public String signatureStrategy;
 
+    public String getStorageStrategy() {
+        return storageStrategy;
+    }
 
+    public void setStorageStrategy(String storageStrategy) {
+        this.storageStrategy = storageStrategy;
+    }
+
+    public String getSignatureStrategy() {
+        return signatureStrategy;
+    }
+
+    public void setSignatureStrategy(String signatureStrategy) {
+        this.signatureStrategy = signatureStrategy;
+    }
 }
