@@ -36,4 +36,28 @@ public class SignNaslConfiguration {
     @Required
     @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "0"), @Environment(type = EnvironmentType.ONLINE, value = "0")})
     public String isCheckTimeStamp;
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public String getSignMaxTime() {
+        return signMaxTime;
+    }
+
+    public void setSignMaxTime(String signMaxTime) {
+        this.signMaxTime = signMaxTime;
+    }
+
+    public String getIsCheckTimeStamp() {
+        return isCheckTimeStamp;
+    }
+
+    public void setIsCheckTimeStamp(String isCheckTimeStamp) {
+        this.isCheckTimeStamp = isCheckTimeStamp;
+    }
 }

@@ -42,9 +42,9 @@ public class NonceCheckServiceImpl implements CheckService {
             log.warn("无timestamp、nonce、sign信息");
             return false;
         }
-        if ("1".equals(signNaslConfiguration.isCheckTimeStamp)) {
+        if ("1".equals(signNaslConfiguration.getIsCheckTimeStamp())) {
             //        判断当前时间和timestamp的关系。
-            if (System.currentTimeMillis() - Long.parseLong(requestHeader.getTimestamp()) > Long.parseLong(signNaslConfiguration.signMaxTime)) {
+            if (System.currentTimeMillis() - Long.parseLong(requestHeader.getTimestamp()) > Long.parseLong(signNaslConfiguration.getSignMaxTime())) {
                 log.error("checkSign error，时间超出范围");
                 return false;
             }
@@ -54,18 +54,18 @@ public class NonceCheckServiceImpl implements CheckService {
             log.warn("checkSign error，签名校验失败");
             return false;
         }
-        if (storageNaslConfiguration.storageStrategy == null) {
+        if (storageNaslConfiguration.getStorageStrategy() == null) {
             log.error("storageStrategy error，配置信息异常");
             return false;
         }
-        StorageService storageService = storageServiceMap.get(storageNaslConfiguration.storageStrategy);
+        StorageService storageService = storageServiceMap.get(storageNaslConfiguration.getStorageStrategy());
         if (storageService == null) {
             log.error("storageStrategy error，配置信息异常");
             return false;
         }
         Long timestamp;
         try {
-            timestamp = Long.parseLong(signNaslConfiguration.signMaxTime);
+            timestamp = Long.parseLong(signNaslConfiguration.getSignMaxTime());
         } catch (NumberFormatException e) {
             log.error("checkSign error，配置信息-时间格式异常", e);
             return false;
@@ -76,16 +76,16 @@ public class NonceCheckServiceImpl implements CheckService {
 
 
     private boolean checkSign(RequestHeader requestHeader) {
-        if (storageNaslConfiguration.signatureStrategy == null) {
+        if (storageNaslConfiguration.getSignatureStrategy() == null) {
             log.error("signatureStrategy error，配置信息异常");
             return false;
         }
-        SignatureService signatureService = signatureServiceMap.get(storageNaslConfiguration.signatureStrategy);
+        SignatureService signatureService = signatureServiceMap.get(storageNaslConfiguration.getSignatureStrategy());
         if (signatureService == null) {
             log.error("signatureStrategy error，配置信息异常");
             return false;
         }
-        String key = signNaslConfiguration.secretKey;
+        String key = signNaslConfiguration.getSecretKey();
         String data = requestHeader.getTimestamp() + requestHeader.getNonce() + requestHeader.getBody();
         String sign = requestHeader.getSign();
         return signatureService.signature(data, key, sign);
