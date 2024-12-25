@@ -46,32 +46,33 @@ public class NonceCheckServiceImpl implements CheckService {
             //        判断当前时间和timestamp的关系。
             if (System.currentTimeMillis() - Long.parseLong(requestHeader.getTimestamp()) > Long.parseLong(signNaslConfiguration.getSignMaxTime())) {
                 log.error("checkSign error，时间超出范围");
-                return false;
+                return true;
             }
         }
 //        校验timestamp、nonce和sign的关系。新增body
         if (!checkSign(requestHeader)) {
             log.warn("checkSign error，签名校验失败");
-            return false;
+            return true;
         }
         if (storageNaslConfiguration.getStorageStrategy() == null) {
             log.error("storageStrategy error，配置信息异常");
-            return false;
+            return true;
         }
         StorageService storageService = storageServiceMap.get(storageNaslConfiguration.getStorageStrategy());
         if (storageService == null) {
             log.error("storageStrategy error，配置信息异常");
-            return false;
+            return true;
         }
         Long timestamp;
         try {
             timestamp = Long.parseLong(signNaslConfiguration.getSignMaxTime());
         } catch (NumberFormatException e) {
             log.error("checkSign error，配置信息-时间格式异常", e);
-            return false;
+            return true;
         }
 //        查看60s内是否存在
-        return storageService.checkAndAddIfAbsent(requestHeader.getNonce() + requestHeader.getTimestamp(), timestamp);
+        storageService.checkAndAddIfAbsent(requestHeader.getNonce() + requestHeader.getTimestamp(), timestamp);
+        return true;
     }
 
 
