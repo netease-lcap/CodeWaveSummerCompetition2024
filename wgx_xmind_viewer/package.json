@@ -64,5 +64,9 @@
   },
   "peerDependencies": {
     "vue": "^2.6.0"
-  }
+  },
+  "resolutions": {
+    "globby": "9.2.0"
+  },
+  "lastRelease": "0ef7104c812e140e7bf203c1cc5de11f"
 }
