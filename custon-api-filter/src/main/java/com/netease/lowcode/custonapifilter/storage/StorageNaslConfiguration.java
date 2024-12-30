@@ -15,11 +15,34 @@ import org.springframework.stereotype.Component;
 public class StorageNaslConfiguration {
 
     /**
-     * 数据存储策略
+     * 数据存储策略。redis/local/db
      */
     @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "redis"),
             @Environment(type = EnvironmentType.ONLINE, value = "redis")})
     @Value("${storageStrategy}")
     public String storageStrategy;
 
+    /**
+     * 算法策略。rsa/des/aes
+     */
+    @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "rsa"),
+            @Environment(type = EnvironmentType.ONLINE, value = "rsa")})
+    @Value("${signatureStrategy}")
+    public String signatureStrategy;
+
+    public String getStorageStrategy() {
+        return storageStrategy;
+    }
+
+    public void setStorageStrategy(String storageStrategy) {
+        this.storageStrategy = storageStrategy;
+    }
+
+    public String getSignatureStrategy() {
+        return signatureStrategy;
+    }
+
+    public void setSignatureStrategy(String signatureStrategy) {
+        this.signatureStrategy = signatureStrategy;
+    }
 }
