@@ -72,7 +72,8 @@ public class FileUtil {
             buffer.flush();
             fileBytes = buffer.toByteArray();
         }
-        RequestBody requestBody = RequestBody.create(fileBytes, MediaType.parse("application/octet-stream"));
+        // RequestBody requestBody = RequestBody.create(fileBytes, MediaType.parse("application/octet-stream"));
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), fileBytes);
         MultipartBody multipartBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", fileName, requestBody)
