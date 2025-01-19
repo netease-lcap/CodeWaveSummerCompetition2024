@@ -168,10 +168,15 @@ public class ExcelParser {
         int index = url.indexOf("/upload/");
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         int port = request.getLocalPort();
+        String contextPath = request.getContextPath();
 
         if (index >= 0) {
             //制品中上传文件后的url
             url = "http://localhost:" + port + "/upload/" + url.substring(index + "/upload/".length());
+
+            if (StringUtils.isNotBlank(contextPath) && !"/".equals(contextPath)) {
+                url = "http://localhost:" + port + contextPath + "/upload/" + url.substring(index + "/upload/".length());
+            }
         }
 
         log.info("文件下载路径{}", url);
