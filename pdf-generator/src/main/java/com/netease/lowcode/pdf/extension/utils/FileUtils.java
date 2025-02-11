@@ -18,10 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -205,7 +202,22 @@ public class FileUtils {
     }
 
     public static File downloadFile(String urlStr) throws IOException {
-        URL url = new URL(getTrueUrl(urlStr));
+        URI uri = null;
+        try {
+            uri = new URI(urlStr);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        String path = uri.getPath();
+        String query = uri.getQuery();
+        // 获取文件名,3.11之前可以根据url中的参数获取文件名，3.11之后需要根据fileName参数获取文件名
+        String fileName = query != null ? Arrays.stream(query.split("&"))
+                .map(param -> param.split("="))
+                .filter(keyValue -> keyValue.length == 2 && keyValue[0].equalsIgnoreCase("fileName"))
+                .map(keyValue -> keyValue[1])
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("The provided URL must contain a fileName parameter.")) : path.substring(path.lastIndexOf('/') + 1);
+        URL url = new URL(getTrueUrl(urlStr,fileName));
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setConnectTimeout(3 * 1000);
         connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36");
@@ -219,19 +231,6 @@ public class FileUtils {
             // 这里增加校验
             if (!saveDir.exists()) {
                 throw new RuntimeException(String.format("目录创建失败%s，请检查目录权限", DEFAULT_TEMPLATE_DIR));
-            }
-        }
-
-        // TODO: 使用历史版本依赖库时，不支持解析3.11文件地址，因此会将/data/template写成文件，导致后续报错。
-        // 删除pod 重新发布即可。
-        String fileName = urlStr.substring(urlStr.lastIndexOf("/") + 1, urlStr.indexOf("?") == -1 ? urlStr.length() : urlStr.indexOf("?"));
-        if (StringUtils.isBlank(fileName) && StringUtils.isNotBlank(url.getQuery())) {
-            for (String kv : url.getQuery().split("&")) {
-                String[] pair = kv.split("=");
-                if (StringUtils.equals(pair[0], "fileName")) {
-                    fileName = pair[1];
-                    break;
-                }
             }
         }
         File file = new File(saveDir + File.separator + fileName);
@@ -258,32 +257,29 @@ public class FileUtils {
         return bos.toByteArray();
     }
 
-    public static String getTrueUrl(String urlStr) throws UnsupportedEncodingException {
-        int lastIndexOf = urlStr.lastIndexOf("/");
-        int queryIndexOf = urlStr.indexOf("?");
-        if (queryIndexOf == -1) queryIndexOf = urlStr.length();
+    public static String getTrueUrl(String urlStr,String fileName) throws UnsupportedEncodingException {
 
-        String prefix = urlStr.substring(0, lastIndexOf);
-        String suffix = urlStr.substring(queryIndexOf);
-        String fileName = urlStr.substring(lastIndexOf + 1, queryIndexOf);
-
-        String urlFileName = getTrueFileName(fileName);
-        String trueUrlStr = prefix + "/" + urlFileName + suffix;
-        if (!trueUrlStr.startsWith("http") && trueUrlStr.startsWith("/upload")) {
+        // 自动检测 URL 是否已经编码
+        if (!isUrlEncoded(fileName)) {
+            String fileNameEncoded = java.net.URLEncoder.encode(fileName, "UTF-8");
+            urlStr = urlStr.replace(fileName, fileNameEncoded);
+        }
+        if (!urlStr.startsWith("http") && urlStr.startsWith("/upload")) {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             int port = request.getLocalPort();
-            return "http://127.0.0.1:" + port + trueUrlStr;
+            return "http://127.0.0.1:" + port + urlStr;
         }
-        return trueUrlStr;
+        return urlStr;
     }
-
-    public static String getTrueFileName(String fileName) throws UnsupportedEncodingException {
-        if (fileName.equals(URLDecoder.decode(fileName, "UTF-8"))) {
-            return URLEncoder.encode(fileName, "UTF-8");
+    // 新增方法：检测 URL 是否已经编码
+    private static boolean isUrlEncoded(String url) {
+        try {
+            String decodedUrl = java.net.URLDecoder.decode(url, "UTF-8");
+            return !decodedUrl.equals(url);
+        } catch (Exception e) {
+            return false;
         }
-        return fileName;
     }
-
     public static void delete(File file) {
         if(file.isFile()){
             file.delete();
