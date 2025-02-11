@@ -20,6 +20,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -119,7 +120,7 @@ public class LCAPHttpClient {
 
 
     /**
-     * 下载文件并上传到nos（默认格式xlsx）
+     * 下载文件并上传到nos（默认fileUrl是get请求，默认格式xlsx）
      *
      * @param fileUrl
      * @param fileName 文件名，可空，用于fileUrl无法获取文件名时，指定文件后缀
@@ -151,7 +152,44 @@ public class LCAPHttpClient {
     }
 
     /**
-     * nos url文件上传到第三方
+     * 下载文件并上传到nos（默认fileUrl是get请求，默认格式xlsx）
+     *
+     * @param fileUrl
+     * @param fileName 文件名，可空，用于fileUrl无法获取文件名时，指定文件后缀
+     * @param header
+     * @return
+     */
+    @NaslLogic
+    public String downloadFileUploadNosExtendHttpMethod(@Required String fileUrl, String fileName, @Required Map<String, String> header,
+                                                        @Required String httpMethod, @Required Map<String, String> body) throws TransferCommonException {
+        File file = null;
+        try {
+            RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
+            requestParam.setUrl(fileUrl);
+            requestParam.setHeader(header);
+            if (StringUtils.isEmpty(httpMethod)) {
+                httpMethod = HttpMethod.GET.name();
+            }
+            requestParam.setHttpMethod(httpMethod);
+            requestParam.setBody(body);
+            file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
+            UploadResponseDTO uploadResponseDTO = httpClientFileUtils.uploadStream(Files.newInputStream(file.toPath()), file.getName());
+            return uploadResponseDTO.result;
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getMessage(), e);
+        } finally {
+            if (file != null && file.exists()) {
+                file.delete();
+            }
+        }
+    }
+
+    /**
+     * nos url文件上传到第三方（默认fileUrl是get请求，仅支持xlsx文件）
      *
      * @param fileUrl      文件url
      * @param requestUrl   当前请求的url
@@ -160,6 +198,21 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     public String uploadNosExchange(String fileUrl, String requestUrl, RequestParam requestParam) throws TransferCommonException {
+        return uploadNosExchangeCommonFileType(fileUrl, requestUrl, requestParam, null,HttpMethod.GET.name());
+    }
+
+    /**
+     * nos url文件上传到第三方（支持指定fileName）
+     *
+     * @param fileUrl      文件url
+     * @param requestUrl   当前请求的url
+     * @param requestParam 请求信息
+     * @param
+     * @return
+     */
+    @NaslLogic
+    public String uploadNosExchangeCommonFileType(String fileUrl, String requestUrl, RequestParam requestParam,
+                                                  String fileName,String httpMethod) throws TransferCommonException {
         File file = null;
         try {
             RequestParamAllBodyTypeInner requestParamGetFile = new RequestParamAllBodyTypeInner();
@@ -179,8 +232,11 @@ public class LCAPHttpClient {
                 }
             }
             requestParamGetFile.setUrl(protocol + "://" + url.getHost() + ":" + port + fileUrl);
-            requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
-            file = httpClientService.downloadFile(requestParamGetFile, restTemplate, null);
+            if(StringUtils.isEmpty(httpMethod)){
+                httpMethod = HttpMethod.GET.name();
+            }
+            requestParamGetFile.setHttpMethod(httpMethod);
+            file = httpClientService.downloadFile(requestParamGetFile, restTemplate, fileName);
             RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             requestParam.getBody().forEach(body::add);
