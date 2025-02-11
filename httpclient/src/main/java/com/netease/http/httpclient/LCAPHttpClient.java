@@ -191,62 +191,61 @@ public class LCAPHttpClient {
     /**
      * nos url文件上传到第三方（默认fileUrl是get请求，仅支持xlsx文件）
      *
-     * @param fileUrl      文件url
+     * @param fileUrl      文件uri(不带域名）
      * @param requestUrl   当前请求的url
      * @param requestParam 请求信息
      * @return
      */
     @NaslLogic
     public String uploadNosExchange(String fileUrl, String requestUrl, RequestParam requestParam) throws TransferCommonException {
-        return uploadNosExchangeCommonFileType(fileUrl, requestUrl, requestParam, null,HttpMethod.GET.name());
+        URL url = null;
+        try {
+            url = new URL(requestUrl);
+        } catch (MalformedURLException e) {
+            logger.error("requestUrl必须是一个url", e);
+        }
+        String protocol = url.getProtocol();
+        int port = url.getPort();
+        if (port == -1) {
+            if ("http".equalsIgnoreCase(protocol)) {
+                port = 80;
+            } else if ("https".equalsIgnoreCase(protocol)) {
+                port = 443;
+            }
+        }
+        fileUrl = protocol + "://" + url.getHost() + ":" + port + fileUrl;
+        return uploadNosExchangeCommonFileType(fileUrl, null, requestParam);
     }
 
     /**
      * nos url文件上传到第三方（支持指定fileName）
      *
-     * @param fileUrl      文件url
-     * @param requestUrl   当前请求的url
+     * @param fileUrl      文件url(带域名）
+     * @param fileName     文件名
      * @param requestParam 请求信息
-     * @param
      * @return
      */
     @NaslLogic
-    public String uploadNosExchangeCommonFileType(String fileUrl, String requestUrl, RequestParam requestParam,
-                                                  String fileName,String httpMethod) throws TransferCommonException {
+    public String uploadNosExchangeCommonFileType(String fileUrl, String fileName, RequestParam requestParam) throws TransferCommonException {
         File file = null;
         try {
             RequestParamAllBodyTypeInner requestParamGetFile = new RequestParamAllBodyTypeInner();
-            URL url = null;
-            try {
-                url = new URL(requestUrl);
-            } catch (MalformedURLException e) {
-                logger.error("requestUrl必须是一个url", e);
-            }
-            String protocol = url.getProtocol();
-            int port = url.getPort();
-            if (port == -1) {
-                if ("http".equalsIgnoreCase(protocol)) {
-                    port = 80;
-                } else if ("https".equalsIgnoreCase(protocol)) {
-                    port = 443;
-                }
-            }
-            requestParamGetFile.setUrl(protocol + "://" + url.getHost() + ":" + port + fileUrl);
-            if(StringUtils.isEmpty(httpMethod)){
-                httpMethod = HttpMethod.GET.name();
-            }
-            requestParamGetFile.setHttpMethod(httpMethod);
+            requestParamGetFile.setUrl(fileUrl);
+            //文件下载一般是get，默认get
+            requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
             file = httpClientService.downloadFile(requestParamGetFile, restTemplate, fileName);
             RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             requestParam.getBody().forEach(body::add);
             body.add("file", new FileSystemResource(file));
             requestParamInner.setBody(body);
+            if (StringUtils.isEmpty(requestParam.getHttpMethod())) {
+                requestParam.setHttpMethod(HttpMethod.GET.name());
+            }
             requestParamInner.setHttpMethod(requestParam.getHttpMethod());
             requestParamInner.setUrl(requestParam.getUrl());
             requestParamInner.setHeader(requestParam.getHeader());
             ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParamInner, restTemplate, String.class);
-            file.delete();
             if (exchange.getStatusCode() == HttpStatus.OK) {
                 return exchange.getBody();
             } else {
