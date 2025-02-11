@@ -6,7 +6,7 @@
 
     <groupId>com.netease.lowcode.extension</groupId>
     <artifactId>pdf-generator</artifactId>
-    <version>0.1.6</version>
+    <version>0.1.7</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -134,7 +134,7 @@
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.5.1</version>
+                <version>1.4.1</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.shared</groupId>
