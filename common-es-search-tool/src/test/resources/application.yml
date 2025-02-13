@@ -1,0 +1,9 @@
+esClientHost:
+esClientPort:
+esClientUsername:
+esClientPassword:
+
+#esClientHost: 10.128.51.107
+#esClientPort: 30200
+#esClientUsername: elastic
+#esClientPassword: Deta2020
