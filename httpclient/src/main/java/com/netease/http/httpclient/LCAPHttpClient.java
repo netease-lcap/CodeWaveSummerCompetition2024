@@ -161,7 +161,7 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     public String downloadFileUploadNosExtendHttpMethod(@Required String fileUrl, String fileName, @Required Map<String, String> header,
-                                                        @Required String httpMethod, @Required Map<String, String> body) throws TransferCommonException {
+                                                        @Required String httpMethod, @Required String body) throws TransferCommonException {
         File file = null;
         try {
             RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
@@ -171,7 +171,7 @@ public class LCAPHttpClient {
                 httpMethod = HttpMethod.GET.name();
             }
             requestParam.setHttpMethod(httpMethod);
-            requestParam.setBody(body);
+            requestParam.setBody(JSONObject.parseObject(body));
             file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
             UploadResponseDTO uploadResponseDTO = httpClientFileUtils.uploadStream(Files.newInputStream(file.toPath()), file.getName());
             return uploadResponseDTO.result;
