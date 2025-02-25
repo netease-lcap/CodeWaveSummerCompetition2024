@@ -173,7 +173,7 @@ public class LCAPHttpClient {
             requestParam.setHttpMethod(httpMethod);
             requestParam.setBody(JSONObject.parseObject(body));
             file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
-            UploadResponseDTO uploadResponseDTO = httpClientFileUtils.uploadStream(Files.newInputStream(file.toPath()), file.getName());
+            UploadResponseDTO uploadResponseDTO = httpClientFileUtils.uploadStream(httpClientFileUtils.repeatReadInputStream(file), file.getName());
             return uploadResponseDTO.result;
         } catch (HttpClientErrorException e) {
             logger.error("", e);

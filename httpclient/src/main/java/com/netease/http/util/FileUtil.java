@@ -11,7 +11,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -33,6 +33,28 @@ public class FileUtil {
     // 注入spring上下文，用于获取bean示例信息
     @Autowired
     private ApplicationContext applicationContext;
+
+    public InputStream repeatReadInputStream(File file) throws IOException {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            try (FileInputStream fis = new FileInputStream(file)) {
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = fis.read(buffer)) != -1) {
+                    baos.write(buffer, 0, len);
+                }
+            }
+
+            byte[] data = baos.toByteArray();
+
+// 使用缓冲后的数据
+            InputStream inputStream = new ByteArrayInputStream(data);
+            return inputStream;
+        } catch (Exception e) {
+            log.error("", e);
+            throw e;
+        }
+    }
 
     public UploadResponseDTO uploadStream(InputStream fis, String fileName)
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
