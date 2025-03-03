@@ -118,6 +118,10 @@
 <!--                            <pattern>com.spire</pattern>-->
 <!--                            <shadedPattern>shade.extension.freemarker.com.spire</shadedPattern>-->
 <!--                        </relocation>-->
+<!--                        <relocation>-->
+<!--                            <pattern>okhttp3</pattern>-->
+<!--                            <shadedPattern>shade.extension.freemarker.okhttp3</shadedPattern>-->
+<!--                        </relocation>-->
 <!--                    </relocations>-->
 <!--                </configuration>-->
 <!--                <executions>-->
