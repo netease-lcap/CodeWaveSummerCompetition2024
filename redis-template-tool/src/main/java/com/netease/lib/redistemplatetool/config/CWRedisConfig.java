@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public class RedisConfig {
+public class CWRedisConfig {
     /**
      * redis 地址。redis模式多选一，按需配置。无用的配置可空
      */
