@@ -118,6 +118,37 @@ public class LCAPHttpClient {
         }
     }
 
+    /**
+     * http/https调用（非form使用，异常时返回http错误码）
+     *
+     * @param url
+     * @param httpMethod
+     * @param header
+     * @param body
+     * @return
+     * @throws URISyntaxException
+     */
+    @NaslLogic
+    @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
+    public String exchangeV3(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required String body) throws TransferCommonException {
+        try {
+            RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
+            requestParam.setBody(body);
+            //填充requestParam参数
+            requestParam.setUrl(url);
+            requestParam.setHttpMethod(httpMethod);
+            requestParam.setHeader(header);
+            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplate, String.class);
+            return exchange.getBody();
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            return e.getResponseBodyAsString();
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getMessage(), e);
+        }
+    }
+
 
     /**
      * 下载文件并上传到nos（默认fileUrl是get请求，默认格式xlsx）
