@@ -86,7 +86,12 @@ public class FreeMarkerUtil {
 
             //
             org.apache.poi.ss.usermodel.Workbook poiWorkbook = WorkbookFactory.create(new ByteArrayInputStream(outputStream.toByteArray()));
+            // 删除评估警告工作表（如果存在）
             poiWorkbook.removeSheetAt(poiWorkbook.getSheetIndex("Evaluation Warning"));
+            // 设置第一个工作表为活动工作表（索引从0开始）
+            if (poiWorkbook.getNumberOfSheets() > 0) {
+                poiWorkbook.setActiveSheet(0);
+            }
             ByteArrayOutputStream tmpOutputStream = new ByteArrayOutputStream();
             poiWorkbook.write(tmpOutputStream);
 
