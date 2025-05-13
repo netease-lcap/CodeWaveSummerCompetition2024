@@ -1,8 +1,8 @@
 import Component from '../index';
 
 export default {
-  id: 'richtext-dir-examples',
-  title: '组件列表/RichtextDir/示例',
+  id: 'rich-text-dir-examples',
+  title: '组件列表/RichTextDir/示例',
   component: Component,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
