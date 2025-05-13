@@ -16,10 +16,12 @@ export const Example1 = {
   name: '基本用法',
   render: (args, { argTypes }) => ({
     props: Object.keys(argTypes),
-    template: `<div><richtext-dir :content="$props.simpleContent"></richtext-dir>
+    template: `
+    <div><rich-text-dir :content="$props.content"></rich-text-dir>
     <br />
     <br />
-      </richtext-dir><richtext-dir :content="$props.content"></richtext-dir></div>
+    <rich-text-dir :content="$props.simpleContent"></rich-text-dir>
+    </div>
       `,
   }),
   args: {

@@ -19,8 +19,8 @@
 
     <!-- 右侧内容区域 -->
     <div class="content-container" ref="contentRef">
-      <div class="content-wrapper" v-html="content" ref="htmlContentRef"></div>
-      <div v-if="!content" class="empty-text">暂无数据</div>
+      <div v-if="content" class="content-wrapper" v-html="content" ref="htmlContentRef"></div>
+      <div v-else class="empty-text">暂无数据</div>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default {
     content: {
       type: String,
     },
-    // 标题
+    // 目录标题
     title: {
       type: String,
       default: '目录',
@@ -58,17 +58,6 @@ export default {
     sidebarWidth: {
       type: String,
       default: '240px',
-    },
-
-    /**
-     * 标题元素的自定义类名
-     * 用于为目录中的标题元素添加自定义样式
-     * 可以通过这个类名来自定义标题的样式
-     * @default 'custom-heading'
-     */
-    headingClass: {
-      type: String,
-      default: 'custom-heading',
     },
 
     /**
@@ -96,15 +85,20 @@ export default {
 
   mounted() {
     this.headerKey = Date.now();
-    this.generateTOC();
     this.setupScrollListener();
-    // 初始检查
-    this.updateActiveHeading();
   },
 
   watch: {
-    content() {
-      this.generateTOC();
+    content: {
+      immediate: true,
+      async handler() {
+        console.log(11);
+
+        this.generateTOC();
+        // 初始检查
+        await this.$nextTick();
+        this.updateActiveHeading();
+      },
     },
   },
 
@@ -125,8 +119,9 @@ export default {
      * 3. 计算每个标题相对于内容容器的位置
      * 4. 构建目录项数组
      */
-    generateTOC() {
+    async generateTOC() {
       this.tocItems = [];
+      await this.$nextTick();
       if (!this.$refs.htmlContentRef || !this.$refs.contentRef) return;
 
       const headings = this.$refs.htmlContentRef.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -138,7 +133,6 @@ export default {
         const id = `heading-${index}-${this.headerKey}`;
 
         heading.id = id;
-        heading.classList.add(this.headingClass);
 
         // 计算标题相对于内容容器的位置
         const rect = heading.getBoundingClientRect();

@@ -20,34 +20,32 @@ namespace extensions.rich_text_dir.viewComponents {
 
   export class RichTextDirOptions extends ViewComponentOptions {
     @Prop({
-      title: '内容',
-      description: '显示文本',
+      title: '富文本内容',
       setter: {
         concept: 'InputSetter',
       },
     })
     content: nasl.core.String = '';
     @Prop({
-      title: '标题dom节点选择器',
-      description: '根据富文本内容自动生成标题dom选择器',
+      title: '目录标题',
       setter: {
         concept: 'InputSetter',
       },
     })
-    titleSelector: nasl.core.String = 'h2';
+    title: nasl.core.String = '目录';
     @Prop({
       title: '高度',
       setter: {
         concept: 'InputSetter',
       },
     })
-    height: nasl.core.String = '400px';
+    height: nasl.core.String = '500px';
     @Prop({
       title: '目录宽度',
       setter: {
         concept: 'InputSetter',
       },
     })
-    categoryWidth: nasl.core.String = '240px';
+    sidebarWidth: nasl.core.String = '240px';
   }
 }

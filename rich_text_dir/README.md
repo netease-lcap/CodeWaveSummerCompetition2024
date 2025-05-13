@@ -16,7 +16,7 @@
 
 - **attrs**
   - content: 详情富文本内容
-  - titleSelector: 根据富文本内容自动生成标题dom节点选择器
+  - title: 目录标题
   - height: 高度
-  - categoryWidth: 目录宽度
+  - sidebarWidth: 目录宽度
 

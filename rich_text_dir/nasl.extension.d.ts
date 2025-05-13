@@ -5,15 +5,13 @@ declare namespace extensions.rich_text_dir.viewComponents {
   }
   export class RichTextDirOptions extends ViewComponentOptions {
     /**
-     * 内容
-     * 显示文本
+     * 富文本内容
      */
     content: nasl.core.String;
     /**
-     * 标题dom节点选择器
-     * 根据富文本内容自动生成标题dom选择器
+     * 目录标题
      */
-    titleSelector: nasl.core.String;
+    title: nasl.core.String;
     /**
      * 高度
      */
@@ -21,7 +19,7 @@ declare namespace extensions.rich_text_dir.viewComponents {
     /**
      * 目录宽度
      */
-    categoryWidth: nasl.core.String;
+    sidebarWidth: nasl.core.String;
   }
   export {};
 }
