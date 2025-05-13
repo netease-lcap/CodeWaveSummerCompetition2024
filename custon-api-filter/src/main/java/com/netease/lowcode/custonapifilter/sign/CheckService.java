@@ -1,6 +1,6 @@
 package com.netease.lowcode.custonapifilter.sign;
 
-import javax.servlet.http.HttpServletRequest;
+import com.netease.lowcode.custonapifilter.sign.dto.RequestHeader;
 
 public interface CheckService {
     /**
@@ -9,5 +9,5 @@ public interface CheckService {
      * @param request
      * @return
      */
-    boolean check(HttpServletRequest request);
+    boolean check(RequestHeader request);
 }

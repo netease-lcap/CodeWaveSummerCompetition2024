@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.netease.lowcode.pdf.extension.utils.FileConnectorUtils,\
+    com.netease.lowcode.pdf.extension.utils.FileUtils,\
+    com.netease.lowcode.pdf.extension.PdfGenerator,\
+    com.netease.lowcode.pdf.extension.spring.AppStartupRunner

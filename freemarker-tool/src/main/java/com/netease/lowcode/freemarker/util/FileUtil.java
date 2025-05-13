@@ -12,10 +12,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.net.*;
+import java.util.Arrays;
 
 public class FileUtil {
 
@@ -28,31 +26,42 @@ public class FileUtil {
         connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36");
         return url.openStream();
     }
-
+    // 新增方法：检测 URL 是否已经编码
+    private static boolean isUrlEncoded(String url) {
+        try {
+            String decodedUrl = java.net.URLDecoder.decode(url, "UTF-8");
+            return !decodedUrl.equals(url);
+        } catch (Exception e) {
+            return false;
+        }
+    }
     public static String getTrueUrl(String urlStr) throws UnsupportedEncodingException {
-        int lastIndexOf = urlStr.lastIndexOf("/");
-        int queryIndexOf = urlStr.indexOf("?");
-        if (queryIndexOf == -1) queryIndexOf = urlStr.length();
-
-        String prefix = urlStr.substring(0, lastIndexOf);
-        String suffix = urlStr.substring(queryIndexOf);
-        String fileName = urlStr.substring(lastIndexOf + 1, queryIndexOf);
-
-        String urlFileName = getTrueFileName(fileName);
-        String trueUrlStr = prefix + "/" + urlFileName + suffix;
-        if (!trueUrlStr.startsWith("http") && trueUrlStr.startsWith("/upload")) {
+        URI uri = null;
+        try {
+            uri = new URI(urlStr);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        String path = uri.getPath();
+        String query = uri.getQuery();
+        // 获取文件名,3.11之前可以根据url中的参数获取文件名，3.11之后需要根据fileName参数获取文件名
+        String fileName = query != null ? Arrays.stream(query.split("&"))
+                .map(param -> param.split("="))
+                .filter(keyValue -> keyValue.length == 2 && keyValue[0].equalsIgnoreCase("fileName"))
+                .map(keyValue -> keyValue[1])
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("The provided URL must contain a fileName parameter.")) : path.substring(path.lastIndexOf('/') + 1);
+        // 自动检测 URL 是否已经编码
+        if (!isUrlEncoded(fileName)) {
+            String fileNameEncoded = java.net.URLEncoder.encode(fileName, "UTF-8");
+            urlStr = urlStr.replace(fileName, fileNameEncoded);
+        }
+        if (!urlStr.startsWith("http") && urlStr.startsWith("/upload")) {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             int port = request.getLocalPort();
-            return "http://127.0.0.1:" + port + trueUrlStr;
+            return "http://127.0.0.1:" + port + urlStr;
         }
-        return trueUrlStr;
-    }
-
-    public static String getTrueFileName(String fileName) throws UnsupportedEncodingException {
-        if (fileName.equals(URLDecoder.decode(fileName, "UTF-8"))) {
-            return URLEncoder.encode(fileName, "UTF-8");
-        }
-        return fileName;
+        return urlStr;
     }
 
     public static UploadResponseDTO uploadStream(InputStream inputStream, String fileName) throws IOException {
@@ -72,7 +81,8 @@ public class FileUtil {
             buffer.flush();
             fileBytes = buffer.toByteArray();
         }
-        RequestBody requestBody = RequestBody.create(fileBytes, MediaType.parse("application/octet-stream"));
+        // RequestBody requestBody = RequestBody.create(fileBytes, MediaType.parse("application/octet-stream"));
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), fileBytes);
         MultipartBody multipartBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", fileName, requestBody)

@@ -1,9 +1,13 @@
 package com.netease.lowcode.custonapifilter.filter;
 
+import com.netease.lowcode.custonapifilter.config.Constants;
 import com.netease.lowcode.custonapifilter.sign.CheckService;
+import com.netease.lowcode.custonapifilter.sign.dto.ReReadableHttpServletRequestWrapper;
+import com.netease.lowcode.custonapifilter.sign.dto.RequestHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,30 +21,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
+@Order(-200)
 public class SecurityFilter extends CommonsRequestLoggingFilter {
     public static final String LOGIC_IDENTIFIER_SEPARATOR = ":";
-    private Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
+    private final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     @Autowired
     private CheckService checkService;
     @Autowired
-    private FilterConfig filterConfig;
+    private CustomFilterConfig customFilterConfig;
 
     private List<String> apiBlackList() {
         //后端依赖库逻辑
-        List<String> defaultApis = Arrays.asList("/api/lcplogics");
         List<String> otherApis = new ArrayList<>();
-        if (!StringUtils.isEmpty(filterConfig.filterUrlList)) {
+        if (!StringUtils.isEmpty(customFilterConfig.getFilterUrlList())) {
             try {
-                otherApis = Arrays.asList(filterConfig.filterUrlList.split(","));
+                otherApis = Arrays.asList(customFilterConfig.getFilterUrlList().split(","));
             } catch (Exception e) {
-                logger.warn("filterUrlList配置错误,{}", filterConfig.filterUrlList);
+                log.warn("filterUrlList配置错误,{}", customFilterConfig.getFilterUrlList());
             }
         }
-        return Stream.concat(defaultApis.stream(), otherApis.stream()).collect(Collectors.toList());
+        return otherApis;
     }
 
     @Override
@@ -50,25 +52,36 @@ public class SecurityFilter extends CommonsRequestLoggingFilter {
         String logicIdentifier = requestURI + LOGIC_IDENTIFIER_SEPARATOR + method;
         //过滤黑名单
         boolean isFilter = false;
-        for (String api : apiBlackList()) {
-            if (logicIdentifier.startsWith(api)) {
-                isFilter = true;
-                break;
+        if ("black".equals(customFilterConfig.getFilterType())) {
+            for (String api : apiBlackList()) {
+                if (logicIdentifier.startsWith(api)) {
+                    isFilter = true;
+                    break;
+                }
+            }
+        } else if ("white".equals(customFilterConfig.getFilterType())) {
+            isFilter = true;
+            for (String api : apiBlackList()) {
+                if (logicIdentifier.startsWith(api)) {
+                    isFilter = false;
+                    break;
+                }
             }
         }
         if (!isFilter) {
             filterChain.doFilter(request, response);
             return;
         }
-        logger.info("请求地址,{}", logicIdentifier);
-        if (!checkService.check(request)) {
+        ReReadableHttpServletRequestWrapper requestWrapper = new ReReadableHttpServletRequestWrapper(request);
+        String body = requestWrapper.getBody();
+        RequestHeader requestHeader = new RequestHeader(requestWrapper.getHeader(Constants.LIB_SIGN_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_TIMESTAMP_HEADER_NAME), requestWrapper.getHeader(Constants.LIB_NONCE_HEADER_NAME), body);
+        if (!checkService.check(requestHeader)) {
             response.setContentType("application/json");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(checkService + "校验请求拦截");
             return;
         }
-        logger.info("SecurityFilter check success");
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(requestWrapper, response);
     }
 }

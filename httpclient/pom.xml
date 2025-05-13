@@ -16,7 +16,7 @@
     <artifactId>httpclient</artifactId>
     <name>httpclient</name>
     <description>httpclient</description>
-    <version>0.15.0</version>
+    <version>0.17.3</version>
 
     <dependencies>
         <dependency>
@@ -68,6 +68,11 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.netease.cloud</groupId>
+            <artifactId>codewave-file-connector-library</artifactId>
+            <version>1.0.3</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -75,7 +80,10 @@
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.3.0</version>
+                <version>1.4.3</version>
+                <configuration>
+                    <jarWithDependencies>false</jarWithDependencies>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -83,9 +91,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <jarWithDependencies>false</jarWithDependencies>
-                </configuration>
             </plugin>
         </plugins>
     </build>

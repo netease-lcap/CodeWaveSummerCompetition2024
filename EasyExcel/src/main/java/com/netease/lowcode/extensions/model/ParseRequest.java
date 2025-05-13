@@ -20,6 +20,11 @@ public class ParseRequest {
      */
     public String fullClassName;
 
+    /**
+     * 放多少批数据在内存
+     */
+    public Integer maxCacheActivateBatchCount;
+
     public String getUrl() {
         return url;
     }
@@ -42,5 +47,13 @@ public class ParseRequest {
 
     public void setHasImageColumn(Boolean hasImageColumn) {
         this.hasImageColumn = hasImageColumn;
+    }
+
+    public Integer getMaxCacheActivateBatchCount() {
+        return maxCacheActivateBatchCount;
+    }
+
+    public void setMaxCacheActivateBatchCount(Integer maxCacheActivateBatchCount) {
+        this.maxCacheActivateBatchCount = maxCacheActivateBatchCount;
     }
 }
