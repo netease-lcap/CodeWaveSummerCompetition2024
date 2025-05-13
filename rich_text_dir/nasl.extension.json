@@ -1,0 +1,164 @@
+{
+  "name": "rich_text_dir",
+  "title": "富文本目录",
+  "description": "富文本目录",
+  "specVersion": "1.0.0",
+  "type": "module",
+  "subType": "extension",
+  "version": "1.0.5",
+  "frontends": [
+    {
+      "concept": "FrontendLibrary",
+      "name": "pc",
+      "type": "pc",
+      "frameworkKind": "vue2",
+      "viewComponents": [
+        {
+          "concept": "ViewComponentDeclaration",
+          "group": "",
+          "name": "RichTextDir",
+          "kebabName": "rich-text-dir",
+          "title": "富文本目录",
+          "description": "富文本目录",
+          "icon": "",
+          "tsTypeParams": "",
+          "props": [
+            {
+              "concept": "PropDeclaration",
+              "group": "主要属性",
+              "tabKind": "property",
+              "setter": {
+                "concept": "InputSetter"
+              },
+              "name": "content",
+              "title": "内容",
+              "tsType": "nasl.core.String",
+              "defaultValue": {
+                "concept": "DefaultValue",
+                "expression": {
+                  "concept": "StringLiteral",
+                  "value": ""
+                },
+                "playground": []
+              },
+              "description": "显示文本"
+            },
+            {
+              "concept": "PropDeclaration",
+              "group": "主要属性",
+              "tabKind": "property",
+              "setter": {
+                "concept": "InputSetter"
+              },
+              "name": "titleSelector",
+              "title": "标题dom节点选择器",
+              "tsType": "nasl.core.String",
+              "defaultValue": {
+                "concept": "DefaultValue",
+                "expression": {
+                  "concept": "StringLiteral",
+                  "value": "h2"
+                },
+                "playground": []
+              },
+              "description": "根据富文本内容自动生成标题dom选择器"
+            },
+            {
+              "concept": "PropDeclaration",
+              "group": "主要属性",
+              "tabKind": "property",
+              "setter": {
+                "concept": "InputSetter"
+              },
+              "name": "height",
+              "title": "高度",
+              "tsType": "nasl.core.String",
+              "defaultValue": {
+                "concept": "DefaultValue",
+                "expression": {
+                  "concept": "StringLiteral",
+                  "value": "400px"
+                },
+                "playground": []
+              }
+            },
+            {
+              "concept": "PropDeclaration",
+              "group": "主要属性",
+              "tabKind": "property",
+              "setter": {
+                "concept": "InputSetter"
+              },
+              "name": "categoryWidth",
+              "title": "目录宽度",
+              "tsType": "nasl.core.String",
+              "defaultValue": {
+                "concept": "DefaultValue",
+                "expression": {
+                  "concept": "StringLiteral",
+                  "value": "240px"
+                },
+                "playground": []
+              }
+            }
+          ],
+          "readableProps": [],
+          "events": [],
+          "methods": [],
+          "slots": [],
+          "children": [],
+          "blocks": [
+            {
+              "concept": "ViewBlockWithImage",
+              "title": "基本用法",
+              "description": "",
+              "code": "<template><rich-text-dir></rich-text-dir></template>",
+              "screenshot": "",
+              "drawing": ""
+            }
+          ],
+          "themeVariables": [],
+          "type": "pc",
+          "ideusage": {
+            "idetype": "element"
+          }
+        }
+      ],
+      "logics": []
+    }
+  ],
+  "externalDependencyMap": {
+    "npm": [
+      {
+        "name": "vue",
+        "version": "^2.6.0"
+      }
+    ]
+  },
+  "summary": {
+    "name": "rich_text_dir",
+    "title": "富文本目录",
+    "version": "1.0.5",
+    "description": "富文本目录",
+    "frontends": [
+      {
+        "type": "pc",
+        "frameworkKind": "vue2",
+        "viewComponents": [
+          {
+            "name": "RichTextDir",
+            "title": "富文本目录"
+          }
+        ],
+        "logics": []
+      }
+    ]
+  },
+  "compilerInfoMap": {
+    "js": {
+      "prefix": "extension"
+    },
+    "manifest": "{\"nasl\":[\"nasl.extension.json\",\"nasl.extension.d.ts\"],\"runtime\":[\"dist-theme/index.js\",\"dist-theme/index.css\"],\"theme\":[],\"package\":[\"source.zip\",\"zip.tgz\"],\"i18n\":[],\"ide\":[]}"
+  },
+  "ideVersion": "3.8"
+}
