@@ -155,7 +155,11 @@ public class FreeMarkerUtil {
                     picMap,
                     docxInputStream,
                     templateFileMap);
-
+            // 将内容写入到文件
+//            try (FileOutputStream fileOutputStream = new FileOutputStream("/data/aa.docx")) {
+//                outputStream.writeTo(fileOutputStream);
+//                System.out.println("文件写入成功");
+//            }
             // 上传文件
             UploadResponseDTO outUrl = FileUtil.uploadStream(new ByteArrayInputStream(outputStream.toByteArray()),request.outFileName);
             outputStream.close();

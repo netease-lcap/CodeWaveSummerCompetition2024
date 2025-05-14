@@ -76,7 +76,7 @@ public class PdfGenerator {
                     // 处理中文乱码
                     PdfFont font = PdfFontFactory.createFont("STSong-Light","UniGB-UCS2-H");
                     value.setFont(font);
-                    value.setValue(dataMap.get(key));
+                    value.setValue(dataMap.get(key)==null?null: String.valueOf(dataMap.get(key)));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
