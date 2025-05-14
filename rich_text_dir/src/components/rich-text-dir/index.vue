@@ -9,7 +9,7 @@
           v-for="(item, index) in tocItems"
           :key="index"
           :class="['toc-item', { 'is-active': currentActiveId === item.id }]"
-          :style="{ paddingLeft: `${(item.level - 1) * 20}px` }"
+          :style="{ paddingLeft: `${(item.level - 1) * 20 + 5}px`, paddingRight: '5px' }"
           @click="scrollToHeading(item.id)"
         >
           <span v-html="item.text"></span>
@@ -92,8 +92,6 @@ export default {
     content: {
       immediate: true,
       async handler() {
-        console.log(11);
-
         this.generateTOC();
         // 初始检查
         await this.$nextTick();
