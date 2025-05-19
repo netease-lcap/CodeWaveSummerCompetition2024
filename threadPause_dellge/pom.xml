@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.thread</groupId>
+    <groupId>com.netease</groupId>
     <artifactId>threadPause</artifactId>
     <version>1.0.11</version>
     <name>线程等待依赖库</name>
