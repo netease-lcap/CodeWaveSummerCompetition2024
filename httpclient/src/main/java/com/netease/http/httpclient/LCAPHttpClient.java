@@ -167,6 +167,9 @@ public class LCAPHttpClient {
             requestParam.setHeader(header);
             requestParam.setHttpMethod(HttpMethod.GET.name());
             file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
+            if (file == null) {
+                return null;
+            }
             UploadResponseDTO uploadResponseDTO = httpClientFileUtils.uploadStream(Files.newInputStream(file.toPath()), file.getName());
             return uploadResponseDTO.result;
         } catch (HttpClientErrorException e) {
@@ -204,6 +207,9 @@ public class LCAPHttpClient {
             requestParam.setHttpMethod(httpMethod);
             requestParam.setBody(JSONObject.parseObject(body));
             file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
+            if (file == null) {
+                return null;
+            }
             UploadResponseDTO uploadResponseDTO = httpClientFileUtils.uploadStream(httpClientFileUtils.repeatReadInputStream(file), file.getName());
             return uploadResponseDTO.result;
         } catch (HttpClientErrorException e) {
@@ -265,6 +271,9 @@ public class LCAPHttpClient {
             //文件下载一般是get，默认get
             requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
             file = httpClientService.downloadFile(requestParamGetFile, restTemplate, fileName);
+            if (file == null) {
+                return null;
+            }
             RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             requestParam.getBody().forEach(body::add);
