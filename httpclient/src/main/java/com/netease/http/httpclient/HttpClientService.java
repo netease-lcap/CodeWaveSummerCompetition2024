@@ -63,6 +63,10 @@ public class HttpClientService {
         ResponseEntity<byte[]> response = exchangeInner(requestParam, restTemplateFinal, byte[].class);
         if (response.getStatusCode() == HttpStatus.OK) {
             byte[] fileData = response.getBody();
+            if (fileData == null) {
+                logger.error(requestParam.getUrl()+"请求返回文件为空");
+                return null;
+            }
             List<String> resHeaders = response.getHeaders().get("Content-Disposition");
             if (StringUtils.isEmpty(fileName)) {
                 fileName = System.currentTimeMillis() + ".xlsx";
@@ -90,7 +94,6 @@ public class HttpClientService {
                 }
                 file = File.createTempFile(fileName, fileExt);
                 try (FileOutputStream outputStream = new FileOutputStream(file)) {
-                    assert fileData != null;
                     outputStream.write(fileData);
                 }
             } catch (IOException e) {
