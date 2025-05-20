@@ -16,7 +16,7 @@
     <artifactId>httpclient</artifactId>
     <name>httpclient</name>
     <description>httpclient</description>
-    <version>0.18.1</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -74,6 +74,18 @@
             <version>1.0.3</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.3.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <artifactId>lcap-annotation</artifactId>
+            <groupId>com.netease.lowcode</groupId>
+            <version>1.0.4</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -84,6 +96,7 @@
                 <version>1.4.3</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
+                    <rewriteVersion>false</rewriteVersion>
                 </configuration>
                 <executions>
                     <execution>
