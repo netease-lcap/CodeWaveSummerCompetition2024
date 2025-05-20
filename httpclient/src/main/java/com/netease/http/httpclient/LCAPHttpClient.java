@@ -171,7 +171,7 @@ public class LCAPHttpClient {
                 return null;
             }
             UploadResponseDTO uploadResponseDTO = httpClientFileUtils.uploadStream(Files.newInputStream(file.toPath()), file.getName());
-            return uploadResponseDTO.result;
+            return uploadResponseDTO.getResult();
         } catch (HttpClientErrorException e) {
             logger.error("", e);
             throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
@@ -211,7 +211,7 @@ public class LCAPHttpClient {
                 return null;
             }
             UploadResponseDTO uploadResponseDTO = httpClientFileUtils.uploadStream(httpClientFileUtils.repeatReadInputStream(file), file.getName());
-            return uploadResponseDTO.result;
+            return uploadResponseDTO.getResult();
         } catch (HttpClientErrorException e) {
             logger.error("", e);
             throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
