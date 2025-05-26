@@ -5,14 +5,14 @@
   "specVersion":"1.0.0",
   "type":"module",
   "subType":"extension",
-  "version":"1.0.6",
+  "version":"1.2.0",
   "editable":false,
   "externalDependencyMap": {
     "maven": [
       {
         "groupId": "com.netease.lowcode.extension",
         "artifactId": "excel-parser",
-        "version": "1.0.6"
+        "version": "1.2.0"
       }
     ]
   },
