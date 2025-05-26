@@ -149,7 +149,6 @@ public class LCAPHttpClient {
         }
     }
 
-
     /**
      * 下载文件并上传到nos（默认fileUrl是get请求，默认格式xlsx）
      *
@@ -205,7 +204,7 @@ public class LCAPHttpClient {
                 httpMethod = HttpMethod.GET.name();
             }
             requestParam.setHttpMethod(httpMethod);
-            requestParam.setBody(JSONObject.parseObject(body));
+            requestParam.setBody(body);
             file = httpClientService.downloadFile(requestParam, restTemplate, fileName);
             if (file == null) {
                 return null;
