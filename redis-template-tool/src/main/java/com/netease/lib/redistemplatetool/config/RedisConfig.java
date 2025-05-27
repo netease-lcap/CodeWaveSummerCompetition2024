@@ -1,11 +1,20 @@
 package com.netease.lib.redistemplatetool.config;
 
+import com.netease.lowcode.core.EnvironmentType;
+import com.netease.lowcode.core.annotation.Environment;
 import com.netease.lowcode.core.annotation.NaslConfiguration;
 import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
 public class RedisConfig {
+    /**
+     * redis配置类型1.url 2.单机 3.sentinel 4.cluster
+     */
+
+    @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "1"),
+            @Environment(type = EnvironmentType.ONLINE, value = "1")})
+    public String redisMode;
     /**
      * redis 地址。redis模式多选一，按需配置。无用的配置可空
      */
@@ -33,25 +42,21 @@ public class RedisConfig {
     @NaslConfiguration
     public String redisSentinelNodes;
     /**
-     * redis哨兵密码
-     */
-    @NaslConfiguration
-    private String redisSentinelPassword;
-    /**
      * redis cluster 节点
      */
     @NaslConfiguration
     public String redisClusterNodes;
     /**
-     * redis slave 地址
+     * redis cluster 节点最大重定向次数
      */
     @NaslConfiguration
-    public String redisSlaveHost;
+    private String redisClusterMaxRedirects;
+
     /**
-     * redis slave 端口
+     * redis哨兵密码
      */
     @NaslConfiguration
-    public String redisSlavePort;
+    private String redisSentinelPassword;
     /**
      * Redis 数据库索引
      */
@@ -69,6 +74,16 @@ public class RedisConfig {
     @NaslConfiguration
     private String springRedisSsl;
     /**
+     * redis url
+     */
+    @NaslConfiguration
+    private String redisUrl;
+    /**
+     * 客户端名称
+     */
+    @NaslConfiguration
+    private String redisClientName;
+    /**
      * 连接池最大连接数。
      */
     @NaslConfiguration
@@ -84,18 +99,13 @@ public class RedisConfig {
     @NaslConfiguration
     private String springRedisLettucePoolMinIdle;
     /**
-     * 执行命令的超时时间，默认为 3 秒。
+     * 获取连接时的最大等待时间，默认为 100 毫秒。
      */
     @NaslConfiguration
-    private String springRedisLettuceCommandTimeout;
+    private String springRedisLettucePoolMaxWait;
     /**
      * 关闭连接时的超时时间，默认为 100 毫秒。
      */
     @NaslConfiguration
     private String springRedisLettuceShutdownTimeout;
-    /**
-     * 设置客户端名称。
-     */
-    @NaslConfiguration
-    private String springRedisLettuceClientName;
 }
