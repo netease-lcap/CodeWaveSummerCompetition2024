@@ -4,6 +4,8 @@ import com.netease.lowcode.core.annotation.NaslLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +16,34 @@ public class RedisTool {
 
     @Autowired
     public RedisTemplate<String, String> redisTemplate;
+
+    /**
+     * 是否存在key，返回true/false
+     *
+     * @param key
+     * @return
+     */
+    @NaslLogic
+    public Boolean hasKey(String key) {
+        if (StringUtils.isEmpty(key)) {
+            return false;
+        }
+        return redisTemplate.hasKey(key);
+    }
+
+    /**
+     * 批量删除key
+     *
+     * @param keys
+     * @return
+     */
+    @NaslLogic
+    public Long deleteKeys(List<String> keys) {
+        if (CollectionUtils.isEmpty(keys)) {
+            return 0L;
+        }
+        return redisTemplate.delete(keys);
+    }
 
     /**
      * 设置 Redis 中指定 key 的过期时间
