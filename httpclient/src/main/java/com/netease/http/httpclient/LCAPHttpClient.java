@@ -263,10 +263,26 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     public String uploadNosExchangeCommonFileType(String fileUrl, String fileName, RequestParam requestParam) throws TransferCommonException {
+        UploadFileParam uploadFileParam = new UploadFileParam();
+        uploadFileParam.setFileUrl(fileUrl);
+        uploadFileParam.setFileKey("file");
+        return uploadNosExchangeCommon(uploadFileParam, fileName, requestParam);
+    }
+
+    /**
+     * nos url文件上传到第三方（支持指定fileName和form请求时的file key）
+     *
+     * @param uploadFileParam 文件key,文件url(带域名）
+     * @param fileName        文件名
+     * @param requestParam    请求信息
+     * @return
+     */
+    @NaslLogic
+    public String uploadNosExchangeCommon(UploadFileParam uploadFileParam, String fileName, RequestParam requestParam) throws TransferCommonException {
         File file = null;
         try {
             RequestParamAllBodyTypeInner requestParamGetFile = new RequestParamAllBodyTypeInner();
-            requestParamGetFile.setUrl(fileUrl);
+            requestParamGetFile.setUrl(uploadFileParam.getFileUrl());
             //文件下载一般是get，默认get
             requestParamGetFile.setHttpMethod(HttpMethod.GET.name());
             file = httpClientService.downloadFile(requestParamGetFile, restTemplate, fileName);
@@ -276,7 +292,11 @@ public class LCAPHttpClient {
             RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             requestParam.getBody().forEach(body::add);
-            body.add("file", new FileSystemResource(file));
+            String fileKey = uploadFileParam.getFileKey();
+            if (StringUtils.isEmpty(fileKey)) {
+                fileKey = "file";
+            }
+            body.add(fileKey, new FileSystemResource(file));
             requestParamInner.setBody(body);
             if (StringUtils.isEmpty(requestParam.getHttpMethod())) {
                 requestParam.setHttpMethod(HttpMethod.GET.name());

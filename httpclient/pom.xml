@@ -16,7 +16,7 @@
     <artifactId>httpclient</artifactId>
     <name>httpclient</name>
     <description>httpclient</description>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 
     <dependencies>
         <dependency>
@@ -96,7 +96,7 @@
                 <version>1.4.3</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
-                    <rewriteVersion>true</rewriteVersion>
+<!--                    <rewriteVersion>true</rewriteVersion>-->
                 </configuration>
                 <executions>
                     <execution>
