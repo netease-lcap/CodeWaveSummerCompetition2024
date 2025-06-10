@@ -8,12 +8,12 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class FileUtil {
 
@@ -99,5 +99,30 @@ public class FileUtil {
         }
         logger.error(String.format("文件上传失败,%s",response));
         throw new RuntimeException(String.format("文件上传失败,%s",response));
+    }
+
+    public static void downloadFile(String fileUrl, String filePath) throws IOException {
+
+        // 创建父目录
+        File parentDir = new File(filePath).getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+        if (Objects.isNull(fileUrl)) {
+            throw new IOException("文件下载链接不能为空");
+        }
+        try (InputStream in = new URL(fileUrl).openStream();
+             OutputStream out = Files.newOutputStream(Paths.get(filePath))) {
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            // 记录错误日志并抛出业务异常
+            throw new IOException(String.format("从指定链接【%s】下载文件失败，请检查链接是否准确", fileUrl), e);
+        }
+        logger.info("文件下载成功,filePath:{}", filePath);
     }
 }
