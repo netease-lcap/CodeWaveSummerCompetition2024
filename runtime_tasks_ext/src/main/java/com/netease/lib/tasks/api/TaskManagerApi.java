@@ -176,7 +176,6 @@ public class TaskManagerApi {
      */
     @NaslLogic
     public String createTask(String logicName, String cron, String request) {
-        logger.info("创建任务,logicName:{},cron:{},request:{}", logicName, cron, request);
         if (StringUtils.isEmpty(logicName) || StringUtils.isEmpty(cron) || StringUtils.isEmpty(request)) {
             logger.info("参数错误,logicName:{},cron:{},request:{}", logicName, cron, request);
             return null;
@@ -220,7 +219,7 @@ public class TaskManagerApi {
     }
 
     /**
-     * 查询已执行的任务列表(右模糊匹配)
+     * 查询已创建的任务列表(右模糊匹配)
      *
      * @return
      */
