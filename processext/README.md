@@ -182,63 +182,6 @@ public Map<String, String> getNextNodeInfoByConditionalFlowId(String procDefKey,
 
 ```
 
-#### 获取流程定义列表信息getProcInstGraphByTaskId/getProcInstGraphByProcInstId
-
-注意：
-
-1. 未来节点的审批人信息只能根据当前变量获取。若后续节点对变量有变化，当前节点无法获取到未来信息。
-2. 流程复杂时，列表节点顺序不一定完全正确。
-
-```java
-    /**
- * 获取流程信息
- * 未来节点的审批人信息只能根据当前变量获取。若后续节点对变量有变化，当前节点无法获取到未来信息。
- *
- * @param procInstId 流程实例ID
- * @return 流程信息
- */
-@NaslLogic
-public List<Element> getProcInstGraphByProcInstId(String procInstId)
-```
-
-##### 数据结构说明
-
-1. Element节点信息
-
-   | 字段名 | 类型 | 字段说明 | 备注 |
-                        |---------------------|--------|-------|---|
-   | current | Boolean | 是否当前活跃节点 ||
-   | completed | Boolean | 任务是否完成 ||
-   | name | String | 节点名称 ||
-   | title | String| 节点标题 ||
-   | type |String | 节点类型 ||
-   | completeInfos | List<CompleteInfo>| 处理信息 ||
-
-2. CompleteInfo节点处理信息
-
-   | 字段名 | 类型 | 字段说明 | 备注 |
-                        |---------------------|--------|-------|---|
-   | assignee | ProcessUser | 处理人 |未完成节点不存在处理人信息|
-   | completeTime | String | 处理完成时间 ||
-   | completed | Boolean | 是否已完成 ||
-   | candidates | List<ProcessUser> | 候选人 |待选人|
-   | addSignTag | Boolean| 加签标志 ||
-
-3. ProcessUser节点处理人信息
-
-   | 字段名 | 类型 | 字段说明 | 备注 |
-                        |---------------------|--------|-------|---|
-   | userName | String | 名称 ||
-   | displayName | String | 展示名称 ||
-
-##### 展示流程列表，并且运行时获取并修改候选人示例
-
-1. 给可修改候选人的节点配置处理人为流程自定义变量。一个节点对应一个变量。
-2. 流程自定义变量默认值暂不可用，若业务场景需要有默认用户，建议使用流程启动事件做初始赋值。
-3. 调用本接口获取流程信息。其中配置流程自定义变量为处理人的节点，对应的candidates值将会是流程自定义变量的值。
-4. 调用【根据任务id/实例id修改流程自定义变量updateProcessVariableByTaskId/updateProcessVariableByProcInstId】可修改流程自定义变量
-   ![img_9.png](img_9.png)
-
 ### 任务实例查询
 
 #### 查询我的待办任务列表getMyPendingTasksByCustomUser
