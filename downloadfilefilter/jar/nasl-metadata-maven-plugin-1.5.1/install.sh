@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile="nasl-metadata-maven-plugin-1.5.1.jar" -DpomFile="nasl-metadata-maven-plugin-1.5.1.pom"
