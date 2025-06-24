@@ -25,6 +25,7 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,16 +45,14 @@ public class HttpClientService {
         fileCache.put(fileTimeMillisKey, localFileCacheDto);
         CompletableFuture.runAsync(() -> {
             try {
-                logger.info("上传文件开始");
                 String resBody = uploadFileExchangeCommon(restTemplateFinal, requestParam, fileKey, file);
-                logger.info("上传文件成功" + resBody);
                 localFileCacheDto.setResBody(resBody);
                 localFileCacheDto.setDownloadStatus(4);
                 localFileCacheDto.setFileName(file.getName());
                 fileCache.put(fileTimeMillisKey, localFileCacheDto);
             } catch (Exception e) {
                 logger.error("上传文件失败", e);
-                localFileCacheDto.setDownloadStatus(5);
+                localFileCacheDto.setDownloadStatus(6);
                 localFileCacheDto.setFileName(file.getName());
                 localFileCacheDto.setResBody("上传文件失败");
                 fileCache.put(fileTimeMillisKey, localFileCacheDto);
@@ -130,64 +129,77 @@ public class HttpClientService {
      * @return 文件路径
      */
     public String asyncDownloadFile(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, String fileName) throws IOException {
-        HttpMethod requestMethod = HttpMethod.resolve(requestParam.getHttpMethod().toUpperCase());
         String fileKey = System.currentTimeMillis() + "d";
 //  流式下载
-        Path parentFile = Paths.get("./local_file");
+        Path parentFile = Paths.get("./local_file").toAbsolutePath().normalize();
         File file = new File(parentFile.toUri());
         if (!file.exists()) {
-            Files.createDirectories(parentFile.getParent());
+            Files.createDirectories(parentFile);
         }
         CompletableFuture.runAsync(() -> {
-            RequestCallback requestCallback = request ->
-                    request.getHeaders().setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-            AtomicInteger count = new AtomicInteger();
-            restTemplateFinal.execute(requestParam.getUrl(), requestMethod, requestCallback, response -> {
-                String fileNameFinal = fileName;
-                if (count.get() == 0) {
-                    if (StringUtils.isEmpty(fileName)) {
-                        // 解析文件名
-                        fileNameFinal = Optional.ofNullable(response.getHeaders().getContentDisposition())
-                                .map(ContentDisposition::getFilename)
-                                .orElseGet(() -> {
-                                    String path = requestParam.getUrl().split("\\?")[0];
-                                    return path.substring(path.lastIndexOf('/') + 1);
-                                });
-                    }
-                    fileCache.put(fileKey, new LocalFileCacheDto(null, fileNameFinal, 1));
-                } else {
-                    fileNameFinal = fileCache.get(fileKey).getFileName();
-                }
-                count.getAndIncrement();
-                Path targetFile = Paths.get(parentFile.toUri().getPath(), fileNameFinal);
-                // 初始8KB，根据下载速度动态扩大（上限256KB）
-                int bufferSize = 8 * 1024;
-                long lastTime = System.currentTimeMillis();
-                long totalRead = 0;
-                try (InputStream is = response.getBody();
-                     OutputStream os = Files.newOutputStream(targetFile)) {
-                    byte[] buffer = new byte[bufferSize];
-                    int bytesRead;
-                    while ((bytesRead = is.read(buffer)) != -1) {
-                        os.write(buffer, 0, bytesRead);
-                        // 每1MB数据评估一次
-                        totalRead += bytesRead;
-                        if (totalRead % (1024 * 1024) == 0) {
-                            long timeSpent = System.currentTimeMillis() - lastTime;
-                            double speedKBps = 1024 / (timeSpent / 1000.0);
-                            // 动态调整缓冲区（范围8KB~256KB）
-                            bufferSize = (int) Math.min(256 * 1024, Math.max(8 * 1024, speedKBps * 10));
-                            buffer = new byte[bufferSize];
-                            lastTime = System.currentTimeMillis();
-                        }
-                    }
-                }
-                fileCache.put(fileKey, new LocalFileCacheDto(null, fileNameFinal, 2));
-                return null;
-            });
+            try {
+                downloadFileBigFile(requestParam, restTemplateFinal, fileName, fileKey, parentFile);
+            } catch (Exception e) {
+                logger.error("下载文件失败", e);
+                fileCache.put(fileKey, new LocalFileCacheDto(null, fileName, 5));
+            }
         });
         return fileKey;
     }
+
+    public void downloadFileBigFile(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, String fileName, String fileKey, Path parentFile) {
+        RequestCallback requestCallback = request ->
+                request.getHeaders().setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+        AtomicInteger count = new AtomicInteger();
+        restTemplateFinal.execute(requestParam.getUrl(), HttpMethod.resolve(requestParam.getHttpMethod().toUpperCase()), requestCallback, response -> {
+            String fileNameFinal = fileName;
+            if (count.get() == 0) {
+                if (StringUtils.isEmpty(fileName)) {
+                    // 解析文件名
+                    fileNameFinal = Optional.ofNullable(response.getHeaders().getContentDisposition())
+                            .map(ContentDisposition::getFilename)
+                            .orElseGet(() -> {
+                                String path = requestParam.getUrl().split("\\?")[0];
+                                return path.substring(path.lastIndexOf('/') + 1);
+                            });
+                }
+                if (StringUtils.isEmpty(fileNameFinal)) {
+                    fileNameFinal = System.currentTimeMillis() + ".xlsx";
+                }
+                fileCache.put(fileKey, new LocalFileCacheDto(null, fileNameFinal, 1));
+            } else {
+                fileNameFinal = fileCache.get(fileKey).getFileName();
+            }
+            count.getAndIncrement();
+
+            Path targetFile = parentFile.resolve(fileNameFinal);
+            // 初始8KB，根据下载速度动态扩大（上限256KB）
+            int bufferSize = 8 * 1024;
+            long lastTime = System.currentTimeMillis();
+            long totalRead = 0;
+            try (InputStream is = response.getBody();
+                 OutputStream os = Files.newOutputStream(targetFile, StandardOpenOption.CREATE)) {
+                byte[] buffer = new byte[bufferSize];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                    // 每1MB数据评估一次
+                    totalRead += bytesRead;
+                    if (totalRead % (1024 * 1024) == 0) {
+                        long timeSpent = System.currentTimeMillis() - lastTime;
+                        double speedKBps = 1024 / (timeSpent / 1000.0);
+                        // 动态调整缓冲区（范围8KB~256KB）
+                        bufferSize = (int) Math.min(256 * 1024, Math.max(8 * 1024, speedKBps * 10));
+                        buffer = new byte[bufferSize];
+                        lastTime = System.currentTimeMillis();
+                    }
+                }
+            }
+            fileCache.put(fileKey, new LocalFileCacheDto(null, fileNameFinal, 2));
+            return null;
+        });
+    }
+
 
     /**
      * 下载文件
