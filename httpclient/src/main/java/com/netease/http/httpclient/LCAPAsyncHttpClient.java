@@ -1,5 +1,6 @@
 package com.netease.http.httpclient;
 
+import com.netease.http.dto.LocalFileCacheDto;
 import com.netease.http.dto.RequestParam;
 import com.netease.http.dto.RequestParamAllBodyTypeInner;
 import com.netease.http.exception.TransferCommonException;
@@ -17,6 +18,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Component
 @EnableRetry
@@ -33,7 +36,6 @@ public class LCAPAsyncHttpClient {
 /**
  * 本地文件上传至nos- todo 需要使用s3分块上传
  */
-
     /**
      * 本地文件上传至第三方接口
      *
@@ -43,16 +45,25 @@ public class LCAPAsyncHttpClient {
      * @return
      */
     @NaslLogic
-    public String uploadLocalFileToThirdInterface(String fileTimeMillisKey, String fileKey, RequestParam requestParam) throws TransferCommonException {
-//        UploadFileParam uploadFileParam = new UploadFileParam();
-//        uploadFileParam.setFileKey("file");
-//        return lcapHttpClient.uploadNosExchangeCommon(uploadFileParam, fileName, requestParam);
-//        todo
-        return null;
+    public LocalFileCacheDto uploadLocalFileToThirdInterface(String fileTimeMillisKey, String fileKey, RequestParam requestParam) throws TransferCommonException {
+        LocalFileCacheDto localFileCacheDto = httpClientService.getFileCache(fileTimeMillisKey);
+        if (localFileCacheDto == null) {
+            localFileCacheDto = new LocalFileCacheDto();
+            localFileCacheDto.setDownloadStatus(0);
+        } else if (localFileCacheDto.getDownloadStatus() == 2) {
+            Path parentFile = Paths.get("./local_file");
+            Path targetFile = Paths.get(parentFile.toUri().getPath(), localFileCacheDto.getFileName());
+            File file = targetFile.toFile();
+            if (!file.exists()) {
+                throw new TransferCommonException(-1, "文件不存在");
+            }
+            localFileCacheDto = httpClientService.asyncUploadFileExchangeCommon(fileTimeMillisKey, restTemplate, requestParam, fileKey, file);
+        }
+        return localFileCacheDto;
     }
 
     /**
-     * 移步下载文件到本地
+     * 异步下载文件到本地
      *
      * @param fileName     文件名称，可空
      * @param requestParam 请求信息
@@ -61,7 +72,7 @@ public class LCAPAsyncHttpClient {
     @NaslLogic
     public String downloadFileToLocalAsync(String fileName, RequestParam requestParam) throws TransferCommonException {
         File file = null;
-        if (!FileNameValidator.isValidFilename(fileName, 0)) {
+        if (!StringUtils.isEmpty(fileName) && !FileNameValidator.isValidFilename(fileName, 0)) {
             throw new TransferCommonException(-1, "fileName文件名称不合法");
         }
         try {

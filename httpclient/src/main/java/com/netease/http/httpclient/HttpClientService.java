@@ -2,12 +2,18 @@ package com.netease.http.httpclient;
 
 import com.alibaba.fastjson.JSONObject;
 import com.netease.http.dto.DtoConvert;
+import com.netease.http.dto.LocalFileCacheDto;
+import com.netease.http.dto.RequestParam;
 import com.netease.http.dto.RequestParamAllBodyTypeInner;
+import com.netease.http.exception.TransferCommonException;
 import com.netease.http.util.FileNameValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
@@ -27,7 +33,67 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class HttpClientService {
     private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
-    private final Map<String, String> fileCache = new ConcurrentHashMap<>();
+    private final Map<String, LocalFileCacheDto> fileCache = new ConcurrentHashMap<>();
+
+    public LocalFileCacheDto getFileCache(String fileKey) {
+        return fileCache.get(fileKey);
+    }
+
+    public LocalFileCacheDto asyncUploadFileExchangeCommon(String fileTimeMillisKey, RestTemplate restTemplateFinal, RequestParam requestParam, String fileKey, File file) {
+        LocalFileCacheDto localFileCacheDto = new LocalFileCacheDto(null, file.getName(), 3);
+        fileCache.put(fileTimeMillisKey, localFileCacheDto);
+        CompletableFuture.runAsync(() -> {
+            try {
+                logger.info("上传文件开始");
+                String resBody = uploadFileExchangeCommon(restTemplateFinal, requestParam, fileKey, file);
+                logger.info("上传文件成功" + resBody);
+                localFileCacheDto.setResBody(resBody);
+                localFileCacheDto.setDownloadStatus(4);
+                localFileCacheDto.setFileName(file.getName());
+                fileCache.put(fileTimeMillisKey, localFileCacheDto);
+            } catch (Exception e) {
+                logger.error("上传文件失败", e);
+                localFileCacheDto.setDownloadStatus(5);
+                localFileCacheDto.setFileName(file.getName());
+                localFileCacheDto.setResBody("上传文件失败");
+                fileCache.put(fileTimeMillisKey, localFileCacheDto);
+            }
+        });
+        return localFileCacheDto;
+    }
+
+    /**
+     * 上传文件到第三方系统通用方法
+     *
+     * @param requestParam
+     * @param fileKey
+     * @param file
+     * @return
+     */
+    public String uploadFileExchangeCommon(RestTemplate restTemplateFinal, RequestParam requestParam, String fileKey, File file) {
+        RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        if (requestParam.getBody() != null) {
+            requestParam.getBody().forEach(body::add);
+        }
+        if (StringUtils.isEmpty(fileKey)) {
+            fileKey = "file";
+        }
+        body.add(fileKey, new FileSystemResource(file));
+        requestParamInner.setBody(body);
+        if (StringUtils.isEmpty(requestParam.getHttpMethod())) {
+            requestParam.setHttpMethod(HttpMethod.GET.name());
+        }
+        requestParamInner.setHttpMethod(requestParam.getHttpMethod());
+        requestParamInner.setUrl(requestParam.getUrl());
+        requestParamInner.setHeader(requestParam.getHeader());
+        ResponseEntity<String> exchange = this.exchangeInner(requestParamInner, restTemplateFinal, String.class);
+        if (exchange.getStatusCode() == HttpStatus.OK) {
+            return exchange.getBody();
+        } else {
+            throw new TransferCommonException(exchange.getStatusCodeValue(), JSONObject.toJSONString(exchange));
+        }
+    }
 
     public <T> ResponseEntity<T> exchangeInner(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, Class<T> responseType) {
         try {
@@ -65,7 +131,7 @@ public class HttpClientService {
      */
     public String asyncDownloadFile(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, String fileName) throws IOException {
         HttpMethod requestMethod = HttpMethod.resolve(requestParam.getHttpMethod().toUpperCase());
-        String fileKey = System.currentTimeMillis() + "";
+        String fileKey = System.currentTimeMillis() + "d";
 //  流式下载
         Path parentFile = Paths.get("./local_file");
         File file = new File(parentFile.toUri());
@@ -75,7 +141,6 @@ public class HttpClientService {
         CompletableFuture.runAsync(() -> {
             RequestCallback requestCallback = request ->
                     request.getHeaders().setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-            System.out.println("开始执行下载");
             AtomicInteger count = new AtomicInteger();
             restTemplateFinal.execute(requestParam.getUrl(), requestMethod, requestCallback, response -> {
                 String fileNameFinal = fileName;
@@ -89,9 +154,9 @@ public class HttpClientService {
                                     return path.substring(path.lastIndexOf('/') + 1);
                                 });
                     }
-                    fileCache.put(fileKey, fileNameFinal);
+                    fileCache.put(fileKey, new LocalFileCacheDto(null, fileNameFinal, 1));
                 } else {
-                    fileNameFinal = fileCache.get(fileKey);
+                    fileNameFinal = fileCache.get(fileKey).getFileName();
                 }
                 count.getAndIncrement();
                 Path targetFile = Paths.get(parentFile.toUri().getPath(), fileNameFinal);
@@ -117,19 +182,10 @@ public class HttpClientService {
                         }
                     }
                 }
-//                try (InputStream is = response.getBody();
-//                     OutputStream os = Files.newOutputStream(targetFile)) {
-//                    byte[] buffer = new byte[8192]; // 8KB缓冲区
-//                    int bytesRead;
-//                    while ((bytesRead = is.read(buffer)) != -1) {
-//                        os.write(buffer, 0, bytesRead);
-//                    }
-//                }
-                System.out.println("保存文件完成");
+                fileCache.put(fileKey, new LocalFileCacheDto(null, fileNameFinal, 2));
                 return null;
             });
         });
-        System.out.println("接口请求完成");
         return fileKey;
     }
 
@@ -183,7 +239,7 @@ public class HttpClientService {
                 for (String resHeader : resHeaders) {
                     if (resHeader.startsWith("filename") || resHeader.startsWith("attachment")) {
                         String fileNameTmp = resHeader.split("filename=")[1].replace("\"", "");
-                        if (FileNameValidator.isValidFilename(fileNameTmp,0)) {
+                        if (FileNameValidator.isValidFilename(fileNameTmp, 0)) {
                             fileName = URLDecoder.decode(fileNameTmp);
                         }
                     }
