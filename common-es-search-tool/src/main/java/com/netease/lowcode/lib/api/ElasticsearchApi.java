@@ -36,7 +36,7 @@ public class ElasticsearchApi {
 
     @PostConstruct
     public void init() {
-        ElasticsearchUtil.initClient(commonEsSearchConfig.esClientHost, commonEsSearchConfig.esClientPort, commonEsSearchConfig.esClientUsername, commonEsSearchConfig.esClientPassword);
+        ElasticsearchUtil.initClient(commonEsSearchConfig.getEsClientUris(), commonEsSearchConfig.getEsClientUsername(), commonEsSearchConfig.getEsClientPassword());
     }
 
     /**
@@ -96,7 +96,7 @@ public class ElasticsearchApi {
     public Boolean updateDocumentByFields(String index, Map<String, List<String>> queryFields, Map<String, String> updateFields) {
         try {
             log.info("index:{},queryFields:{},updateFields:{}", index, JSONObject.toJSONString(queryFields), JSONObject.toJSONString(updateFields));
-            ElasticsearchUtil.updateByFields(index, queryFields, updateFields, commonEsSearchConfig.esClientHost + ":" + commonEsSearchConfig.esClientPort);
+            ElasticsearchUtil.updateByFields(index, queryFields, updateFields, commonEsSearchConfig.getEsClientUris());
         } catch (Exception e) {
             log.error("更新异常", e);
             throw new IllegalArgumentException(e.getMessage());
@@ -116,14 +116,13 @@ public class ElasticsearchApi {
     public QueryResultDto queryScroll(Integer scrollTime, String scrollId) throws IllegalArgumentException {
         log.info("scrollId:{}", scrollId);
         LocalDateTime now1 = LocalDateTime.now();
-        String url = commonEsSearchConfig.esClientHost + ":" + commonEsSearchConfig.esClientPort;
         if (scrollTime != null) {
         }
         if (scrollId == null || scrollTime == null || scrollTime == 0) {
             throw new IllegalArgumentException("scrollId和scrollTime不能为空");
         }
         String scrollTimeStr = scrollTime + "m";
-        QueryResultDto queryResultDto = ElasticsearchUtil.searchScroll(url, scrollTimeStr, scrollId);
+        QueryResultDto queryResultDto = ElasticsearchUtil.searchScroll(commonEsSearchConfig.getEsClientUris(), scrollTimeStr, scrollId);
         LocalDateTime now2 = LocalDateTime.now();
         log.info("查询耗时：{}", Duration.between(now1, now2).toMillis());
         return queryResultDto;
@@ -175,13 +174,13 @@ public class ElasticsearchApi {
             if (queryRequestParam.queryItemList != null) {
                 queryBuilder = fillQueryBuilder(queryRequestParam);
             }
-            String url = commonEsSearchConfig.esClientHost + ":" + commonEsSearchConfig.esClientPort;
             String scrollTime = null;
             if (queryRequestParam.scrollTime != null) {
                 scrollTime = queryRequestParam.scrollTime + "m";
             }
             // 普通搜索
-            QueryResultDto resultDto = ElasticsearchUtil.search(queryRequestParam.index, sourceBuilder, queryBuilder, queryRequestParam.pageIndex, queryRequestParam.pageSize, url, scrollTime);
+            QueryResultDto resultDto = ElasticsearchUtil.search(queryRequestParam.index, sourceBuilder, queryBuilder,
+                    queryRequestParam.pageIndex, queryRequestParam.pageSize, commonEsSearchConfig.getEsClientUris(), scrollTime);
             LocalDateTime now2 = LocalDateTime.now();
             log.info("查询耗时：{}", Duration.between(now1, now2).toMillis());
             return resultDto;

@@ -6,18 +6,24 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommonEsSearchConfig {
+//    /**
+//     * es地址
+//     */
+//    @NaslConfiguration
+//    @Value("${esClientHost}")
+//    public String esClientHost;
+//    /**
+//     * es端口
+//     */
+//    @NaslConfiguration
+//    @Value("${esClientPort}")
+//    public String esClientPort;
     /**
      * es地址
      */
     @NaslConfiguration
-    @Value("${esClientHost}")
-    public String esClientHost;
-    /**
-     * es端口
-     */
-    @NaslConfiguration
-    @Value("${esClientPort}")
-    public String esClientPort;
+    @Value("${esClientUris}")
+    public String esClientUris;
     /**
      * es用户名
      */
@@ -31,4 +37,27 @@ public class CommonEsSearchConfig {
     @Value("${esClientPassword}")
     public String esClientPassword;
 
+    public String getEsClientUris() {
+        return esClientUris;
+    }
+
+    public void setEsClientUris(String esClientUris) {
+        this.esClientUris = esClientUris;
+    }
+
+    public String getEsClientUsername() {
+        return esClientUsername;
+    }
+
+    public void setEsClientUsername(String esClientUsername) {
+        this.esClientUsername = esClientUsername;
+    }
+
+    public String getEsClientPassword() {
+        return esClientPassword;
+    }
+
+    public void setEsClientPassword(String esClientPassword) {
+        this.esClientPassword = esClientPassword;
+    }
 }

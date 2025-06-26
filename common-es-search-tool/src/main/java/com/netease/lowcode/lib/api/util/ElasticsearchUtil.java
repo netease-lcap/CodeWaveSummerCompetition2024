@@ -26,8 +26,8 @@ public class ElasticsearchUtil {
     private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
 
-    public static void initClient(String esClientHost, String esClientPort, String esClientUsername, String esClientPassword) {
-        RestHighLevelClientFactory.initClient(esClientHost, esClientPort, esClientUsername, esClientPassword);
+    public static void initClient(String esClientUris, String esClientUsername, String esClientPassword) {
+        RestHighLevelClientFactory.initClient(esClientUris, esClientUsername, esClientPassword);
     }
 
     public static void updateByFields(String index, Map<String, List<String>> queryFields, Map<String, String> updateFields, String url) {
