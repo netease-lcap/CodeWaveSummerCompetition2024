@@ -63,6 +63,12 @@ public class HttpClientService {
                 localFileCacheDto.setFileName(file.getName());
                 localFileCacheDto.setResBody("上传文件失败");
                 fileCache.put(fileTimeMillisKey, localFileCacheDto);
+            } catch (Throwable t) { // 捕获所有Throwable包括Error
+                logger.error("上传文件失败2", t);
+                localFileCacheDto.setDownloadStatus(6);
+                localFileCacheDto.setFileName(file.getName());
+                localFileCacheDto.setResBody("上传文件失败");
+                fileCache.put(fileTimeMillisKey, localFileCacheDto);
             } finally {
                 file.delete();
             }
@@ -96,8 +102,6 @@ public class HttpClientService {
         requestParamInner.setUrl(requestParam.getUrl());
         requestParamInner.setHeader(requestParam.getHeader());
         ResponseEntity<String> exchange = this.exchangeInner(requestParamInner, restTemplateFinal, String.class);
-        //todo 待删除日志
-        logger.info("上传文件结果：{}", exchange);
         if (exchange.getStatusCode() == HttpStatus.OK) {
             return exchange.getBody();
         } else {
