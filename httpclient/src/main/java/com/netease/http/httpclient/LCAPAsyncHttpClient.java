@@ -1,5 +1,7 @@
 package com.netease.http.httpclient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.http.dto.LocalFileCacheDto;
 import com.netease.http.dto.RequestParam;
 import com.netease.http.dto.RequestParamAllBodyTypeInner;
@@ -45,8 +47,10 @@ public class LCAPAsyncHttpClient {
      * @return
      */
     @NaslLogic
-    public LocalFileCacheDto uploadLocalFileToThirdInterface(String fileTimeMillisKey, String fileKey, RequestParam requestParam) throws TransferCommonException {
+    public LocalFileCacheDto uploadLocalFileToThirdInterface(String fileTimeMillisKey, String fileKey, RequestParam requestParam) throws TransferCommonException, JsonProcessingException {
         LocalFileCacheDto localFileCacheDto = httpClientService.getFileCache(fileTimeMillisKey);
+        ObjectMapper objectMapper=new ObjectMapper();
+        logger.info("localFileCacheDto:{}",objectMapper.writeValueAsString(localFileCacheDto));
         if (localFileCacheDto == null) {
             localFileCacheDto = new LocalFileCacheDto();
             localFileCacheDto.setDownloadStatus(0);
@@ -64,6 +68,7 @@ public class LCAPAsyncHttpClient {
                 || localFileCacheDto.getDownloadStatus() == 6) {
             httpClientService.removeFileCache(fileTimeMillisKey);
         }
+        logger.info("localFileCacheDto:{}",objectMapper.writeValueAsString(localFileCacheDto));
         return localFileCacheDto;
     }
 

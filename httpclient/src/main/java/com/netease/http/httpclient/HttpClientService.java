@@ -50,6 +50,7 @@ public class HttpClientService {
         LocalFileCacheDto localFileCacheDto = new LocalFileCacheDto(null, file.getName(), 3);
         fileCache.put(fileTimeMillisKey, localFileCacheDto);
         CompletableFuture.runAsync(() -> {
+            logger.info("开始上传文件");
             try {
                 String resBody = uploadFileExchangeCommon(restTemplateFinal, requestParam, fileKey, file);
                 localFileCacheDto.setResBody(resBody);
@@ -95,6 +96,8 @@ public class HttpClientService {
         requestParamInner.setUrl(requestParam.getUrl());
         requestParamInner.setHeader(requestParam.getHeader());
         ResponseEntity<String> exchange = this.exchangeInner(requestParamInner, restTemplateFinal, String.class);
+        //todo 待删除日志
+        logger.info("上传文件结果：{}", exchange);
         if (exchange.getStatusCode() == HttpStatus.OK) {
             return exchange.getBody();
         } else {
@@ -138,6 +141,7 @@ public class HttpClientService {
      */
     public String asyncDownloadFile(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, String fileName) throws IOException {
         String fileKey = System.currentTimeMillis() + "d";
+        fileCache.put(fileKey, new LocalFileCacheDto(null, fileName, 1));
 //  流式下载
         Path parentFile = Paths.get("./local_file").toAbsolutePath().normalize();
         File file = new File(parentFile.toUri());
