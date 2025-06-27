@@ -59,6 +59,11 @@ public class LCAPAsyncHttpClient {
             }
             localFileCacheDto = httpClientService.asyncUploadFileExchangeCommon(fileTimeMillisKey, restTemplate, requestParam, fileKey, file);
         }
+        if (localFileCacheDto.getDownloadStatus() == 4
+                || localFileCacheDto.getDownloadStatus() == 5
+                || localFileCacheDto.getDownloadStatus() == 6) {
+            httpClientService.removeFileCache(fileTimeMillisKey);
+        }
         return localFileCacheDto;
     }
 

@@ -40,6 +40,12 @@ public class HttpClientService {
         return fileCache.get(fileKey);
     }
 
+    public void removeFileCache(String fileKey) {
+        if (fileCache.containsKey(fileKey)) {
+            fileCache.remove(fileKey);
+        }
+    }
+
     public LocalFileCacheDto asyncUploadFileExchangeCommon(String fileTimeMillisKey, RestTemplate restTemplateFinal, RequestParam requestParam, String fileKey, File file) {
         LocalFileCacheDto localFileCacheDto = new LocalFileCacheDto(null, file.getName(), 3);
         fileCache.put(fileTimeMillisKey, localFileCacheDto);
@@ -56,6 +62,8 @@ public class HttpClientService {
                 localFileCacheDto.setFileName(file.getName());
                 localFileCacheDto.setResBody("上传文件失败");
                 fileCache.put(fileTimeMillisKey, localFileCacheDto);
+            } finally {
+                file.delete();
             }
         });
         return localFileCacheDto;

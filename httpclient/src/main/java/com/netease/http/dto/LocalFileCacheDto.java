@@ -7,7 +7,7 @@ public class LocalFileCacheDto {
     public String resBody;
     public String fileName;
     /**
-     * 文件下载状态，0-不存在，1-文件下载中，2-本地已下载完成，待上传，3-上传中，4-上传完成,5-文件上传失败,6-文件上传失败
+     * 文件下载状态，0-不存在，1-文件下载中，2-本地已下载完成，待上传，3-上传中，4-上传完成,5-文件下载失败,6-文件上传失败
      */
     public Integer downloadStatus;
 
