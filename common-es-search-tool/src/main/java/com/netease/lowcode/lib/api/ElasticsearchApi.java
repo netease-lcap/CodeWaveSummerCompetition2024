@@ -2,6 +2,8 @@ package com.netease.lowcode.lib.api;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.lib.api.config.CommonEsSearchConfig;
 import com.netease.lowcode.lib.api.config.SortTypeEnum;
@@ -21,12 +23,14 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class ElasticsearchApi {
@@ -102,6 +106,36 @@ public class ElasticsearchApi {
             throw new IllegalArgumentException(e.getMessage());
         }
         return true;
+    }
+
+    @NaslLogic
+    public Long count(String index) {
+        try {
+            return ElasticsearchUtil.count(index, commonEsSearchConfig.getEsClientUris());
+        } catch (IOException e) {
+            log.error("count异常", e);
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+    @NaslLogic
+    public <T> String saveDocument(T docEntity, String index, String id) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        // 将对象转为Map
+        Map<String, Object> doc = objectMapper.convertValue(docEntity, new TypeReference<Map<String, Object>>() {
+        });
+        return ElasticsearchUtil.saveDocument(doc, commonEsSearchConfig.getEsClientUris(), index, id);
+    }
+
+    @NaslLogic
+    public <T> Boolean bulkSaveDocuments(List<T> docEntityList, String index) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Map<String, Object>> docs = docEntityList.stream()
+                .map(entity -> objectMapper.convertValue(entity,
+                        new TypeReference<Map<String, Object>>() {
+                        }))
+                .collect(Collectors.toList());
+        return ElasticsearchUtil.bulkSaveDocuments(docs, commonEsSearchConfig.getEsClientUris(), index);
     }
 
     /**
