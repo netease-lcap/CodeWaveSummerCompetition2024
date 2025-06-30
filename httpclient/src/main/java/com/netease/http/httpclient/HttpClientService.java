@@ -58,13 +58,13 @@ public class HttpClientService {
                 localFileCacheDto.setFileName(file.getName());
                 fileCache.put(fileTimeMillisKey, localFileCacheDto);
             } catch (Exception e) {
-                logger.error("上传文件失败", e);
+                logger.error("上传文件失败Exception", e);
                 localFileCacheDto.setDownloadStatus(6);
                 localFileCacheDto.setFileName(file.getName());
                 localFileCacheDto.setResBody("上传文件失败");
                 fileCache.put(fileTimeMillisKey, localFileCacheDto);
             } catch (Throwable t) { // 捕获所有Throwable包括Error
-                logger.error("上传文件失败2", t);
+                logger.error("上传文件失败Throwable", t);
                 localFileCacheDto.setDownloadStatus(6);
                 localFileCacheDto.setFileName(file.getName());
                 localFileCacheDto.setResBody("上传文件失败");
