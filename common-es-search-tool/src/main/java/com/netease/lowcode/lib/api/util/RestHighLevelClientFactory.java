@@ -31,7 +31,11 @@ public class RestHighLevelClientFactory {
                 String[] urls = esClientUris.split(",");
                 HttpHost[] hosts = new HttpHost[urls.length];
                 for (int i = 0; i < urls.length; i++) {
-                    String[] url = urls[i].split(":");
+                    String cleanedUrl = urls[i].trim();
+                    String[] url = cleanedUrl.split(":");
+                    if (url.length != 2) {
+                        throw new IllegalArgumentException("Invalid ES node URL format: " + urls[i]);
+                    }
                     hosts[i] = new HttpHost(url[0], Integer.parseInt(url[1]), "http");
                 }
                 // 获取ES Client
