@@ -12,7 +12,7 @@
 
     <groupId>com.netease</groupId>
     <artifactId>common-es-search-tool</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -94,10 +94,10 @@
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.1</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
-                    <rewriteVersion>false</rewriteVersion>
+<!--                    <rewriteVersion>true</rewriteVersion>-->
                 </configuration>
                 <executions>
                     <execution>

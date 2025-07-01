@@ -24,7 +24,6 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -123,17 +122,26 @@ public class ElasticsearchUtil {
         return queryResultDto;
     }
 
-    public static String saveDocument(Map<String, Object> doc, String url, String index, String id) {
+    public static String saveDocument(Map<String, Object> doc, String url, String index) {
         RestHighLevelClient client = RestHighLevelClientFactory.getClient(url);
         int retryCount = 0;
         while (retryCount < 3) {
             try {
-                IndexResponse response = client.index(
-                        new IndexRequest(index)
-                                .id(id)
-                                .source(doc),
-                        RequestOptions.DEFAULT
-                );
+                IndexResponse response;
+                if (doc.get("id") == null) {
+                    response = client.index(
+                            new IndexRequest(index, "_doc")
+                                    .source(doc),
+                            RequestOptions.DEFAULT
+                    );
+                } else {
+                    response = client.index(
+                            new IndexRequest(index, "_doc")
+                                    .id(doc.get("id").toString())
+                                    .source(doc),
+                            RequestOptions.DEFAULT
+                    );
+                }
                 if (response.status() == RestStatus.CREATED) {
                     return response.getId();
                 }
@@ -163,12 +171,12 @@ public class ElasticsearchUtil {
             try {
                 BulkRequest bulkRequest = new BulkRequest();
                 for (Map<String, Object> doc : docs) {
-                    if (StringUtils.isEmpty(doc.get("id").toString())) {
-                        bulkRequest.add(new IndexRequest(index)
+                    if (doc.get("id") != null) {
+                        bulkRequest.add(new IndexRequest(index, "_doc")
                                 .id(doc.get("id").toString())
                                 .source(doc));
                     } else {
-                        bulkRequest.add(new IndexRequest(index)
+                        bulkRequest.add(new IndexRequest(index, "_doc")
                                 .source(doc));
                     }
                 }

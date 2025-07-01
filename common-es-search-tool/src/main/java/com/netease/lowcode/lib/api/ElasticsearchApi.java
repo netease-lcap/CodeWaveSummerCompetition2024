@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class ElasticsearchApi {
+public class ElasticsearchApi<T> {
     private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     @Autowired
     private CommonEsSearchConfig commonEsSearchConfig;
@@ -108,6 +108,15 @@ public class ElasticsearchApi {
         return true;
     }
 
+//    @NaslLogic
+//    public String saveDocument1(String docEntityJson, String index, String id) {
+////        ObjectMapper objectMapper = new ObjectMapper();
+////        // 将对象转为Map
+////        Map<String, Object> doc = objectMapper.convertValue(docEntityJson, new TypeReference<Map<String, Object>>() {
+////        });
+//        return ElasticsearchUtil.saveDocument(docEntityJson, commonEsSearchConfig.getEsClientUris(), index, id);
+//    }
+
     @NaslLogic
     public Long count(String index) {
         try {
@@ -119,12 +128,12 @@ public class ElasticsearchApi {
     }
 
     @NaslLogic
-    public <T> String saveDocument(T docEntity, String index, String id) {
+    public <T> String saveDocument(T docEntity, String index) {
         ObjectMapper objectMapper = new ObjectMapper();
         // 将对象转为Map
         Map<String, Object> doc = objectMapper.convertValue(docEntity, new TypeReference<Map<String, Object>>() {
         });
-        return ElasticsearchUtil.saveDocument(doc, commonEsSearchConfig.getEsClientUris(), index, id);
+        return ElasticsearchUtil.saveDocument(doc, commonEsSearchConfig.getEsClientUris(), index);
     }
 
     @NaslLogic

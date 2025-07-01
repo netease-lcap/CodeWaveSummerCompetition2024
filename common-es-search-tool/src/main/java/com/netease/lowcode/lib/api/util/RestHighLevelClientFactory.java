@@ -1,5 +1,12 @@
 package com.netease.lowcode.lib.api.util;
 
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,32 +27,27 @@ public class RestHighLevelClientFactory {
         RestHighLevelClient client = clientMap.get(esClientUris);
         if (client == null) {
             synchronized (RestHighLevelClientFactory.class) {
-                logger.info("{}:{}", esClientUris);
-//                Integer esPort;
-//                try {
-//                    esPort = Integer.parseInt(esClientPort);
-//                } catch (Exception e) {
-//                    logger.error("", e);
-//                    return null;
-//                }
-
-//                // 获取ES Client
-//                RestClientBuilder clientBuilder = RestClient.builder(
-////                        todo
-//                        new HttpHost(esClientHost, esPort, "http")
-//                );
-//                if (esClientUsername != null && esClientPassword != null) {
-//                    // auth
-//                    CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-//                    credentialsProvider.setCredentials(AuthScope.ANY,
-//                            new UsernamePasswordCredentials(esClientUsername, esClientPassword));
-//                    clientBuilder.setHttpClientConfigCallback(httpAsyncClientBuilder -> {
-//                        httpAsyncClientBuilder.disableAuthCaching();
-//                        return httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
-//                    });
-//                }
-//                client = new RestHighLevelClient(clientBuilder); // 你的实例化逻辑
-//                clientMap.put(esClientUris, client);
+                logger.info("es连接地址：{}", esClientUris);
+                String[] urls = esClientUris.split(",");
+                HttpHost[] hosts = new HttpHost[urls.length];
+                for (int i = 0; i < urls.length; i++) {
+                    String[] url = urls[i].split(":");
+                    hosts[i] = new HttpHost(url[0], Integer.parseInt(url[1]), "http");
+                }
+                // 获取ES Client
+                RestClientBuilder clientBuilder = RestClient.builder(hosts);
+                if (esClientUsername != null && esClientPassword != null) {
+                    // auth
+                    CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+                    credentialsProvider.setCredentials(AuthScope.ANY,
+                            new UsernamePasswordCredentials(esClientUsername, esClientPassword));
+                    clientBuilder.setHttpClientConfigCallback(httpAsyncClientBuilder -> {
+                        httpAsyncClientBuilder.disableAuthCaching();
+                        return httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+                    });
+                }
+                client = new RestHighLevelClient(clientBuilder); // 你的实例化逻辑
+                clientMap.put(esClientUris, client);
             }
         }
         return client;

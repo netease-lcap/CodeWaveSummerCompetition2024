@@ -6,20 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommonEsSearchConfig {
-//    /**
-//     * es地址
-//     */
-//    @NaslConfiguration
-//    @Value("${esClientHost}")
-//    public String esClientHost;
-//    /**
-//     * es端口
-//     */
-//    @NaslConfiguration
-//    @Value("${esClientPort}")
-//    public String esClientPort;
     /**
-     * es地址
+     * es地址。格式：192.168.1.1:9200,192.168.1.2:9200
      */
     @NaslConfiguration
     @Value("${esClientUris}")
