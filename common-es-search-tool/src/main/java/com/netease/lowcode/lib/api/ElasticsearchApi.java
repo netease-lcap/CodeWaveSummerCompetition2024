@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class ElasticsearchApi<T> {
+public class ElasticsearchApi {
     private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
     @Autowired
     private CommonEsSearchConfig commonEsSearchConfig;

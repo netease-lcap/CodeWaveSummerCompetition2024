@@ -18,7 +18,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <nasl.ide.version>3.3</nasl.ide.version>
+        <nasl.ide.version>3.8</nasl.ide.version>
     </properties>
     <dependencies>
         <!--本案例是本地系统引入nasl-metadata-collector-0.8.0.jar的方式。
@@ -28,7 +28,7 @@
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
             <groupId>com.netease.lowcode</groupId>
-            <version>0.8.0</version>
+            <version>0.10.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -97,7 +97,7 @@
                 <version>1.5.1</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
-                    <rewriteVersion>true</rewriteVersion>
+<!--                    <rewriteVersion>true</rewriteVersion>-->
                 </configuration>
                 <executions>
                     <execution>
