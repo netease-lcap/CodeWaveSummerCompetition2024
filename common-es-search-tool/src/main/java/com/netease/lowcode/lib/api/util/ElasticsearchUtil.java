@@ -65,7 +65,7 @@ public class ElasticsearchUtil {
             log.info("result count:{}", searchHits.length);
             if (searchHits.length > 0) {
                 queryResultDto = new QueryResultDto();
-                queryResultDto.totalCount = searchResponse.getHits().getTotalHits();
+                queryResultDto.setTotalCount(searchResponse.getHits().getTotalHits());
                 List<String> dataJsonString = new ArrayList<>();
                 queryResultDto.dataJsonString = dataJsonString;
                 for (SearchHit hit : searchHits) {
@@ -102,18 +102,20 @@ public class ElasticsearchUtil {
             log.info("result count:{}", searchHits.length);
             if (searchHits.length > 0) {
                 queryResultDto = new QueryResultDto();
-                queryResultDto.totalCount = searchResponse.getHits().getTotalHits();
-                queryResultDto.pageSize = pageSize;
-                queryResultDto.pageIndex = pageIndex;
-                queryResultDto.totalPage = (int) Math.ceil((double) queryResultDto.totalCount / pageSize);
+                queryResultDto.setTotalCount(searchResponse.getHits().getTotalHits());
+                queryResultDto.setPageSize(pageSize);
+                queryResultDto.setPageIndex(pageIndex);
+                queryResultDto.setTotalPage((int) Math.ceil((double) queryResultDto.getTotalCount() / pageSize));
+                ;
                 List<String> dataJsonString = new ArrayList<>();
-                queryResultDto.dataJsonString = dataJsonString;
+                queryResultDto.setDataJsonString(dataJsonString);
+                ;
                 for (SearchHit hit : searchHits) {
                     JSONObject jsonObject = JSONObject.parseObject(hit.getSourceAsString());
                     jsonObject.put("esId", hit.getId());
                     dataJsonString.add(JSONObject.toJSONString(jsonObject));
                 }
-                queryResultDto.scrollId = searchResponse.getScrollId();
+                queryResultDto.setScrollId(searchResponse.getScrollId());
             }
         } catch (Exception e) {
             log.info("连接异常", e);
