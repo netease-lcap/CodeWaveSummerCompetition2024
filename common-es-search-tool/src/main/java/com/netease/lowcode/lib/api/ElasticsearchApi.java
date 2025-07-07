@@ -2,6 +2,8 @@ package com.netease.lowcode.lib.api;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.lib.api.config.CommonEsSearchConfig;
 import com.netease.lowcode.lib.api.config.SortTypeEnum;
@@ -21,12 +23,14 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class ElasticsearchApi {
@@ -36,7 +40,7 @@ public class ElasticsearchApi {
 
     @PostConstruct
     public void init() {
-        ElasticsearchUtil.initClient(commonEsSearchConfig.esClientHost, commonEsSearchConfig.esClientPort, commonEsSearchConfig.esClientUsername, commonEsSearchConfig.esClientPassword);
+        ElasticsearchUtil.initClient(commonEsSearchConfig.getEsClientUris(), commonEsSearchConfig.getEsClientUsername(), commonEsSearchConfig.getEsClientPassword());
     }
 
     /**
@@ -45,42 +49,42 @@ public class ElasticsearchApi {
      * @param queryRequestParam
      */
     private void fillDefaultParam(QueryRequestParam queryRequestParam) {
-        if (StringUtils.isEmpty(queryRequestParam.pageIndex)) {
-            queryRequestParam.pageIndex = 1;
+        if (StringUtils.isEmpty(queryRequestParam.getPageIndex())) {
+            queryRequestParam.setPageIndex(1);
         }
-        if (StringUtils.isEmpty(queryRequestParam.pageSize)) {
-            queryRequestParam.pageSize = 20;
+        if (StringUtils.isEmpty(queryRequestParam.getPageSize())) {
+            queryRequestParam.setPageSize(20);
         }
-        if (StringUtils.isEmpty(queryRequestParam.index)) {
+        if (StringUtils.isEmpty(queryRequestParam.getIndex())) {
             throw new IllegalArgumentException("索引名称不能为空");
         }
-        if (queryRequestParam.sortInfo != null) {
-            if (StringUtils.isEmpty(queryRequestParam.sortInfo.sortType) || StringUtils.isEmpty(queryRequestParam.sortInfo.sortParam)) {
-                queryRequestParam.sortInfo = null;
+        if (queryRequestParam.getSortInfo() != null) {
+            if (StringUtils.isEmpty(queryRequestParam.getSortInfo().sortType) || StringUtils.isEmpty(queryRequestParam.getSortInfo().getSortParam())) {
+                queryRequestParam.setSortInfo(null);
             }
         }
-        if (queryRequestParam.logicalOperator == null) {
-            queryRequestParam.logicalOperator = 1;
+        if (queryRequestParam.getLogicalOperator() == null) {
+            queryRequestParam.setLogicalOperator(1);
         }
 
-        if (queryRequestParam.logicalOperator != 1 && queryRequestParam.logicalOperator != 2) {
+        if (queryRequestParam.getLogicalOperator() != 1 && queryRequestParam.getLogicalOperator() != 2) {
             throw new IllegalArgumentException("逻辑运算符logicalOperator不合法");
         }
-        if (queryRequestParam.scrollTime == null || queryRequestParam.scrollTime <= 0) {
-            queryRequestParam.scrollTime = null;
+        if (queryRequestParam.getScrollTime() == null || queryRequestParam.getScrollTime() <= 0) {
+            queryRequestParam.setScrollTime(null);
         }
-        if (!CollectionUtils.isEmpty(queryRequestParam.queryItems) && !CollectionUtils.isEmpty(queryRequestParam.queryItemList)) {
+        if (!CollectionUtils.isEmpty(queryRequestParam.getQueryItems()) && !CollectionUtils.isEmpty(queryRequestParam.getQueryItemList())) {
             throw new IllegalArgumentException("queryItemList和queryItems不能同时传入");
         }
-        if (!CollectionUtils.isEmpty(queryRequestParam.queryItems)) {
+        if (!CollectionUtils.isEmpty(queryRequestParam.getQueryItems())) {
             QueryItemsListDto queryItemsListDto = new QueryItemsListDto();
-            queryItemsListDto.queryItems = queryRequestParam.queryItems;
-            queryRequestParam.queryItemList = new ArrayList<>();
-            queryRequestParam.queryItemList.add(queryItemsListDto);
+            queryItemsListDto.setQueryItems(queryRequestParam.getQueryItems());
+            queryRequestParam.setQueryItemList(new ArrayList<>());
+            queryRequestParam.getQueryItemList().add(queryItemsListDto);
             // 1表示queryItems内多个条件之间为与；2表示queryItems内多个条件之间为或。所以这边需要旋转一下。
             // fillQueryBuilder执行时，1是外与内或。不旋转的话会执行内或。
-            queryRequestParam.logicalOperator = queryRequestParam.logicalOperator == 1 ? 2 : 1;
-            queryRequestParam.queryItems = null;
+            queryRequestParam.setLogicalOperator(queryRequestParam.getLogicalOperator() == 1 ? 2 : 1);
+            queryRequestParam.setQueryItems(null);
         }
     }
 
@@ -96,12 +100,64 @@ public class ElasticsearchApi {
     public Boolean updateDocumentByFields(String index, Map<String, List<String>> queryFields, Map<String, String> updateFields) {
         try {
             log.info("index:{},queryFields:{},updateFields:{}", index, JSONObject.toJSONString(queryFields), JSONObject.toJSONString(updateFields));
-            ElasticsearchUtil.updateByFields(index, queryFields, updateFields, commonEsSearchConfig.esClientHost + ":" + commonEsSearchConfig.esClientPort);
+            ElasticsearchUtil.updateByFields(index, queryFields, updateFields, commonEsSearchConfig.getEsClientUris());
         } catch (Exception e) {
             log.error("更新异常", e);
             throw new IllegalArgumentException(e.getMessage());
         }
         return true;
+    }
+
+    /**
+     * 查询文档总数。es存在延迟
+     *
+     * @param index
+     * @return
+     */
+    @NaslLogic
+    public Long count(String index) {
+        try {
+            return ElasticsearchUtil.count(index, commonEsSearchConfig.getEsClientUris());
+        } catch (IOException e) {
+            log.error("count异常", e);
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+    /**
+     * 保存文档
+     *
+     * @param docEntity 文档对象
+     * @param index     索引名称
+     * @param <T>
+     * @return
+     */
+    @NaslLogic
+    public <T> String saveDocument(T docEntity, String index) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        // 将对象转为Map
+        Map<String, Object> doc = objectMapper.convertValue(docEntity, new TypeReference<Map<String, Object>>() {
+        });
+        return ElasticsearchUtil.saveDocument(doc, commonEsSearchConfig.getEsClientUris(), index);
+    }
+
+    /**
+     * 批量保存文档
+     *
+     * @param docEntityList 文档对象列表
+     * @param index         索引名称
+     * @param <T>
+     * @return
+     */
+    @NaslLogic
+    public <T> Boolean bulkSaveDocuments(List<T> docEntityList, String index) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Map<String, Object>> docs = docEntityList.stream()
+                .map(entity -> objectMapper.convertValue(entity,
+                        new TypeReference<Map<String, Object>>() {
+                        }))
+                .collect(Collectors.toList());
+        return ElasticsearchUtil.bulkSaveDocuments(docs, commonEsSearchConfig.getEsClientUris(), index);
     }
 
     /**
@@ -116,14 +172,13 @@ public class ElasticsearchApi {
     public QueryResultDto queryScroll(Integer scrollTime, String scrollId) throws IllegalArgumentException {
         log.info("scrollId:{}", scrollId);
         LocalDateTime now1 = LocalDateTime.now();
-        String url = commonEsSearchConfig.esClientHost + ":" + commonEsSearchConfig.esClientPort;
         if (scrollTime != null) {
         }
         if (scrollId == null || scrollTime == null || scrollTime == 0) {
             throw new IllegalArgumentException("scrollId和scrollTime不能为空");
         }
         String scrollTimeStr = scrollTime + "m";
-        QueryResultDto queryResultDto = ElasticsearchUtil.searchScroll(url, scrollTimeStr, scrollId);
+        QueryResultDto queryResultDto = ElasticsearchUtil.searchScroll(commonEsSearchConfig.getEsClientUris(), scrollTimeStr, scrollId);
         LocalDateTime now2 = LocalDateTime.now();
         log.info("查询耗时：{}", Duration.between(now1, now2).toMillis());
         return queryResultDto;
@@ -149,39 +204,39 @@ public class ElasticsearchApi {
             fillDefaultParam(queryRequestParam);
             SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
             // 分页
-            if (queryRequestParam.pageSize <= 0 || queryRequestParam.pageIndex <= 0) {
+            if (queryRequestParam.getPageSize() <= 0 || queryRequestParam.getPageIndex() <= 0) {
                 throw new IllegalArgumentException("pageSize和pageIndex必须大于0");
             }
-            sourceBuilder.from((queryRequestParam.pageIndex - 1) * queryRequestParam.pageSize); // 起始索引
-            sourceBuilder.size(queryRequestParam.pageSize); // 每页大小
+            sourceBuilder.from((queryRequestParam.getPageIndex() - 1) * queryRequestParam.getPageSize()); // 起始索引
+            sourceBuilder.size(queryRequestParam.getPageSize()); // 每页大小
             // Include和exclude
-            if (!StringUtils.isEmpty(queryRequestParam.includeFields) && !StringUtils.isEmpty(queryRequestParam.excludeFields)) {
-                sourceBuilder.fetchSource(queryRequestParam.includeFields.toArray(new String[]{}), queryRequestParam.excludeFields.toArray(new String[]{}));
-            } else if (!StringUtils.isEmpty(queryRequestParam.includeFields)) {
-                sourceBuilder.fetchSource(queryRequestParam.includeFields.toArray(new String[]{}), null);
-            } else if (!StringUtils.isEmpty(queryRequestParam.excludeFields)) {
-                sourceBuilder.fetchSource(null, queryRequestParam.excludeFields.toArray(new String[]{}));
+            if (!StringUtils.isEmpty(queryRequestParam.getIncludeFields()) && !StringUtils.isEmpty(queryRequestParam.getExcludeFields())) {
+                sourceBuilder.fetchSource(queryRequestParam.getIncludeFields().toArray(new String[]{}), queryRequestParam.getExcludeFields().toArray(new String[]{}));
+            } else if (!StringUtils.isEmpty(queryRequestParam.getIncludeFields())) {
+                sourceBuilder.fetchSource(queryRequestParam.getIncludeFields().toArray(new String[]{}), null);
+            } else if (!StringUtils.isEmpty(queryRequestParam.getExcludeFields())) {
+                sourceBuilder.fetchSource(null, queryRequestParam.getExcludeFields().toArray(new String[]{}));
             }
             // 排序
-            if (queryRequestParam.sortInfo != null) {
-                SortOrder sortOrder = SortTypeEnum.getEnumByValue(queryRequestParam.sortInfo.sortType);
+            if (queryRequestParam.getSortInfo() != null) {
+                SortOrder sortOrder = SortTypeEnum.getEnumByValue(queryRequestParam.getSortInfo().sortType);
                 if (sortOrder == null) {
                     throw new IllegalArgumentException("排序类型不合法");
                 }
-                sourceBuilder.sort(queryRequestParam.sortInfo.sortParam, sortOrder);
+                sourceBuilder.sort(queryRequestParam.getSortInfo().getSortParam(), sortOrder);
             }
             BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
             // 查询条件 1与2或
-            if (queryRequestParam.queryItemList != null) {
+            if (queryRequestParam.getQueryItemList() != null) {
                 queryBuilder = fillQueryBuilder(queryRequestParam);
             }
-            String url = commonEsSearchConfig.esClientHost + ":" + commonEsSearchConfig.esClientPort;
             String scrollTime = null;
-            if (queryRequestParam.scrollTime != null) {
-                scrollTime = queryRequestParam.scrollTime + "m";
+            if (queryRequestParam.getScrollTime() != null) {
+                scrollTime = queryRequestParam.getScrollTime() + "m";
             }
             // 普通搜索
-            QueryResultDto resultDto = ElasticsearchUtil.search(queryRequestParam.index, sourceBuilder, queryBuilder, queryRequestParam.pageIndex, queryRequestParam.pageSize, url, scrollTime);
+            QueryResultDto resultDto = ElasticsearchUtil.search(queryRequestParam.getIndex(), sourceBuilder, queryBuilder,
+                    queryRequestParam.getPageIndex(), queryRequestParam.getPageSize(), commonEsSearchConfig.getEsClientUris(), scrollTime);
             LocalDateTime now2 = LocalDateTime.now();
             log.info("查询耗时：{}", Duration.between(now1, now2).toMillis());
             return resultDto;
@@ -213,16 +268,16 @@ public class ElasticsearchApi {
     private BoolQueryBuilder fillQueryBuilder(QueryRequestParam queryRequestParam) {
         //1与2或
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-        if (queryRequestParam.logicalOperator == 1) {
-            queryRequestParam.queryItemList.forEach(queryItemListDto -> {
+        if (queryRequestParam.getLogicalOperator() == 1) {
+            queryRequestParam.getQueryItemList().forEach(queryItemListDto -> {
                 BoolQueryBuilder queryBuilderItem = QueryBuilders.boolQuery();
                 queryItemListDto.getQueryItems().forEach(queryItemDto -> {
                     //查询类型，精确1 termQuery、模糊2 wildcardQuery、范围3 rangeQuery
-                    if (queryItemDto.queryType == 1) {
+                    if (queryItemDto.getQueryType() == 1) {
                         queryBuilderItem.should(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
-                    } else if (queryItemDto.queryType == 2) {
+                    } else if (queryItemDto.getQueryType() == 2) {
                         queryBuilderItem.should(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
-                    } else if (queryItemDto.queryType == 3) {
+                    } else if (queryItemDto.getQueryType() == 3) {
                         Map<Object, Object> mapQueryValue = handleQueryItemsDto(queryItemDto.getQueryValue());
                         mapQueryValue.forEach((key, value) -> {
                             if (key != null && value != null) {
@@ -233,22 +288,22 @@ public class ElasticsearchApi {
                                 queryBuilderItem.should(QueryBuilders.rangeQuery(queryItemDto.getParameter()).lte(value));
                             }
                         });
-                    } else if (queryItemDto.queryType == 4) {
+                    } else if (queryItemDto.getQueryType() == 4) {
                         queryBuilder.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue())));
                     }
                 });
                 queryBuilder.must(queryBuilderItem);
             });
         } else {
-            queryRequestParam.queryItemList.forEach(queryItemListDto -> {
+            queryRequestParam.getQueryItemList().forEach(queryItemListDto -> {
                 BoolQueryBuilder queryBuilderItem = QueryBuilders.boolQuery();
                 queryItemListDto.getQueryItems().forEach(queryItemDto -> {
                     //查询类型，精确1 termQuery、模糊2 wildcardQuery、范围3 rangeQuery
-                    if (queryItemDto.queryType == 1) {
+                    if (queryItemDto.getQueryType() == 1) {
                         queryBuilderItem.must(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
-                    } else if (queryItemDto.queryType == 2) {
+                    } else if (queryItemDto.getQueryType() == 2) {
                         queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
-                    } else if (queryItemDto.queryType == 3) {
+                    } else if (queryItemDto.getQueryType() == 3) {
                         Map<Object, Object> mapQueryValue = handleQueryItemsDto(queryItemDto.getQueryValue());
                         mapQueryValue.forEach((key, value) -> {
                             if (key != null && value != null) {
@@ -259,7 +314,7 @@ public class ElasticsearchApi {
                                 queryBuilderItem.must(QueryBuilders.rangeQuery(queryItemDto.getParameter()).lte(value));
                             }
                         });
-                    } else if (queryItemDto.queryType == 4) {
+                    } else if (queryItemDto.getQueryType() == 4) {
                         queryBuilder.mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                     }
                 });

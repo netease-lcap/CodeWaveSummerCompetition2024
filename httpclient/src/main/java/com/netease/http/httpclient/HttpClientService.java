@@ -40,10 +40,17 @@ public class HttpClientService {
         return fileCache.get(fileKey);
     }
 
+    public void removeFileCache(String fileKey) {
+        if (fileCache.containsKey(fileKey)) {
+            fileCache.remove(fileKey);
+        }
+    }
+
     public LocalFileCacheDto asyncUploadFileExchangeCommon(String fileTimeMillisKey, RestTemplate restTemplateFinal, RequestParam requestParam, String fileKey, File file) {
         LocalFileCacheDto localFileCacheDto = new LocalFileCacheDto(null, file.getName(), 3);
         fileCache.put(fileTimeMillisKey, localFileCacheDto);
         CompletableFuture.runAsync(() -> {
+            logger.info("开始上传文件");
             try {
                 String resBody = uploadFileExchangeCommon(restTemplateFinal, requestParam, fileKey, file);
                 localFileCacheDto.setResBody(resBody);
@@ -51,11 +58,19 @@ public class HttpClientService {
                 localFileCacheDto.setFileName(file.getName());
                 fileCache.put(fileTimeMillisKey, localFileCacheDto);
             } catch (Exception e) {
-                logger.error("上传文件失败", e);
+                logger.error("上传文件失败Exception", e);
                 localFileCacheDto.setDownloadStatus(6);
                 localFileCacheDto.setFileName(file.getName());
                 localFileCacheDto.setResBody("上传文件失败");
                 fileCache.put(fileTimeMillisKey, localFileCacheDto);
+            } catch (Throwable t) { // 捕获所有Throwable包括Error
+                logger.error("上传文件失败Throwable", t);
+                localFileCacheDto.setDownloadStatus(6);
+                localFileCacheDto.setFileName(file.getName());
+                localFileCacheDto.setResBody("上传文件失败");
+                fileCache.put(fileTimeMillisKey, localFileCacheDto);
+            } finally {
+                file.delete();
             }
         });
         return localFileCacheDto;
@@ -130,6 +145,7 @@ public class HttpClientService {
      */
     public String asyncDownloadFile(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal, String fileName) throws IOException {
         String fileKey = System.currentTimeMillis() + "d";
+        fileCache.put(fileKey, new LocalFileCacheDto(null, fileName, 1));
 //  流式下载
         Path parentFile = Paths.get("./local_file").toAbsolutePath().normalize();
         File file = new File(parentFile.toUri());

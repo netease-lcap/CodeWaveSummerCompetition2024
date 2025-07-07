@@ -6,7 +6,6 @@ import java.util.List;
 
 @NaslStructure
 public class QueryRequestParam {
-
     /**
      * 每页大小，可空，默认20
      */
@@ -23,17 +22,14 @@ public class QueryRequestParam {
      * 索引名称，必填
      */
     public String index;
-
     /**
      * 排序信息，可空
      */
     public SortInfoDto sortInfo;
-
     /**
      * queryItems内多个条件的关系。1-与，2-或。可空，默认1
      */
     public Integer logicalOperator;
-
     /**
      * 字段查询条件列表，可空（与queryItemList二选一）
      * logicalOperator=1表示queryItems内多个条件之间为与；logicalOperator=2表示queryItems内多个条件之间为或。
@@ -53,6 +49,14 @@ public class QueryRequestParam {
      * 需要从返回结果中排除的字段列表，可空，默认不排除
      */
     public List<String> excludeFields;
+
+    public List<QueryItemsDto> getQueryItems() {
+        return queryItems;
+    }
+
+    public void setQueryItems(List<QueryItemsDto> queryItems) {
+        this.queryItems = queryItems;
+    }
 
     public Integer getScrollTime() {
         return scrollTime;

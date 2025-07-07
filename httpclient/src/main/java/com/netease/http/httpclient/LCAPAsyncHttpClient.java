@@ -18,6 +18,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -45,19 +46,24 @@ public class LCAPAsyncHttpClient {
      * @return
      */
     @NaslLogic
-    public LocalFileCacheDto uploadLocalFileToThirdInterface(String fileTimeMillisKey, String fileKey, RequestParam requestParam) throws TransferCommonException {
+    public LocalFileCacheDto uploadLocalFileToThirdInterface(String fileTimeMillisKey, String fileKey, RequestParam requestParam) throws TransferCommonException, IOException {
         LocalFileCacheDto localFileCacheDto = httpClientService.getFileCache(fileTimeMillisKey);
         if (localFileCacheDto == null) {
             localFileCacheDto = new LocalFileCacheDto();
             localFileCacheDto.setDownloadStatus(0);
         } else if (localFileCacheDto.getDownloadStatus() == 2) {
-            Path parentFile = Paths.get("./local_file");
+            Path parentFile = Paths.get("./local_file").toAbsolutePath().normalize();
             Path targetFile = Paths.get(parentFile.toUri().getPath(), localFileCacheDto.getFileName());
             File file = targetFile.toFile();
             if (!file.exists()) {
                 throw new TransferCommonException(-1, "文件不存在");
             }
             localFileCacheDto = httpClientService.asyncUploadFileExchangeCommon(fileTimeMillisKey, restTemplate, requestParam, fileKey, file);
+        }
+        if (localFileCacheDto.getDownloadStatus() == 4
+                || localFileCacheDto.getDownloadStatus() == 5
+                || localFileCacheDto.getDownloadStatus() == 6) {
+            httpClientService.removeFileCache(fileTimeMillisKey);
         }
         return localFileCacheDto;
     }
@@ -71,7 +77,6 @@ public class LCAPAsyncHttpClient {
      */
     @NaslLogic
     public String downloadFileToLocalAsync(String fileName, RequestParam requestParam) throws TransferCommonException {
-        File file = null;
         if (!StringUtils.isEmpty(fileName) && !FileNameValidator.isValidFilename(fileName, 0)) {
             throw new TransferCommonException(-1, "fileName文件名称不合法");
         }
@@ -91,10 +96,6 @@ public class LCAPAsyncHttpClient {
         } catch (Exception e) {
             logger.error("", e);
             throw new TransferCommonException(e.getMessage(), e);
-        } finally {
-            if (file != null && file.exists()) {
-                file.delete();
-            }
         }
     }
 
