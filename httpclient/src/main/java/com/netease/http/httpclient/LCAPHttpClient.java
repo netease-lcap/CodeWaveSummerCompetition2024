@@ -10,7 +10,6 @@ import com.netease.lowcode.core.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -289,27 +288,7 @@ public class LCAPHttpClient {
             if (file == null) {
                 return null;
             }
-            RequestParamAllBodyTypeInner requestParamInner = new RequestParamAllBodyTypeInner();
-            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            requestParam.getBody().forEach(body::add);
-            String fileKey = uploadFileParam.getFileKey();
-            if (StringUtils.isEmpty(fileKey)) {
-                fileKey = "file";
-            }
-            body.add(fileKey, new FileSystemResource(file));
-            requestParamInner.setBody(body);
-            if (StringUtils.isEmpty(requestParam.getHttpMethod())) {
-                requestParam.setHttpMethod(HttpMethod.GET.name());
-            }
-            requestParamInner.setHttpMethod(requestParam.getHttpMethod());
-            requestParamInner.setUrl(requestParam.getUrl());
-            requestParamInner.setHeader(requestParam.getHeader());
-            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParamInner, restTemplate, String.class);
-            if (exchange.getStatusCode() == HttpStatus.OK) {
-                return exchange.getBody();
-            } else {
-                throw new TransferCommonException(exchange.getStatusCodeValue(), JSONObject.toJSONString(exchange));
-            }
+            return httpClientService.uploadFileExchangeCommon(restTemplate, requestParam, uploadFileParam.getFileKey(), file);
         } catch (HttpClientErrorException e) {
             logger.error("", e);
             throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());

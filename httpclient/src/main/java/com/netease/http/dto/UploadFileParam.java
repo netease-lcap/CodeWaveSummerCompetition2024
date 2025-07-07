@@ -9,6 +9,9 @@ import java.util.Map;
 public class UploadFileParam {
     @Required
     public String fileUrl;
+    /**
+     *  form-data请求中文件的key，默认:file
+     */
     @Required
     public String fileKey;
 
