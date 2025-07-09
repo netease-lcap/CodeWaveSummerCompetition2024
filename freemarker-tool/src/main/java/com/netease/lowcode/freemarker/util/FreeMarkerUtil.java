@@ -1,6 +1,5 @@
 package com.netease.lowcode.freemarker.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.freemarker.dto.CreateDocxRequest;
 import com.netease.lowcode.freemarker.dto.CreateRequest;
@@ -105,23 +104,6 @@ public class FreeMarkerUtil {
 
             return DownloadResponseDTO.FAIL("执行异常:"+e.getMessage(), Arrays.toString(e.getStackTrace()));
         }
-    }
-
-    public static void main(String[] args) throws JsonProcessingException {
-        CreateDocxRequest createDocxRequest = JsonUtil.fromJson("{\n" +
-                "    \"templateUrl\": {\n" +
-                "        \"word/document.xml\": \"/upload/document.xml?fileName=document.xml&fut=1750666817781&ai=18221540-8124-41ba-bf94-f98bbe97434c&con=lcap_default_connection&fpp=app\",\n" +
-                "        \"word/_rels/document.xml.rels\": \"/upload/document.xml.rels?fileName=document.xml.rels&fut=1750666895420&ai=18221540-8124-41ba-bf94-f98bbe97434c&con=lcap_default_connection&fpp=app\"\n" +
-                "    },\n" +
-                "    \"outFileName\": \"test.docx\",\n" +
-                "    \"templateDocxFileUrl\": \"/upload/API文档说明_20250401095511-副本2.doc?fileName=API文档说明_20250401095511-副本2.doc&fut=1750660817835&ai=18221540-8124-41ba-bf94-f98bbe97434c&con=lcap_default_connection&fpp=app\",\n" +
-                "    \"jsonData\": \"{\\\"name\\\":\\\"11111\\\"}\",\n" +
-                "    \"imageMap\": {\n" +
-                "\n" +
-                "    },\n" +
-                "    \"base64\": true\n" +
-                "}", CreateDocxRequest.class);
-        System.out.println(createNewDocxFile(createDocxRequest));
     }
 
     /**
