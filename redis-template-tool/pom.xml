@@ -5,7 +5,7 @@
 
     <groupId>com.netease.lowcode</groupId>
     <artifactId>redis-template-tool</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -15,7 +15,6 @@
         <java.version>8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <nasl.ide.version>3.3</nasl.ide.version>
     </properties>
 
 
@@ -27,8 +26,22 @@
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
             <groupId>com.netease.lowcode</groupId>
-            <version>0.8.0</version>
+            <version>0.12.0</version>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.netease.lowcode</groupId>
+            <artifactId>lcap-annotation</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>3.13.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,6 +58,18 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -54,7 +79,7 @@
                 <version>1.5.1</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
-<!--                    <rewriteVersion>true</rewriteVersion>-->
+                    <rewriteVersion>true</rewriteVersion>
                 </configuration>
                 <executions>
                     <execution>
