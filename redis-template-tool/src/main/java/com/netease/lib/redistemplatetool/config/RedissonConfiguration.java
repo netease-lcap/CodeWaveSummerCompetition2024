@@ -16,7 +16,7 @@ public class RedissonConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
-    @Resource
+    @Resource(name = "libraryRedisConfig")
     private RedisConfig redisConfig;
 
     @Bean(destroyMethod = "shutdown")

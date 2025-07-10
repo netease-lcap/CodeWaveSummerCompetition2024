@@ -89,12 +89,15 @@ public class RedissonService {
      * 手动释放锁
      */
     public void unLock(String lockKey) {
-        RLock lock = redissonClient.getLock(lockKey);
-        if (lock.isHeldByCurrentThread()) {
+        try {
+            RLock lock = redissonClient.getLock(lockKey);
             lock.unlock();
             log.info("Manual unlock success, key:{}", lockKey);
-        } else {
+        } catch (IllegalMonitorStateException e) {
+            // unlock() 内部检查发现锁不属于当前线程
             log.warn("Lock not held by current thread, key:{}", lockKey);
+        } catch (Exception e) {
+            log.error("Failed to unlock, key:{}, error:{}", lockKey, e.getMessage(), e);
         }
     }
 
