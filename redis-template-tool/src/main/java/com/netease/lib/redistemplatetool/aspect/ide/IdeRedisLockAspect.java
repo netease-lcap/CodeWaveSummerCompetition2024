@@ -1,5 +1,6 @@
 package com.netease.lib.redistemplatetool.aspect.ide;
 
+import com.netease.lib.redistemplatetool.redission.DistributedLock;
 import com.netease.lib.redistemplatetool.redission.RedisDistributedLock;
 import com.netease.lib.redistemplatetool.config.RedisConfig;
 import com.netease.lib.redistemplatetool.redission.RedissonService;
@@ -33,7 +34,7 @@ public class IdeRedisLockAspect {
     @Resource
     private RedisConfig redisConfig;
     @Resource
-    private RedisDistributedLock redisDistributedLock;
+    private DistributedLock redisDistributedLock;
 
     // 只拦截带@Controller/@RestController注解的类
     @Around("execution(* com..*.web.controller.logics..*.*(..)) && " +

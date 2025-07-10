@@ -4,10 +4,10 @@ import com.netease.lowcode.core.EnvironmentType;
 import com.netease.lowcode.core.annotation.Environment;
 import com.netease.lowcode.core.annotation.NaslConfiguration;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 
-@Configuration("libraryRedisConfig")
+@Component("libraryRedisConfig")
 public class RedisConfig {
     /**
      * redis配置类型1.url 2.单机 3.sentinel 4.cluster
