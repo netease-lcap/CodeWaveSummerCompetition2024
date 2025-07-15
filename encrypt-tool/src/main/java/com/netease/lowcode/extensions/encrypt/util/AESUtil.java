@@ -1,5 +1,7 @@
 package com.netease.lowcode.extensions.encrypt.util;
 
+import com.netease.lowcode.core.annotation.NaslLogic;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -8,11 +10,13 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class AESUtil {
-    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     protected static final String AES_CIPHER = "AES/ECB/PKCS5Padding";
+    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private AESUtil() {
 
@@ -92,6 +96,32 @@ public class AESUtil {
             key[i++ % 16] ^= b;
         }
         return new SecretKeySpec(key, "AES");
+    }
+
+    /**
+     * AES解密
+     *
+     * @param encryptedDataString
+     * @param key
+     * @return
+     */
+    @NaslLogic
+    public static String decryptAES(String encryptedDataString, String key) {
+        try {
+            byte[] decodedKey = Base64.getDecoder().decode(key);
+            Key secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+
+            byte[] encryptedData = Base64.getDecoder().decode(encryptedDataString);
+            byte[] decryptedData = cipher.doFinal(encryptedData);
+
+            return new String(decryptedData, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
 
