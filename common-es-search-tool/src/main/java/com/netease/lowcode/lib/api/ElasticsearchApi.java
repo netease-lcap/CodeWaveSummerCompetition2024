@@ -2,6 +2,7 @@ package com.netease.lowcode.lib.api;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
@@ -134,9 +135,32 @@ public class ElasticsearchApi {
      */
     @NaslLogic
     public <T> String saveDocument(T docEntity, String index) {
+//        IndexRequest request = new IndexRequest("your_index");
+//        Map<String, Object> jsonMap = new HashMap<>();
+//        ZonedDateTime now = ZonedDateTime.now();
+//
+//// 方式1：存储为ISO-8601字符串
+//        jsonMap.put("timestamp", now.toString());
+//
+//// 方式2：存储为毫秒时间戳
+//        jsonMap.put("timestamp", now.toInstant().toEpochMilli());
+//
+//        request.source(jsonMap);
+//        client.index(request, RequestOptions.DEFAULT);
         ObjectMapper objectMapper = new ObjectMapper();
         // 将对象转为Map
         Map<String, Object> doc = objectMapper.convertValue(docEntity, new TypeReference<Map<String, Object>>() {
+        });
+        doc.forEach((key, value) -> {
+            if (value instanceof ArrayList || value instanceof HashMap) {
+                try {
+                    doc.put(key, objectMapper.writeValueAsString(value));
+                } catch (JsonProcessingException e) {
+                    log.error("{} json转换异常", key, e);
+                    doc.put(key, null);
+                }
+            }
+
         });
         return ElasticsearchUtil.saveDocument(doc, commonEsSearchConfig.getEsClientUris(), index);
     }
@@ -170,6 +194,18 @@ public class ElasticsearchApi {
      */
     @NaslLogic
     public QueryResultDto queryScroll(Integer scrollTime, String scrollId) throws IllegalArgumentException {
+//        IndexRequest request = new IndexRequest("your_index");
+//        Map<String, Object> jsonMap = new HashMap<>();
+//        ZonedDateTime now = ZonedDateTime.now();
+//
+//// 方式1：存储为ISO-8601字符串
+//        jsonMap.put("timestamp", now.toString());
+//
+//// 方式2：存储为毫秒时间戳
+//        jsonMap.put("timestamp", now.toInstant().toEpochMilli());
+//
+//        request.source(jsonMap);
+//        client.index(request, RequestOptions.DEFAULT);
         log.info("scrollId:{}", scrollId);
         LocalDateTime now1 = LocalDateTime.now();
         if (scrollTime != null) {
