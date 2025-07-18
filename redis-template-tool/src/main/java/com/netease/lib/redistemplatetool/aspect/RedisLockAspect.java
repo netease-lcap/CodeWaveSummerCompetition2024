@@ -24,6 +24,8 @@ public class RedisLockAspect{
 
     @Value("${spring.application.id}")
     private String appId;
+    @Value("spring.profiles.active:dev")
+    private String active;
 
     @Resource
     private RedissonService redissonService;
@@ -45,7 +47,7 @@ public class RedisLockAspect{
 
         String name = joinPoint.getSignature().getName();
         // 这里加appid，防止多应用共用一个依赖库，且逻辑名相同
-        String key = redisLock.lockKey() + "_" + appId;
+        String key = redisLock.lockKey() + "_" + appId + "_" + active;
         try {
             redisDistributedLock.tryLock(key, timeout, expire);
             log.info("redis分布式锁获取成功！methodName={}, lockKey={}", name, key);
