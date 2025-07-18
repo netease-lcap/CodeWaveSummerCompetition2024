@@ -154,6 +154,9 @@ public class RedisConfig {
     @Value("${spring.application.id}")
     private String applicationId;
 
+    @Value("spring.profiles.active:dev")
+    private String active;
+
     public String getRedissonWaitTimeout() {
         return redissonWaitTimeout;
     }
@@ -320,5 +323,13 @@ public class RedisConfig {
 
     public void setApplicationId(String applicationId) {
         this.applicationId = applicationId;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
     }
 }
