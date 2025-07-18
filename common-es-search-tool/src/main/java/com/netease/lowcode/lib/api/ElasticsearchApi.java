@@ -135,18 +135,6 @@ public class ElasticsearchApi {
      */
     @NaslLogic
     public <T> String saveDocument(T docEntity, String index) {
-//        IndexRequest request = new IndexRequest("your_index");
-//        Map<String, Object> jsonMap = new HashMap<>();
-//        ZonedDateTime now = ZonedDateTime.now();
-//
-//// 方式1：存储为ISO-8601字符串
-//        jsonMap.put("timestamp", now.toString());
-//
-//// 方式2：存储为毫秒时间戳
-//        jsonMap.put("timestamp", now.toInstant().toEpochMilli());
-//
-//        request.source(jsonMap);
-//        client.index(request, RequestOptions.DEFAULT);
         ObjectMapper objectMapper = new ObjectMapper();
         // 将对象转为Map
         Map<String, Object> doc = objectMapper.convertValue(docEntity, new TypeReference<Map<String, Object>>() {
@@ -194,18 +182,6 @@ public class ElasticsearchApi {
      */
     @NaslLogic
     public QueryResultDto queryScroll(Integer scrollTime, String scrollId) throws IllegalArgumentException {
-//        IndexRequest request = new IndexRequest("your_index");
-//        Map<String, Object> jsonMap = new HashMap<>();
-//        ZonedDateTime now = ZonedDateTime.now();
-//
-//// 方式1：存储为ISO-8601字符串
-//        jsonMap.put("timestamp", now.toString());
-//
-//// 方式2：存储为毫秒时间戳
-//        jsonMap.put("timestamp", now.toInstant().toEpochMilli());
-//
-//        request.source(jsonMap);
-//        client.index(request, RequestOptions.DEFAULT);
         log.info("scrollId:{}", scrollId);
         LocalDateTime now1 = LocalDateTime.now();
         if (scrollTime != null) {
