@@ -27,7 +27,7 @@ public class IdeRedisLockAspect {
     /**
      * redis分布式锁模版key
      */
-    private static final String REDIS_LOCK_KEY_FORMAT = "redisLock:%s:%s";
+    private static final String REDIS_LOCK_KEY_FORMAT = "redisLock:%s:%s:%s";
 
     @Resource
     private RedissonService redissonService;
@@ -66,7 +66,7 @@ public class IdeRedisLockAspect {
 
         log.info("redis分布式锁开始！methodName={}", methodName);
         String applicationId = redisConfig.getApplicationId();
-        String lockKey = String.format(REDIS_LOCK_KEY_FORMAT, applicationId, methodName);
+        String lockKey = String.format(REDIS_LOCK_KEY_FORMAT, applicationId, methodName, redisConfig.getActive());
         Object text = logicContext.getAnnotationProperties().get("inputText");
         long expire = 30000L;
         if (Objects.nonNull(text)) {
