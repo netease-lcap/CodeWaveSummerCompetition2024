@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -260,6 +261,22 @@ public class RedisTool {
     }
 
     /**
+     * 将多个键值对设置到 Redis 哈希表中，并返回更新后的哈希表。
+     *
+     * @param hashKey     哈希表的键
+     * @param keyValueMap 包含要设置到 Redis 哈希表中的键值对的 Map
+     * @return 是否更新成功
+     */
+    @NaslLogic
+    public Boolean setHashValuesReturnBoolean(String hashKey, Map<String, String> keyValueMap) {
+        HashOperations<String, String, String> ops = redisTemplate.opsForHash();
+        for (Map.Entry<String, String> entry : keyValueMap.entrySet()) {
+            ops.put(hashKey, entry.getKey(), entry.getValue());
+        }
+        return true;
+    }
+
+    /**
      * 获取 Redis 哈希表中指定 key 的所有域和值
      *
      * @param hashKey 哈希表的 key
@@ -292,6 +309,19 @@ public class RedisTool {
             }
         }
         return resultMap;
+    }
+
+    /**
+     * 从 Redis 哈希表中获取键对应的值。
+     *
+     * @param hashKey  哈希表的键
+     * @param fieldKey 获取值的键
+     * @return 单条数据value
+     */
+    @NaslLogic
+    public String getHashValue(String hashKey, String fieldKey) {
+        HashOperations<String, String, String> ops = redisTemplate.opsForHash();
+        return ops.get(hashKey, fieldKey);
     }
 
     /**
@@ -363,6 +393,39 @@ public class RedisTool {
         HashOperations<String, String, String> ops = redisTemplate.opsForHash();
         String[] fieldKeysArray = keys.toArray(new String[0]);
         return ops.delete(hashKey, fieldKeysArray);
+    }
+
+    /**
+     * 删除 Redis 哈希表中指定的域
+     *
+     * @param hashKey 哈希表的 key
+     * @param fieldKey     要删除的域
+     * @return 被删除的域的数量
+     */
+    @NaslLogic
+    public Long deleteHashfieldKey(String hashKey, String fieldKey) {
+        HashOperations<String, String, String> ops = redisTemplate.opsForHash();
+        return ops.delete(hashKey, fieldKey);
+    }
+
+    /**
+     * 获取hashKey中limit条数据
+     *
+     * @param hashKey
+     * @param limit
+     * @return
+     */
+    @NaslLogic
+    public List<String> getHashTop100(String hashKey, Integer limit) {
+        if (limit == null | limit == 0) {
+            limit = Integer.MAX_VALUE;
+        }
+        return redisTemplate.<String, Object>opsForHash()
+                .values(hashKey)
+                .stream()
+                .limit(limit)
+                .map(Object::toString)
+                .collect(Collectors.toList());
     }
 
     /**
