@@ -15,7 +15,7 @@ public class CurrencyConverter {
     private static final String[] TENS = {"", "", " TWENTY", " THIRTY", " FORTY", " FIFTY", " SIXTY", " SEVENTY", " EIGHTY", " NINETY"};
 
     private static final String CN_NEGATIVE = "负";
-    private static final String CN_ZEOR_FULL = "零圆整";
+    private static final String CN_ZEOR_FULL = "零元整";
 
     private static final Map<String, Double> NUMBER_MAP = new HashMap<String, Double>() {{
         put("zero", 0d);
