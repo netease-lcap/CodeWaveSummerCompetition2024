@@ -1,12 +1,17 @@
 package com.netease.lib.redistemplatetool.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
+import com.netease.lowcode.core.util.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -14,9 +19,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class RedisTool {
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     @Autowired
     public RedisTemplate<String, String> redisTemplate;
+    private ObjectMapper mapper = new ObjectMapper();
 
     /**
      * 是否存在key，返回true/false
@@ -398,8 +405,8 @@ public class RedisTool {
     /**
      * 删除 Redis 哈希表中指定的域
      *
-     * @param hashKey 哈希表的 key
-     * @param fieldKey     要删除的域
+     * @param hashKey  哈希表的 key
+     * @param fieldKey 要删除的域
      * @return 被删除的域的数量
      */
     @NaslLogic
@@ -411,21 +418,59 @@ public class RedisTool {
     /**
      * 获取hashKey中limit条数据
      *
-     * @param hashKey
-     * @param limit
+     * @param hashKey      数据结构类型
+     * @param limit        获取的条数（默认为最大值）
+     * @param keywordValue 搜索关键字，可空
+     * @param keywordName  搜索字段，可空
      * @return
      */
     @NaslLogic
-    public List<String> getHashTop100(String hashKey, Integer limit) {
+    public List<String> getHashTopN(String hashKey, Integer limit, String keywordValue, String keywordName) {
         if (limit == null | limit == 0) {
             limit = Integer.MAX_VALUE;
         }
-        return redisTemplate.<String, Object>opsForHash()
+        List<String> allList = redisTemplate.<String, Object>opsForHash()
                 .values(hashKey)
                 .stream()
-                .limit(limit)
+                .limit(Integer.MAX_VALUE)
                 .map(Object::toString)
                 .collect(Collectors.toList());
+        if (StringUtils.isEmpty(keywordValue) || StringUtils.isEmpty(keywordName)) {
+            return allList;
+        } else {
+            return allList.stream().filter(json -> {
+                        try {
+                            Map<String, Object> jsonMap = mapper.readValue(json, Map.class);
+                            JSONObject jsonObject = new JSONObject(jsonMap);
+                            String name = jsonObject.getString(keywordName);
+                            if (StringUtils.isEmpty(name)) {
+                                return false;
+                            }
+                            return name.contains(keywordValue);
+                        } catch (Exception e) {
+                            logger.error("json转换错误", e);
+                            return false;
+                        }
+                    }).sorted((json1, json2) -> {
+                        try {
+                            // 创建中文拼音排序器
+                            Collator collator = Collator.getInstance(Locale.CHINA);
+                            // 获取两个json对象的中文名
+                            Map<String, Object> jsonMap1 = mapper.readValue(json1, Map.class);
+                            JSONObject jsonObject1 = new JSONObject(jsonMap1);
+                            String name1 = jsonObject1.getString(keywordName);
+                            Map<String, Object> jsonMap2 = mapper.readValue(json2, Map.class);
+                            JSONObject jsonObject2 = new JSONObject(jsonMap2);
+                            String name2 = jsonObject2.getString(keywordName);
+                            // 使用Collator比较中文名
+                            return collator.compare(name1, name2);
+                        } catch (Exception e) {
+                            logger.error("name对比错误", e);
+                            return 0;
+                        }
+                    })
+                    .limit(limit).collect(Collectors.toList());
+        }
     }
 
     /**
