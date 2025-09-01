@@ -2,6 +2,7 @@ package com.netease.lowcode.lib.api;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
@@ -137,6 +138,17 @@ public class ElasticsearchApi {
         ObjectMapper objectMapper = new ObjectMapper();
         // 将对象转为Map
         Map<String, Object> doc = objectMapper.convertValue(docEntity, new TypeReference<Map<String, Object>>() {
+        });
+        doc.forEach((key, value) -> {
+            if (value instanceof ArrayList || value instanceof HashMap) {
+                try {
+                    doc.put(key, objectMapper.writeValueAsString(value));
+                } catch (JsonProcessingException e) {
+                    log.error("{} json转换异常", key, e);
+                    doc.put(key, null);
+                }
+            }
+
         });
         return ElasticsearchUtil.saveDocument(doc, commonEsSearchConfig.getEsClientUris(), index);
     }
