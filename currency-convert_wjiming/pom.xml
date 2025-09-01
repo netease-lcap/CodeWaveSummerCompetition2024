@@ -6,7 +6,7 @@
     
     <groupId>com.wjm</groupId>
     <artifactId>currency-convert</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>人民币美元大小写转换</name>
     <description>提供了人民币大小写转换和美元大小写转换的逻辑</description>
 
