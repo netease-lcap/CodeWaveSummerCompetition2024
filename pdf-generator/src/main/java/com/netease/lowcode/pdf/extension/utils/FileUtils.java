@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -27,12 +28,23 @@ public class FileUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
+    private static String staticServerPort;
+
     @Value("${lcp.upload.sinkType}")
     private String sinkType;
     @Value("${lcp.upload.sinkPath}")
     private String sinkPath;
     @Value("${lcp.upload.access}")
     private String access;
+
+    @Value("${server.port:8080}")
+    private String serverPort;
+
+    @PostConstruct
+    public void initStaticPort() {
+        FileUtils.staticServerPort = this.serverPort;
+    }
+
     @Autowired
     private FileConnectorUtils pdfGeneratorFileConnectorUtils;
     @Autowired
@@ -134,7 +146,7 @@ public class FileUtils {
 
     public static UploadResponseDTO uploadStreamV2(InputStream inputStream, String fileName) throws IOException {
         HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String uploadUrl = "http://" + "127.0.0.1:8080" + "/upload";
+        String uploadUrl = "http://" + "127.0.0.1:" + staticServerPort + "/upload";
         logger.info("内部地址:{}",uploadUrl);
         // http是域名80端口，https可能是域名443 验证下，然后替换地址
         logger.info("外部地址:{}", uploadUrl.replace("127.0.0.1:8080", httpServletRequest.getServerName() + ":" + httpServletRequest.getServerPort()));

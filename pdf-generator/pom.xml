@@ -131,22 +131,38 @@
     </dependencies>
     <build>
         <plugins>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-shade-plugin</artifactId>-->
+            <!--                <version>3.2.2</version>-->
+            <!--                <configuration>-->
+            <!--                    <relocations>-->
+            <!--                        <relocation>-->
+            <!--                            <pattern>com.spire</pattern>-->
+            <!--                            <shadedPattern>shade.extension.freemarker.com.spire</shadedPattern>-->
+            <!--                        </relocation>-->
+            <!--                        <relocation>-->
+            <!--                            <pattern>okhttp3</pattern>-->
+            <!--                            <shadedPattern>shade.extension.freemarker.okhttp3</shadedPattern>-->
+            <!--                        </relocation>-->
+            <!--                    </relocations>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>package</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>shade</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.4.1</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.shared</groupId>
-                        <artifactId>maven-common-artifact-filters</artifactId>
-                        <version>3.0.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.commons</groupId>
-                        <artifactId>commons-lang3</artifactId>
-                        <version>3.13.0</version>
-                    </dependency>
-                </dependencies>
+                <version>1.4.3</version>
+                <configuration>
+                    <jarWithDependencies>false</jarWithDependencies>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -154,11 +170,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <!-- 将依赖加到zip里 -->
-                    <jarWithDependencies>false</jarWithDependencies>
-                    <rewriteVersion>false</rewriteVersion>
-                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,19 +1,22 @@
 package com.netease.lowcode.freemarker.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
-import com.netease.lowcode.freemarker.dto.CreateDocxRequest;
-import com.netease.lowcode.freemarker.dto.CreateRequest;
-import com.netease.lowcode.freemarker.dto.DownloadResponseDTO;
-import com.netease.lowcode.freemarker.dto.UploadResponseDTO;
+import com.netease.lowcode.freemarker.dto.*;
 import com.netease.lowcode.freemarker.validators.CreateDocxRequestValidator;
 import com.netease.lowcode.freemarker.validators.CreateRequestValidator;
 import com.spire.xls.FileFormat;
 import com.spire.xls.Workbook;
+import com.yongjiu.commons.utils.FreemarkerUtils;
+import com.yongjiu.dto.freemarker.input.FreemarkerInput;
 import freemarker.cache.URLTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -21,6 +24,8 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +35,6 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class FreeMarkerUtil {
-
     /**
      * 根据模板和数据创建指定后缀文件，并下载
      *
@@ -69,42 +73,47 @@ public class FreeMarkerUtil {
      * @param request
      * @return
      */
-    @NaslLogic
-    public static DownloadResponseDTO createNewXlsx(CreateRequest request) {
-        try {
-            CreateRequestValidator.validate(request);
-
-            //2. 模板替换
-            ByteArrayInputStream byteArrayInputStream = getFreemarkerContentInputStreamV2(request.jsonData, FileUtil.getTrueUrl(request.templateUrl));
-
-            //3. 上传文件
-            //4. xml to excel
-            Workbook workbook = new Workbook();
-            workbook.loadFromXml(byteArrayInputStream);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            workbook.saveToStream(outputStream, FileFormat.Version2016);
-
-            //
-            org.apache.poi.ss.usermodel.Workbook poiWorkbook = WorkbookFactory.create(new ByteArrayInputStream(outputStream.toByteArray()));
-            poiWorkbook.removeSheetAt(poiWorkbook.getSheetIndex("Evaluation Warning"));
-            ByteArrayOutputStream tmpOutputStream = new ByteArrayOutputStream();
-            poiWorkbook.write(tmpOutputStream);
-
-            UploadResponseDTO outUrl = FileUtil.uploadStream(new ByteArrayInputStream(tmpOutputStream.toByteArray()), request.outFileName);
-
-            if (Objects.nonNull(outUrl)) {
-
-                return DownloadResponseDTO.OK(outUrl.getResult(), outUrl.getFilePath());
-            } else {
-
-                return DownloadResponseDTO.FAIL("文件上传失败","");
-            }
-
-        } catch (Throwable e) {
-
-            return DownloadResponseDTO.FAIL("执行异常:"+e.getMessage(), Arrays.toString(e.getStackTrace()));
-        }
-    }
+//    @NaslLogic
+//    public static DownloadResponseDTO createNewXlsx(CreateRequest request) {
+//        try {
+//            CreateRequestValidator.validate(request);
+//
+//            //2. 模板替换
+//            ByteArrayInputStream byteArrayInputStream = getFreemarkerContentInputStreamV2(request.jsonData, FileUtil.getTrueUrl(request.templateUrl));
+//
+//            //3. 上传文件
+//            //4. xml to excel
+//            Workbook workbook = new Workbook();
+//            workbook.loadFromXml(byteArrayInputStream);
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//            workbook.saveToStream(outputStream, FileFormat.Version2016);
+//
+//            //
+//            org.apache.poi.ss.usermodel.Workbook poiWorkbook = WorkbookFactory.create(new ByteArrayInputStream(outputStream.toByteArray()));
+//            // 删除评估警告工作表（如果存在）
+//            poiWorkbook.removeSheetAt(poiWorkbook.getSheetIndex("Evaluation Warning"));
+//            // 设置第一个工作表为活动工作表（索引从0开始）
+//            if (poiWorkbook.getNumberOfSheets() > 0) {
+//                poiWorkbook.setActiveSheet(0);
+//            }
+//            ByteArrayOutputStream tmpOutputStream = new ByteArrayOutputStream();
+//            poiWorkbook.write(tmpOutputStream);
+//
+//            UploadResponseDTO outUrl = FileUtil.uploadStream(new ByteArrayInputStream(tmpOutputStream.toByteArray()), request.outFileName);
+//
+//            if (Objects.nonNull(outUrl)) {
+//
+//                return DownloadResponseDTO.OK(outUrl.getResult(), outUrl.getFilePath());
+//            } else {
+//
+//                return DownloadResponseDTO.FAIL("文件上传失败","");
+//            }
+//
+//        } catch (Throwable e) {
+//
+//            return DownloadResponseDTO.FAIL("执行异常:"+e.getMessage(), Arrays.toString(e.getStackTrace()));
+//        }
+//    }
 
     /**
      * 根据模板创建docx
@@ -171,6 +180,59 @@ public class FreeMarkerUtil {
                 return DownloadResponseDTO.FAIL("文件上传失败","");
             }
         } catch (Throwable e) {
+            return DownloadResponseDTO.FAIL("执行异常:" + e.getMessage(), Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    @NaslLogic
+    public static DownloadResponseDTO createNewXlsx(CreateRequest request) {
+        // 先下载模版文件，将它放在一个指定路径下
+        String downloadPath = String.join(File.separator, System.getProperty("user.home"), "templates");
+        String savePath = String.join(File.separator, downloadPath, "template.xml");
+        try {
+            FileUtil.downloadFile(request.templateUrl, savePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        FreemarkerInput freemarkerInput = new FreemarkerInput();
+        //设置freemarker模板路径
+        freemarkerInput.setTemplateFilePath(downloadPath);
+        //模板名字
+        freemarkerInput.setTemplateName("template.xml");
+        //缓存xml路径
+        freemarkerInput.setXmlTempFile(downloadPath);
+        //缓存xml名字
+        freemarkerInput.setFileName("tmpXml");
+        //设置freemarker模板数据
+        Map<String, Object> map = null;
+
+        try {
+            // 创建ObjectMapper实例
+            ObjectMapper objectMapper = new ObjectMapper();
+            // 将JSON字符串转换为Map
+            map = objectMapper.readValue(request.jsonData, Map.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        freemarkerInput.setDataMap(map);
+        String resultPath = String.join(File.separator, downloadPath, request.outFileName);
+
+        //导出Excel到输出流（Excel2007版及以上，xlsx格式）速度快
+        FreemarkerUtils.exportImageExcelNew(resultPath, freemarkerInput);
+
+        // 读取输出文件
+        try (InputStream fileInputStream = Files.newInputStream(Paths.get(resultPath))) {
+            // 直接上传文件输入流（无需先转换为字节数组）
+            UploadResponseDTO outUrl = FileUtil.uploadStream(
+                    fileInputStream,
+                    request.outFileName
+            );
+            if (Objects.nonNull(outUrl)) {
+                return DownloadResponseDTO.OK(outUrl.getResult(), outUrl.getFilePath());
+            } else {
+                return DownloadResponseDTO.FAIL("文件上传失败","");
+            }
+        } catch (Exception e) {
             return DownloadResponseDTO.FAIL("执行异常:" + e.getMessage(), Arrays.toString(e.getStackTrace()));
         }
     }
