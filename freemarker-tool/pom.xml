@@ -7,7 +7,7 @@
     <groupId>com.netease.lowcode</groupId>
     <artifactId>freemarker-tool</artifactId>
     <!-- We currently do not support snapshots. Please use a testing version number like 0.x.x, e.g. 0.1.12 -->
-    <version>1.2.13</version>
+    <version>1.2.15</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -87,6 +87,12 @@
             <version>5.3.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version>
+        </dependency>
+
         <!-- 对于独立应用（非 Web 项目） -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -107,7 +113,7 @@
         <dependency>
             <groupId>cn.eonml</groupId>
             <artifactId>freemarker-excel</artifactId>
-            <version>0.1.7</version>
+            <version>0.1.8</version>
         </dependency>
 
         <dependency>

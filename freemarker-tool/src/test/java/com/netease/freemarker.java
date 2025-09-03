@@ -58,11 +58,13 @@ public class freemarker {
     @Test
     public void testCreateNewXlsxV2() {
         try {
+            Long start = System.currentTimeMillis();
             CreateRequest createRequest = new CreateRequest();
-            createRequest.templateUrl = "http://dev.demo002.defaulttenant.lcap.v3133b-lowcode.com/upload/aa.xml?fileName=aa.xml&fut=1749544386313&ai=655bbd3c-772e-48bb-8d34-6c579b77b704&con=lcap_default_connection&fpp=/app";
-            createRequest.jsonData = new String(Files.readAllBytes(Paths.get("/Users/zhangpenglan/Documents/projects/project/CodeWaveSummerCompetition2024/freemarker-tool/src/test/java/com/netease/demo.txt")));
+            createRequest.templateUrl = "http://dev.demo002.defaulttenant.lcap.v3133b-lowcode.com/upload/dad.xml?fileName=dad.xml&fut=1750164787319&ai=655bbd3c-772e-48bb-8d34-6c579b77b704&con=lcap_default_connection&fpp=/app";
+            createRequest.jsonData = new String(Files.readAllBytes(Paths.get("/Users/zhangpenglan/Documents/projects/project/manager/CodeWaveSummerCompetition2024/freemarker-tool/src/test/java/com/netease/demo.txt")));
             createRequest.outFileName = "zpldemo.xlsx";
             FreeMarkerUtil.createNewXlsx(createRequest);
+            System.out.println("耗时：" + (System.currentTimeMillis() - start) + "ms");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
