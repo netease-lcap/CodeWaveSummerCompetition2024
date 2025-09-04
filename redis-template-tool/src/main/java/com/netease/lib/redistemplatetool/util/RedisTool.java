@@ -421,7 +421,7 @@ public class RedisTool {
      * @param hashKey      数据结构类型
      * @param limit        获取的条数（默认为最大值）
      * @param keywordValue 搜索关键字，可空
-     * @param keywordName  搜索字段，可空
+     * @param keywordName  搜索字段，可空，根据值的中文排序
      * @return
      */
     @NaslLogic
@@ -442,11 +442,8 @@ public class RedisTool {
                         try {
                             Map<String, Object> jsonMap = mapper.readValue(json, Map.class);
                             JSONObject jsonObject = new JSONObject(jsonMap);
-                            String name = jsonObject.getString(keywordName);
-                            if (StringUtils.isEmpty(name)) {
-                                return false;
-                            }
-                            return name.contains(keywordValue);
+                            String nameValue = jsonObject.getString(keywordName);
+                            return !StringUtils.isEmpty(nameValue) && nameValue.contains(keywordValue);
                         } catch (Exception e) {
                             logger.error("json转换错误", e);
                             return false;
@@ -458,6 +455,64 @@ public class RedisTool {
                             // 获取两个json对象的中文名
                             Map<String, Object> jsonMap1 = mapper.readValue(json1, Map.class);
                             JSONObject jsonObject1 = new JSONObject(jsonMap1);
+                            String name1 = jsonObject1.getString(keywordName);
+                            Map<String, Object> jsonMap2 = mapper.readValue(json2, Map.class);
+                            JSONObject jsonObject2 = new JSONObject(jsonMap2);
+                            String name2 = jsonObject2.getString(keywordName);
+                            // 使用Collator比较中文名
+                            return collator.compare(name1, name2);
+                        } catch (Exception e) {
+                            logger.error("name对比错误", e);
+                            return 0;
+                        }
+                    })
+                    .limit(limit).collect(Collectors.toList());
+        }
+    }
+
+    /**
+     * 获取hashKey中limit条数据
+     *
+     * @param hashKey    数据结构类型
+     * @param limit      获取的条数（默认为最大值）
+     * @param keywordMap <搜索关键字，搜索字段>。可空，根据第一个值的中文排序
+     * @return
+     */
+    @NaslLogic
+    public List<String> getHashTopNByKeyMap(String hashKey, Integer limit, Map<String, String> keywordMap) {
+        if (limit == null | limit == 0) {
+            limit = Integer.MAX_VALUE;
+        }
+        List<String> allList = redisTemplate.<String, Object>opsForHash()
+                .values(hashKey)
+                .stream()
+                .limit(Integer.MAX_VALUE)
+                .map(Object::toString)
+                .collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(keywordMap)) {
+            return allList;
+        } else {
+            return allList.stream().filter(json -> {
+                        try {
+                            Map<String, Object> jsonMap = mapper.readValue(json, Map.class);
+                            JSONObject jsonObject = new JSONObject(jsonMap);
+                            return keywordMap.entrySet().stream().allMatch(entry -> {
+                                String jsonValue = jsonObject.getString(entry.getKey());
+                                return !StringUtils.isEmpty(jsonValue) &&
+                                        jsonValue.contains(entry.getValue());
+                            });
+                        } catch (Exception e) {
+                            logger.error("json转换错误", e);
+                            return false;
+                        }
+                    }).sorted((json1, json2) -> {
+                        try {
+                            // 创建中文拼音排序器
+                            Collator collator = Collator.getInstance(Locale.CHINA);
+                            // 获取两个json对象的中文名
+                            Map<String, Object> jsonMap1 = mapper.readValue(json1, Map.class);
+                            JSONObject jsonObject1 = new JSONObject(jsonMap1);
+                            String keywordName = keywordMap.entrySet().iterator().next().getKey();
                             String name1 = jsonObject1.getString(keywordName);
                             Map<String, Object> jsonMap2 = mapper.readValue(json2, Map.class);
                             JSONObject jsonObject2 = new JSONObject(jsonMap2);
