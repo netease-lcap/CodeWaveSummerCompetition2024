@@ -6,6 +6,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.cache.selector.SimpleReadCacheSelector;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.exception.ExcelAnalysisException;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.read.metadata.holder.ReadHolder;
 import com.alibaba.excel.read.metadata.holder.csv.CsvReadSheetHolder;
@@ -18,7 +19,6 @@ import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy
 import com.alibaba.excel.write.style.column.SimpleColumnWidthStyleStrategy;
 import com.alibaba.excel.write.style.row.SimpleRowHeightStyleStrategy;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.extensions.extensions.ShowImageConverter;
 import com.netease.lowcode.extensions.listeners.LibraryReadListener;
@@ -165,6 +165,79 @@ public class EasyExcelTools {
         }
 
         return url;
+    }
+
+    /**
+     * 读取Excel前第N行作为表头数据
+     *
+     * @param url            Excel文件url
+     * @param sheetName      工作表名称（null表示第一个sheet）
+     * @param headerRowCount 需要读取的表头行数（从0开始）
+     * @return 表头数据列表，每个元素代表一行表头
+     */
+    @NaslLogic
+    public static List<List<String>> readHeaderRows(String url,
+                                                    String sheetName,
+                                                    Integer headerRowCount) {
+        if (StringUtils.isBlank(url)) {
+            ParseSheetResult result = new ParseSheetResult();
+            result.setSuccess(false);
+            result.setErrorMsg("非法的文件下载路径: " + url);
+            throw new IllegalArgumentException("非法的文件下载路径:" + url);
+        }
+        try (InputStream inputStream = openUrlStream(url)) {
+            return readHeaderRows(inputStream, sheetName, headerRowCount);
+        } catch (RuntimeException e) {
+            log.error("excel解析失败", e);
+            throw new IllegalArgumentException("excel解析失败", e);
+        } catch (IOException e) {
+            log.error("文件下载失败", e);
+            throw new IllegalArgumentException("文件下载失败", e);
+        }
+    }
+
+    public static List<List<String>> readHeaderRows(InputStream inputStream,
+                                                    String sheetName,
+                                                    int headerRowCount) {
+        // 参数校验
+        if (inputStream == null) {
+            throw new IllegalArgumentException("输入流不能为null");
+        }
+        if (headerRowCount < 0) {
+            throw new IllegalArgumentException("表头行数不能为负数");
+        }
+        // 使用监听器精确控制读取行数
+        final List<List<String>> headerRows = new ArrayList<>(headerRowCount);
+        try {
+            EasyExcel.read(inputStream, new AnalysisEventListener<Object>() {
+                        private int currentRow = -1;
+                        @Override
+                        public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
+                            if (currentRow < headerRowCount) {
+                                headerRows.add(new ArrayList<>(headMap.values()));
+                                currentRow++;
+                            }
+                            if (currentRow >= headerRowCount) {
+                                throw new ExcelAnalysisException("表头读取完成");
+                            }
+                        }
+                        @Override
+                        public void invoke(Object data, AnalysisContext context) {
+                        }
+                        @Override
+                        public void doAfterAllAnalysed(AnalysisContext context) {
+                        }
+                    })
+                    .headRowNumber(headerRowCount + 1)
+                    .sheet(sheetName)
+                    .doRead();
+        } catch (ExcelAnalysisException e) {
+            // 忽略我们主动抛出的中断异常
+            if (!"表头读取完成".equals(e.getMessage())) {
+                throw e;
+            }
+        }
+        return headerRows;
     }
 
     /**
@@ -369,7 +442,7 @@ public class EasyExcelTools {
         }
         Class<?> clazz;
         try {
-            clazz = Class.forName(request.getFullClassName(),false,Thread.currentThread().getContextClassLoader());
+            clazz = Class.forName(request.getFullClassName(), false, Thread.currentThread().getContextClassLoader());
         } catch (ClassNotFoundException e) {
             log.error("加载类失败", e);
             return ParseBigDataResponse.FAIL(String.format("加载类[%s]失败！", request.getFullClassName()), e.getMessage() + Arrays.toString(e.getStackTrace()));
@@ -424,7 +497,7 @@ public class EasyExcelTools {
         }
         Class<?> clazz;
         try {
-            clazz = Class.forName(condition.getFullClassName(),false,Thread.currentThread().getContextClassLoader());
+            clazz = Class.forName(condition.getFullClassName(), false, Thread.currentThread().getContextClassLoader());
         } catch (ClassNotFoundException e) {
             log.error("加载类失败", e);
             return ExportBigDataResponse.FAIL(String.format("加载类[%s]失败！", condition.getFullClassName()), Arrays.toString(e.getStackTrace()));
@@ -662,7 +735,7 @@ public class EasyExcelTools {
             String path = String.join("/", "data", String.valueOf(System.currentTimeMillis()));
             File dir = new File(path);
             if (!dir.mkdirs()) {
-                return ExportBigDataResponse.FAIL2(String.format("创建目录失败:%s", path),condition.getCustomQueryCondition());
+                return ExportBigDataResponse.FAIL2(String.format("创建目录失败:%s", path), condition.getCustomQueryCondition());
             }
 
             exportFile = new File(path, fileName);
