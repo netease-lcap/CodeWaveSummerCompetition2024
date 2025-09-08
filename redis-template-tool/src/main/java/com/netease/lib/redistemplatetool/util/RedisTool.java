@@ -1,8 +1,8 @@
 package com.netease.lib.redistemplatetool.util;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
-import com.netease.lowcode.core.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -420,7 +420,7 @@ public class RedisTool {
      *
      * @param hashKey      数据结构类型
      * @param limit        获取的条数（默认为最大值）
-     * @param keywordValue 搜索关键字，可空
+     * @param keywordValue 搜索关键字，可空。当数据为多层时，用.分隔
      * @param keywordName  搜索字段，可空，根据值的中文排序
      * @return
      */
@@ -440,9 +440,8 @@ public class RedisTool {
         } else {
             return allList.stream().filter(json -> {
                         try {
-                            Map<String, Object> jsonMap = mapper.readValue(json, Map.class);
-                            JSONObject jsonObject = new JSONObject(jsonMap);
-                            String nameValue = jsonObject.getString(keywordName);
+                            JSONObject jsonObject = mapper.readValue(json, JSONObject.class);
+                            String nameValue = getKeywordValue(keywordName, jsonObject);
                             return !StringUtils.isEmpty(nameValue) && nameValue.contains(keywordValue);
                         } catch (Exception e) {
                             logger.error("json转换错误", e);
@@ -453,12 +452,10 @@ public class RedisTool {
                             // 创建中文拼音排序器
                             Collator collator = Collator.getInstance(Locale.CHINA);
                             // 获取两个json对象的中文名
-                            Map<String, Object> jsonMap1 = mapper.readValue(json1, Map.class);
-                            JSONObject jsonObject1 = new JSONObject(jsonMap1);
-                            String name1 = jsonObject1.getString(keywordName);
-                            Map<String, Object> jsonMap2 = mapper.readValue(json2, Map.class);
-                            JSONObject jsonObject2 = new JSONObject(jsonMap2);
-                            String name2 = jsonObject2.getString(keywordName);
+                            JSONObject jsonObject1 = mapper.readValue(json1, JSONObject.class);
+                            String name1 = getKeywordValue(keywordName, jsonObject1);
+                            JSONObject jsonObject2 = mapper.readValue(json2, JSONObject.class);
+                            String name2 = getKeywordValue(keywordName, jsonObject2);
                             // 使用Collator比较中文名
                             return collator.compare(name1, name2);
                         } catch (Exception e) {
@@ -468,6 +465,26 @@ public class RedisTool {
                     })
                     .limit(limit).collect(Collectors.toList());
         }
+    }
+
+    private String getKeywordValue(String keywordName, JSONObject jsonObject) {
+        String[] keywordNames = keywordName.split("\\.");
+        String nameValue;
+        if (keywordNames.length > 1) {
+            JSONObject keywordJsonObject = jsonObject;
+            for (int i = 0; i < keywordNames.length - 1; i++) {
+                String name = keywordNames[i];
+                if (keywordJsonObject.containsKey(name)) {
+                    keywordJsonObject = keywordJsonObject.getJSONObject(name);
+                } else {
+                    break;
+                }
+            }
+            nameValue = keywordJsonObject.getString(keywordNames[keywordNames.length - 1]);
+        } else {
+            nameValue = jsonObject.getString(keywordName);
+        }
+        return nameValue;
     }
 
     /**
@@ -494,10 +511,9 @@ public class RedisTool {
         } else {
             return allList.stream().filter(json -> {
                         try {
-                            Map<String, Object> jsonMap = mapper.readValue(json, Map.class);
-                            JSONObject jsonObject = new JSONObject(jsonMap);
+                            JSONObject jsonObject = mapper.readValue(json, JSONObject.class);
                             return keywordMap.entrySet().stream().allMatch(entry -> {
-                                String jsonValue = jsonObject.getString(entry.getKey());
+                                String jsonValue = getKeywordValue(entry.getKey(), jsonObject);
                                 return !StringUtils.isEmpty(jsonValue) &&
                                         jsonValue.contains(entry.getValue());
                             });
@@ -510,12 +526,10 @@ public class RedisTool {
                             // 创建中文拼音排序器
                             Collator collator = Collator.getInstance(Locale.CHINA);
                             // 获取两个json对象的中文名
-                            Map<String, Object> jsonMap1 = mapper.readValue(json1, Map.class);
-                            JSONObject jsonObject1 = new JSONObject(jsonMap1);
+                            JSONObject jsonObject1 = mapper.readValue(json1, JSONObject.class);
                             String keywordName = keywordMap.entrySet().iterator().next().getKey();
                             String name1 = jsonObject1.getString(keywordName);
-                            Map<String, Object> jsonMap2 = mapper.readValue(json2, Map.class);
-                            JSONObject jsonObject2 = new JSONObject(jsonMap2);
+                            JSONObject jsonObject2 = mapper.readValue(json2, JSONObject.class);
                             String name2 = jsonObject2.getString(keywordName);
                             // 使用Collator比较中文名
                             return collator.compare(name1, name2);
