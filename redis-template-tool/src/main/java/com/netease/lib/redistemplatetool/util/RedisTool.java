@@ -420,8 +420,8 @@ public class RedisTool {
      *
      * @param hashKey      数据结构类型
      * @param limit        获取的条数（默认为最大值）
-     * @param keywordValue 搜索关键字，可空。当数据为多层时，用.分隔
-     * @param keywordName  搜索字段，可空，根据值的中文排序
+     * @param keywordValue 搜索关键字，可空。根据值的中文排序。
+     * @param keywordName  搜索字段，可空。当数据为多层时，用.分隔。
      * @return
      */
     @NaslLogic
@@ -492,7 +492,7 @@ public class RedisTool {
      *
      * @param hashKey    数据结构类型
      * @param limit      获取的条数（默认为最大值）
-     * @param keywordMap <搜索关键字，搜索字段>。可空，根据第一个值的中文排序
+     * @param keywordMap <搜索关键字，搜索字段>。可空。搜索关键字，根据第一个值的中文排序。搜索字段，当数据为多层时，用.分隔。
      * @return
      */
     @NaslLogic
