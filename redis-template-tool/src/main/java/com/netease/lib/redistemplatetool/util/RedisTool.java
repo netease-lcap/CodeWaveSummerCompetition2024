@@ -426,15 +426,20 @@ public class RedisTool {
      */
     @NaslLogic
     public List<String> getHashTopN(String hashKey, Integer limit, String keywordValue, String keywordName) {
-        if (limit == null | limit == 0) {
+        if (limit == null || limit == 0) {
             limit = Integer.MAX_VALUE;
         }
-        List<String> allList = redisTemplate.<String, Object>opsForHash()
-                .values(hashKey)
-                .stream()
-                .limit(Integer.MAX_VALUE)
-                .map(Object::toString)
-                .collect(Collectors.toList());
+        List<String> allList = new ArrayList<>();
+        try {
+            allList = redisTemplate.<String, Object>opsForHash()
+                    .values(hashKey)
+                    .stream()
+                    .limit(Integer.MAX_VALUE)
+                    .map(value -> value != null ? value.toString() : "")
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("redis:{}获取错误:", hashKey, e);
+        }
         if (StringUtils.isEmpty(keywordValue) || StringUtils.isEmpty(keywordName)) {
             return allList;
         } else {
@@ -497,15 +502,20 @@ public class RedisTool {
      */
     @NaslLogic
     public List<String> getHashTopNByKeyMap(String hashKey, Integer limit, Map<String, String> keywordMap) {
-        if (limit == null | limit == 0) {
+        if (limit == null || limit == 0) {
             limit = Integer.MAX_VALUE;
         }
-        List<String> allList = redisTemplate.<String, Object>opsForHash()
-                .values(hashKey)
-                .stream()
-                .limit(Integer.MAX_VALUE)
-                .map(Object::toString)
-                .collect(Collectors.toList());
+        List<String> allList = new ArrayList<>();
+        try {
+            allList = redisTemplate.<String, Object>opsForHash()
+                    .values(hashKey)
+                    .stream()
+                    .limit(Integer.MAX_VALUE)
+                    .map(value -> value != null ? value.toString() : "")
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("redis:{}获取错误:", hashKey, e);
+        }
         if (CollectionUtils.isEmpty(keywordMap)) {
             return allList;
         } else {
