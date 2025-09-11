@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
-@Component
+@Component("libraryRedisTool")
 public class RedisTool {
     private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 

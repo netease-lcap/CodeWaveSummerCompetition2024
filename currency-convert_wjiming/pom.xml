@@ -6,7 +6,7 @@
     
     <groupId>com.wjm</groupId>
     <artifactId>currency-convert</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.5</version>
     <name>人民币美元大小写转换</name>
     <description>提供了人民币大小写转换和美元大小写转换的逻辑</description>
 
@@ -28,11 +28,6 @@
             <optional>true</optional>
             <scope>system</scope>
             <systemPath>${project.basedir}/jar/nasl-metadata-collector-0.8.0.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-             <version>1.7.30</version>
         </dependency>
     </dependencies>
     <build>

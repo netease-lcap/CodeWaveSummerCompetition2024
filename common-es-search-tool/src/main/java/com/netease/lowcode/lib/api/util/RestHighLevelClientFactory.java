@@ -23,24 +23,23 @@ public class RestHighLevelClientFactory {
         return clientMap.get(url);
     }
 
-    public static RestHighLevelClient initClient(String esClientHost, String esClientPort, String esClientUsername, String esClientPassword) {
-        String url = esClientHost + ":" + esClientPort;
-        RestHighLevelClient client = clientMap.get(url);
+    public static RestHighLevelClient initClient(String esClientUris, String esClientUsername, String esClientPassword) {
+        RestHighLevelClient client = clientMap.get(esClientUris);
         if (client == null) {
             synchronized (RestHighLevelClientFactory.class) {
-                logger.info("{}:{}", esClientHost, esClientPort);
-                Integer esPort;
-                try {
-                    esPort = Integer.parseInt(esClientPort);
-                } catch (Exception e) {
-                    logger.error("", e);
-                    return null;
+                logger.info("es连接地址：{}", esClientUris);
+                String[] urls = esClientUris.split(",");
+                HttpHost[] hosts = new HttpHost[urls.length];
+                for (int i = 0; i < urls.length; i++) {
+                    String cleanedUrl = urls[i].trim();
+                    String[] url = cleanedUrl.split(":");
+                    if (url.length != 2) {
+                        throw new IllegalArgumentException("Invalid ES node URL format: " + urls[i]);
+                    }
+                    hosts[i] = new HttpHost(url[0], Integer.parseInt(url[1]), "http");
                 }
-
                 // 获取ES Client
-                RestClientBuilder clientBuilder = RestClient.builder(
-                        new HttpHost(esClientHost, esPort, "http")
-                );
+                RestClientBuilder clientBuilder = RestClient.builder(hosts);
                 if (esClientUsername != null && esClientPassword != null) {
                     // auth
                     CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
@@ -52,7 +51,8 @@ public class RestHighLevelClientFactory {
                     });
                 }
                 client = new RestHighLevelClient(clientBuilder); // 你的实例化逻辑
-                clientMap.put(url, client);}
+                clientMap.put(esClientUris, client);
+            }
         }
         return client;
     }
