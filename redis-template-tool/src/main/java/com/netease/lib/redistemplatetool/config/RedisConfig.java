@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Component("libraryRedisConfig")
 public class RedisConfig {
     /**
-     * redis配置类型1.url 2.单机 3.sentinel 4.cluster
+     * redis配置类型1.url 2.单机 3.sentinel 4.cluster，默认单机
      */
 
-    @Value("${redisMode:1}")
+    @Value("${redisMode:2}")
     @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "1"),
             @Environment(type = EnvironmentType.ONLINE, value = "1")})
     public String redisMode;
