@@ -10,11 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RedisConfig {
     /**
-     * redis配置类型1.url 2.单机 3.sentinel（不支持高版本redis服务端） 4.cluster
+     * redis配置类型1.url 2.单机 3.sentinel（不支持高版本redis服务端） 4.cluster，默认单机
      */
-
-    @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "1"),
-            @Environment(type = EnvironmentType.ONLINE, value = "1")})
+    @NaslConfiguration(defaultValue = {@Environment(type = EnvironmentType.DEV, value = "2"),
+            @Environment(type = EnvironmentType.ONLINE, value = "2")})
     @Value("${redisMode}")
     public String redisMode;
     /**
