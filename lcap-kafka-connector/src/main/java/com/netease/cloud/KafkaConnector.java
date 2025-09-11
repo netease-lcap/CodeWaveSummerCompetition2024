@@ -118,6 +118,27 @@ public class KafkaConnector {
     }
 
     /**
+     * 按key分组，将消息发送给kafka执行的主题
+     *
+     * @param topic 消息主题
+     * @param key   发送的key
+     * @param data  发送的数据
+     * @return 发送消息结果
+     */
+    @NaslConnector.Logic
+    public Boolean sendByKey(String topic, String key, String data) throws IllegalArgumentException {
+        ProducerRecord<String, Object> kafkaMessage = new ProducerRecord<>(topic, key, data);
+        Future<RecordMetadata> send = kafkaProducer.send(kafkaMessage);
+        try {
+            send.get();
+        } catch (InterruptedException | ExecutionException e) {
+            log.info("发送消息失败", e);
+            throw new IllegalArgumentException(e);
+        }
+        return true;
+    }
+
+    /**
      * 新增主题
      *
      * @param topic       主题名称

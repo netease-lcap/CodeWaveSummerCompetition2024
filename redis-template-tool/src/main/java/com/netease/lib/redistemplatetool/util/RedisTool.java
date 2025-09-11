@@ -1,21 +1,29 @@
 package com.netease.lib.redistemplatetool.util;
 
+import com.alibaba.fastjson2.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Component("libraryRedisTool")
 public class RedisTool {
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     @Autowired
     public RedisTemplate<String, String> redisTemplate;
+    private ObjectMapper mapper = new ObjectMapper();
 
     /**
      * 是否存在key，返回true/false
@@ -260,6 +268,22 @@ public class RedisTool {
     }
 
     /**
+     * 将多个键值对设置到 Redis 哈希表中，并返回更新后的哈希表。
+     *
+     * @param hashKey     哈希表的键
+     * @param keyValueMap 包含要设置到 Redis 哈希表中的键值对的 Map
+     * @return 是否更新成功
+     */
+    @NaslLogic
+    public Boolean setHashValuesReturnBoolean(String hashKey, Map<String, String> keyValueMap) {
+        HashOperations<String, String, String> ops = redisTemplate.opsForHash();
+        for (Map.Entry<String, String> entry : keyValueMap.entrySet()) {
+            ops.put(hashKey, entry.getKey(), entry.getValue());
+        }
+        return true;
+    }
+
+    /**
      * 获取 Redis 哈希表中指定 key 的所有域和值
      *
      * @param hashKey 哈希表的 key
@@ -292,6 +316,19 @@ public class RedisTool {
             }
         }
         return resultMap;
+    }
+
+    /**
+     * 从 Redis 哈希表中获取键对应的值。
+     *
+     * @param hashKey  哈希表的键
+     * @param fieldKey 获取值的键
+     * @return 单条数据value
+     */
+    @NaslLogic
+    public String getHashValue(String hashKey, String fieldKey) {
+        HashOperations<String, String, String> ops = redisTemplate.opsForHash();
+        return ops.get(hashKey, fieldKey);
     }
 
     /**
@@ -363,6 +400,156 @@ public class RedisTool {
         HashOperations<String, String, String> ops = redisTemplate.opsForHash();
         String[] fieldKeysArray = keys.toArray(new String[0]);
         return ops.delete(hashKey, fieldKeysArray);
+    }
+
+    /**
+     * 删除 Redis 哈希表中指定的域
+     *
+     * @param hashKey  哈希表的 key
+     * @param fieldKey 要删除的域
+     * @return 被删除的域的数量
+     */
+    @NaslLogic
+    public Long deleteHashfieldKey(String hashKey, String fieldKey) {
+        HashOperations<String, String, String> ops = redisTemplate.opsForHash();
+        return ops.delete(hashKey, fieldKey);
+    }
+
+    /**
+     * 获取hashKey中limit条数据
+     *
+     * @param hashKey      数据结构类型
+     * @param limit        获取的条数（默认为最大值）
+     * @param keywordValue 搜索关键字，可空。根据值的中文排序。
+     * @param keywordName  搜索字段，可空。当数据为多层时，用.分隔。
+     * @return
+     */
+    @NaslLogic
+    public List<String> getHashTopN(String hashKey, Integer limit, String keywordValue, String keywordName) {
+        if (limit == null || limit == 0) {
+            limit = Integer.MAX_VALUE;
+        }
+        List<String> allList = new ArrayList<>();
+        try {
+            allList = redisTemplate.<String, Object>opsForHash()
+                    .values(hashKey)
+                    .stream()
+                    .limit(Integer.MAX_VALUE)
+                    .map(value -> value != null ? value.toString() : "")
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("redis:{}获取错误:", hashKey, e);
+        }
+        if (StringUtils.isEmpty(keywordValue) || StringUtils.isEmpty(keywordName)) {
+            return allList;
+        } else {
+            return allList.stream().filter(json -> {
+                        try {
+                            JSONObject jsonObject = mapper.readValue(json, JSONObject.class);
+                            String nameValue = getKeywordValue(keywordName, jsonObject);
+                            return !StringUtils.isEmpty(nameValue) && nameValue.contains(keywordValue);
+                        } catch (Exception e) {
+                            logger.error("json转换错误", e);
+                            return false;
+                        }
+                    }).sorted((json1, json2) -> {
+                        try {
+                            // 创建中文拼音排序器
+                            Collator collator = Collator.getInstance(Locale.CHINA);
+                            // 获取两个json对象的中文名
+                            JSONObject jsonObject1 = mapper.readValue(json1, JSONObject.class);
+                            String name1 = getKeywordValue(keywordName, jsonObject1);
+                            JSONObject jsonObject2 = mapper.readValue(json2, JSONObject.class);
+                            String name2 = getKeywordValue(keywordName, jsonObject2);
+                            // 使用Collator比较中文名
+                            return collator.compare(name1, name2);
+                        } catch (Exception e) {
+                            logger.error("name对比错误", e);
+                            return 0;
+                        }
+                    })
+                    .limit(limit).collect(Collectors.toList());
+        }
+    }
+
+    private String getKeywordValue(String keywordName, JSONObject jsonObject) {
+        String[] keywordNames = keywordName.split("\\.");
+        String nameValue;
+        if (keywordNames.length > 1) {
+            JSONObject keywordJsonObject = jsonObject;
+            for (int i = 0; i < keywordNames.length - 1; i++) {
+                String name = keywordNames[i];
+                if (keywordJsonObject.containsKey(name)) {
+                    keywordJsonObject = keywordJsonObject.getJSONObject(name);
+                } else {
+                    break;
+                }
+            }
+            nameValue = keywordJsonObject.getString(keywordNames[keywordNames.length - 1]);
+        } else {
+            nameValue = jsonObject.getString(keywordName);
+        }
+        return nameValue;
+    }
+
+    /**
+     * 获取hashKey中limit条数据
+     *
+     * @param hashKey    数据结构类型
+     * @param limit      获取的条数（默认为最大值）
+     * @param keywordMap <搜索关键字，搜索字段>。可空。搜索关键字，根据第一个值的中文排序。搜索字段，当数据为多层时，用.分隔。
+     * @return
+     */
+    @NaslLogic
+    public List<String> getHashTopNByKeyMap(String hashKey, Integer limit, Map<String, String> keywordMap) {
+        if (limit == null || limit == 0) {
+            limit = Integer.MAX_VALUE;
+        }
+        List<String> allList = new ArrayList<>();
+        try {
+            allList = redisTemplate.<String, Object>opsForHash()
+                    .values(hashKey)
+                    .stream()
+                    .limit(Integer.MAX_VALUE)
+                    .map(value -> value != null ? value.toString() : "")
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("redis:{}获取错误:", hashKey, e);
+        }
+        if (CollectionUtils.isEmpty(keywordMap)) {
+            return allList;
+        } else {
+            return allList.stream().filter(json -> {
+                        try {
+                            JSONObject jsonObject = mapper.readValue(json, JSONObject.class);
+                            return keywordMap.entrySet().stream().allMatch(entry -> {
+                                String jsonValue = getKeywordValue(entry.getKey(), jsonObject);
+                                return !StringUtils.isEmpty(jsonValue) &&
+                                        jsonValue.contains(entry.getValue());
+                            });
+                        } catch (Exception e) {
+                            logger.error("json转换错误", e);
+                            return false;
+                        }
+                    }).sorted((json1, json2) -> {
+                        try {
+                            // 创建中文拼音排序器
+                            Collator collator = Collator.getInstance(Locale.CHINA);
+                            // 获取两个json对象的中文名
+                            JSONObject jsonObject1 = mapper.readValue(json1, JSONObject.class);
+                            String keywordName = keywordMap.entrySet().iterator().next().getKey();
+                            String name1 = jsonObject1.getString(keywordName);
+                            JSONObject jsonObject2 = mapper.readValue(json2, JSONObject.class);
+                            String name2 = jsonObject2.getString(keywordName);
+                            // 使用Collator比较中文名
+                            return collator.compare(name1, name2);
+                        } catch (Exception e) {
+                            logger.error("name对比错误", e);
+                            return 0;
+                        }
+                    })
+                    .limit(limit).collect(Collectors.toList());
+        }
     }
 
     /**

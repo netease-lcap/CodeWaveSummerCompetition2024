@@ -23,6 +23,18 @@
 
 出参：返回true
 
+## lcap-kafka-connector.sendByKey
+
+按key分组，将消息发送给kafka执行的主题
+
+入参：
+
+- topic: 消息主题
+- key: 发送的key
+- data: 发送的数据
+
+出参：返回true
+
 ## lcap-kafka-connector.createTopic
 
 新增主题
@@ -43,7 +55,9 @@
 
 - topic: 主题名称，多个主题名称使用,分隔,为空时查询全部主题
 
-出参：返回String，格式为：[{"name":"topic1","partitionsCount":1,"replicaCount":1,"totalLogSize":446,"brokers":[{"id":0,"host":"127.0.0.1","port":9092,"leaderPartitions":[0],"followerPartitions":[0]}],"consumerGroups":null}]
+出参：返回String，格式为：[{"name":"topic1","partitionsCount":1,"replicaCount":1,"totalLogSize":446,"brokers":[{"id":0,"
+host":"127.0.0.1","port":9092,"leaderPartitions":[0],"followerPartitions":[0]}],"consumerGroups":null}]
+
 - topic: 主题名称
 - partitionsCount: 分区数量
 - replication: 副本数量
@@ -83,7 +97,6 @@
 4. 在调试页面发送消息，页面发送成功后登录kafka控制台查看消息是否发送成功
 5. 添加消息订阅，使用IDE编写收到消息之后的逻辑
 6. 将制品进行发布，发布后查看登录kafka控制台查看消费者组是否已订阅对应主题信息，IDE是否正常接收消息
-
 
 ## 注意事项
 
