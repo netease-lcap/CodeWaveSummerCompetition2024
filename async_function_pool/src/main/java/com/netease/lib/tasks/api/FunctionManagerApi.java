@@ -6,12 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Function;
 
 /**
@@ -33,6 +36,10 @@ public class FunctionManagerApi {
      * 任务id，任务
      */
     private final Map<String, CompletableFuture<String>> runningTaskRegister = new ConcurrentHashMap<>();
+
+
+    @Resource(name = "libraryCommonTaskExecutor")
+    private Executor contextAwareExecutor;
 
     /**
      * 初始化注册逻辑
@@ -63,7 +70,7 @@ public class FunctionManagerApi {
             logger.error("asyncRunLogic not exist: {}", logicKey);
             return null;
         }
-        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> function.apply(requestStr));
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> function.apply(requestStr), contextAwareExecutor);
         logger.info("asyncRunLogic success: {}", logicKey);
         String taskId = UUID.randomUUID().toString();
         runningTaskRegister.put(taskId, future);
@@ -128,6 +135,23 @@ public class FunctionManagerApi {
             resultDTOList.add(resultDTO);
         });
         return resultDTOList;
+    }
+
+    /**
+     * 异步执行任务，无返回结果
+     */
+    @NaslLogic
+    public Boolean asyncRunLogicNoResult(Function<String, String> asyncfunction, String requestStr) {
+        try {
+            contextAwareExecutor.execute(() -> asyncfunction.apply(requestStr));
+            return true;
+        } catch (RejectedExecutionException e) {
+            logger.error("Async task rejected for request: {}", requestStr, e);
+            return false;
+        } catch (Exception e) {
+            logger.error("Failed to submit async task for request: {}", requestStr, e);
+            return false;
+        }
     }
 
 }

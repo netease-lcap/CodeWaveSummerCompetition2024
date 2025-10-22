@@ -12,7 +12,7 @@
 
     <groupId>com.netease</groupId>
     <artifactId>async_function_pool</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.4</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
