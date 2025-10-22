@@ -36,3 +36,12 @@
 字段名称描述类型说明taskId任务idString任务唯一标识taskStatus单个任务执行状态Integer1成功，2进行中，3不存在taskResult单个任务执行返回结果StringString类型，须用户根据实际类型自行序列化。执行成功与否的标志需要逻辑在返回的序列化String中标记，获取结果后反序列化解析返回信息。
 ## 异步获取结果asyncGetLogicResult
 与同步获取相同，区别点在于同步是流程卡住的，等全部任务执行完成后才会返回。异步则是仅返回当前执行完成的任务。
+## 异步执行任务，无返回结果asyncRunLogicNoResult
+```
+ /**
+     * 异步执行任务，无返回结果
+     */
+    @NaslLogic
+    public Boolean asyncRunLogicNoResult(Function<String, String> asyncfunction, String requestStr) {
+
+```

@@ -29,6 +29,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * desc
@@ -142,6 +143,38 @@ public class LCAPHttpClient {
         } catch (HttpClientErrorException e) {
             logger.error("", e);
             return e.getResponseBodyAsString();
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getMessage(), e);
+        }
+    }
+
+
+    /**
+     * http/https调用（非form使用，异常时返回http错误码）
+     *
+     * @param url
+     * @param httpMethod
+     * @param header
+     * @param body
+     * @return
+     * @throws URISyntaxException
+     */
+    @NaslLogic
+    @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
+    public ExchangeResponseDto exchangeV4(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required String body) throws TransferCommonException {
+        try {
+            RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
+            requestParam.setBody(body);
+            //填充requestParam参数
+            requestParam.setUrl(url);
+            requestParam.setHttpMethod(httpMethod);
+            requestParam.setHeader(header);
+            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplate, String.class);
+            return convertToExchangeResponseDto(exchange);
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("", e);
             throw new TransferCommonException(e.getMessage(), e);
@@ -404,6 +437,60 @@ public class LCAPHttpClient {
         } catch (Exception e) {
             logger.error("", e);
             throw new TransferCommonException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * https请求忽略证书，form表单专用body为MultiValueMap。包含返回头信息
+     *
+     * @param requestParam
+     * @return
+     */
+    @NaslLogic
+    @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
+    public ExchangeResponseDto exchangeCrtFormResHeader(RequestParam requestParam) throws TransferCommonException {
+        try {
+            if (requestParam.getIsIgnoreCrt() == null) {
+                requestParam.setIsIgnoreCrt(false);
+            }
+            if (requestParam.getIsIgnoreCrt()) {
+                SSLUtil.turnOffCertificateValidation();
+            }
+            RequestParamAllBodyTypeInner requestParamAllBodyTypeInner = DtoConvert.convertToRequestParamAllBodyTypeInner(requestParam);
+            if (requestParam.getBody() != null) {
+                MultiValueMap multiValueMap = new LinkedMultiValueMap();
+                //map 转MultiValueMap
+                requestParam.getBody().forEach(multiValueMap::add);
+                requestParamAllBodyTypeInner.setBody(multiValueMap);
+            }
+            ResponseEntity<String> exchange = httpClientService
+                    .exchangeInner(requestParamAllBodyTypeInner, restTemplate, String.class);
+            return convertToExchangeResponseDto(exchange);
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getMessage(), e);
+        }
+    }
+
+    private ExchangeResponseDto convertToExchangeResponseDto(ResponseEntity<String> exchange) {
+        if (exchange.getStatusCode() == HttpStatus.OK) {
+            ExchangeResponseDto exchangeResponseDto = new ExchangeResponseDto();
+            Map<String, String> headerMap = exchange.getHeaders()
+                    .entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            entry -> String.join(", ", entry.getValue())
+                    ));
+
+            exchangeResponseDto.setResponseHeaders(headerMap);
+            exchangeResponseDto.setBodyString(exchange.getBody());
+            return exchangeResponseDto;
+        } else {
+            throw new TransferCommonException(exchange.getStatusCode().value(), JSONObject.toJSONString(exchange));
         }
     }
 
