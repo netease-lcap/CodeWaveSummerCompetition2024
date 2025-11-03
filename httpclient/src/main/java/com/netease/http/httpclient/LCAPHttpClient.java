@@ -182,6 +182,44 @@ public class LCAPHttpClient {
     }
 
     /**
+     * http/https调用（非form使用，异常时返回http错误码）
+     *
+     * @param url
+     * @param httpMethod
+     * @param header
+     * @param body
+     * @return
+     * @throws URISyntaxException
+     */
+    @NaslLogic
+    @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
+    public ExchangeResponseDto exchangeCrtV4(@Required String url, @Required String httpMethod, @Required Map<String, String> header,
+                                             @Required String body, @Required Boolean isIgnoreCrt) throws TransferCommonException {
+        try {
+            if (isIgnoreCrt == null) {
+                isIgnoreCrt = false;
+            }
+            if (isIgnoreCrt) {
+                SSLUtil.turnOffCertificateValidation();
+            }
+            RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
+            requestParam.setBody(body);
+            //填充requestParam参数
+            requestParam.setUrl(url);
+            requestParam.setHttpMethod(httpMethod);
+            requestParam.setHeader(header);
+            ResponseEntity<String> exchange = httpClientService.exchangeInner(requestParam, restTemplate, String.class);
+            return convertToExchangeResponseDto(exchange);
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getStatusCode().value(), e.getResponseBodyAsString());
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 下载文件并上传到nos（默认fileUrl是get请求，默认格式xlsx）
      *
      * @param fileUrl
@@ -266,6 +304,12 @@ public class LCAPHttpClient {
      */
     @NaslLogic
     public String uploadNosExchange(String fileUrl, String requestUrl, RequestParam requestParam) throws TransferCommonException {
+        if (requestParam.getIsIgnoreCrt() == null) {
+            requestParam.setIsIgnoreCrt(false);
+        }
+        if (requestParam.getIsIgnoreCrt()) {
+            SSLUtil.turnOffCertificateValidation();
+        }
         URL url = null;
         try {
             url = new URL(requestUrl);
@@ -313,6 +357,12 @@ public class LCAPHttpClient {
     public String uploadNosExchangeCommon(UploadFileParam uploadFileParam, String fileName, RequestParam requestParam) throws TransferCommonException {
         File file = null;
         try {
+            if (requestParam.getIsIgnoreCrt() == null) {
+                requestParam.setIsIgnoreCrt(false);
+            }
+            if (requestParam.getIsIgnoreCrt()) {
+                SSLUtil.turnOffCertificateValidation();
+            }
             RequestParamAllBodyTypeInner requestParamGetFile = new RequestParamAllBodyTypeInner();
             requestParamGetFile.setUrl(uploadFileParam.getFileUrl());
             //文件下载一般是get，默认get
