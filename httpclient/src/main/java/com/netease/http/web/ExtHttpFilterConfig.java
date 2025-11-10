@@ -28,7 +28,7 @@ public class ExtHttpFilterConfig {
     private volatile String secret;
 
     @Bean
-    public FilterRegistrationBean<Filter> expandTransferLogicAuthFilterRegistration() {
+    public FilterRegistrationBean<Filter> httpClientExpandTransferLogicAuthFilterRegistration() {
         FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
         ExtHttpLogicAuthFilter extHttpLogicAuthFilter = new ExtHttpLogicAuthFilter();
         extHttpLogicAuthFilter.setExpandLogicAuthFlag(expandLogicAuthFlag);

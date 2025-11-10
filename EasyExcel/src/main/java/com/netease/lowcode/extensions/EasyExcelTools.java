@@ -159,7 +159,9 @@ public class EasyExcelTools {
         int index = url.indexOf("/upload/");
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         int port = request.getLocalPort();
-
+        if (port == -1) {
+            return url;
+        }
         if (index >= 0) {
             url = "http://localhost:" + port + "/upload/" + url.substring(index + "/upload/".length());
         }
@@ -211,6 +213,7 @@ public class EasyExcelTools {
         try {
             EasyExcel.read(inputStream, new AnalysisEventListener<Object>() {
                         private int currentRow = -1;
+
                         @Override
                         public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
                             if (currentRow < headerRowCount) {
@@ -221,9 +224,11 @@ public class EasyExcelTools {
                                 throw new ExcelAnalysisException("表头读取完成");
                             }
                         }
+
                         @Override
                         public void invoke(Object data, AnalysisContext context) {
                         }
+
                         @Override
                         public void doAfterAllAnalysed(AnalysisContext context) {
                         }

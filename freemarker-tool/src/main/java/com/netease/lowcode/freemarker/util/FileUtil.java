@@ -12,12 +12,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class FileUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger("LCAP_CUSTOMIZE_LOGGER");
 
     public static InputStream getFileInputStream(String urlStr) throws IOException {
         URL url = new URL(getTrueUrl(urlStr));
@@ -26,6 +30,7 @@ public class FileUtil {
         connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36");
         return url.openStream();
     }
+
     // 新增方法：检测 URL 是否已经编码
     private static boolean isUrlEncoded(String url) {
         try {
@@ -35,6 +40,7 @@ public class FileUtil {
             return false;
         }
     }
+
     public static String getTrueUrl(String urlStr) throws UnsupportedEncodingException {
         URI uri = null;
         try {
@@ -56,19 +62,30 @@ public class FileUtil {
             String fileNameEncoded = java.net.URLEncoder.encode(fileName, "UTF-8");
             urlStr = urlStr.replace(fileName, fileNameEncoded);
         }
-        if (!urlStr.startsWith("http") && urlStr.startsWith("/upload")) {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            int port = request.getLocalPort();
-            return "http://127.0.0.1:" + port + urlStr;
+        try {
+            if (!urlStr.startsWith("http") && urlStr.startsWith("/upload")) {
+                HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+                int port = request.getLocalPort();
+                return "http://127.0.0.1:" + port + urlStr;
+            }
+        } catch (Exception e) {
+            logger.error("urlStr转本地失败", e);
         }
         return urlStr;
     }
 
     public static UploadResponseDTO uploadStream(InputStream inputStream, String fileName) throws IOException {
-        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        int port = httpServletRequest.getLocalPort();
-
+        int port;
+        try {
+            HttpServletRequest httpServletRequest = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+            port = httpServletRequest.getLocalPort();
+        } catch (Exception e) {
+            logger.error("获取本地port失败，默认获取8080", e);
+            //兜底方案
+            port = 8080;
+        }
         String uploadUrl = "http://127.0.0.1:" + port + "/gateway/lowcode/api/v1/app/upload";
+
         OkHttpClient client = new OkHttpClient();
 
         byte[] fileBytes;
@@ -97,7 +114,7 @@ public class FileUtil {
         if (response.isSuccessful()) {
             return JsonUtil.fromJson(response.body().string(), UploadResponseDTO.class);
         }
-        logger.error(String.format("文件上传失败,%s",response));
-        throw new RuntimeException(String.format("文件上传失败,%s",response));
+        logger.error(String.format("文件上传失败,%s", response));
+        throw new RuntimeException(String.format("文件上传失败,%s", response));
     }
 }
