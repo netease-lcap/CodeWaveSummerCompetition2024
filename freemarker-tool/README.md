@@ -32,6 +32,7 @@ freemarker工具
 | jsonData            | String             | 模板数据                                                                                                                                                                                            |
 | imageMap            | Map<String,String> | k=图片名称,v=图片信息                                                                                                                                                                                   |
 | base64              | Boolean            | 图片是否编码<br/><ul><li>false:传入图片url</li><li>true:传入图片base64编码</li></ul>                                                                                                                            |
+| processImgTag       | Boolean            | 是否将富文本中的`&lt;img&gt;`标签转换为 Word 图片，默认 false                                                                                                                                                                 |
 
 
 # 如何制作docx模板
