@@ -1,6 +1,7 @@
 package com.netease.lowcode.xxljob.task;
 
 import com.netease.lowcode.xxljob.model.JobHandlerInterfaceModel;
+import com.netease.lowcode.xxljob.util.NamingUtils;
 import com.netease.lowcode.xxljob.util.SpringContextUtil;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.IJobHandler;
@@ -56,24 +57,25 @@ public abstract class InterfaceJobHandler extends IJobHandler {
                 return;
             }
             Class<?> aClass = AopUtils.getTargetClass(bean);
+            String logicName = NamingUtils.toLowerCamelCase(model.getLogicName());
             try {
                 // 无参
-                Method targetMethod = aClass.getDeclaredMethod(model.getLogicName());
+                Method targetMethod = aClass.getDeclaredMethod(logicName);
                 targetMethod.invoke(bean);
             } catch (NoSuchMethodException exception) {
                 try {
-                    Method targetMethod = aClass.getDeclaredMethod(model.getLogicName(), String.class);
+                    Method targetMethod = aClass.getDeclaredMethod(logicName, String.class);
                     targetMethod.invoke(bean, param);
                 } catch (Exception e) {
-                    log.error("Execute job failed: " + handlerName, ((InvocationTargetException) e).getTargetException().getMessage());
-                    XxlJobHelper.log("任务执行失败: " + ((InvocationTargetException) e).getTargetException().getMessage());
-                    XxlJobHelper.handleFail("任务执行失败: " + ((InvocationTargetException) e).getTargetException().getMessage());
+                    log.error("Execute job failed: " + handlerName, e.getCause());
+                    XxlJobHelper.log("任务执行失败: " + e.getCause());
+                    XxlJobHelper.handleFail("任务执行失败: " + e.getCause());
                     return;
                 }
             } catch (Exception e) {
                 log.error("Execute job failed: " + handlerName, e);
-                XxlJobHelper.log("任务执行失败: " + ((InvocationTargetException) e).getTargetException().getMessage());
-                XxlJobHelper.handleFail("任务执行失败: " + ((InvocationTargetException) e).getTargetException().getMessage());
+                XxlJobHelper.log("任务执行失败: " + e.getCause());
+                XxlJobHelper.handleFail("任务执行失败: " + e.getCause());
                 return;
             }
         }
