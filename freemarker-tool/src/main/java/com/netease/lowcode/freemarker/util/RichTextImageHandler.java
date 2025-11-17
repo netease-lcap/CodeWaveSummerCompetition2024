@@ -10,6 +10,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -499,12 +501,19 @@ public class RichTextImageHandler {
         ImageBinary binary = new ImageBinary();
         binary.bytes = bytes;
         binary.mimeType = mime;
+        binary.format = detectFormat(bytes);
+
+        BufferedImage image;
         try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes)) {
-            BufferedImage image = ImageIO.read(bais);
-            if (image != null) {
-                binary.widthPx = image.getWidth();
-                binary.heightPx = image.getHeight();
-            }
+            image = ImageIO.read(bais);
+        }
+        if (image != null) {
+            binary.widthPx = image.getWidth();
+            binary.heightPx = image.getHeight();
+        }
+
+        if ("webp".equalsIgnoreCase(binary.format)) {
+            convertWebpToPng(binary, image);
         }
         return binary;
     }
@@ -533,16 +542,33 @@ public class RichTextImageHandler {
     }
 
     private static String determineExtension(ImageBinary imageBinary, String src) {
-        if (imageBinary != null && StringUtils.isNotBlank(imageBinary.mimeType)) {
-            String mime = imageBinary.mimeType.toLowerCase(Locale.ROOT);
-            if (mime.contains("png")) {
-                return "png";
+        if (imageBinary != null) {
+            if (StringUtils.isNotBlank(imageBinary.mimeType)) {
+                String mime = imageBinary.mimeType.toLowerCase(Locale.ROOT);
+                if (mime.contains("png")) {
+                    return "png";
+                }
+                if (mime.contains("jpeg") || mime.contains("jpg")) {
+                    return "jpg";
+                }
+                if (mime.contains("gif")) {
+                    return "gif";
+                }
+                if (mime.contains("bmp")) {
+                    return "bmp";
+                }
+                if (mime.contains("tif") || mime.contains("tiff")) {
+                    return "tiff";
+                }
+                if (mime.contains("webp")) {
+                    return "png";
+                }
             }
-            if (mime.contains("jpeg") || mime.contains("jpg")) {
-                return "jpg";
-            }
-            if (mime.contains("gif")) {
-                return "gif";
+            if (StringUtils.isNotBlank(imageBinary.format)) {
+                if ("webp".equalsIgnoreCase(imageBinary.format)) {
+                    return "png";
+                }
+                return imageBinary.format.toLowerCase(Locale.ROOT);
             }
         }
         if (StringUtils.isNotBlank(src)) {
@@ -551,6 +577,9 @@ public class RichTextImageHandler {
             if (idx != -1 && idx < sanitized.length() - 1) {
                 String ext = sanitized.substring(idx + 1).toLowerCase(Locale.ROOT);
                 if (ext.matches("[a-z]{2,4}")) {
+                    if ("webp".equals(ext)) {
+                        return "png";
+                    }
                     return ext;
                 }
             }
@@ -725,10 +754,50 @@ public class RichTextImageHandler {
         String mimeType;
         int widthPx;
         int heightPx;
+        String format;
     }
 
     private static class Dimension {
         long widthEmu;
         long heightEmu;
+    }
+
+    private static String detectFormat(byte[] bytes) {
+        try (ImageInputStream stream = ImageIO.createImageInputStream(new ByteArrayInputStream(bytes))) {
+            if (stream == null) {
+                return null;
+            }
+            java.util.Iterator<ImageReader> readers = ImageIO.getImageReaders(stream);
+            if (readers.hasNext()) {
+                ImageReader reader = readers.next();
+                try {
+                    return reader.getFormatName();
+                } finally {
+                    reader.dispose();
+                }
+            }
+        } catch (IOException ex) {
+            return null;
+        }
+        return null;
+    }
+
+    private static void convertWebpToPng(ImageBinary binary, BufferedImage sourceImage) throws IOException {
+        BufferedImage image = sourceImage;
+        if (image == null) {
+            try (ByteArrayInputStream bais = new ByteArrayInputStream(binary.bytes)) {
+                image = ImageIO.read(bais);
+            }
+        }
+        if (image == null) {
+            return;
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(image, "png", bos);
+        binary.bytes = bos.toByteArray();
+        binary.mimeType = "image/png";
+        binary.format = "png";
+        binary.widthPx = image.getWidth();
+        binary.heightPx = image.getHeight();
     }
 }

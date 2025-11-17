@@ -571,6 +571,8 @@ public class FreeMarkerUtil {
             case "tif":
             case "tiff":
                 return "image/tiff";
+            case "webp":
+                return "image/webp";
             default:
                 return "image/" + extension;
         }
