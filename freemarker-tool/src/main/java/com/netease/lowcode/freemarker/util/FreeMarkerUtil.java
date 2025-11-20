@@ -21,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -45,6 +47,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class FreeMarkerUtil {
+    private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
 
     private static final Pattern IMG_OPEN_TAG_PATTERN = Pattern.compile("(?i)<img\\b[^>]*?>");
     private static final Pattern IMG_CLOSE_TAG_PATTERN = Pattern.compile("(?i)</img>");
@@ -136,6 +139,7 @@ public class FreeMarkerUtil {
      */
     @NaslLogic
     public static DownloadResponseDTO createNewDocxFile(CreateDocxRequest request) {
+        log.info("createDocxFile request:{}", request);
 
         Map<String,String> templateFileMap = new HashMap<>();
         try {
@@ -208,7 +212,7 @@ public class FreeMarkerUtil {
                                                    InputStream docxInputSteam,
                                                    Map<String,String> templateFileMap,
                                                    boolean enableRichTextImage) throws Exception {
-
+        log.info("createDocx jsonData:{}, picMap:{}, docxInputSteam:{}, templateFileMap:{}, enableRichTextImage:{}", jsonData, picMap, docxInputSteam, templateFileMap, enableRichTextImage);
         ZipOutputStream zipOut = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
@@ -354,6 +358,7 @@ public class FreeMarkerUtil {
                                                             Map<String, String> templateFileMap,
                                                             Map<String, String> picMap,
                                                             Map<String, byte[]> originalEntries) throws Exception {
+        log.info("prepareTemplateFiles jsonData:{}, templateFileMap:{}, picMap:{}, originalEntries:{}", jsonData, templateFileMap, picMap, originalEntries);
         Map<String, byte[]> templateBytesMap = new HashMap<>();
         if (templateFileMap == null || templateFileMap.isEmpty()) {
             return templateBytesMap;

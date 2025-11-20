@@ -49,6 +49,8 @@ import java.util.regex.Pattern;
  */
 public class RichTextImageHandler {
 
+    private static final Logger log = LoggerFactory.getLogger("LCAP_EXTENSION_LOGGER");
+
     private static final Pattern IMG_PATTERN = Pattern.compile("(?i)<img\\b[^>]*>");
     private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("(?i)([A-Za-z_:][\\w:.-]*)\\s*=\\s*(\"([^\"]*)\"|'([^']*)')");
     private static final double PT_TO_PX = 96D / 72D;
@@ -481,6 +483,7 @@ public class RichTextImageHandler {
     }
 
     private static ImageBinary readImage(String src) {
+        log.info("Loading image for rich text: {}", src);
         try {
             if (src.startsWith("data:") && src.contains("base64,")) {
                 String base64 = src.substring(src.indexOf("base64,") + 7);
@@ -492,7 +495,7 @@ public class RichTextImageHandler {
                 return buildImageBinary(bytes, null);
             }
         } catch (IOException ex) {
-//            LOGGER.warn("Failed to load image for rich text: {}", src, ex);
+            log.warn("Failed to load image for rich text: {}", src, ex);
             return null;
         }
     }
