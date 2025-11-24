@@ -6,7 +6,7 @@
 
     <groupId>com.netease.lowcode.extensions</groupId>
     <artifactId>EasyExcel</artifactId>
-    <version>2.3.1</version>
+    <version>2.4.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -23,13 +23,13 @@
         <dependency>
             <artifactId>nasl-metadata-collector</artifactId>
             <groupId>com.netease.lowcode</groupId>
-            <version>0.8.0</version>
+            <version>0.14.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.alibaba/easyexcel -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
-            <version>3.3.2</version>
+            <version>3.3.3</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2 -->
         <dependency>
@@ -115,10 +115,10 @@
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.4.3</version>
+                <version>1.7.1</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
-<!--                    <rewriteVersion>true</rewriteVersion>-->
+                    <rewriteVersion>true</rewriteVersion>
                 </configuration>
                 <executions>
                     <execution>
