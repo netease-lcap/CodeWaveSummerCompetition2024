@@ -34,4 +34,9 @@ public class CreateDocxRequest {
      * 如果为true，表示图片传入的是base64编码
      */
     public Boolean base64 = false;
+
+    /**
+     * 是否将富文本中的img标签转换为图片
+     */
+    public Boolean processImgTag = false;
 }
