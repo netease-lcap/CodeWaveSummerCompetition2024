@@ -156,16 +156,19 @@ public class EasyExcelTools {
      * @return
      */
     private static String getFileUrl(String url) {
-        int index = url.indexOf("/upload/");
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        int port = request.getLocalPort();
-        if (port == -1) {
-            return url;
+        try {
+            int index = url.indexOf("/upload/");
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            int port = request.getLocalPort();
+            if (port == -1) {
+                return url;
+            }
+            if (index >= 0) {
+                url = "http://localhost:" + port + "/upload/" + url.substring(index + "/upload/".length());
+            }
+        } catch (Exception e) {
+            log.error("url转本地地址异常", e);
         }
-        if (index >= 0) {
-            url = "http://localhost:" + port + "/upload/" + url.substring(index + "/upload/".length());
-        }
-
         return url;
     }
 
