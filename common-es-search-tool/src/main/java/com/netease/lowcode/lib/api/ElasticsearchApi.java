@@ -338,7 +338,7 @@ public class ElasticsearchApi {
                     } else if (queryItemDto.getQueryType() == 4) {
                         queryBuilder.mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                     } else if (queryItemDto.getQueryType() == 5) {
-                        queryBuilderItem.should(QueryBuilders.matchQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+                        queryBuilderItem.must(QueryBuilders.matchQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                     }
                 });
                 queryBuilder.should(queryBuilderItem);
@@ -351,7 +351,7 @@ public class ElasticsearchApi {
     private BoolQueryBuilder fillQueryBuilderQueryItems(Integer logicalOperator, List<QueryItemsDto> queryItems) {
         //1与2或
         BoolQueryBuilder queryBuilderItem = QueryBuilders.boolQuery();
-        if (logicalOperator == 1) {
+        if (logicalOperator == 2) {
             queryItems.forEach(queryItemDto -> {
                 //查询类型，精确1 termQuery、模糊2 wildcardQuery、范围3 rangeQuery
                 if (queryItemDto.getQueryType() == 1) {
@@ -381,7 +381,7 @@ public class ElasticsearchApi {
                 if (queryItemDto.getQueryType() == 1) {
                     queryBuilderItem.must(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                 } else if (queryItemDto.getQueryType() == 2) {
-                    queryBuilderItem.should(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+                    queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                 } else if (queryItemDto.getQueryType() == 3) {
                     Map<Object, Object> mapQueryValue = handleQueryItemsDto(queryItemDto.getQueryValue());
                     mapQueryValue.forEach((key, value) -> {
@@ -396,7 +396,7 @@ public class ElasticsearchApi {
                 } else if (queryItemDto.getQueryType() == 4) {
                     queryBuilderItem.mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                 } else if (queryItemDto.getQueryType() == 5) {
-                    queryBuilderItem.should(QueryBuilders.matchQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+                    queryBuilderItem.must(QueryBuilders.matchQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                 }
             });
         }
