@@ -310,7 +310,7 @@ public class ElasticsearchApi {
                     } else if (queryItemDto.getQueryType() == 4) {
                         queryBuilder.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue())));
                     } else if (queryItemDto.getQueryType() == 5) {
-                        queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
+                        queryBuilderItem.must(QueryBuilders.matchQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
                     }
                 });
                 queryBuilder.must(queryBuilderItem);
@@ -338,7 +338,7 @@ public class ElasticsearchApi {
                     } else if (queryItemDto.getQueryType() == 4) {
                         queryBuilder.mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                     } else if (queryItemDto.getQueryType() == 5) {
-                        queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
+                        queryBuilderItem.must(QueryBuilders.matchQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
                     }
                 });
                 queryBuilder.should(queryBuilderItem);
@@ -357,8 +357,7 @@ public class ElasticsearchApi {
                 if (queryItemDto.getQueryType() == 1) {
                     queryBuilderItem.should(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                 } else if (queryItemDto.getQueryType() == 2) {
-                    queryBuilderItem.should(QueryBuilders.matchQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
-//                    queryBuilderItem.should(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
+                    queryBuilderItem.should(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
                 } else if (queryItemDto.getQueryType() == 3) {
                     Map<Object, Object> mapQueryValue = handleQueryItemsDto(queryItemDto.getQueryValue());
                     mapQueryValue.forEach((key, value) -> {
@@ -373,7 +372,7 @@ public class ElasticsearchApi {
                 } else if (queryItemDto.getQueryType() == 4) {
                     queryBuilderItem.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue())));
                 } else if (queryItemDto.getQueryType() == 5) {
-                    queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
+                    queryBuilderItem.must(QueryBuilders.matchQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
                 }
             });
         } else {
@@ -382,7 +381,7 @@ public class ElasticsearchApi {
                 if (queryItemDto.getQueryType() == 1) {
                     queryBuilderItem.must(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                 } else if (queryItemDto.getQueryType() == 2) {
-                    queryBuilderItem.should(QueryBuilders.matchQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+                    queryBuilderItem.should(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                 } else if (queryItemDto.getQueryType() == 3) {
                     Map<Object, Object> mapQueryValue = handleQueryItemsDto(queryItemDto.getQueryValue());
                     mapQueryValue.forEach((key, value) -> {
@@ -397,7 +396,7 @@ public class ElasticsearchApi {
                 } else if (queryItemDto.getQueryType() == 4) {
                     queryBuilderItem.mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
                 } else if (queryItemDto.getQueryType() == 5) {
-                    queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
+                    queryBuilderItem.must(QueryBuilders.matchQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
                 }
             });
         }
