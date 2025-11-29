@@ -18,17 +18,46 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class FileUtil {
 
     private static final Logger logger = LoggerFactory.getLogger("LCAP_CUSTOMIZE_LOGGER");
 
+    private static final OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .followRedirects(true)
+            .followSslRedirects(true)
+            .build();
+
     public static InputStream getFileInputStream(String urlStr) throws IOException {
-        URL url = new URL(getTrueUrl(urlStr));
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setConnectTimeout(3 * 1000);
-        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36");
-        return url.openStream();
+        logger.info("urlStr using OkHttp: {}", urlStr);
+
+        // 还是保留你原本的 URL 处理逻辑
+        String finalUrl = getTrueUrl(urlStr);
+
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36")
+                .build();
+
+        // 执行请求
+        Response response = client.newCall(request).execute();
+
+        if (!response.isSuccessful()) {
+            // 如果失败（比如 404 或 500），必须关闭响应体并抛出异常
+            response.close();
+            throw new IOException("Unexpected code " + response);
+        }
+
+        ResponseBody body = response.body();
+        if (body == null) {
+            response.close();
+            throw new IOException("Response body is null");
+        }
+
+        return body.byteStream();
     }
 
     // 新增方法：检测 URL 是否已经编码
