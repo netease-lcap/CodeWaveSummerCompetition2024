@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import com.netease.lowcode.lib.api.config.CommonEsSearchConfig;
 import com.netease.lowcode.lib.api.config.SortTypeEnum;
+import com.netease.lowcode.lib.api.dto.QueryItemsDto;
 import com.netease.lowcode.lib.api.dto.QueryItemsListDto;
 import com.netease.lowcode.lib.api.dto.QueryRequestParam;
 import com.netease.lowcode.lib.api.dto.QueryResultDto;
@@ -77,16 +78,16 @@ public class ElasticsearchApi {
         if (!CollectionUtils.isEmpty(queryRequestParam.getQueryItems()) && !CollectionUtils.isEmpty(queryRequestParam.getQueryItemList())) {
             throw new IllegalArgumentException("queryItemList和queryItems不能同时传入");
         }
-        if (!CollectionUtils.isEmpty(queryRequestParam.getQueryItems())) {
-            QueryItemsListDto queryItemsListDto = new QueryItemsListDto();
-            queryItemsListDto.setQueryItems(queryRequestParam.getQueryItems());
-            queryRequestParam.setQueryItemList(new ArrayList<>());
-            queryRequestParam.getQueryItemList().add(queryItemsListDto);
-            // 1表示queryItems内多个条件之间为与；2表示queryItems内多个条件之间为或。所以这边需要旋转一下。
-            // fillQueryBuilder执行时，1是外与内或。不旋转的话会执行内或。
-            queryRequestParam.setLogicalOperator(queryRequestParam.getLogicalOperator() == 1 ? 2 : 1);
-            queryRequestParam.setQueryItems(null);
-        }
+//        if (!CollectionUtils.isEmpty(queryRequestParam.getQueryItems())) {
+//            QueryItemsListDto queryItemsListDto = new QueryItemsListDto();
+//            queryItemsListDto.setQueryItems(queryRequestParam.getQueryItems());
+//            queryRequestParam.setQueryItemList(new ArrayList<>());
+//            queryRequestParam.getQueryItemList().add(queryItemsListDto);
+//            // 1表示queryItems内多个条件之间为与；2表示queryItems内多个条件之间为或。所以这边需要旋转一下。
+//            // fillQueryBuilder执行时，1是外与内或。不旋转的话会执行内或。
+//            queryRequestParam.setLogicalOperator(queryRequestParam.getLogicalOperator() == 1 ? 2 : 1);
+//            queryRequestParam.setQueryItems(null);
+//        }
     }
 
     /**
@@ -212,6 +213,9 @@ public class ElasticsearchApi {
     public QueryResultDto queryCommon(QueryRequestParam queryRequestParam) throws IllegalArgumentException {
         try {
             log.info("queryRequestParam:{}", JSONObject.toJSONString(queryRequestParam));
+            if (!CollectionUtils.isEmpty(queryRequestParam.getQueryItems()) && !CollectionUtils.isEmpty(queryRequestParam.getQueryItemList())) {
+                throw new IllegalArgumentException("queryItems和queryItemList不能同时存在");
+            }
             LocalDateTime now1 = LocalDateTime.now();
             fillDefaultParam(queryRequestParam);
             SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -239,8 +243,11 @@ public class ElasticsearchApi {
             }
             BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
             // 查询条件 1与2或
-            if (queryRequestParam.getQueryItemList() != null) {
-                queryBuilder = fillQueryBuilder(queryRequestParam);
+            if (!CollectionUtils.isEmpty(queryRequestParam.getQueryItems())) {
+                queryBuilder = fillQueryBuilderQueryItems(queryRequestParam.getLogicalOperator(), queryRequestParam.getQueryItems());
+            } else if (!CollectionUtils.isEmpty(queryRequestParam.getQueryItemList())) {
+                // 查询条件 1与或 2或与
+                queryBuilder = fillQueryBuilderQueryList(queryRequestParam.getLogicalOperator(), queryRequestParam.getQueryItemList());
             }
             String scrollTime = null;
             if (queryRequestParam.getScrollTime() != null) {
@@ -277,11 +284,11 @@ public class ElasticsearchApi {
         return map;
     }
 
-    private BoolQueryBuilder fillQueryBuilder(QueryRequestParam queryRequestParam) {
+    private BoolQueryBuilder fillQueryBuilderQueryList(Integer logicalOperator, List<QueryItemsListDto> queryItemList) {
         //1与2或
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-        if (queryRequestParam.getLogicalOperator() == 1) {
-            queryRequestParam.getQueryItemList().forEach(queryItemListDto -> {
+        if (logicalOperator == 1) {
+            queryItemList.forEach(queryItemListDto -> {
                 BoolQueryBuilder queryBuilderItem = QueryBuilders.boolQuery();
                 queryItemListDto.getQueryItems().forEach(queryItemDto -> {
                     //查询类型，精确1 termQuery、模糊2 wildcardQuery、范围3 rangeQuery
@@ -302,12 +309,14 @@ public class ElasticsearchApi {
                         });
                     } else if (queryItemDto.getQueryType() == 4) {
                         queryBuilder.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue())));
+                    } else if (queryItemDto.getQueryType() == 5) {
+                        queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
                     }
                 });
                 queryBuilder.must(queryBuilderItem);
             });
         } else {
-            queryRequestParam.getQueryItemList().forEach(queryItemListDto -> {
+            queryItemList.forEach(queryItemListDto -> {
                 BoolQueryBuilder queryBuilderItem = QueryBuilders.boolQuery();
                 queryItemListDto.getQueryItems().forEach(queryItemDto -> {
                     //查询类型，精确1 termQuery、模糊2 wildcardQuery、范围3 rangeQuery
@@ -328,11 +337,70 @@ public class ElasticsearchApi {
                         });
                     } else if (queryItemDto.getQueryType() == 4) {
                         queryBuilder.mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+                    } else if (queryItemDto.getQueryType() == 5) {
+                        queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
                     }
                 });
                 queryBuilder.should(queryBuilderItem);
             });
         }
         return queryBuilder;
+    }
+
+
+    private BoolQueryBuilder fillQueryBuilderQueryItems(Integer logicalOperator, List<QueryItemsDto> queryItems) {
+        //1与2或
+        BoolQueryBuilder queryBuilderItem = QueryBuilders.boolQuery();
+        if (logicalOperator == 1) {
+            queryItems.forEach(queryItemDto -> {
+                //查询类型，精确1 termQuery、模糊2 wildcardQuery、范围3 rangeQuery
+                if (queryItemDto.getQueryType() == 1) {
+                    queryBuilderItem.should(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+                } else if (queryItemDto.getQueryType() == 2) {
+                    queryBuilderItem.should(QueryBuilders.matchQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+//                    queryBuilderItem.should(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
+                } else if (queryItemDto.getQueryType() == 3) {
+                    Map<Object, Object> mapQueryValue = handleQueryItemsDto(queryItemDto.getQueryValue());
+                    mapQueryValue.forEach((key, value) -> {
+                        if (key != null && value != null) {
+                            queryBuilderItem.should(QueryBuilders.rangeQuery(queryItemDto.getParameter()).gte(key).lte(value));
+                        } else if (key != null) {
+                            queryBuilderItem.should(QueryBuilders.rangeQuery(queryItemDto.getParameter()).gte(key));
+                        } else if (value != null) {
+                            queryBuilderItem.should(QueryBuilders.rangeQuery(queryItemDto.getParameter()).lte(value));
+                        }
+                    });
+                } else if (queryItemDto.getQueryType() == 4) {
+                    queryBuilderItem.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue())));
+                } else if (queryItemDto.getQueryType() == 5) {
+                    queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
+                }
+            });
+        } else {
+            queryItems.forEach(queryItemDto -> {
+                //查询类型，精确1 termQuery、模糊2 wildcardQuery、范围3 rangeQuery
+                if (queryItemDto.getQueryType() == 1) {
+                    queryBuilderItem.must(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+                } else if (queryItemDto.getQueryType() == 2) {
+                    queryBuilderItem.should(QueryBuilders.matchQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+                } else if (queryItemDto.getQueryType() == 3) {
+                    Map<Object, Object> mapQueryValue = handleQueryItemsDto(queryItemDto.getQueryValue());
+                    mapQueryValue.forEach((key, value) -> {
+                        if (key != null && value != null) {
+                            queryBuilderItem.must(QueryBuilders.rangeQuery(queryItemDto.getParameter()).gte(key).lte(value));
+                        } else if (key != null) {
+                            queryBuilderItem.must(QueryBuilders.rangeQuery(queryItemDto.getParameter()).gte(key));
+                        } else if (value != null) {
+                            queryBuilderItem.must(QueryBuilders.rangeQuery(queryItemDto.getParameter()).lte(value));
+                        }
+                    });
+                } else if (queryItemDto.getQueryType() == 4) {
+                    queryBuilderItem.mustNot(QueryBuilders.termQuery(queryItemDto.getParameter(), queryItemDto.getQueryValue()));
+                } else if (queryItemDto.getQueryType() == 5) {
+                    queryBuilderItem.must(QueryBuilders.wildcardQuery(queryItemDto.getParameter(), "*" + queryItemDto.getQueryValue() + "*"));
+                }
+            });
+        }
+        return queryBuilderItem;
     }
 }
