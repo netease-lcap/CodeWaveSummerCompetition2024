@@ -1,5 +1,6 @@
 package com.netease.lib.tasks.api;
 
+import com.alibaba.fastjson.JSONObject;
 import com.netease.lib.tasks.model.ThreadResultDTO;
 import com.netease.lowcode.core.annotation.NaslLogic;
 import org.slf4j.Logger;
@@ -35,11 +36,13 @@ public class FunctionManagerApi {
      * 运行中任务注册
      * 任务id，任务
      */
-    private final Map<String, CompletableFuture<String>> runningTaskRegister = new ConcurrentHashMap<>();
-
-
+    private final Map<String, CompletableFuture<Object>> runningTaskRegister = new ConcurrentHashMap<>();
     @Resource(name = "libraryCommonTaskExecutor")
     private Executor contextAwareExecutor;
+
+    public void putRunningTask(String taskId, CompletableFuture<Object> future) {
+        runningTaskRegister.put(taskId, future);
+    }
 
     /**
      * 初始化注册逻辑
@@ -70,7 +73,7 @@ public class FunctionManagerApi {
             logger.error("asyncRunLogic not exist: {}", logicKey);
             return null;
         }
-        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> function.apply(requestStr), contextAwareExecutor);
+        CompletableFuture<Object> future = CompletableFuture.supplyAsync(() -> function.apply(requestStr), contextAwareExecutor);
         logger.info("asyncRunLogic success: {}", logicKey);
         String taskId = UUID.randomUUID().toString();
         runningTaskRegister.put(taskId, future);
@@ -89,14 +92,20 @@ public class FunctionManagerApi {
         taskIdList.forEach(taskId -> {
             ThreadResultDTO resultDTO = new ThreadResultDTO();
             resultDTO.setTaskId(taskId);
-            CompletableFuture<String> functionWeak = runningTaskRegister.get(taskId);
+            CompletableFuture<Object> functionWeak = runningTaskRegister.get(taskId);
             if (functionWeak == null) {
                 resultDTO.setTaskStatus(3);
                 resultDTOList.add(resultDTO);
                 return;
             }
             CompletableFuture future = runningTaskRegister.get(taskId);
-            String result = (String) future.join();
+            Object resObj = future.join();
+            String result;
+            if (resObj instanceof String) {
+                result = (String) resObj;
+            } else {
+                result = JSONObject.toJSONString(resObj);
+            }
             runningTaskRegister.remove(taskId);
             resultDTO.setTaskResult(result);
             resultDTO.setTaskStatus(1);
@@ -117,7 +126,7 @@ public class FunctionManagerApi {
         taskIdList.forEach(taskId -> {
             ThreadResultDTO resultDTO = new ThreadResultDTO();
             resultDTO.setTaskId(taskId);
-            CompletableFuture<String> functionWeak = runningTaskRegister.get(taskId);
+            CompletableFuture<Object> functionWeak = runningTaskRegister.get(taskId);
             if (functionWeak == null) {
                 resultDTO.setTaskStatus(3);
                 resultDTOList.add(resultDTO);
@@ -125,7 +134,13 @@ public class FunctionManagerApi {
             }
             CompletableFuture future = runningTaskRegister.get(taskId);
             if (future.isDone()) {
-                String result = (String) future.join();
+                Object resObj = future.join();
+                String result;
+                if (resObj instanceof String) {
+                    result = (String) resObj;
+                } else {
+                    result = JSONObject.toJSONString(resObj);
+                }
                 runningTaskRegister.remove(taskId);
                 resultDTO.setTaskResult(result);
                 resultDTO.setTaskStatus(1);
