@@ -73,7 +73,15 @@ public class FunctionManagerApi {
             logger.error("asyncRunLogic not exist: {}", logicKey);
             return null;
         }
-        CompletableFuture<Object> future = CompletableFuture.supplyAsync(() -> function.apply(requestStr), contextAwareExecutor);
+        CompletableFuture<Object> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                return function.apply(requestStr);
+            } catch (Exception e) {
+                // 使用你的日志框架记录异常
+                logger.error("异步任务执行异常: {}", e.getMessage(), e);
+            }
+            return null;
+        }, contextAwareExecutor);
         logger.info("asyncRunLogic success: {}", logicKey);
         String taskId = UUID.randomUUID().toString();
         runningTaskRegister.put(taskId, future);
@@ -158,7 +166,15 @@ public class FunctionManagerApi {
     @NaslLogic
     public Boolean asyncRunLogicNoResult(Function<String, String> asyncfunction, String requestStr) {
         try {
-            contextAwareExecutor.execute(() -> asyncfunction.apply(requestStr));
+            contextAwareExecutor.execute(() -> {
+                        try {
+                            asyncfunction.apply(requestStr);
+                        } catch (Exception e) {
+                            // 使用你的日志框架记录异常
+                            logger.error("异步任务执行异常: {}", e.getMessage(), e);
+                        }
+                    }
+            );
             return true;
         } catch (RejectedExecutionException e) {
             logger.error("Async task rejected for request: {}", requestStr, e);

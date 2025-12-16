@@ -72,7 +72,7 @@
             <plugin>
                 <groupId>com.netease.lowcode</groupId>
                 <artifactId>nasl-metadata-maven-plugin</artifactId>
-                <version>1.4.2</version>
+                <version>1.4.3</version>
                 <configuration>
                     <jarWithDependencies>false</jarWithDependencies>
                     <rewriteVersion>true</rewriteVersion>
