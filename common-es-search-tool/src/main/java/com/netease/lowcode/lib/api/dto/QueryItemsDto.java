@@ -9,7 +9,7 @@ public class QueryItemsDto {
      */
     public String parameter;
     /**
-     * 查询类型，精确1、模糊2、范围3、不等于4
+     * 查询类型，精确1 termQuery、模糊2 wildcardQuery、范围3 rangeQuery、4不等于、5 matchQuery
      */
     public Integer queryType;
     /**
