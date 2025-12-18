@@ -10,17 +10,11 @@ import com.netease.lowcode.freemarker.validators.CreateRequestValidator;
 import com.spire.xls.FileFormat;
 import com.spire.xls.Workbook;
 import freemarker.cache.URLTemplateLoader;
-import freemarker.core.HTMLOutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -37,7 +31,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -79,12 +76,12 @@ public class FreeMarkerUtil {
                 return DownloadResponseDTO.OK(outUrl.getResult(), outUrl.getFilePath());
             } else {
 
-                return DownloadResponseDTO.FAIL("文件上传失败","");
+                return DownloadResponseDTO.FAIL("文件上传失败", "");
             }
 
         } catch (Throwable e) {
 
-            return DownloadResponseDTO.FAIL("执行异常:"+e.getMessage(), Arrays.toString(e.getStackTrace()));
+            return DownloadResponseDTO.FAIL("执行异常:" + e.getMessage(), Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -122,12 +119,12 @@ public class FreeMarkerUtil {
                 return DownloadResponseDTO.OK(outUrl.getResult(), outUrl.getFilePath());
             } else {
 
-                return DownloadResponseDTO.FAIL("文件上传失败","");
+                return DownloadResponseDTO.FAIL("文件上传失败", "");
             }
 
         } catch (Throwable e) {
 
-            return DownloadResponseDTO.FAIL("执行异常:"+e.getMessage(), Arrays.toString(e.getStackTrace()));
+            return DownloadResponseDTO.FAIL("执行异常:" + e.getMessage(), Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -141,7 +138,7 @@ public class FreeMarkerUtil {
     public static DownloadResponseDTO createNewDocxFile(CreateDocxRequest request) {
         log.info("createDocxFile request:{}", request);
 
-        Map<String,String> templateFileMap = new HashMap<>();
+        Map<String, String> templateFileMap = new HashMap<>();
         try {
             CreateDocxRequestValidator.validate(request);
 
@@ -176,7 +173,7 @@ public class FreeMarkerUtil {
             // 下载模板文件
             if (request.templateUrl != null) {
                 for (Map.Entry<String, String> entry : request.templateUrl.entrySet()) {
-                    templateFileMap.put(entry.getKey(),FileUtil.getTrueUrl(entry.getValue()));
+                    templateFileMap.put(entry.getKey(), FileUtil.getTrueUrl(entry.getValue()));
                 }
             }
 
@@ -193,14 +190,14 @@ public class FreeMarkerUtil {
 //                System.out.println("文件写入成功");
 //            }
             // 上传文件
-            UploadResponseDTO outUrl = FileUtil.uploadStream(new ByteArrayInputStream(outputStream.toByteArray()),request.outFileName);
+            UploadResponseDTO outUrl = FileUtil.uploadStream(new ByteArrayInputStream(outputStream.toByteArray()), request.outFileName);
             outputStream.close();
             if (Objects.nonNull(outUrl)) {
 
                 return DownloadResponseDTO.OK(outUrl.getResult(), outUrl.getFilePath());
             } else {
 
-                return DownloadResponseDTO.FAIL("文件上传失败","");
+                return DownloadResponseDTO.FAIL("文件上传失败", "");
             }
         } catch (Throwable e) {
             return DownloadResponseDTO.FAIL("执行异常:" + e.getMessage(), Arrays.toString(e.getStackTrace()));
@@ -210,7 +207,7 @@ public class FreeMarkerUtil {
     public static ByteArrayOutputStream createDocx(String jsonData,
                                                    Map<String, String> picMap,
                                                    InputStream docxInputSteam,
-                                                   Map<String,String> templateFileMap,
+                                                   Map<String, String> templateFileMap,
                                                    boolean enableRichTextImage) throws Exception {
         log.info("createDocx jsonData:{}, picMap:{}, docxInputSteam:{}, templateFileMap:{}, enableRichTextImage:{}", jsonData, picMap, docxInputSteam, templateFileMap, enableRichTextImage);
         ZipOutputStream zipOut = null;
@@ -247,13 +244,13 @@ public class FreeMarkerUtil {
             //最初设计的模板
             zipOut = new ZipOutputStream(outputStream);
             //开始覆盖文档, 不要删除原图片，存在无需替换的情况，因此全部保留
-            writeZipFileV2(new ByteArrayInputStream(templateDocBytes),zipOut,templateFileStreamMap);
+            writeZipFileV2(new ByteArrayInputStream(templateDocBytes), zipOut, templateFileStreamMap);
             //写入图片 ，可能存在用户命名与保留文件重复，客户图片名称前加特定标识，由用户控制
             writePicture(picMap, zipOut);
 
             return outputStream;
         } finally {
-            if (zipOut != null){
+            if (zipOut != null) {
                 zipOut.close();
             }
         }
@@ -282,7 +279,7 @@ public class FreeMarkerUtil {
     }
 
     private static void writeZipFileV2(InputStream zipInputStream,
-                                       ZipOutputStream zipOut,Map<String, ByteArrayInputStream> templateFileStreamMap) throws IOException {
+                                       ZipOutputStream zipOut, Map<String, ByteArrayInputStream> templateFileStreamMap) throws IOException {
 
         int len;
         byte[] buffer = new byte[1024];
@@ -317,10 +314,10 @@ public class FreeMarkerUtil {
         Base64.Decoder decoder = Base64.getDecoder();
         for (Map.Entry<String, String> entry : picMap.entrySet()) {
             // 用户输入的图片名称可能会与原文件重复，这里交由使用方控制，图片名称前加个标识区分，防止覆盖
-            ZipEntry next = new ZipEntry("word/media/"+entry.getKey());
+            ZipEntry next = new ZipEntry("word/media/" + entry.getKey());
             zipout.putNextEntry(new ZipEntry(next.toString()));
             byte[] bytes = decoder.decode(entry.getValue());
-            InputStream in  = new ByteArrayInputStream(bytes);
+            InputStream in = new ByteArrayInputStream(bytes);
             while ((len = in.read(buffer)) != -1) {
                 zipout.write(buffer, 0, len);
             }
@@ -580,6 +577,21 @@ public class FreeMarkerUtil {
                 return "image/webp";
             default:
                 return "image/" + extension;
+        }
+    }
+
+    /**
+     * 通用文本模板处理
+     */
+    @NaslLogic
+    public static String textFreemarker(String templateStr, Map<String, String> data) {
+        try {
+            Template template = new Template("dynamic", new StringReader(templateStr));
+            StringWriter writer = new StringWriter();
+            template.process(data, writer);
+            return writer.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("模板处理失败", e);
         }
     }
 }
