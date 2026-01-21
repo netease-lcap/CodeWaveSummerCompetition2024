@@ -20,6 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -122,12 +123,14 @@ public class ExcelParser {
         DefaultReaderListener<T> easyExcelReaderListener = new DefaultReaderListener(clazz, rect, columnFieldMap);
         excelReaderBuilder.registerReadListener(easyExcelReaderListener);
         ExcelReader excelReader = excelReaderBuilder.headRowNumber((row == null || row <= 0) ? 1 : Integer.parseInt(String.valueOf(row))).build();
+        Map<Integer, String> map = new HashMap();
 
         List<ReadSheet> readSheets = excelReader.excelExecutor().sheetList();
         for (int i = 0; i < readSheets.size(); i++) {
             // sheetIndex从1开始
             if (null == sheetIndexes || sheetIndexes.contains(i + 1)) {
                 excelReader.read(readSheets.get(i));
+                map.put(i, readSheets.get(i).getSheetName());
             }
         }
 
@@ -135,6 +138,7 @@ public class ExcelParser {
         parseResult.setData(easyExcelReaderListener.getData());
         parseResult.setErrors(easyExcelReaderListener.getParseErrors());
         parseResult.setUnParsedData(easyExcelReaderListener.getUnParsedData());
+        parseResult.setIndexSheetNameJsonStr(JsonUtil.toJson(map));
         return parseResult;
     }
 

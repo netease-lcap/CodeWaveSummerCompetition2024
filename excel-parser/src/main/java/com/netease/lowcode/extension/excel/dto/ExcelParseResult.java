@@ -10,5 +10,6 @@ public class ExcelParseResult<T> {
     public List<T> data;
     public List<Map<String, String>> unParsedData;
     public List<ExcelParseError> errors;
+    public String indexSheetNameJsonStr;
     public Boolean success;
 }
