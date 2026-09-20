@@ -22,6 +22,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.*;
 import java.net.URI;
 import java.net.URLDecoder;
+import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,6 +33,9 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.zip.GZIPInputStream;
+
+import javax.net.ssl.SSLSocketFactory;
 
 @Component
 public class HttpClientService {
@@ -133,6 +139,206 @@ public class HttpClientService {
             logger.error("请求http失败", e);
             throw e;
         }
+    }
+
+    /**
+     * 不自动补 Content-Type 的 http/https 调用：
+     * 调用方 header 中未显式传 Content-Type 时，发送 body 但不携带 Content-Type（绕过 HttpMessageConverter 的自动补全）。
+     * body 为 null 或空白字符串时按无 body 处理。
+     *
+     * @param requestParam
+     * @param restTemplateFinal
+     * @return
+     */
+    public ResponseEntity<String> exchangeInnerWithoutContentType(RequestParamAllBodyTypeInner requestParam, RestTemplate restTemplateFinal) throws IOException {
+        try {
+            if (Objects.isNull(requestParam.getHeader())) {
+                requestParam.setHeader(new HashMap<>());
+            }
+            if (Objects.isNull(requestParam.getHttpMethod())) {
+                requestParam.setHttpMethod("");
+            }
+            if (Objects.isNull(requestParam.getUrl())) {
+                requestParam.setUrl("");
+            }
+            URI uri = UriComponentsBuilder.fromUriString(requestParam.getUrl()).build().encode().toUri();
+            HttpMethod requestMethod = HttpMethod.resolve(requestParam.getHttpMethod().toUpperCase());
+            HttpHeaders httpHeaders = new HttpHeaders();
+            requestParam.getHeader().forEach((headerName, headerValue) -> httpHeaders.add((String) headerName, (String) headerValue));
+            Object body = requestParam.getBody();
+            boolean noBody = body == null || (body instanceof String && ((String) body).trim().isEmpty());
+            boolean hasContentType = httpHeaders.getContentType() != null;
+            if (noBody) {
+                if (hasContentType) {
+                    return restTemplateFinal.exchange(uri, Objects.requireNonNull(requestMethod), new HttpEntity<>(httpHeaders), String.class);
+                }
+                // 无 body 走 RestTemplate 时，JDK HttpURLConnection 对 POST 会自动补
+                // Content-Type: application/x-www-form-urlencoded 和 Content-Length: 0，故同样走原始 Socket
+                return sendRawWithoutContentType(uri, requestMethod, httpHeaders, null);
+            }
+            if (hasContentType) {
+                return restTemplateFinal.exchange(uri, Objects.requireNonNull(requestMethod), new HttpEntity<>(body, httpHeaders), String.class);
+            }
+            String bodyStr = body instanceof String ? (String) body : JsonUtil.toJson(body);
+            byte[] bodyBytes = bodyStr.getBytes(StandardCharsets.UTF_8);
+            // 不走 RestTemplate：其底层 HttpURLConnection 会在写 body 且未设 Content-Type 时
+            // 强制补 application/x-www-form-urlencoded，无法去除，故用原始 Socket 手写报文
+            return sendRawWithoutContentType(uri, requestMethod, httpHeaders, bodyBytes);
+        } catch (Exception e) {
+            logger.error("请求http失败", e);
+            throw e;
+        }
+    }
+
+    /**
+     * 使用原始 Socket 按字节发送 http/https 请求，保证不携带 Content-Type。
+     * 注意：不跟随重定向、不使用代理，https 使用默认证书校验。
+     *
+     * @param uri
+     * @param method
+     * @param headers
+     * @param bodyBytes
+     * @return
+     */
+    private ResponseEntity<String> sendRawWithoutContentType(URI uri, HttpMethod method, HttpHeaders headers, byte[] bodyBytes) throws IOException {
+        boolean https = "https".equalsIgnoreCase(uri.getScheme());
+        String host = uri.getHost();
+        int port = uri.getPort() != -1 ? uri.getPort() : (https ? 443 : 80);
+        try (Socket socket = https
+                ? SSLSocketFactory.getDefault().createSocket(host, port)
+                : new Socket(host, port)) {
+            OutputStream out = socket.getOutputStream();
+            String path = (uri.getRawPath() == null || uri.getRawPath().isEmpty() ? "/" : uri.getRawPath())
+                    + (uri.getRawQuery() != null ? "?" + uri.getRawQuery() : "");
+            StringBuilder head = new StringBuilder();
+            head.append(method.name()).append(' ').append(path).append(" HTTP/1.1\r\n");
+            String userHost = getFirstIgnoreCase(headers, HttpHeaders.HOST);
+            if (userHost != null) {
+                head.append(HttpHeaders.HOST).append(": ").append(userHost).append("\r\n");
+            } else {
+                String portPart = (https && port == 443) || (!https && port == 80) ? "" : ":" + port;
+                head.append("Host: ").append(host).append(portPart).append("\r\n");
+            }
+            Set<String> skip = new HashSet<>(Arrays.asList(HttpHeaders.HOST, HttpHeaders.CONTENT_LENGTH, HttpHeaders.TRANSFER_ENCODING, HttpHeaders.CONNECTION));
+            headers.forEach((name, values) -> {
+                if (skip.stream().noneMatch(s -> s.equalsIgnoreCase(name))) {
+                    values.forEach(v -> head.append(name).append(": ").append(v).append("\r\n"));
+                }
+            });
+            if (bodyBytes != null) {
+                head.append(HttpHeaders.CONTENT_LENGTH).append(": ").append(bodyBytes.length).append("\r\n");
+            }
+            head.append("Connection: close\r\n\r\n");
+            out.write(head.toString().getBytes(StandardCharsets.ISO_8859_1));
+            if (bodyBytes != null) {
+                out.write(bodyBytes);
+            }
+            out.flush();
+            byte[] respBytes = readAll(socket.getInputStream());
+            return parseRawResponse(respBytes);
+        }
+    }
+
+    private String getFirstIgnoreCase(HttpHeaders headers, String name) {
+        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(name) && !entry.getValue().isEmpty()) {
+                return entry.getValue().get(0);
+            }
+        }
+        return null;
+    }
+
+    private byte[] readAll(InputStream in) throws IOException {
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        byte[] chunk = new byte[8192];
+        int n;
+        while ((n = in.read(chunk)) != -1) {
+            buf.write(chunk, 0, n);
+        }
+        return buf.toByteArray();
+    }
+
+    private ResponseEntity<String> parseRawResponse(byte[] respBytes) throws IOException {
+        int headerEnd = indexOf(respBytes, 0, "\r\n\r\n");
+        if (headerEnd < 0) {
+            throw new IOException("http响应格式异常: " + new String(respBytes, StandardCharsets.ISO_8859_1));
+        }
+        String headPart = new String(respBytes, 0, headerEnd, StandardCharsets.ISO_8859_1);
+        String[] lines = headPart.split("\r\n");
+        String statusLine = lines[0];
+        int code = Integer.parseInt(statusLine.split(" ")[1]);
+        HttpStatus status = HttpStatus.resolve(code);
+        if (status == null) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        HttpHeaders respHeaders = new HttpHeaders();
+        for (int i = 1; i < lines.length; i++) {
+            int idx = lines[i].indexOf(':');
+            if (idx > 0) {
+                respHeaders.add(lines[i].substring(0, idx).trim(), lines[i].substring(idx + 1).trim());
+            }
+        }
+        byte[] body = Arrays.copyOfRange(respBytes, headerEnd + 4, respBytes.length);
+        String transferEncoding = getFirstIgnoreCase(respHeaders, HttpHeaders.TRANSFER_ENCODING);
+        if (transferEncoding != null && transferEncoding.toLowerCase().contains("chunked")) {
+            body = dechunk(body);
+        }
+        String contentEncoding = getFirstIgnoreCase(respHeaders, HttpHeaders.CONTENT_ENCODING);
+        if (contentEncoding != null && contentEncoding.toLowerCase().contains("gzip")) {
+            try (GZIPInputStream gin = new GZIPInputStream(new ByteArrayInputStream(body))) {
+                body = readAll(gin);
+            }
+        }
+        String resBody;
+        MediaType contentType = respHeaders.getContentType();
+        Charset charset = contentType != null && contentType.getCharset() != null ? contentType.getCharset() : StandardCharsets.UTF_8;
+        resBody = new String(body, charset);
+        return new ResponseEntity<>(resBody, respHeaders, status);
+    }
+
+    private int indexOf(byte[] data, int from, String target) {
+        byte[] t = target.getBytes(StandardCharsets.ISO_8859_1);
+        outer:
+        for (int i = from; i <= data.length - t.length; i++) {
+            for (int j = 0; j < t.length; j++) {
+                if (data[i + j] != t[j]) {
+                    continue outer;
+                }
+            }
+            return i;
+        }
+        return -1;
+    }
+
+    private byte[] dechunk(byte[] body) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int pos = 0;
+        while (true) {
+            int lineEnd = indexOf(body, pos, "\r\n");
+            if (lineEnd < 0) {
+                break;
+            }
+            String sizeLine = new String(body, pos, lineEnd - pos, StandardCharsets.ISO_8859_1).trim();
+            int semi = sizeLine.indexOf(';');
+            if (semi >= 0) {
+                sizeLine = sizeLine.substring(0, semi);
+            }
+            if (sizeLine.isEmpty()) {
+                pos = lineEnd + 2;
+                continue;
+            }
+            int size = Integer.parseInt(sizeLine, 16);
+            pos = lineEnd + 2;
+            if (size == 0) {
+                break;
+            }
+            if (pos + size > body.length) {
+                break;
+            }
+            out.write(body, pos, size);
+            pos += size + 2;
+        }
+        return out.toByteArray();
     }
 
     /**
