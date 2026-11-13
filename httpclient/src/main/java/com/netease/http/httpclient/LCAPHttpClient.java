@@ -226,6 +226,39 @@ public class LCAPHttpClient {
     }
 
     /**
+     * http/https调用（非form使用，不自动补 Content-Type）：
+     * 调用方未在 header 中显式传 Content-Type 时，发送 body 但不携带 Content-Type。
+     * body 传 null 或空白字符串时按无 body 请求处理。
+     *
+     * @param url
+     * @param httpMethod
+     * @param header
+     * @param body
+     * @return
+     * @throws URISyntaxException
+     */
+    @NaslLogic
+    @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000L))
+    public String exchangeWithoutContentType(@Required String url, @Required String httpMethod, @Required Map<String, String> header, @Required String body) throws TransferCommonException {
+        try {
+            RequestParamAllBodyTypeInner requestParam = new RequestParamAllBodyTypeInner();
+            requestParam.setBody(body);
+            //填充requestParam参数
+            requestParam.setUrl(url);
+            requestParam.setHttpMethod(httpMethod);
+            requestParam.setHeader(header);
+            ResponseEntity<String> exchange = httpClientService.exchangeInnerWithoutContentType(requestParam, restTemplate);
+            return exchange.getBody();
+        } catch (HttpClientErrorException e) {
+            logger.error("", e);
+            return e.getResponseBodyAsString();
+        } catch (Exception e) {
+            logger.error("", e);
+            throw new TransferCommonException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 下载文件并上传到nos（默认fileUrl是get请求，默认格式xlsx）
      *
      * @param fileUrl
