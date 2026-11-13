@@ -175,23 +175,23 @@ public class ReflectionUtils {
                 return (T) value;
             } else if (Integer.class.isAssignableFrom(tClass)) {
                 // Integer类型
-                return (T) Integer.valueOf(value);
+                return (T) Integer.valueOf(removeThousandSeparator(value));
             } else if (Long.class.isAssignableFrom(tClass)) {
                 // Integer类型
-                return (T) Long.valueOf(value);
+                return (T) Long.valueOf(removeThousandSeparator(value));
             } else if (Double.class.isAssignableFrom(tClass)) {
                 // Double类型
-                return (T) Double.valueOf(value);
+                return (T) Double.valueOf(removeThousandSeparator(value));
             } else if (Float.class.isAssignableFrom(tClass)) {
                 // Float类型
-                return (T) Float.valueOf(value);
+                return (T) Float.valueOf(removeThousandSeparator(value));
             } else if (Boolean.class.isAssignableFrom(tClass)) {
                 // Boolean类型
                 Boolean result = "true".equalsIgnoreCase(value) || "1".equals(value);
                 return (T) result;
             } else if (BigDecimal.class.isAssignableFrom(tClass)) {
                 // BigDecimal类型
-                return (T) new BigDecimal(value);
+                return (T) new BigDecimal(removeThousandSeparator(value));
             } else if (LocalDate.class.isAssignableFrom(tClass)) {
 
                 // 将日期转换为标准格式 yyyy/MM/dd 不足位补0
@@ -219,6 +219,15 @@ public class ReflectionUtils {
         } catch (Exception e) {
             throw new ExcelParseException(String.format("类型转换失败，值:%s, 目标类型:%s", value, toErrorMsgType(tClass)), e);
         }
+    }
+
+    /**
+     * 去除数字的千位分隔符，兼容中英文逗号
+     * @param value
+     * @return
+     */
+    private static String removeThousandSeparator(String value) {
+        return value.replace(",", "").replace("，", "");
     }
 
     private static String toErrorMsgType(Class tClass) {
